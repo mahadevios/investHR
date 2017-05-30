@@ -9,15 +9,149 @@
 import UIKit
 import CoreData
 
+import Firebase
+
+import FBSDKLoginKit
+
+import LinkedinSwift
+
+//https://www.hackingwithswift.com/read/38/4/creating-an-nsmanagedobject-subclass-with-xcode
+// typealias and enum http://www.jessesquires.com/better-coredata-models-in-swift/
+// fb login inte. with firebase http://www.appcoda.com/firebase-facebook-login/
+
+// app store rejection app switch http://stackoverflow.com/questions/36520067/google-login-in-login-view-controller-instead-of-appdelegate-ios-swift
+//http://stackoverflow.com/questions/36630276/google-login-ios-app-rejection-from-appstore-using-google-sdk-v3-x
+
+// google sign in video https://www.youtube.com/watch?v=QmnI5c85sf0
+
+// relative to margin http://coding.tabasoft.it/ios/ios8-layout-margins/
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
+    {
         // Override point for customization after application launch.
+        
+        var configureError: NSError?
+        
+        // FBSDKLoginButton.classForCoder()
+        
+        GGLContext.sharedInstance().configureWithError(&configureError)
+        
+        FIRApp.configure()
+        
+        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        // Configure the Google context: parses the GoogleService-Info.plist, and initializes
+        // the services(APIs) that have entries in the file
+        assert(configureError == nil, "Error configuring Google services: \(configureError)")
+        
+        
+        
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        print(urls[urls.count-1] as URL)
+        
+//        if GIDSignIn.sharedInstance().hasAuthInKeychain()
+//        {
+//            let viewController = (self.window?.rootViewController?.storyboard?.instantiateViewController(withIdentifier: "HomeViewController"))! as UIViewController
+//            self.window?.rootViewController = viewController
+//        }
+//        //GIDSignIn.sharedInstance().signInSilently()
+//        else
+//        if FBSDKAccessToken.current() == nil
+//        {
+//            print("logged out ")
+//
+//        }
+//        else
+//        {
+//          print("logged in \(FBSDKAccessToken.current())")
+//            
+//            //let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+//
+////            if let viewController = storyboard.instantiateViewController(withIdentifier: "MainView") {
+////                UIApplication.shared.keyWindow?.rootViewController = viewController
+////                //self.dismiss(animated: true, completion: nil)
+////            }
+//            
+////            if let viewController = storyboard.instantiateViewController(withIdentifier: "HomeViewController")
+////            {
+////                UIApplication.shared.keyWindow?.rootViewController = viewController
+////            }
+//            
+//            let viewController = (self.window?.rootViewController?.storyboard?.instantiateViewController(withIdentifier: "HomeViewController"))! as UIViewController
+//            self.window?.rootViewController = viewController
+//            
+//        }
+        
         return true
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool
+    {
+        
+//                return GIDSignIn.sharedInstance().handle(url,
+//                                                                    sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String,
+//                                                                    annotation: options[UIApplicationOpenURLOptionsKey.annotation])
+        
+        if let fb:Bool =  FBSDKApplicationDelegate.sharedInstance().application(app,
+                                                                           open: url,
+                                                                           sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String,
+                                                                           annotation: options [UIApplicationOpenURLOptionsKey.annotation]) == true
+        {
+            if fb==true
+            {
+                return true
+
+            }
+        }
+        
+        
+        return GIDSignIn.sharedInstance().handle(url,
+                                                 sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String,
+                                                 annotation: options[UIApplicationOpenURLOptionsKey.annotation])
+        
+//        if([[FBSDKApplicationDelegate sharedInstance] application:application
+//            openURL:url
+//            sourceApplication:sourceApplication
+//            annotation:annotation])
+//        {
+//            return YES;
+//        }
+//        let isFBOpenUrl = FBSDKApplicationDelegate.shared.application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
+//        let isGoogleOpenUrl = GIDSignIn.sharedInstance().handle(url, sourceApplication: sourceApplication, annotation: annotation)
+//        if isFBOpenUrl { return true }
+//        if isGoogleOpenUrl { return true }
+//        return false    
+    
+    }
+
+    func application(_ application: UIApplication,
+                     open url: URL,
+                     sourceApplication: String?,
+                     annotation: Any) -> Bool {
+        
+        // Linkedin sdk handle redirect
+        if LinkedinSwiftHelper.shouldHandle(url)
+        {
+            return LinkedinSwiftHelper.application(application,
+                                                   open: url,
+                                                   sourceApplication: sourceApplication,
+                                                   annotation: annotation
+            )
+        }
+        
+        
+        
+        return false
+    }
+    func getManageObjectContext() -> NSManagedObjectContext
+    {
+        let manageObjectContext = self.persistentContainer.viewContext
+
+        return manageObjectContext
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -46,7 +180,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - Core Data stack
 
-    lazy var persistentContainer: NSPersistentContainer = {
+    lazy var persistentContainer: NSPersistentContainer =
+        {
         /*
          The persistent container for the application. This implementation
          creates and returns a container, having loaded the store for the
