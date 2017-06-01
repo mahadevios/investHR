@@ -408,10 +408,10 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jV7-Zb-Wud">
-                                <rect key="frame" x="0.0" y="44" width="70" height="60"/>
+                                <rect key="frame" x="0.0" y="44" width="80" height="70"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="R2a-fc-Kdv"/>
-                                    <constraint firstAttribute="width" constant="70" id="eBv-J3-tbl"/>
+                                    <constraint firstAttribute="height" constant="70" id="R2a-fc-Kdv"/>
+                                    <constraint firstAttribute="width" constant="80" id="eBv-J3-tbl"/>
                                 </constraints>
                                 <connections>
                                     <action selector="sliderButtonClicked:" destination="MjO-h0-e1r" eventType="touchUpInside" id="qb3-Pv-HcF"/>
@@ -425,7 +425,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="58P-Ep-qBE">
-                                <rect key="frame" x="344" y="44" width="70" height="60"/>
+                                <rect key="frame" x="334" y="44" width="80" height="70"/>
                                 <connections>
                                     <action selector="notificationButtonClicked:" destination="MjO-h0-e1r" eventType="touchUpInside" id="duQ-K5-Uyl"/>
                                 </connections>
@@ -711,6 +711,108 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b9S-0r-zc1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4929" y="18"/>
+        </scene>
+        <!--Upload Video View Controller-->
+        <scene sceneID="uqn-DY-JPf">
+            <objects>
+                <viewController storyboardIdentifier="UploadVideoViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zH3-Am-Wle" customClass="UploadVideoViewController" customModule="investHR" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="H8X-c8-hfd"/>
+                        <viewControllerLayoutGuide type="bottom" id="iWH-Xj-lNF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="FgF-CA-nSP">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kvV-JH-Spo">
+                                <rect key="frame" x="21" y="596" width="372" height="2"/>
+                                <color key="backgroundColor" red="0.80392156862745101" green="0.83137254901960789" blue="0.83921568627450982" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="2" id="5C3-mD-OpL"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maximum 60 seconds video you can upload" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="61e-8P-C8U">
+                                <rect key="frame" x="41" y="618" width="332" height="43"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <color key="textColor" red="0.95294117649999999" green="0.53725490200000003" blue="0.3294117647" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BLr-Kt-QZC">
+                                <rect key="frame" x="37" y="671" width="340" height="45"/>
+                                <color key="backgroundColor" red="0.1137254902" green="0.4823529412" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="3aQ-h5-BnE"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <state key="normal" title="TAKE YOUR VIDEO">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="uploadVideoButtonClicked:" destination="zH3-Am-Wle" eventType="touchUpInside" id="IbK-LA-775"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="BLr-Kt-QZC" firstAttribute="centerX" secondItem="FgF-CA-nSP" secondAttribute="centerX" id="1MZ-CW-FwM"/>
+                            <constraint firstItem="61e-8P-C8U" firstAttribute="top" secondItem="kvV-JH-Spo" secondAttribute="bottom" constant="20" id="5DO-JI-B9h"/>
+                            <constraint firstItem="61e-8P-C8U" firstAttribute="width" secondItem="FgF-CA-nSP" secondAttribute="width" multiplier="0.8" id="HUa-W9-cw6"/>
+                            <constraint firstItem="BLr-Kt-QZC" firstAttribute="top" secondItem="61e-8P-C8U" secondAttribute="bottom" constant="10" id="JIF-3m-QGe"/>
+                            <constraint firstItem="61e-8P-C8U" firstAttribute="centerX" secondItem="FgF-CA-nSP" secondAttribute="centerX" id="S4d-O9-6JI"/>
+                            <constraint firstItem="kvV-JH-Spo" firstAttribute="centerX" secondItem="FgF-CA-nSP" secondAttribute="centerX" id="XwP-Op-S9l"/>
+                            <constraint firstItem="BLr-Kt-QZC" firstAttribute="width" secondItem="FgF-CA-nSP" secondAttribute="width" multiplier="0.82" id="aqx-6a-VgB"/>
+                            <constraint firstItem="kvV-JH-Spo" firstAttribute="width" secondItem="FgF-CA-nSP" secondAttribute="width" multiplier="0.9" id="kuG-TX-ta7"/>
+                            <constraint firstItem="iWH-Xj-lNF" firstAttribute="top" secondItem="BLr-Kt-QZC" secondAttribute="bottom" constant="20" id="w4y-a6-5MD"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZPG-xt-DI9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5671" y="30"/>
+        </scene>
+        <!--Refer Friend View Controller-->
+        <scene sceneID="nz0-sB-MeP">
+            <objects>
+                <viewController storyboardIdentifier="ReferFriendViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DzO-Jm-pr1" customClass="ReferFriendViewController" customModule="investHR" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="q7U-SG-22D"/>
+                        <viewControllerLayoutGuide type="bottom" id="aLI-5y-U8O"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="K7b-Wc-09S">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sDz-Rj-LcT">
+                                <rect key="frame" x="21" y="30" width="372" height="221"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Tap and share instantly" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l9d-lc-RJu">
+                                <rect key="frame" x="30" y="40" width="331.33333333333337" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <color key="textColor" red="0.95294117649999999" green="0.53725490200000003" blue="0.3294117647" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="sDz-Rj-LcT" firstAttribute="top" secondItem="l9d-lc-RJu" secondAttribute="bottom" constant="-31.000000000000014" id="AwD-1T-Wvl"/>
+                            <constraint firstItem="l9d-lc-RJu" firstAttribute="width" secondItem="sDz-Rj-LcT" secondAttribute="width" id="R7m-T0-MHi"/>
+                            <constraint firstItem="sDz-Rj-LcT" firstAttribute="centerX" secondItem="K7b-Wc-09S" secondAttribute="centerX" id="fu5-XS-9Uv"/>
+                            <constraint firstItem="sDz-Rj-LcT" firstAttribute="height" secondItem="K7b-Wc-09S" secondAttribute="height" multiplier="0.3" id="hT1-i1-6BW"/>
+                            <constraint firstItem="sDz-Rj-LcT" firstAttribute="width" secondItem="K7b-Wc-09S" secondAttribute="width" multiplier="0.9" id="iqe-2q-0en"/>
+                            <constraint firstItem="l9d-lc-RJu" firstAttribute="centerX" secondItem="sDz-Rj-LcT" secondAttribute="centerX" id="nlX-W4-kJO"/>
+                            <constraint firstItem="sDz-Rj-LcT" firstAttribute="top" secondItem="q7U-SG-22D" secondAttribute="bottom" constant="10" id="zhC-y3-eE4"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xTn-50-vIN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6382" y="33"/>
         </scene>
         <!--Registration View Controller-->
         <scene sceneID="DKF-TR-Ufi">
@@ -2399,7 +2501,18 @@
                     <view key="view" contentMode="scaleToFill" id="4bs-Tp-riE">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" tag="101" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jrp-7I-0hw">
+                                <rect key="frame" x="96" y="154" width="240" height="128"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="Jrp-7I-0hw" firstAttribute="height" secondItem="4bs-Tp-riE" secondAttribute="height" multiplier="0.2" id="Azw-kV-hnx"/>
+                            <constraint firstItem="Jrp-7I-0hw" firstAttribute="centerY" secondItem="4bs-Tp-riE" secondAttribute="centerY" id="BCT-oo-mov"/>
+                            <constraint firstItem="Jrp-7I-0hw" firstAttribute="centerX" secondItem="4bs-Tp-riE" secondAttribute="centerX" id="Gb3-ST-HKS"/>
+                            <constraint firstItem="Jrp-7I-0hw" firstAttribute="width" secondItem="4bs-Tp-riE" secondAttribute="width" multiplier="0.5" id="sBW-dN-8Bv"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qpw-nl-zPr" userLabel="First Responder" sceneMemberID="firstResponder"/>

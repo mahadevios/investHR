@@ -11,6 +11,9 @@
 		841C71AB1ECC5C0300C3111F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841C71AA1ECC5C0300C3111F /* HomeViewController.swift */; };
 		84239B941EC476C60076EF33 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84239B931EC476C60076EF33 /* SWRevealViewController.m */; };
 		842B32F81EDD7A97000088D1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842B32F71EDD7A97000088D1 /* SettingsViewController.swift */; };
+		842B32FA1EDD8F62000088D1 /* UploadVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */; };
+		842B32FC1EDDAE2B000088D1 /* ReferFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */; };
+		842B32FE1EDDB224000088D1 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842B32FD1EDDB224000088D1 /* Social.framework */; };
 		8439E04E1EC5F3C000FC2A12 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439E04D1EC5F3C000FC2A12 /* ViewController.swift */; };
 		844069F71ECAEA2100E70CAF /* User+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844069F51ECAEA2100E70CAF /* User+CoreDataClass.swift */; };
 		844069F81ECAEA2100E70CAF /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844069F61ECAEA2100E70CAF /* User+CoreDataProperties.swift */; };
@@ -26,6 +29,7 @@
 		844F5F371EDC48640073A7D7 /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844F5F361EDC48640073A7D7 /* LocationViewController.swift */; };
 		8450ACCB1ED55384001D57E1 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8450ACCA1ED55384001D57E1 /* TextField.swift */; };
 		8450ACCD1ED5B5EF001D57E1 /* AdditionalInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8450ACCC1ED5B5EF001D57E1 /* AdditionalInfoViewController.swift */; };
+		8451F62A1EDEE39100B1DEDF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8451F6291EDEE39100B1DEDF /* AVFoundation.framework */; };
 		8493B8311EC4678200D8F7F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8493B8301EC4678200D8F7F9 /* AppDelegate.swift */; };
 		8493B8361EC4678200D8F7F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8493B8341EC4678200D8F7F9 /* Main.storyboard */; };
 		8493B8391EC4678200D8F7F9 /* investHR.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8493B8371EC4678200D8F7F9 /* investHR.xcdatamodeld */; };
@@ -35,6 +39,11 @@
 		8493B8541EC4678300D8F7F9 /* investHRUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8493B8531EC4678300D8F7F9 /* investHRUITests.swift */; };
 		84DAD40F1ED7F5440008BB09 /* VerticalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DAD40E1ED7F5440008BB09 /* VerticalViewController.swift */; };
 		84DAD4111ED822200008BB09 /* JobsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DAD4101ED822200008BB09 /* JobsViewController.swift */; };
+		84EB8F3D1EDFE90B00014DA4 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB8F3B1EDFE90B00014DA4 /* APIManager.swift */; };
+		84EB8F3E1EDFE90B00014DA4 /* DownloadMetaDataJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB8F3C1EDFE90B00014DA4 /* DownloadMetaDataJob.swift */; };
+		84EB8F431EDFEB8600014DA4 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB8F421EDFEB8600014DA4 /* Constant.swift */; };
+		84EB8F451EDFFCC900014DA4 /* AppPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB8F441EDFFCC900014DA4 /* AppPreferences.swift */; };
+		84EB8F481EE03D6600014DA4 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB8F471EE03D6600014DA4 /* Reachability.swift */; };
 		BD7B2F45DBC9DE328FC4F1DC /* Pods_investHR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCD0E64D8DDF1F4E0360E6EB /* Pods_investHR.framework */; };
 		E174B35D143E3B30CB4E479B /* Pods_investHRUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9CF5180517057B4C05D18CF /* Pods_investHRUITests.framework */; };
 		FE7DA76949B0D82B0FD61BD3 /* Pods_investHRTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F373153BB0521F279CA83EB /* Pods_investHRTests.framework */; };
@@ -67,6 +76,9 @@
 		84239B921EC476C60076EF33 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		84239B931EC476C60076EF33 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		842B32F71EDD7A97000088D1 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadVideoViewController.swift; sourceTree = "<group>"; };
+		842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferFriendViewController.swift; sourceTree = "<group>"; };
+		842B32FD1EDDB224000088D1 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		8439E04D1EC5F3C000FC2A12 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		844069F51ECAEA2100E70CAF /* User+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataClass.swift"; sourceTree = "<group>"; };
 		844069F61ECAEA2100E70CAF /* User+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -82,6 +94,8 @@
 		844F5F361EDC48640073A7D7 /* LocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
 		8450ACCA1ED55384001D57E1 /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		8450ACCC1ED5B5EF001D57E1 /* AdditionalInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdditionalInfoViewController.swift; sourceTree = "<group>"; };
+		8451F6281EDE8E2F00B1DEDF /* investHR.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = investHR.entitlements; sourceTree = "<group>"; };
+		8451F6291EDEE39100B1DEDF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		8493B82D1EC4678200D8F7F9 /* investHR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = investHR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8493B8301EC4678200D8F7F9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8493B8351EC4678200D8F7F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -97,6 +111,11 @@
 		8493B8551EC4678300D8F7F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84DAD40E1ED7F5440008BB09 /* VerticalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalViewController.swift; sourceTree = "<group>"; };
 		84DAD4101ED822200008BB09 /* JobsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobsViewController.swift; sourceTree = "<group>"; };
+		84EB8F3B1EDFE90B00014DA4 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		84EB8F3C1EDFE90B00014DA4 /* DownloadMetaDataJob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadMetaDataJob.swift; sourceTree = "<group>"; };
+		84EB8F421EDFEB8600014DA4 /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		84EB8F441EDFFCC900014DA4 /* AppPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppPreferences.swift; sourceTree = "<group>"; };
+		84EB8F471EE03D6600014DA4 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		8F373153BB0521F279CA83EB /* Pods_investHRTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_investHRTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B46ECC2453C6493610B27C31 /* Pods-investHRTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-investHRTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-investHRTests/Pods-investHRTests.release.xcconfig"; sourceTree = "<group>"; };
 		BF1F6F4D1CE0CCB272F213F1 /* Pods-investHR.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-investHR.release.xcconfig"; path = "Pods/Target Support Files/Pods-investHR/Pods-investHR.release.xcconfig"; sourceTree = "<group>"; };
@@ -110,6 +129,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8451F62A1EDEE39100B1DEDF /* AVFoundation.framework in Frameworks */,
+				842B32FE1EDDB224000088D1 /* Social.framework in Frameworks */,
 				BD7B2F45DBC9DE328FC4F1DC /* Pods_investHR.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -136,6 +157,8 @@
 		5553AA6A2507EFF67043F30C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8451F6291EDEE39100B1DEDF /* AVFoundation.framework */,
+				842B32FD1EDDB224000088D1 /* Social.framework */,
 				FCD0E64D8DDF1F4E0360E6EB /* Pods_investHR.framework */,
 				8F373153BB0521F279CA83EB /* Pods_investHRTests.framework */,
 				D9CF5180517057B4C05D18CF /* Pods_investHRUITests.framework */,
@@ -146,6 +169,7 @@
 		84239B901EC476AD0076EF33 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				84EB8F461EE03D6600014DA4 /* Reachability */,
 				84239B911EC476AD0076EF33 /* SWrevealView */,
 			);
 			path = Libraries;
@@ -185,6 +209,9 @@
 		8493B82F1EC4678200D8F7F9 /* investHR */ = {
 			isa = PBXGroup;
 			children = (
+				8451F6281EDE8E2F00B1DEDF /* investHR.entitlements */,
+				84EB8F3F1EDFE94900014DA4 /* Constant */,
+				84EB8F3A1EDFE90B00014DA4 /* APIManager */,
 				8493B8611EC467D100D8F7F9 /* ViewControllers */,
 				8493B8641EC468FA00D8F7F9 /* Models */,
 				8493B8301EC4678200D8F7F9 /* AppDelegate.swift */,
@@ -233,9 +260,11 @@
 				844F5F2E1EDC23A20073A7D7 /* NotificationJobsViewController.swift */,
 				844F5F301EDC2A160073A7D7 /* SavedJobsViewController.swift */,
 				844F5F321EDC34B20073A7D7 /* AppliedJobsViewController.swift */,
-				844F5F341EDC3BA10073A7D7 /* UploadResumeViewController.swift */,
 				844F5F361EDC48640073A7D7 /* LocationViewController.swift */,
 				842B32F71EDD7A97000088D1 /* SettingsViewController.swift */,
+				844F5F341EDC3BA10073A7D7 /* UploadResumeViewController.swift */,
+				842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */,
+				842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -249,6 +278,32 @@
 				8450ACCA1ED55384001D57E1 /* TextField.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		84EB8F3A1EDFE90B00014DA4 /* APIManager */ = {
+			isa = PBXGroup;
+			children = (
+				84EB8F3B1EDFE90B00014DA4 /* APIManager.swift */,
+				84EB8F3C1EDFE90B00014DA4 /* DownloadMetaDataJob.swift */,
+				84EB8F441EDFFCC900014DA4 /* AppPreferences.swift */,
+			);
+			path = APIManager;
+			sourceTree = "<group>";
+		};
+		84EB8F3F1EDFE94900014DA4 /* Constant */ = {
+			isa = PBXGroup;
+			children = (
+				84EB8F421EDFEB8600014DA4 /* Constant.swift */,
+			);
+			path = Constant;
+			sourceTree = "<group>";
+		};
+		84EB8F461EE03D6600014DA4 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				84EB8F471EE03D6600014DA4 /* Reachability.swift */,
+			);
+			path = Reachability;
 			sourceTree = "<group>";
 		};
 		B56E7941A7675D3CEE9D3B4F /* Pods */ = {
@@ -344,6 +399,11 @@
 						DevelopmentTeam = Y56BAH343T;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					8493B8431EC4678300D8F7F9 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -552,9 +612,14 @@
 			files = (
 				844F5F371EDC48640073A7D7 /* LocationViewController.swift in Sources */,
 				844F5F2D1EDBF0B20073A7D7 /* EditProfileViewController.swift in Sources */,
+				84EB8F451EDFFCC900014DA4 /* AppPreferences.swift in Sources */,
+				84EB8F3D1EDFE90B00014DA4 /* APIManager.swift in Sources */,
+				84EB8F3E1EDFE90B00014DA4 /* DownloadMetaDataJob.swift in Sources */,
 				8493B8391EC4678200D8F7F9 /* investHR.xcdatamodeld in Sources */,
 				8450ACCB1ED55384001D57E1 /* TextField.swift in Sources */,
+				84EB8F481EE03D6600014DA4 /* Reachability.swift in Sources */,
 				8493B8311EC4678200D8F7F9 /* AppDelegate.swift in Sources */,
+				842B32FC1EDDAE2B000088D1 /* ReferFriendViewController.swift in Sources */,
 				844F5F311EDC2A160073A7D7 /* SavedJobsViewController.swift in Sources */,
 				844069F81ECAEA2100E70CAF /* User+CoreDataProperties.swift in Sources */,
 				844387B61ED41FF0002E71D6 /* RegistrationViewController.swift in Sources */,
@@ -567,9 +632,11 @@
 				844F5F2F1EDC23A20073A7D7 /* NotificationJobsViewController.swift in Sources */,
 				844387B81ED46D2D002E71D6 /* Registration1ViewController.swift in Sources */,
 				8439E04E1EC5F3C000FC2A12 /* ViewController.swift in Sources */,
+				84EB8F431EDFEB8600014DA4 /* Constant.swift in Sources */,
 				84239B941EC476C60076EF33 /* SWRevealViewController.m in Sources */,
 				8440DF701ED706CB0003F05B /* MenuViewViewController.swift in Sources */,
 				844F5F331EDC34B20073A7D7 /* AppliedJobsViewController.swift in Sources */,
+				842B32FA1EDD8F62000088D1 /* UploadVideoViewController.swift in Sources */,
 				844069FC1ECAFE1C00E70CAF /* CoreDataManager.swift in Sources */,
 				844069F71ECAEA2100E70CAF /* User+CoreDataClass.swift in Sources */,
 			);
@@ -725,6 +792,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = investHR/investHR.entitlements;
 				DEVELOPMENT_TEAM = Y56BAH343T;
 				INFOPLIST_FILE = investHR/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -743,6 +811,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = investHR/investHR.entitlements;
 				DEVELOPMENT_TEAM = Y56BAH343T;
 				INFOPLIST_FILE = investHR/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;

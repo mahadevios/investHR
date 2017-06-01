@@ -8,9 +8,20 @@
 
 import UIKit
 
-class UploadResumeViewController: UIViewController
+class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate
 {
-
+    @available(iOS 8.0, *)
+    public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL)
+    {
+        let data = NSData(contentsOf: url)
+        
+        print(url.pathExtension)
+        
+        let imageView = self.view.viewWithTag(101) as! UIImageView
+        
+        imageView.image = UIImage(data: data as! Data)
+        
+    }
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -30,14 +41,16 @@ class UploadResumeViewController: UIViewController
 //        let rightBarButtonItem = UIBarButtonItem(customView: numberOfJobsLabel)
 //        
 //        self.navigationItem.rightBarButtonItem = rightBarButtonItem
-        let editProfileView = UIView(frame: CGRect(x: 0, y: 0, width: 120, height: 50))
+        let editProfileView = UIView(frame: CGRect(x: 70, y: 0, width: 60, height: 50))
+        //editProfileView.backgroundColor = UIColor.red
         
-        let attachmentButton = UIButton(frame: CGRect(x: 75, y: 0, width: 50, height: 50))
+        let attachmentButton = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
         attachmentButton.addTarget(self, action: #selector(rightBArButtonCLicked), for: UIControlEvents.touchUpInside)
         attachmentButton.titleLabel?.textAlignment = NSTextAlignment.center
         attachmentButton.setTitleColor(UIColor.init(colorLiteralRed: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1), for: UIControlState.normal)
+        //attachmentButton.backgroundColor = UIColor.blue
         
-        let attachMentImageView = UIImageView(frame: CGRect(x: editProfileView.frame.size.width-32, y: 20, width: 16, height: 18))
+        let attachMentImageView = UIImageView(frame: CGRect(x: editProfileView.frame.size.width-16, y: 16, width: 16, height: 18))
         attachMentImageView.image = UIImage(named: "Attachment")
         
         
@@ -50,6 +63,14 @@ class UploadResumeViewController: UIViewController
         // Do any additional setup after loading the view.
     }
 
+//    func showiCloudFiles()
+//    {
+//        let documentPickerController = UIDocumentPickerViewController(documentTypes: ["public.text","public.image"], in: UIDocumentPickerMode.import)
+//        
+//        documentPickerController.delegate = self
+//        present(documentPickerController, animated: true, completion: nil)
+//    }
+    
     func popViewController() -> Void
     {
         self.revealViewController().revealToggle(animated: true)
@@ -58,7 +79,10 @@ class UploadResumeViewController: UIViewController
     }
     func rightBArButtonCLicked() -> Void
     {
+        let documentPickerController = UIDocumentPickerViewController(documentTypes: ["public.text","public.image","public.movie"], in: UIDocumentPickerMode.import)
         
+        documentPickerController.delegate = self
+        present(documentPickerController, animated: true, completion: nil)
     }
     override func didReceiveMemoryWarning()
     {

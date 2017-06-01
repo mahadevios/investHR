@@ -24,6 +24,47 @@ class HomeViewController: UIViewController
     
     @IBOutlet weak var sliderButton: UIButton!
 
+    override func viewDidLoad()
+    {
+        super.viewDidLoad()
+        
+        self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+        
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        
+        definesPresentationContext = true
+        
+
+        
+        let alert2 = MyAlert.showAlert(ofType: MyAlertType.invalidLogin, handler: { (UIAlertAction) in
+            
+            print("cancel pressed")
+        }) { (UIAlertAction) in
+            print("ok pressed")
+
+        }
+        self.present(alert2, animated: true, completion: nil)
+        
+        
+        
+        
+//        AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Invalid login", withCancelText: "Ok")
+
+   
+        
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool)
+    {
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            print("reachable")
+        }
+    }
+
     @IBAction func verticalWiseButtonPressed(_ sender: Any)
     {
        
@@ -66,23 +107,7 @@ class HomeViewController: UIViewController
     }
     @IBAction func notificationButtonClicked(_ sender: Any) {
     }
-    override func viewDidLoad()
-    {
-        super.viewDidLoad()
-        self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
-        
-        
-        // Do any additional setup after loading the view.
-    }
     
-    override func viewWillAppear(_ animated: Bool)
-    {
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
-
-    }
-
     //-(void)createSWRevealView
     //{
     //    SWRevealViewController *revealViewController = self.revealViewController;

@@ -25,6 +25,8 @@ import LinkedinSwift
 // google sign in video https://www.youtube.com/watch?v=QmnI5c85sf0
 
 // relative to margin http://coding.tabasoft.it/ios/ios8-layout-margins/
+
+//doc picker and metadata query  https://developer.xamarin.com/guides/ios/platform_features/introduction_to_the_document_picker/
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -33,19 +35,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
-        // Override point for customization after application launch.
         
         var configureError: NSError?
         
-        // FBSDKLoginButton.classForCoder()
         
         GGLContext.sharedInstance().configureWithError(&configureError)
         
         FIRApp.configure()
         
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-        // Configure the Google context: parses the GoogleService-Info.plist, and initializes
-        // the services(APIs) that have entries in the file
+        
         assert(configureError == nil, "Error configuring Google services: \(configureError)")
         
         
@@ -86,6 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            
 //        }
         
+        AppPreferences.sharedPreferences().startReachabilityNotifier()
         return true
     }
     

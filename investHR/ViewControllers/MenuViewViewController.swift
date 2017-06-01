@@ -171,7 +171,33 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             break
             
+        case 6:
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "UploadVideoViewController") as! UploadVideoViewController
             
+            
+            let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
+            
+            vc1.pushViewController(vc, animated: true)
+            
+            self.revealViewController().pushFrontViewController(vc1, animated: true)
+            
+            
+            
+            break
+            
+        case 7:
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ReferFriendViewController") as! ReferFriendViewController
+            
+            
+            let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
+            
+            vc1.pushViewController(vc, animated: true)
+            
+            self.revealViewController().pushFrontViewController(vc1, animated: true)
+            
+            
+            
+            break
         case 8:
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
             
