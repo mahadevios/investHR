@@ -70,6 +70,9 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         super.viewWillAppear(true)
         
         
+        LISDKSessionManager.clearSession()
+
+        
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int

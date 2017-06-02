@@ -15,6 +15,7 @@
 		842B32FC1EDDAE2B000088D1 /* ReferFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */; };
 		842B32FE1EDDB224000088D1 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842B32FD1EDDB224000088D1 /* Social.framework */; };
 		8439E04E1EC5F3C000FC2A12 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439E04D1EC5F3C000FC2A12 /* ViewController.swift */; };
+		843A6AB91EE1824C00D86591 /* linkedin-sdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843A6AB81EE1824C00D86591 /* linkedin-sdk.framework */; };
 		844069F71ECAEA2100E70CAF /* User+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844069F51ECAEA2100E70CAF /* User+CoreDataClass.swift */; };
 		844069F81ECAEA2100E70CAF /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844069F61ECAEA2100E70CAF /* User+CoreDataProperties.swift */; };
 		844069FC1ECAFE1C00E70CAF /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844069FB1ECAFE1C00E70CAF /* CoreDataManager.swift */; };
@@ -80,6 +81,7 @@
 		842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferFriendViewController.swift; sourceTree = "<group>"; };
 		842B32FD1EDDB224000088D1 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		8439E04D1EC5F3C000FC2A12 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		843A6AB81EE1824C00D86591 /* linkedin-sdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = "linkedin-sdk.framework"; sourceTree = "<group>"; };
 		844069F51ECAEA2100E70CAF /* User+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataClass.swift"; sourceTree = "<group>"; };
 		844069F61ECAEA2100E70CAF /* User+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		844069FB1ECAFE1C00E70CAF /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 				8451F62A1EDEE39100B1DEDF /* AVFoundation.framework in Frameworks */,
 				842B32FE1EDDB224000088D1 /* Social.framework in Frameworks */,
 				BD7B2F45DBC9DE328FC4F1DC /* Pods_investHR.framework in Frameworks */,
+				843A6AB91EE1824C00D86591 /* linkedin-sdk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,6 +172,7 @@
 		84239B901EC476AD0076EF33 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				843A6AB71EE1824C00D86591 /* LinkedIn */,
 				84EB8F461EE03D6600014DA4 /* Reachability */,
 				84239B911EC476AD0076EF33 /* SWrevealView */,
 			);
@@ -182,6 +186,14 @@
 				84239B931EC476C60076EF33 /* SWRevealViewController.m */,
 			);
 			path = SWrevealView;
+			sourceTree = "<group>";
+		};
+		843A6AB71EE1824C00D86591 /* LinkedIn */ = {
+			isa = PBXGroup;
+			children = (
+				843A6AB81EE1824C00D86591 /* linkedin-sdk.framework */,
+			);
+			path = LinkedIn;
 			sourceTree = "<group>";
 		};
 		8493B8241EC4678200D8F7F9 = {
@@ -794,6 +806,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = investHR/investHR.entitlements;
 				DEVELOPMENT_TEAM = Y56BAH343T;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/investHR/Libraries/LinkedIn",
+				);
 				INFOPLIST_FILE = investHR/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -813,6 +829,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = investHR/investHR.entitlements;
 				DEVELOPMENT_TEAM = Y56BAH343T;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/investHR/Libraries/LinkedIn",
+				);
 				INFOPLIST_FILE = investHR/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

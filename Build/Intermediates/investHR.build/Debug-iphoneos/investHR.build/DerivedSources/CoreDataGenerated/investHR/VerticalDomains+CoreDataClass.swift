@@ -2,7 +2,7 @@
 //  VerticalDomains+CoreDataClass.swift
 //  
 //
-//  Created by mac on 26/05/17.
+//  Created by mac on 02/06/17.
 //
 //  This file was automatically generated and should not be edited.
 //

@@ -5,3 +5,5 @@
 #import "SWRevealViewController.h"
 
 #import <Google/SignIn.h>
+#import <linkedin-sdk/LISDK.h>
+

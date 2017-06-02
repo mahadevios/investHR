@@ -29,6 +29,8 @@ class ViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegate {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
+    var accesToken:LISDKAccessToken?
+    
     @IBAction func registerUserButtonClicked(_ sender: Any)
     {
 //       let viewController =  self.storyboard?.instantiateViewController(withIdentifier: "RegistrationViewController") as! RegistrationViewController
@@ -76,7 +78,7 @@ class ViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegate {
         
         let result : [String: Any] = ["firstName" : "Steve", "surName" : "Jobs"]
         
-        let obj = coreDataManager.save(entity: "User", result)
+        //let obj = coreDataManager.save(entity: "User", result)
         
         //let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "User")
         
@@ -149,35 +151,121 @@ class ViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegate {
     @IBAction func linkedInLoginButtonClicked(_ sender: Any)
     {
         
-        let helper = LinkedinSwiftHelper(
-            configuration:LinkedinSwiftConfiguration()    )
-        //let helper = LinkedinSwiftHelper()
-        helper.authorizeSuccess({ (lsToken) -> Void in
-            //Login success lsToken
-            print(lsToken)
+        
+        
+        self.loadAccount(then: { () in
             
-            helper.requestURL("https://api.linkedin.com/v1/people/~?format=json",
-                              requestType: LinkedinSwiftRequestGet,
-                              success: { (response) -> Void in
-                                print(response)
-                                
-                                //Request success response
-                                
-            }) { [unowned self] (error) -> Void in
-                
-                //Encounter error
-            }
-        }, error: { (error) -> Void in
-            //Encounter error: error.localizedDescription
-            print(error)
-            
-        }, cancel: { () -> Void in
-            //User Cancelled!
-        })
+            print("cancel pressed")
+        }, or: nil)
+        
+        //        let conf = LinkedinSwiftConfiguration(clientId: "81no6kz3uepufn", clientSecret: "tgGDfootCo2zoLwB", state: "DLKDJF45DIWOERCM", permissions: ["r_basicprofile", "r_emailaddress"], redirectUrl: "investHR")
+        //
+        //        let helper = LinkedinSwiftHelper(
+        //            configuration:conf!)
+        //        helper.authorizeSuccess({ (lsToken) -> Void in
+        //            print(lsToken)
+        //
+        //            helper.requestURL("https://api.linkedin.com/v1/people/~?format=json",
+        //                              requestType: LinkedinSwiftRequestGet,
+        //                              success: { (response) -> Void in
+        //                                print(response)
+        //
+        //
+        //            }) { [unowned self] (error) -> Void in
+        //
+        //                print(error.localizedDescription)
+        //            }
+        //        }, error: { (error) -> Void in
+        //            print(error)
+        //            
+        //        }, cancel: { () -> Void in
+        //        })
 
     }
     
     
+    
+    func loadAccount(then: (() -> Void)?, or: ((String) -> Void)?)
+    { // then & or are handling closures
+        //print(LISDKSessionManager.sharedInstance().session.accessToken)
+        
+        
+        self.accesToken = LISDKSessionManager.sharedInstance().session.accessToken
+        if let token = self.accesToken
+        {
+            LISDKSessionManager.createSession(with: token)
+            if LISDKSessionManager.hasValidSession() {
+                LISDKAPIHelper.sharedInstance().getRequest("https://api.linkedin.com/v1/people/~:(id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json",
+                                                           success: {
+                                                            response in
+                                                            print(response?.data ?? "hh")
+                                                            then?()
+                },
+                                                           error: {
+                                                            error in
+                                                            print(error ?? "kk")
+                                                            or?("error")
+                }
+                )
+            }
+        }
+            
+            
+    else {
+    
+            LISDKSessionManager.createSession(withAuth: [LISDK_BASIC_PROFILE_PERMISSION], state: nil, showGoToAppStoreDialog: true,
+                                              successBlock: {
+                                                (state) in
+                                                if LISDKSessionManager.hasValidSession()
+                                                {
+                                                    LISDKAPIHelper.sharedInstance().getRequest("https://api.linkedin.com/v1/people/~:(id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json",
+                                                                                               success: {
+                                                                                                response in
+                                                                                                print(response?.data ?? "hh")
+                                                                                                then?()
+                                                    },
+                                                                                               error: {
+                                                                                                error in
+                                                                                                print(error ?? "kk")
+                                                                                                or?("error")
+                                                    }
+                                                    )
+                                                }
+            },
+                                              errorBlock: {
+                                                (error) in
+                                                
+                                                print("got error")
+                                                
+            }
+            )
+        }
+//      else
+//        {
+//        LISDKSessionManager.createSession(withAuth: [LISDK_BASIC_PROFILE_PERMISSION], state: nil, showGoToAppStoreDialog: true, successBlock: { (returnState) -> Void in
+//            print("success called!")
+//            print(LISDKSessionManager.sharedInstance().session)
+//            
+//            let url = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json"
+//            
+//            if LISDKSessionManager.hasValidSession() {
+//                LISDKAPIHelper.sharedInstance().getRequest(url, success: {
+//                    response in
+//                    print(response?.data ?? "hh")
+//                    then?()
+//                }, error: { (error) -> Void in
+//                    print(error ?? "nil")
+//                })
+//            }
+//            
+//            
+//        }) { (error) -> Void in
+//            print("Error: \(error)")
+//        }
+//        }
+    }
+    
+
     @IBAction func emailLoginButtonPressed(_ sender: Any)
     {
         if emailTextField.text == "" || passwordTextField.text == ""

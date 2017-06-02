@@ -14,7 +14,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
     var requestParameter:[String:AnyObject]?
     var downLoadEntityJobName:String!
     var httpMethod:String!
-    var responseData:NSMutableData?
+    var responseData = NSMutableData()
     var statusCode:Int!
     
     
@@ -44,7 +44,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         
         let paramArray = (self.requestParameter?[Constant.REQUEST_PARAMETER]) as! [String]
         
-        var parameter:NSMutableString!
+        var parameter:NSMutableString = ""
         
         for param in paramArray
         {
@@ -58,9 +58,16 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
             }
         }
         
-        let webservicePath = "\(Constant.BASE_URL_PATH)\(resourcePath)\(parameter)"
+       // let webservicePath = "\(Constant.BASE_URL_PATH)\(resourcePath)\(parameter)"
         
-        let url = NSURL.init(string: webservicePath.addingPercentEscapes(using: String.Encoding.utf8)!)
+        let webservicePath = "\(resourcePath)\(parameter)"
+
+        
+//        let url = NSURL.init(string: webservicePath.addingPercentEscapes(using: String.Encoding.utf8)!)
+        let url = NSURL.init(string: "https://api.linkedin.com/uas/oauth/invalidateToken?accessToken=AQUA1Wgb98ySYwMaw1QFJ1JYUVOHwnKK5vknu9T2qC7_dy_Xa-fUyYffrfx_zNG16BoUZNwYuFbXouICbqpz-yyUK-dZB7j1KNq2rrlNEBPoCgM3vSXfNZlz4HaNcT1k1qSjZVYWSLiMlJyxKisXGU6v1qct0d2zdjWfTgA2BQEO_I8r7WY")
+
+        
+        
         
         let request = NSMutableURLRequest(url: url as! URL, cachePolicy: NSURLRequest.CachePolicy.useProtocolCachePolicy, timeoutInterval: 120)
         
@@ -81,12 +88,22 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
     
     func connectionDidFinishLoading(_ connection: NSURLConnection)
     {
+        do
+        {
+           let response =  try JSONSerialization.jsonObject(with: responseData as Data, options: .allowFragments)
+            print(response)
+        }
+        catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+
         
     }
     
     func connection(_ connection: NSURLConnection, didReceive data: Data)
     {
-        responseData?.append(data)
+        responseData.append(data)
     }
     
     func connection(_ connection: NSURLConnection, didFailWithError error: Error)
@@ -99,7 +116,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
     
     func connection(_ connection: NSURLConnection, didReceive response: URLResponse)
     {
-        responseData?.length = 0
+        responseData.length = 0
         
         let httpResponse = response as! HTTPURLResponse
         

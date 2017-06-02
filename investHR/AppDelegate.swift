@@ -96,23 +96,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //                                                                    sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String,
 //                                                                    annotation: options[UIApplicationOpenURLOptionsKey.annotation])
         
-        if let fb:Bool =  FBSDKApplicationDelegate.sharedInstance().application(app,
-                                                                           open: url,
-                                                                           sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String,
-                                                                           annotation: options [UIApplicationOpenURLOptionsKey.annotation]) == true
+        let fb:Bool =  FBSDKApplicationDelegate.sharedInstance().application(app,
+        open: url,
+        sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String,
+        annotation: options [UIApplicationOpenURLOptionsKey.annotation]) == true
+        if fb == true
         {
-            if fb==true
-            {
+            
                 return true
 
-            }
         }
         
+        else
+        {
+        let gg:Bool = GIDSignIn.sharedInstance().handle(url,
+                                                        sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String,
+                                                        annotation: options[UIApplicationOpenURLOptionsKey.annotation])
+    
+        if gg == true
+        {
+            
+                return true
+                
+        }
+        }
+            if LinkedinSwiftHelper.shouldHandle(url)
+            {
+                if LISDKCallbackHandler.shouldHandle(url) {
+                    return LISDKCallbackHandler.application(app, open: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String!, annotation: options [UIApplicationOpenURLOptionsKey.annotation])
+                }
+
+                
+        }
         
-        return GIDSignIn.sharedInstance().handle(url,
-                                                 sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String,
-                                                 annotation: options[UIApplicationOpenURLOptionsKey.annotation])
-        
+        return true
 //        if([[FBSDKApplicationDelegate sharedInstance] application:application
 //            openURL:url
 //            sourceApplication:sourceApplication
