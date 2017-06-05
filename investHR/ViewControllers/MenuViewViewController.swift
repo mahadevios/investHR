@@ -215,14 +215,19 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             break
             
         case 9:
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
             
             
-            let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
+            //let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
             
-            vc1.pushViewController(vc, animated: true)
+            //vc1.pushViewController(vc, animated: true)
             
-            self.revealViewController().pushFrontViewController(vc1, animated: true)
+            //self.revealViewController().pushFrontViewController(vc, animated: true)
+            LISDKSessionManager.clearSession()
+            
+            UserDefaults.standard.setValue(nil, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+            
+            self.present(vc, animated: true, completion: nil)
             
             
             

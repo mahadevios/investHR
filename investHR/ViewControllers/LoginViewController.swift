@@ -115,6 +115,8 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
     {
         super.viewWillAppear(true)
         
+        self.checkForAvailableLinkedInSession()
+        
         emailTextField.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
 //        emailTextField.leftViewMode = UITextFieldViewMode.always;
@@ -134,11 +136,73 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
         imageView1.image = image1
         
         passwordTextField.addSubview(imageView1)
+        
+    
+//        self.loadAccount(then: { () in
+//            
+//            print("cancel pressed")
+//        }, or: nil)
 //        passwordTextField.leftViewMode = UITextFieldViewMode.always;
 //        
 //        passwordTextField.leftView = UIImageView.init(image: UIImage(named:"Password"))
     }
 
+    func checkForAvailableLinkedInSession() -> Void
+    {
+        let performFetch:() -> Void = {
+            
+            if LISDKSessionManager.hasValidSession() {
+                LISDKAPIHelper.sharedInstance().getRequest("https://api.linkedin.com/v1/people/~:(id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json",
+                                                           success: {
+                                                            response in
+                                                            print(response?.data ?? "hh")
+                                                            
+                                                            let token = LISDKSessionManager.sharedInstance().session.accessToken.serializedString()
+                                                            UserDefaults.standard.setValue(token, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+                                                            UserDefaults.standard.synchronize()
+                                                            //then?()
+                                                            
+                                                            
+                },
+                                                           error: {
+                                                            error in
+                                                            print(error ?? "kk")
+                                                            // or?("error")
+                }
+                )
+            }
+            
+        }
+
+        let serializedToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+        if let serializedToken = serializedToken
+        {
+            if serializedToken.characters.count > 0
+            {
+                let accessToken = LISDKAccessToken.init(serializedString: serializedToken)
+                
+                if (accessToken?.expiration)! > Date()
+                {
+                    LISDKSessionManager.createSession(with: accessToken)
+                    
+                    //performFetch()
+                    
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+                    let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                    
+                    appDelegate.window?.rootViewController = rootViewController
+                    
+                    dismiss(animated: true, completion: nil)
+                    
+                    
+                }
+            }
+            
+        }
+
+    }
     @IBAction func fbLoginButtonClicked(_ sender: Any)
     {
         self.fbLoginButtonClicked()
@@ -153,10 +217,10 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
         
         
         
-//        self.loadAccount(then: { () in
-//            
-//            print("cancel pressed")
-//        }, or: nil)
+        self.loadAccount(then: { () in
+            
+            print("cancel pressed")
+        }, or: nil)
         
         //        let conf = LinkedinSwiftConfiguration(clientId: "81no6kz3uepufn", clientSecret: "tgGDfootCo2zoLwB", state: "DLKDJF45DIWOERCM", permissions: ["r_basicprofile", "r_emailaddress"], redirectUrl: "investHR")
         //
@@ -189,60 +253,79 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
     { // then & or are handling closures
         //print(LISDKSessionManager.sharedInstance().session.accessToken)
         
-        let performFetch:() -> Void = { parameter in
-        
+        let performFetch:() -> Void = {
+            
             if LISDKSessionManager.hasValidSession() {
                 LISDKAPIHelper.sharedInstance().getRequest("https://api.linkedin.com/v1/people/~:(id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json",
                                                            success: {
                                                             response in
                                                             print(response?.data ?? "hh")
-                                                            then?()
+                                                            
+                                                            let token = LISDKSessionManager.sharedInstance().session.accessToken.serializedString()
+                                                            UserDefaults.standard.setValue(token, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+                                                            UserDefaults.standard.synchronize()
+                                                            //then?()
+                                                            
+                                                            
                 },
                                                            error: {
                                                             error in
                                                             print(error ?? "kk")
-                                                            or?("error")
+                                                            // or?("error")
                 }
                 )
             }
-        
+            
         }
         
         
-        let serializedToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as! String
+        let serializedToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
         
-        if serializedToken.characters.count > 0
+        if let serializedToken = serializedToken
         {
-            let accessToken = LISDKAccessToken.init(serializedString: serializedToken)
-            
-            if (accessToken?.expiration)! > Date()
+            if serializedToken.characters.count > 0
             {
-               LISDKSessionManager.createSession(with: accessToken)
+                let accessToken = LISDKAccessToken.init(serializedString: serializedToken)
                 
-                performFetch()
+                if (accessToken?.expiration)! > Date()
+                {
+                    LISDKSessionManager.createSession(with: accessToken)
+                    
+                    performFetch()
+                    
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+                    let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                    
+                    appDelegate.window?.rootViewController = rootViewController
+                    
+                    
+                }
             }
+            
         }
             
         else
         {
-    
+            
             LISDKSessionManager.createSession(withAuth: [LISDK_BASIC_PROFILE_PERMISSION], state: nil, showGoToAppStoreDialog: true,
                                               successBlock:
-                                                {
-                                                    (state) in
-                                                    performFetch()
-                                                },
+                {
+                    (state) in
+                    performFetch()
+            },
                                               errorBlock:
-                                                {
-                                                     (error) in
-                                                
-                                                     print("got error")
-                                                
-                                                })
+                {
+                    (error) in
+                    
+                    print("got error")
+                    
+            })
             
         }
     }
     
+
 
     @IBAction func emailLoginButtonPressed(_ sender: Any)
     {
