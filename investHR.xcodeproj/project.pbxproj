@@ -14,7 +14,7 @@
 		842B32FA1EDD8F62000088D1 /* UploadVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */; };
 		842B32FC1EDDAE2B000088D1 /* ReferFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */; };
 		842B32FE1EDDB224000088D1 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842B32FD1EDDB224000088D1 /* Social.framework */; };
-		8439E04E1EC5F3C000FC2A12 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439E04D1EC5F3C000FC2A12 /* ViewController.swift */; };
+		8439E04E1EC5F3C000FC2A12 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */; };
 		843A6AB91EE1824C00D86591 /* linkedin-sdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843A6AB81EE1824C00D86591 /* linkedin-sdk.framework */; };
 		844069F71ECAEA2100E70CAF /* User+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844069F51ECAEA2100E70CAF /* User+CoreDataClass.swift */; };
 		844069F81ECAEA2100E70CAF /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844069F61ECAEA2100E70CAF /* User+CoreDataProperties.swift */; };
@@ -80,7 +80,7 @@
 		842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadVideoViewController.swift; sourceTree = "<group>"; };
 		842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferFriendViewController.swift; sourceTree = "<group>"; };
 		842B32FD1EDDB224000088D1 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
-		8439E04D1EC5F3C000FC2A12 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		843A6AB81EE1824C00D86591 /* linkedin-sdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = "linkedin-sdk.framework"; sourceTree = "<group>"; };
 		844069F51ECAEA2100E70CAF /* User+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataClass.swift"; sourceTree = "<group>"; };
 		844069F61ECAEA2100E70CAF /* User+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -260,7 +260,7 @@
 		8493B8611EC467D100D8F7F9 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				8439E04D1EC5F3C000FC2A12 /* ViewController.swift */,
+				8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */,
 				841C71AA1ECC5C0300C3111F /* HomeViewController.swift */,
 				844387B51ED41FF0002E71D6 /* RegistrationViewController.swift */,
 				844387B71ED46D2D002E71D6 /* Registration1ViewController.swift */,
@@ -268,7 +268,6 @@
 				8440DF6F1ED706CB0003F05B /* MenuViewViewController.swift */,
 				84DAD40E1ED7F5440008BB09 /* VerticalViewController.swift */,
 				84DAD4101ED822200008BB09 /* JobsViewController.swift */,
-				844F5F2C1EDBF0B20073A7D7 /* EditProfileViewController.swift */,
 				844F5F2E1EDC23A20073A7D7 /* NotificationJobsViewController.swift */,
 				844F5F301EDC2A160073A7D7 /* SavedJobsViewController.swift */,
 				844F5F321EDC34B20073A7D7 /* AppliedJobsViewController.swift */,
@@ -277,6 +276,7 @@
 				844F5F341EDC3BA10073A7D7 /* UploadResumeViewController.swift */,
 				842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */,
 				842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */,
+				844F5F2C1EDBF0B20073A7D7 /* EditProfileViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -643,7 +643,7 @@
 				842B32F81EDD7A97000088D1 /* SettingsViewController.swift in Sources */,
 				844F5F2F1EDC23A20073A7D7 /* NotificationJobsViewController.swift in Sources */,
 				844387B81ED46D2D002E71D6 /* Registration1ViewController.swift in Sources */,
-				8439E04E1EC5F3C000FC2A12 /* ViewController.swift in Sources */,
+				8439E04E1EC5F3C000FC2A12 /* LoginViewController.swift in Sources */,
 				84EB8F431EDFEB8600014DA4 /* Constant.swift in Sources */,
 				84239B941EC476C60076EF33 /* SWRevealViewController.m in Sources */,
 				8440DF701ED706CB0003F05B /* MenuViewViewController.swift in Sources */,

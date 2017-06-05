@@ -24,7 +24,9 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
 
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         
-        self.addView()
+        //self.addView()
+        
+        self.perform(#selector(addView), with: nil, afterDelay: 0.2)
         
         menuItemsArray = ["Profile","Notification","Saved Jobs","Applied Jobs","Search Job","Upload Resume","Upload Video","Refer a Friend","Setting","Log Out"]
         
@@ -199,6 +201,20 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             break
         case 8:
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+            
+            
+            let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
+            
+            vc1.pushViewController(vc, animated: true)
+            
+            self.revealViewController().pushFrontViewController(vc1, animated: true)
+            
+            
+            
+            break
+            
+        case 9:
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
             
             

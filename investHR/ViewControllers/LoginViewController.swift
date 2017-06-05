@@ -20,7 +20,7 @@ import LinkedinSwift
 
 import IOSLinkedInAPIFix
 
-class ViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegate {
+class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegate {
 
     @IBOutlet weak var googleSignInCircleButton: UIButton!
     
@@ -86,21 +86,21 @@ class ViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegate {
         //        {
         //            let manageObject = try manageObjectContext.fetch(fetchRequest)
         
-        let managedObjects = coreDataManager.fetch(entity: "User")
-        for userObject in managedObjects as! [User]
-        {
-            let firstName = userObject.firstName
-            let lastName = userObject.surName
-            
-            print(firstName ?? "nil")
-            
-            guard let lastname = lastName else
-            {
-                print("nnil value")
-                continue
-            }
-            print(lastname)
-        }
+//        let managedObjects = coreDataManager.fetch(entity: "User")
+//        for userObject in managedObjects as! [User]
+//        {
+//            let firstName = userObject.firstName
+//            let lastName = userObject.surName
+//            
+//            print(firstName ?? "nil")
+//            
+//            guard let lastname = lastName else
+//            {
+//                print("nnil value")
+//                continue
+//            }
+//            print(lastname)
+//        }
         
         //        } catch let error as NSError
         //        {
@@ -153,10 +153,10 @@ class ViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegate {
         
         
         
-        self.loadAccount(then: { () in
-            
-            print("cancel pressed")
-        }, or: nil)
+//        self.loadAccount(then: { () in
+//            
+//            print("cancel pressed")
+//        }, or: nil)
         
         //        let conf = LinkedinSwiftConfiguration(clientId: "81no6kz3uepufn", clientSecret: "tgGDfootCo2zoLwB", state: "DLKDJF45DIWOERCM", permissions: ["r_basicprofile", "r_emailaddress"], redirectUrl: "investHR")
         //
@@ -189,11 +189,8 @@ class ViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegate {
     { // then & or are handling closures
         //print(LISDKSessionManager.sharedInstance().session.accessToken)
         
+        let performFetch:() -> Void = { parameter in
         
-        self.accesToken = LISDKSessionManager.sharedInstance().session.accessToken
-        if let token = self.accesToken
-        {
-            LISDKSessionManager.createSession(with: token)
             if LISDKSessionManager.hasValidSession() {
                 LISDKAPIHelper.sharedInstance().getRequest("https://api.linkedin.com/v1/people/~:(id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json",
                                                            success: {
@@ -208,61 +205,42 @@ class ViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegate {
                 }
                 )
             }
+        
+        }
+        
+        
+        let serializedToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as! String
+        
+        if serializedToken.characters.count > 0
+        {
+            let accessToken = LISDKAccessToken.init(serializedString: serializedToken)
+            
+            if (accessToken?.expiration)! > Date()
+            {
+               LISDKSessionManager.createSession(with: accessToken)
+                
+                performFetch()
+            }
         }
             
-            
-    else {
+        else
+        {
     
             LISDKSessionManager.createSession(withAuth: [LISDK_BASIC_PROFILE_PERMISSION], state: nil, showGoToAppStoreDialog: true,
-                                              successBlock: {
-                                                (state) in
-                                                if LISDKSessionManager.hasValidSession()
+                                              successBlock:
                                                 {
-                                                    LISDKAPIHelper.sharedInstance().getRequest("https://api.linkedin.com/v1/people/~:(id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json",
-                                                                                               success: {
-                                                                                                response in
-                                                                                                print(response?.data ?? "hh")
-                                                                                                then?()
-                                                    },
-                                                                                               error: {
-                                                                                                error in
-                                                                                                print(error ?? "kk")
-                                                                                                or?("error")
-                                                    }
-                                                    )
-                                                }
-            },
-                                              errorBlock: {
-                                                (error) in
+                                                    (state) in
+                                                    performFetch()
+                                                },
+                                              errorBlock:
+                                                {
+                                                     (error) in
                                                 
-                                                print("got error")
+                                                     print("got error")
                                                 
-            }
-            )
+                                                })
+            
         }
-//      else
-//        {
-//        LISDKSessionManager.createSession(withAuth: [LISDK_BASIC_PROFILE_PERMISSION], state: nil, showGoToAppStoreDialog: true, successBlock: { (returnState) -> Void in
-//            print("success called!")
-//            print(LISDKSessionManager.sharedInstance().session)
-//            
-//            let url = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json"
-//            
-//            if LISDKSessionManager.hasValidSession() {
-//                LISDKAPIHelper.sharedInstance().getRequest(url, success: {
-//                    response in
-//                    print(response?.data ?? "hh")
-//                    then?()
-//                }, error: { (error) -> Void in
-//                    print(error ?? "nil")
-//                })
-//            }
-//            
-//            
-//        }) { (error) -> Void in
-//            print("Error: \(error)")
-//        }
-//        }
     }
     
 

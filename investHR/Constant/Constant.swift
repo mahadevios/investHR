@@ -22,6 +22,7 @@ struct Constant
     static let  BASE_URL_PATH               = "http://115.249.195.23:8080/Communicator/feedcom"
     static let  NEW_USER_LOGIN_API          = ""
     static let  LINKEDIN_LOGOUT_API         = "https://api.linkedin.com/uas/oauth/invalidateToken"
+    static let  LINKEDIN_ACCESS_TOKEN       = "linkedInAccessToken"
 }
 
 enum MyAlertType

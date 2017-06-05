@@ -86,6 +86,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
         
         AppPreferences.sharedPreferences().startReachabilityNotifier()
+        
+        self.loadAccount(then: { () in
+            
+            print("cancel pressed")
+        }, or: nil)
         return true
     }
     
@@ -143,6 +148,83 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        if isGoogleOpenUrl { return true }
 //        return false    
     
+    }
+
+    
+    func loadAccount(then: (() -> Void)?, or: ((String) -> Void)?)
+    { // then & or are handling closures
+        //print(LISDKSessionManager.sharedInstance().session.accessToken)
+        
+        let performFetch:() -> Void = {  
+            
+            if LISDKSessionManager.hasValidSession() {
+                LISDKAPIHelper.sharedInstance().getRequest("https://api.linkedin.com/v1/people/~:(id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json",
+                                                           success: {
+                                                            response in
+                                                            print(response?.data ?? "hh")
+                                                            
+                                                            let token = LISDKSessionManager.sharedInstance().session.accessToken.serializedString()
+                                                            UserDefaults.standard.setValue(token, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+                                                            UserDefaults.standard.synchronize()
+                                                            //then?()
+                                                            
+                                                           
+                },
+                                                           error: {
+                                                            error in
+                                                            print(error ?? "kk")
+                                                           // or?("error")
+                }
+                )
+            }
+            
+        }
+        
+        
+        let serializedToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+        if let serializedToken = serializedToken
+        {
+            if serializedToken.characters.count > 0
+            {
+                let accessToken = LISDKAccessToken.init(serializedString: serializedToken)
+                
+                if (accessToken?.expiration)! > Date()
+                {
+                    LISDKSessionManager.createSession(with: accessToken)
+                    
+                    performFetch()
+                    
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+                    let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                    
+                    appDelegate.window?.rootViewController = rootViewController
+                    
+                    
+                }
+            }
+
+        }
+            
+        else
+        {
+            
+            LISDKSessionManager.createSession(withAuth: [LISDK_BASIC_PROFILE_PERMISSION], state: nil, showGoToAppStoreDialog: true,
+                                              successBlock:
+                {
+                    (state) in
+                    performFetch()
+            },
+                                              errorBlock:
+                {
+                    (error) in
+                    
+                    print("got error")
+                    
+            })
+            
+        }
     }
 
     func application(_ application: UIApplication,
