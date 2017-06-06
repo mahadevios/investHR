@@ -1,9 +1,9 @@
 //
 //  User+CoreDataProperties.swift
-//  investHR
+//  
 //
-//  Created by mac on 16/05/17.
-//  Copyright © 2017 Xanadutec. All rights reserved.
+//  Created by mac on 05/06/17.
+//
 //
 
 import Foundation
@@ -17,6 +17,11 @@ extension User {
     }
 
     @NSManaged public var firstName: String?
-    @NSManaged public var surName: String?
+    @NSManaged public var lastName: String?
+    @NSManaged public var occupation: String?
+    @NSManaged public var pictureUrl: String?
+    @NSManaged public var userId: String?
+    @NSManaged public var emailAddress: String?
+
 
 }

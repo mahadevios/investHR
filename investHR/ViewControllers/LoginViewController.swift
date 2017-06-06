@@ -53,11 +53,10 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
         //            return
         //        }        // Do any additional setup after loading the view, typically from a nib.
         
-        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
-        // let obj2 = CoreDataManager.getSharedCoreDataManager()
+        //let coreDataManager = CoreDataManager.sharedManager
+        // let managedObjectContext = CoreDataManager.managedObjectContext
         
-        let manageObjectContext = AppDelegate().getManageObjectContext()
-        
+       
         //let manageContext = appDelegate.persistentContainer.viewContext
         
         //let entity = NSEntityDescription.entity(forEntityName: "User", in: manageObjectContext)!
@@ -76,21 +75,22 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
         //        }
         
         
-        let result : [String: Any] = ["firstName" : "Steve", "surName" : "Jobs"]
+       // let result : [String: Any] = ["firstName" : "Steve", "surName" : "Jobs"]
         
-        //let obj = coreDataManager.save(entity: "User", result)
-        
-        //let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "User")
-        
-        //        do
-        //        {
-        //            let manageObject = try manageObjectContext.fetch(fetchRequest)
-        
-//        let managedObjects = coreDataManager.fetch(entity: "User")
+//        let obj = coreDataManager.save(entity: "User", result)
+//        
+//        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "User")
+//        
+//                do
+//                {
+//                    let manageObject = try managedObjectContext.fetch(fetchRequest)
+//                    var managedObjects:[NSManagedObject]?
+//                    
+//        managedObjects = coreDataManager.fetch(entity: "User")
 //        for userObject in managedObjects as! [User]
 //        {
 //            let firstName = userObject.firstName
-//            let lastName = userObject.surName
+//            let lastName = userObject.lastName
 //            
 //            print(firstName ?? "nil")
 //            
@@ -101,11 +101,11 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
 //            }
 //            print(lastname)
 //        }
-        
-        //        } catch let error as NSError
-        //        {
-        //            print(error.localizedDescription)
-        //        }
+//        
+//                } catch let error as NSError
+//                {
+//                    print(error.localizedDescription)
+//                }
         
         
         // Do any additional setup after loading the view.
@@ -115,6 +115,8 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
     {
         super.viewWillAppear(true)
         
+        let coreDataManager = CoreDataManager.sharedManager
+
         self.checkForAvailableLinkedInSession()
         
         emailTextField.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
@@ -127,7 +129,6 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
         
         emailTextField.addSubview(imageView)
         
-//        emailTextField.leftView = UIImageView.init(image: UIImage(named:"Username"))
         
         passwordTextField.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
@@ -137,42 +138,80 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
         
         passwordTextField.addSubview(imageView1)
         
-    
+        //self.showData()
+        
 //        self.loadAccount(then: { () in
 //            
 //            print("cancel pressed")
 //        }, or: nil)
-//        passwordTextField.leftViewMode = UITextFieldViewMode.always;
-//        
-//        passwordTextField.leftView = UIImageView.init(image: UIImage(named:"Password"))
+
+        
+        
     }
 
-    func checkForAvailableLinkedInSession() -> Void
+    func showData() -> Void
     {
-        let performFetch:() -> Void = {
+        let coreDataManager = CoreDataManager.sharedManager
+        
+        let managedObjectContext = CoreDataManager.managedObjectContext
+        
+        //let obj = coreDataManager.save(entity: "User", result)
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "User")
+        
+        do
+        {
+            let manageObject = try managedObjectContext.fetch(fetchRequest)
+            var managedObjects:[NSManagedObject]?
             
-            if LISDKSessionManager.hasValidSession() {
-                LISDKAPIHelper.sharedInstance().getRequest("https://api.linkedin.com/v1/people/~:(id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json",
-                                                           success: {
-                                                            response in
-                                                            print(response?.data ?? "hh")
-                                                            
-                                                            let token = LISDKSessionManager.sharedInstance().session.accessToken.serializedString()
-                                                            UserDefaults.standard.setValue(token, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
-                                                            UserDefaults.standard.synchronize()
-                                                            //then?()
-                                                            
-                                                            
-                },
-                                                           error: {
-                                                            error in
-                                                            print(error ?? "kk")
-                                                            // or?("error")
+            managedObjects = coreDataManager.fetch(entity: "User")
+            for userObject in managedObjects as! [User]
+            {
+                let firstName = userObject.firstName
+                let lastName = userObject.lastName
+                
+                print(firstName ?? "nil")
+                
+                guard let lastname = lastName else
+                {
+                    print("nnil value")
+                    continue
                 }
-                )
+                print(lastname)
             }
             
+        } catch let error as NSError
+        {
+            print(error.localizedDescription)
         }
+
+    }
+    func checkForAvailableLinkedInSession() -> Void
+    {
+//        let performFetch:() -> Void = {
+//            
+//            if LISDKSessionManager.hasValidSession() {
+//                LISDKAPIHelper.sharedInstance().getRequest("https://api.linkedin.com/v1/people/~:(id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json",
+//                                                           success: {
+//                                                            response in
+//                                                            print(response?.data ?? "hh")
+//                                                            
+//                                                            let token = LISDKSessionManager.sharedInstance().session.accessToken.serializedString()
+//                                                            UserDefaults.standard.setValue(token, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+//                                                            UserDefaults.standard.synchronize()
+//                                                            //then?()
+//                                                            
+//                                                            
+//                },
+//                                                           error: {
+//                                                            error in
+//                                                            print(error ?? "kk")
+//                                                            // or?("error")
+//                }
+//                )
+//            }
+//            
+//        }
 
         let serializedToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
         
@@ -187,14 +226,14 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
                     LISDKSessionManager.createSession(with: accessToken)
                     
                     //performFetch()
-                    
-                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                    let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
-                    let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
-                    
-                    appDelegate.window?.rootViewController = rootViewController
-                    
                     dismiss(animated: true, completion: nil)
+
+//                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//                    let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+//                    let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+//                    
+//                    appDelegate.window?.rootViewController = rootViewController
+                    
                     
                     
                 }
@@ -264,6 +303,124 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
                                                             let token = LISDKSessionManager.sharedInstance().session.accessToken.serializedString()
                                                             UserDefaults.standard.setValue(token, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
                                                             UserDefaults.standard.synchronize()
+                                                            
+                                                            if let dataFromString = response?.data.data(using: String.Encoding.utf8, allowLossyConversion: false)
+                                                            {
+                                                                var jsonResponse:[String:AnyObject]?
+                                                                do
+                                                                {
+                                                                    jsonResponse = try JSONSerialization.jsonObject(with: dataFromString, options: .allowFragments) as! [String:AnyObject]
+                                                                }
+                                                                catch let error as NSError
+                                                                {
+                                                                  print(error.localizedDescription)
+                                                                }
+                                                                DispatchQueue.main.async
+                                                                    {
+                                                                        let userId = jsonResponse?["id"]
+
+                                                                       // let idExist = CoreDataManager.sharedManager.idExists(aToken: userId as! String, entityName: "User")
+                                                                        CoreDataManager.sharedManager.deleteAllRecords(entity: "User")
+//                                                                        if idExist
+//                                                                        {
+//                                                                         
+//                                                                        }
+//                                                                        else
+//                                                                        {
+                                                                            let firstName = jsonResponse?["firstName"]
+                                                                            let lastName = jsonResponse?["lastName"]
+                                                                            let occupation = jsonResponse?["headline"]
+                                                                            let emailAddress = jsonResponse?["emailAddress"]
+                                                                            
+                                                                            let pictureUrlsJson = jsonResponse?["pictureUrls"] as! [String:AnyObject]
+                                                                        
+                                                                            let totalUrlsNumber = pictureUrlsJson["_total"] as! Int
+                                                                        
+                                                                            let pictureUrlString:String!
+                                                                        
+                                                                            let pictureUrl:NSURL!
+                                                                        
+                                                                            var fileURL:NSURL! = NSURL()
+                                                                        
+                                                                            if(totalUrlsNumber == 0)
+                                                                            {
+//                                                                                    let resourcePath = Bundle.main.resourcePath
+//                                                                                
+//                                                                                    let imgName = "DefaultUser.png"
+//                                                                                
+//                                                                                    pictureUrlString = resourcePath! + "/" + imgName
+//                                                                                
+//                                                                                    pictureUrl = NSURL(string: pictureUrlString)
+                                                                                pictureUrlString = ""
+                                                                                
+                                                                            }
+                                                                            else
+                                                                            {
+ 
+                                                                                let pictureUrlArray = pictureUrlsJson["values"] as! [String]
+                                                                            
+                                                                                pictureUrlString = pictureUrlArray[0]
+                                                                            
+                                                                                pictureUrl = NSURL(string: pictureUrlArray[0])
+                                                                            }
+                                                                            //do
+//                                                                            {
+//                                                                                let imageData = try Data(contentsOf: pictureUrl as URL)
+//                                                                                
+//                                                                                let userImage = UIImage(data: imageData)
+//
+//                                                                                let documentsDirectoryURL = try! FileManager().url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+//                                                                                // create a name for your image
+//                                                                                fileURL = documentsDirectoryURL.appendingPathComponent("DefaultUser.png") as NSURL!
+//                                                                                
+//                                                                                if FileManager.default.fileExists(atPath: fileURL.path!)
+//                                                                                {
+//                                                                                    do
+//                                                                                    {
+//                                                                                        try FileManager.default.removeItem(atPath: fileURL.path!)
+//                                                                                        try UIImageJPEGRepresentation(userImage!, 1.0)!.write(to: fileURL as URL)
+//                                                                                        print("file saved")
+//                                                                                        
+//                                                                                    }
+//                                                                                    catch
+//                                                                                        let error as NSError
+//                                                                                    {
+//                                                                                        print(error.localizedDescription)
+//                                                                                    }
+//
+//                                                                                }
+//                                                                                else
+//                                                                                {
+//                                                                                    do
+//                                                                                    {
+//                                                                                        try UIImageJPEGRepresentation(userImage!, 1.0)!.write(to: fileURL as URL)
+//                                                                                        print("file saved")
+//                                                                                        
+//                                                                                    }
+//                                                                                    catch
+//                                                                                        let error as NSError
+//                                                                                    {
+//                                                                                        print(error.localizedDescription)
+//                                                                                    }
+//                                                                                
+//                                                                                }
+//                                                                                
+//                                                                                
+//                                                                            }
+//                                                                            catch let error as NSError
+//                                                                            {
+//                                                                              print(error.localizedDescription)
+//                                                                            }
+                                                                            let managedObject = CoreDataManager.sharedManager.save(entity: "User", ["firstName":firstName ?? "nil","lastName":lastName ?? "nil","userId":userId ?? "nil","occupation":occupation ?? "nil","emailAddress":emailAddress ?? "nil","pictureUrl":pictureUrlString])
+                                                                        //}
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                }
+                                                            }
+                                                            
+
                                                             //then?()
                                                             
                                                             
@@ -289,17 +446,21 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
                 
                 if (accessToken?.expiration)! > Date()
                 {
-                    LISDKSessionManager.createSession(with: accessToken)
+                   // LISDKSessionManager.createSession(with: accessToken)
                     
-                    performFetch()
+                   // performFetch()
                     
-                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                    let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
-                    let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
-                    
-                    appDelegate.window?.rootViewController = rootViewController
-                    
-                    
+//                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//                    let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+//                    let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+//                    
+//                    appDelegate.window?.rootViewController = rootViewController
+                    DispatchQueue.main.async
+                        {
+                            
+                            self.dismiss(animated: true, completion: nil)
+                    }
+                    // self.dismiss(animated: true, completion: nil)
                 }
             }
             
@@ -308,11 +469,36 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
         else
         {
             
-            LISDKSessionManager.createSession(withAuth: [LISDK_BASIC_PROFILE_PERMISSION], state: nil, showGoToAppStoreDialog: true,
+            LISDKSessionManager.createSession(withAuth: [LISDK_BASIC_PROFILE_PERMISSION,LISDK_EMAILADDRESS_PERMISSION], state: nil, showGoToAppStoreDialog: true,
                                               successBlock:
                 {
                     (state) in
                     performFetch()
+                    DispatchQueue.main.async
+                    {
+                        
+                        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                        
+                        let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
+                        
+                        print(currentRootVC)
+                        
+                        let className = String(describing: type(of: currentRootVC))
+                        
+                        if className == "LoginViewController"
+                        {
+                            let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+                            let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                            appDelegate.window?.rootViewController = rootViewController
+
+                        }
+                        else
+                        {
+                            self.dismiss(animated: true, completion: nil)
+
+                        }
+
+                    }
             },
                                               errorBlock:
                 {

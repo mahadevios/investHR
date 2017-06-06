@@ -8,12 +8,15 @@
 
 import UIKit
 
+import CoreData
+
 class MenuViewViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
 {
 
     @IBOutlet weak var circleImageView: UIImageView!
     @IBOutlet weak var outSideCircleView: UIImageView!
     
+    @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var menuTableView: UITableView!
     
     var menuItemsArray:[String] = []
@@ -54,6 +57,28 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         
         circleImageView.image = UIImage(named:"InsideDefaultCircle")
         
+//        let urls = FileManager().urls(for: .documentDirectory, in: .userDomainMask)
+//        
+//        if let documentDirectory:NSURL = urls.first as NSURL?
+//        {
+//            let userImageUrl = documentDirectory.appendingPathComponent("DefaultUser.png")
+//            
+//            do
+//            {
+//                let imageData = try Data(contentsOf: userImageUrl! as URL)
+//                
+//                let userImage = UIImage(data: imageData)
+//                
+//                circleImageView.image = userImage
+//
+//            }
+//            catch let error as NSError
+//            {
+//              print(error.localizedDescription)
+//            }
+//        }
+        
+        showData()
     }
     func numberOfSections(in tableView: UITableView) -> Int
     {
@@ -227,6 +252,8 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             UserDefaults.standard.setValue(nil, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
             
+            self.revealViewController().revealToggle(animated: true)
+            
             self.present(vc, animated: true, completion: nil)
             
             
@@ -252,6 +279,58 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
         }
         print("You tapped cell number \(indexPath.row).")
+    }
+    
+    func showData() -> Void
+    {
+        let coreDataManager = CoreDataManager.sharedManager
+        
+        
+        do
+        {
+            var managedObjects:[NSManagedObject]?
+            
+            managedObjects = coreDataManager.fetch(entity: "User")
+            for userObject in managedObjects as! [User]
+            {
+                let firstName = userObject.firstName
+                let lastName = userObject.lastName
+                let pictureUrlString = userObject.pictureUrl
+                
+                if let firstName = firstName
+                {
+                    userNameLabel.text = firstName
+                }
+                if let pictureUrlString = pictureUrlString
+                {
+                    let pictureUrl = URL(string: pictureUrlString)
+                    
+                    if let pictureUrl = pictureUrl
+                    {
+                        do
+                        {
+                            let imageData = try Data(contentsOf: pictureUrl as URL)
+                    
+                            let userImage = UIImage(data: imageData)
+                    
+                            circleImageView.image = userImage
+                    
+                        }
+                        catch let error as NSError
+                        {
+                            print(error.localizedDescription)
+                        }
+                    }
+                }
+                
+    
+            }
+            
+        } catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        
     }
     override func didReceiveMemoryWarning()
     {

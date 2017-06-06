@@ -16,19 +16,19 @@
 		842B32FE1EDDB224000088D1 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842B32FD1EDDB224000088D1 /* Social.framework */; };
 		8439E04E1EC5F3C000FC2A12 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */; };
 		843A6AB91EE1824C00D86591 /* linkedin-sdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843A6AB81EE1824C00D86591 /* linkedin-sdk.framework */; };
-		844069F71ECAEA2100E70CAF /* User+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844069F51ECAEA2100E70CAF /* User+CoreDataClass.swift */; };
-		844069F81ECAEA2100E70CAF /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844069F61ECAEA2100E70CAF /* User+CoreDataProperties.swift */; };
-		844069FC1ECAFE1C00E70CAF /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844069FB1ECAFE1C00E70CAF /* CoreDataManager.swift */; };
 		8440DF701ED706CB0003F05B /* MenuViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8440DF6F1ED706CB0003F05B /* MenuViewViewController.swift */; };
 		844387B61ED41FF0002E71D6 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844387B51ED41FF0002E71D6 /* RegistrationViewController.swift */; };
 		844387B81ED46D2D002E71D6 /* Registration1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844387B71ED46D2D002E71D6 /* Registration1ViewController.swift */; };
+		8449B6091EE578EB0072A8DD /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8449B6051EE578EB0072A8DD /* CoreDataManager.swift */; };
+		8449B60A1EE578EB0072A8DD /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8449B6061EE578EB0072A8DD /* TextField.swift */; };
+		8449B60B1EE578EB0072A8DD /* User+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8449B6071EE578EB0072A8DD /* User+CoreDataClass.swift */; };
+		8449B60C1EE578EB0072A8DD /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8449B6081EE578EB0072A8DD /* User+CoreDataProperties.swift */; };
 		844F5F2D1EDBF0B20073A7D7 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844F5F2C1EDBF0B20073A7D7 /* EditProfileViewController.swift */; };
 		844F5F2F1EDC23A20073A7D7 /* NotificationJobsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844F5F2E1EDC23A20073A7D7 /* NotificationJobsViewController.swift */; };
 		844F5F311EDC2A160073A7D7 /* SavedJobsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844F5F301EDC2A160073A7D7 /* SavedJobsViewController.swift */; };
 		844F5F331EDC34B20073A7D7 /* AppliedJobsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844F5F321EDC34B20073A7D7 /* AppliedJobsViewController.swift */; };
 		844F5F351EDC3BA10073A7D7 /* UploadResumeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844F5F341EDC3BA10073A7D7 /* UploadResumeViewController.swift */; };
 		844F5F371EDC48640073A7D7 /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844F5F361EDC48640073A7D7 /* LocationViewController.swift */; };
-		8450ACCB1ED55384001D57E1 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8450ACCA1ED55384001D57E1 /* TextField.swift */; };
 		8450ACCD1ED5B5EF001D57E1 /* AdditionalInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8450ACCC1ED5B5EF001D57E1 /* AdditionalInfoViewController.swift */; };
 		8451F62A1EDEE39100B1DEDF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8451F6291EDEE39100B1DEDF /* AVFoundation.framework */; };
 		8493B8311EC4678200D8F7F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8493B8301EC4678200D8F7F9 /* AppDelegate.swift */; };
@@ -82,19 +82,19 @@
 		842B32FD1EDDB224000088D1 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		843A6AB81EE1824C00D86591 /* linkedin-sdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = "linkedin-sdk.framework"; sourceTree = "<group>"; };
-		844069F51ECAEA2100E70CAF /* User+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataClass.swift"; sourceTree = "<group>"; };
-		844069F61ECAEA2100E70CAF /* User+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		844069FB1ECAFE1C00E70CAF /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		8440DF6F1ED706CB0003F05B /* MenuViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewViewController.swift; sourceTree = "<group>"; };
 		844387B51ED41FF0002E71D6 /* RegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		844387B71ED46D2D002E71D6 /* Registration1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registration1ViewController.swift; sourceTree = "<group>"; };
+		8449B6051EE578EB0072A8DD /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		8449B6061EE578EB0072A8DD /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		8449B6071EE578EB0072A8DD /* User+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8449B6081EE578EB0072A8DD /* User+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		844F5F2C1EDBF0B20073A7D7 /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		844F5F2E1EDC23A20073A7D7 /* NotificationJobsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationJobsViewController.swift; sourceTree = "<group>"; };
 		844F5F301EDC2A160073A7D7 /* SavedJobsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedJobsViewController.swift; sourceTree = "<group>"; };
 		844F5F321EDC34B20073A7D7 /* AppliedJobsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppliedJobsViewController.swift; sourceTree = "<group>"; };
 		844F5F341EDC3BA10073A7D7 /* UploadResumeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadResumeViewController.swift; sourceTree = "<group>"; };
 		844F5F361EDC48640073A7D7 /* LocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
-		8450ACCA1ED55384001D57E1 /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		8450ACCC1ED5B5EF001D57E1 /* AdditionalInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdditionalInfoViewController.swift; sourceTree = "<group>"; };
 		8451F6281EDE8E2F00B1DEDF /* investHR.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = investHR.entitlements; sourceTree = "<group>"; };
 		8451F6291EDEE39100B1DEDF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -196,6 +196,17 @@
 			path = LinkedIn;
 			sourceTree = "<group>";
 		};
+		8449B6041EE578EB0072A8DD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				8449B6051EE578EB0072A8DD /* CoreDataManager.swift */,
+				8449B6061EE578EB0072A8DD /* TextField.swift */,
+				8449B6071EE578EB0072A8DD /* User+CoreDataClass.swift */,
+				8449B6081EE578EB0072A8DD /* User+CoreDataProperties.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		8493B8241EC4678200D8F7F9 = {
 			isa = PBXGroup;
 			children = (
@@ -222,10 +233,10 @@
 			isa = PBXGroup;
 			children = (
 				8451F6281EDE8E2F00B1DEDF /* investHR.entitlements */,
+				8449B6041EE578EB0072A8DD /* Models */,
 				84EB8F3F1EDFE94900014DA4 /* Constant */,
 				84EB8F3A1EDFE90B00014DA4 /* APIManager */,
 				8493B8611EC467D100D8F7F9 /* ViewControllers */,
-				8493B8641EC468FA00D8F7F9 /* Models */,
 				8493B8301EC4678200D8F7F9 /* AppDelegate.swift */,
 				8493B8341EC4678200D8F7F9 /* Main.storyboard */,
 				84239B901EC476AD0076EF33 /* Libraries */,
@@ -279,17 +290,6 @@
 				844F5F2C1EDBF0B20073A7D7 /* EditProfileViewController.swift */,
 			);
 			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		8493B8641EC468FA00D8F7F9 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				844069F51ECAEA2100E70CAF /* User+CoreDataClass.swift */,
-				844069F61ECAEA2100E70CAF /* User+CoreDataProperties.swift */,
-				844069FB1ECAFE1C00E70CAF /* CoreDataManager.swift */,
-				8450ACCA1ED55384001D57E1 /* TextField.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		84EB8F3A1EDFE90B00014DA4 /* APIManager */ = {
@@ -628,29 +628,29 @@
 				84EB8F3D1EDFE90B00014DA4 /* APIManager.swift in Sources */,
 				84EB8F3E1EDFE90B00014DA4 /* DownloadMetaDataJob.swift in Sources */,
 				8493B8391EC4678200D8F7F9 /* investHR.xcdatamodeld in Sources */,
-				8450ACCB1ED55384001D57E1 /* TextField.swift in Sources */,
+				8449B60B1EE578EB0072A8DD /* User+CoreDataClass.swift in Sources */,
 				84EB8F481EE03D6600014DA4 /* Reachability.swift in Sources */,
 				8493B8311EC4678200D8F7F9 /* AppDelegate.swift in Sources */,
 				842B32FC1EDDAE2B000088D1 /* ReferFriendViewController.swift in Sources */,
 				844F5F311EDC2A160073A7D7 /* SavedJobsViewController.swift in Sources */,
-				844069F81ECAEA2100E70CAF /* User+CoreDataProperties.swift in Sources */,
 				844387B61ED41FF0002E71D6 /* RegistrationViewController.swift in Sources */,
 				8450ACCD1ED5B5EF001D57E1 /* AdditionalInfoViewController.swift in Sources */,
 				844F5F351EDC3BA10073A7D7 /* UploadResumeViewController.swift in Sources */,
 				84DAD40F1ED7F5440008BB09 /* VerticalViewController.swift in Sources */,
 				841C71AB1ECC5C0300C3111F /* HomeViewController.swift in Sources */,
+				8449B60A1EE578EB0072A8DD /* TextField.swift in Sources */,
 				84DAD4111ED822200008BB09 /* JobsViewController.swift in Sources */,
 				842B32F81EDD7A97000088D1 /* SettingsViewController.swift in Sources */,
 				844F5F2F1EDC23A20073A7D7 /* NotificationJobsViewController.swift in Sources */,
 				844387B81ED46D2D002E71D6 /* Registration1ViewController.swift in Sources */,
 				8439E04E1EC5F3C000FC2A12 /* LoginViewController.swift in Sources */,
+				8449B60C1EE578EB0072A8DD /* User+CoreDataProperties.swift in Sources */,
+				8449B6091EE578EB0072A8DD /* CoreDataManager.swift in Sources */,
 				84EB8F431EDFEB8600014DA4 /* Constant.swift in Sources */,
 				84239B941EC476C60076EF33 /* SWRevealViewController.m in Sources */,
 				8440DF701ED706CB0003F05B /* MenuViewViewController.swift in Sources */,
 				844F5F331EDC34B20073A7D7 /* AppliedJobsViewController.swift in Sources */,
 				842B32FA1EDD8F62000088D1 /* UploadVideoViewController.swift in Sources */,
-				844069FC1ECAFE1C00E70CAF /* CoreDataManager.swift in Sources */,
-				844069F71ECAEA2100E70CAF /* User+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

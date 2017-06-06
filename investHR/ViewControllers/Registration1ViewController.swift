@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPickerViewDelegate {
+class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate {
 
     @IBOutlet weak var visaStatusTextField: TextField!
     @IBOutlet weak var locationTextField: TextField!
@@ -69,9 +69,20 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
     override func viewWillAppear(_ animated: Bool)
     {
         
+        currentRoleTextField.delegate = self
+        currentCompanyTextField.delegate = self
+        visaStatusTextField.delegate = self
         
+        // LISDKSessionManager.clearSession()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
+    override func viewWillDisappear(_ animated: Bool)
+    {
+        NotificationCenter.default.removeObserver(self)
+    }
     func numberOfComponents(in pickerView: UIPickerView) -> Int
     {
         return 1
@@ -168,6 +179,123 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             
             print("Portrait")
         }
+    }
+
+    func keyboardWillShow()
+    {
+        // Animate the current view out of the way
+        if self.view.frame.origin.y >= 0
+        {
+                        
+            if visaStatusTextField.isFirstResponder
+            {
+                setViewMovedUp(movedUp: true, localOffset: 150)
+            }
+            
+        }
+        //        else
+        //            if self.view.frame.origin.y < 0
+        //            {
+        //                setViewMovedUp(movedUp: false, offset: 100)
+        //            }
+    }
+    
+    func keyboardWillHide()
+    {
+//        if self.view.frame.origin.y > 0
+//        {
+//            
+//            setViewMovedUp(movedUp: true, offset: 100)
+//        }
+//        else
+            if self.view.frame.origin.y < 0
+            {
+                setViewMovedUp(movedUp: false, localOffset: 150)
+            }
+    }
+    
+    func setViewMovedUp(movedUp:ObjCBool, localOffset:CGFloat)
+    {
+        
+//        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+//        {
+//            if (movedUpBy == "email" || movedUpBy == "password")
+//            {
+//                localOffset = 220
+//            }
+//            else
+//            {
+//                localOffset = 150
+//            }
+//        }
+//        else
+//        {
+//            localOffset = 100
+//        }
+        
+        
+        UIView.beginAnimations("", context: nil)
+        UIView.setAnimationDuration(0.3)
+        
+        var rect = self.view.frame
+        if movedUp.boolValue
+        {
+            // 1. move the view's origin up so that the text field that will be hidden come above the keyboard
+            // 2. increase the size of the view so that the area behind the keyboard is covered up.
+            rect.origin.y -= localOffset;
+            rect.size.height += localOffset;
+            
+        }
+        else
+        {
+            // revert back to the normal state.
+            rect.origin.y += localOffset;
+            rect.size.height -= localOffset;
+        }
+        self.view.frame = rect;
+        
+        UIView.commitAnimations()
+    }
+    
+    
+    func textFieldDidBeginEditing(_ textField: UITextField)
+    {
+        //        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+        //        {
+        //            if textField == emailTextField || textField == passwordTextField
+        //            {
+        //                setViewMovedUp(movedUp: true, offset: 180)
+        //            }
+        //            else
+        //            {
+        //                setViewMovedUp(movedUp: true, offset: 100)
+        //            }
+        //        }
+        //        else
+        //        {
+        //            setViewMovedUp(movedUp: true, offset: 100)
+        //        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool
+    {
+        //        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+        //        {
+        //            if textField == emailTextField || textField == passwordTextField
+        //            {
+        //                setViewMovedUp(movedUp: false, offset: 180)
+        //            }
+        //            else
+        //            {
+        //                setViewMovedUp(movedUp: false, offset: 100)
+        //            }
+        //        }
+        //        else
+        //        {
+        //            setViewMovedUp(movedUp: false, offset: 100)
+        //        }
+        textField.resignFirstResponder()
+        return true
     }
 
     override func didReceiveMemoryWarning() {

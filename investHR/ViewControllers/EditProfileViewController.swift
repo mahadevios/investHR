@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import CoreData
 
-class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource,UITextViewDelegate
+class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource,UITextViewDelegate,UITextFieldDelegate
 {
     @IBOutlet weak var circleImageView: UIImageView!
 
@@ -24,6 +25,11 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     @IBOutlet weak var aboutYouTextView: UITextView!
     var coutryCodesArray:[String] = []
 
+    @IBOutlet weak var editProfileButton: UIButton!
+    @IBAction func editProfileButtonClicked(_ sender: Any)
+    {
+        print("ji")
+    }
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -33,6 +39,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         self.navigationItem.hidesBackButton = true;
         let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
         self.navigationItem.leftBarButtonItem = barButtonItem
+        self.navigationItem.title = "Profile"
         
         let editProfileButton = UIButton(frame: CGRect(x: 75, y: 0, width: 50, height: 50))
         editProfileButton.setTitle("Edit", for: UIControlState.normal)
@@ -111,6 +118,20 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         // Do any additional setup after loading the view.
     }
     
+    override func viewWillAppear(_ animated: Bool)
+    {
+    //    super.viewWillAppear(true)
+      editProfileButton.setTitle("", for: .normal)
+      //  NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+      //  NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+
+        locationTextField.delegate = self
+    }
+    override func viewWillDisappear(_ animated: Bool)
+    {
+       NotificationCenter.default.removeObserver(self)
+    }
+    
     func popViewController() -> Void
     {
         self.revealViewController().revealToggle(animated: true)
@@ -132,7 +153,11 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
         circleImageView.image = UIImage(named:"InsideDefaultCircle")
         
+        showData()
+        
     }
+    
+
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool
     {
         
@@ -155,6 +180,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
     }
 
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int
     {
         return 1
@@ -188,6 +214,75 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     
     func rightBArButtonCLicked() -> Void
     {
+        
+    }
+    func showData() -> Void
+    {
+        let coreDataManager = CoreDataManager.sharedManager
+        
+        
+        do
+        {
+            var managedObjects:[NSManagedObject]?
+            
+            managedObjects = coreDataManager.fetch(entity: "User")
+            for userObject in managedObjects as! [User]
+            {
+                let firstName = userObject.firstName
+                let lastName = userObject.lastName
+                let pictureUrlString = userObject.pictureUrl
+                
+                guard firstName != nil else
+                {
+                    break
+                }
+                nameTextField.text = "\(firstName!) \(lastName!)"
+
+                guard userObject.emailAddress != nil else
+                {
+                    break
+                }
+                emailTextField.text = userObject.emailAddress
+                
+                guard userObject.occupation != nil else
+                {
+                    break
+                }
+                cuurentRoleTextField.text = userObject.occupation
+                
+                if let pictureUrlString = pictureUrlString
+                {
+                    let pictureUrl = URL(string: pictureUrlString)
+                    
+                    guard pictureUrl != nil else
+                    {
+                        break
+                    }
+//                    if let pictureUrl = pictureUrl
+//                    {
+                        do
+                        {
+                            let imageData = try Data(contentsOf: pictureUrl! as URL)
+                            
+                            let userImage = UIImage(data: imageData)
+                            
+                            circleImageView.image = userImage
+                            
+                        }
+                        catch let error as NSError
+                        {
+                            print(error.localizedDescription)
+                        }
+                   // }
+                }
+                
+                
+            }
+            
+        } catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
         
     }
 

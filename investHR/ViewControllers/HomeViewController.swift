@@ -43,7 +43,7 @@ class HomeViewController: UIViewController
             print("ok pressed")
 
         }
-        self.present(alert2, animated: true, completion: nil)
+        //self.present(alert2, animated: true, completion: nil)
         
         
         

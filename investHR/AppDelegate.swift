@@ -87,6 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         AppPreferences.sharedPreferences().startReachabilityNotifier()
         
+       // let obj = CoreDataManager.sharedManager
         self.loadAccount(then: { () in
             
             print("cancel pressed")
@@ -166,6 +167,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                             let token = LISDKSessionManager.sharedInstance().session.accessToken.serializedString()
                                                             UserDefaults.standard.setValue(token, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
                                                             UserDefaults.standard.synchronize()
+                                                            
+                                                            DispatchQueue.main.async
+                                                            {
+                                                                let firstName = response?.value(forKey: "firstName")
+                                                                let lastName = response?.value(forKey: "lastName")
+                                                                let userId = response?.value(forKey: "id")
+                                                                let occupation = response?.value(forKey: "headlline")
+                                                                let pictureUrlsJson = response?.value(forKey: "pictureUrls") as! [String:AnyObject]
+                                                                
+                                                                let pictureUrl = pictureUrlsJson["values"] as! String
+                                                                
+                                                                let managedObject = CoreDataManager.sharedManager.save(entity: "User", ["firstName":firstName,"lastName":lastName,"userId":userId,"occupation":occupation,"pictureUrl":pictureUrl])
+
+                                                                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                                                                let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+                                                                let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                                                                
+                                                                appDelegate.window?.rootViewController = rootViewController
+
+                                                            }
                                                             //then?()
                                                             
                                                            
@@ -193,7 +214,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 {
                     LISDKSessionManager.createSession(with: accessToken)
                     
-                    performFetch()
+                    //performFetch()
                     
                     let appDelegate = UIApplication.shared.delegate as! AppDelegate
                     let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
@@ -207,24 +228,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         }
             
-        else
-        {
-            
-            LISDKSessionManager.createSession(withAuth: [LISDK_BASIC_PROFILE_PERMISSION], state: nil, showGoToAppStoreDialog: true,
-                                              successBlock:
-                {
-                    (state) in
-                    performFetch()
-            },
-                                              errorBlock:
-                {
-                    (error) in
-                    
-                    print("got error")
-                    
-            })
-            
-        }
+//        else
+//        {
+//            
+//            LISDKSessionManager.createSession(withAuth: [LISDK_BASIC_PROFILE_PERMISSION], state: nil, showGoToAppStoreDialog: true,
+//                                              successBlock:
+//                {
+//                    (state) in
+//                    performFetch()
+//            },
+//                                              errorBlock:
+//                {
+//                    (error) in
+//                    
+//                    print("got error")
+//                    
+//            })
+//            
+//        }
     }
 
     func application(_ application: UIApplication,

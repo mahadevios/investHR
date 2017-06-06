@@ -2,7 +2,7 @@
 //  VerticalDomains+CoreDataProperties.swift
 //  
 //
-//  Created by mac on 02/06/17.
+//  Created by mac on 06/06/17.
 //
 //  This file was automatically generated and should not be edited.
 //

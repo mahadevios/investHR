@@ -1,17 +1,15 @@
 //
 //  User+CoreDataClass.swift
-//  investHR
+//  
 //
-//  Created by mac on 16/05/17.
-//  Copyright © 2017 Xanadutec. All rights reserved.
+//  Created by mac on 05/06/17.
+//
 //
 
 import Foundation
 import CoreData
 
 @objc(User)
+public class User: NSManagedObject {
 
-public class User: NSManagedObject
-{
-    
 }

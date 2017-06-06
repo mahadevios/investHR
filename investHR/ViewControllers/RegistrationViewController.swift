@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPickerViewDelegate {
+class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate {
 
     @IBOutlet weak var circleImageView: UIImageView!
     @IBOutlet weak var outSideCircleView: UIImageView!
@@ -17,6 +17,8 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     @IBOutlet weak var mobileNumberTextField: TextField!
     @IBOutlet weak var emailTextField: TextField!
     @IBOutlet weak var passwordTextField: TextField!
+    var movedUpBy:String = ""
+    
     var coutryCodesArray:[String] = []
     override func viewDidLoad()
     {
@@ -68,11 +70,22 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(true)
+        nameTextField.delegate = self
+        emailTextField.delegate = self
+        mobileNumberTextField.delegate = self
+        passwordTextField.delegate = self
         
+       // LISDKSessionManager.clearSession()
         
-        LISDKSessionManager.clearSession()
+          NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+          NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
 
         
+    }
+    
+    override func viewWillDisappear(_ animated: Bool)
+    {
+       NotificationCenter.default.removeObserver(self)
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int
@@ -93,7 +106,8 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView{
         
         var label = view as! UILabel!
-        if label == nil {
+        if label == nil
+        {
             label = UILabel()
         }
         
@@ -143,17 +157,150 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     {
         if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
         {
-            self.perform(#selector(addView), with: nil, afterDelay: 0.2)
-
+            //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
+            addView()
             print("Landscape")
         }
         
         if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
         {
-            self.perform(#selector(addView), with: nil, afterDelay: 0.2)
-
+            //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
+            addView()
             print("Portrait")
         }
+    }
+    
+    func keyboardWillShow()
+    {
+            // Animate the current view out of the way
+        if self.view.frame.origin.y >= 0
+        {
+            if emailTextField.isFirstResponder
+            {
+                movedUpBy = "email"
+            }
+            else
+            if passwordTextField.isFirstResponder
+            {
+                movedUpBy = "password"
+            }
+            else
+            if nameTextField.isFirstResponder
+            {
+                movedUpBy = "name"
+            }
+            else
+            if mobileNumberTextField.isFirstResponder
+            {
+                movedUpBy = "mob"
+            }
+            
+            setViewMovedUp(movedUp: true, offset: 100)
+        }
+//        else
+//            if self.view.frame.origin.y < 0
+//            {
+//                setViewMovedUp(movedUp: false, offset: 100)
+//            }
+    }
+    
+    func keyboardWillHide()
+    {
+        if self.view.frame.origin.y > 0
+        {
+            
+            setViewMovedUp(movedUp: true, offset: 100)
+        }
+        else
+            if self.view.frame.origin.y < 0
+        {
+            setViewMovedUp(movedUp: false, offset: 100)
+        }
+    }
+    
+    func setViewMovedUp(movedUp:ObjCBool, offset:CGFloat)
+    {
+        var localOffset = offset
+        
+        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+        {
+            if (movedUpBy == "email" || movedUpBy == "password")
+            {
+                localOffset = 220
+            }
+            else
+            {
+                localOffset = 150
+            }
+        }
+        else
+        {
+            localOffset = 100
+        }
+        
+    
+        UIView.beginAnimations("", context: nil)
+        UIView.setAnimationDuration(0.3)
+    
+        var rect = self.view.frame
+        if movedUp.boolValue
+        {
+                // 1. move the view's origin up so that the text field that will be hidden come above the keyboard
+                // 2. increase the size of the view so that the area behind the keyboard is covered up.
+            rect.origin.y -= localOffset;
+            rect.size.height += localOffset;
+    
+        }
+        else
+        {
+                // revert back to the normal state.
+            rect.origin.y += localOffset;
+            rect.size.height -= localOffset;
+        }
+        self.view.frame = rect;
+        
+        UIView.commitAnimations()
+    }
+    
+    
+    func textFieldDidBeginEditing(_ textField: UITextField)
+    {
+//        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+//        {
+//            if textField == emailTextField || textField == passwordTextField
+//            {
+//                setViewMovedUp(movedUp: true, offset: 180)
+//            }
+//            else
+//            {
+//                setViewMovedUp(movedUp: true, offset: 100)
+//            }
+//        }
+//        else
+//        {
+//            setViewMovedUp(movedUp: true, offset: 100)
+//        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool
+    {
+//        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+//        {
+//            if textField == emailTextField || textField == passwordTextField
+//            {
+//                setViewMovedUp(movedUp: false, offset: 180)
+//            }
+//            else
+//            {
+//                setViewMovedUp(movedUp: false, offset: 100)
+//            }
+//        }
+//        else
+//        {
+//            setViewMovedUp(movedUp: false, offset: 100)
+//        }
+        textField.resignFirstResponder()
+        return true
     }
     override func didReceiveMemoryWarning()
     {
