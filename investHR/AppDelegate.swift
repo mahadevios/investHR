@@ -11,9 +11,13 @@ import CoreData
 
 import Firebase
 
-import FBSDKLoginKit
+import UserNotifications
 
-import LinkedinSwift
+import FirebaseMessaging
+
+//import FBSDKLoginKit
+
+//import LinkedinSwift
 
 //https://www.hackingwithswift.com/read/38/4/creating-an-nsmanagedobject-subclass-with-xcode
 // typealias and enum http://www.jessesquires.com/better-coredata-models-in-swift/
@@ -39,11 +43,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var configureError: NSError?
         
         
-        GGLContext.sharedInstance().configureWithError(&configureError)
+        //GGLContext.sharedInstance().configureWithError(&configureError)
         
         FIRApp.configure()
         
-        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        //FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
         assert(configureError == nil, "Error configuring Google services: \(configureError)")
         
@@ -87,6 +91,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         AppPreferences.sharedPreferences().startReachabilityNotifier()
         
+        
+        UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
+        application.registerForRemoteNotifications()
+        connectToFcm()
        // let obj = CoreDataManager.sharedManager
         self.loadAccount(then: { () in
             
@@ -95,6 +103,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data)
+    {
+        // Convert token to string
+        let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
+        
+        if let refreshedToken = FIRInstanceID.instanceID().token() {
+            print("InstanceID token: \(refreshedToken)")
+        }
+        // Print it to console
+        print("APNs device token: \(deviceTokenString)")
+        
+        // Persist it in your backend in case it's new
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification data: [AnyHashable : Any])
+    {
+        // Print notification payload data
+        print("Push notification received: \(data)")
+    }
+    // Called when APNs failed to register the device for push notifications
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        // Print the error to console (you should alert the user that registration failed)
+        print("APNs registration failed: \(error)")
+    }
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool
     {
         
@@ -102,38 +135,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //                                                                    sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String,
 //                                                                    annotation: options[UIApplicationOpenURLOptionsKey.annotation])
         
-        let fb:Bool =  FBSDKApplicationDelegate.sharedInstance().application(app,
-        open: url,
-        sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String,
-        annotation: options [UIApplicationOpenURLOptionsKey.annotation]) == true
-        if fb == true
-        {
-            
-                return true
-
-        }
-        
-        else
-        {
-        let gg:Bool = GIDSignIn.sharedInstance().handle(url,
-                                                        sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String,
-                                                        annotation: options[UIApplicationOpenURLOptionsKey.annotation])
-    
-        if gg == true
-        {
-            
-                return true
-                
-        }
-        }
-            if LinkedinSwiftHelper.shouldHandle(url)
-            {
+//        let fb:Bool =  FBSDKApplicationDelegate.sharedInstance().application(app,
+//        open: url,
+//        sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String,
+//        annotation: options [UIApplicationOpenURLOptionsKey.annotation]) == true
+//        if fb == true
+//        {
+//            
+//                return true
+//
+//        }
+//        
+//        else
+//        {
+//        let gg:Bool = GIDSignIn.sharedInstance().handle(url,
+//                                                        sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String,
+//                                                        annotation: options[UIApplicationOpenURLOptionsKey.annotation])
+//    
+//        if gg == true
+//        {
+//            
+//                return true
+//                
+//        }
+//        }
+//            if LinkedinSwiftHelper.shouldHandle(url)
+//            {
                 if LISDKCallbackHandler.shouldHandle(url) {
                     return LISDKCallbackHandler.application(app, open: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String!, annotation: options [UIApplicationOpenURLOptionsKey.annotation])
                 }
 
                 
-        }
+        //}
         
         return true
 //        if([[FBSDKApplicationDelegate sharedInstance] application:application
@@ -153,54 +186,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     
     func loadAccount(then: (() -> Void)?, or: ((String) -> Void)?)
-    { // then & or are handling closures
-        //print(LISDKSessionManager.sharedInstance().session.accessToken)
-        
-        let performFetch:() -> Void = {  
-            
-            if LISDKSessionManager.hasValidSession() {
-                LISDKAPIHelper.sharedInstance().getRequest("https://api.linkedin.com/v1/people/~:(id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json",
-                                                           success: {
-                                                            response in
-                                                            print(response?.data ?? "hh")
-                                                            
-                                                            let token = LISDKSessionManager.sharedInstance().session.accessToken.serializedString()
-                                                            UserDefaults.standard.setValue(token, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
-                                                            UserDefaults.standard.synchronize()
-                                                            
-                                                            DispatchQueue.main.async
-                                                            {
-                                                                let firstName = response?.value(forKey: "firstName")
-                                                                let lastName = response?.value(forKey: "lastName")
-                                                                let userId = response?.value(forKey: "id")
-                                                                let occupation = response?.value(forKey: "headlline")
-                                                                let pictureUrlsJson = response?.value(forKey: "pictureUrls") as! [String:AnyObject]
-                                                                
-                                                                let pictureUrl = pictureUrlsJson["values"] as! String
-                                                                
-                                                                let managedObject = CoreDataManager.sharedManager.save(entity: "User", ["firstName":firstName,"lastName":lastName,"userId":userId,"occupation":occupation,"pictureUrl":pictureUrl])
-
-                                                                let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                                                                let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
-                                                                let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
-                                                                
-                                                                appDelegate.window?.rootViewController = rootViewController
-
-                                                            }
-                                                            //then?()
-                                                            
-                                                           
-                },
-                                                           error: {
-                                                            error in
-                                                            print(error ?? "kk")
-                                                           // or?("error")
-                }
-                )
-            }
-            
-        }
-        
+    {
         
         let serializedToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
         
@@ -228,24 +214,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         }
             
-//        else
-//        {
-//            
-//            LISDKSessionManager.createSession(withAuth: [LISDK_BASIC_PROFILE_PERMISSION], state: nil, showGoToAppStoreDialog: true,
-//                                              successBlock:
-//                {
-//                    (state) in
-//                    performFetch()
-//            },
-//                                              errorBlock:
-//                {
-//                    (error) in
-//                    
-//                    print("got error")
-//                    
-//            })
-//            
-//        }
+
     }
 
     func application(_ application: UIApplication,
@@ -254,13 +223,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      annotation: Any) -> Bool {
         
         // Linkedin sdk handle redirect
-        if LinkedinSwiftHelper.shouldHandle(url)
+        if LISDKCallbackHandler.shouldHandle(url)
         {
-            return LinkedinSwiftHelper.application(application,
-                                                   open: url,
-                                                   sourceApplication: sourceApplication,
-                                                   annotation: annotation
-            )
+            return LISDKCallbackHandler.application(application, open: url, sourceApplication: sourceApplication as String!, annotation:annotation)
         }
         
         
@@ -344,5 +309,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    
+    
+    func connectToFcm()
+    {
+        FIRMessaging.messaging()
+    }
+    
+    
 }
 

@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		841C71A91ECC167400C3111F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 841C71A81ECC167400C3111F /* GoogleService-Info.plist */; };
 		841C71AB1ECC5C0300C3111F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841C71AA1ECC5C0300C3111F /* HomeViewController.swift */; };
 		84239B941EC476C60076EF33 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84239B931EC476C60076EF33 /* SWRevealViewController.m */; };
 		842B32F81EDD7A97000088D1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842B32F71EDD7A97000088D1 /* SettingsViewController.swift */; };
 		842B32FA1EDD8F62000088D1 /* UploadVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */; };
 		842B32FC1EDDAE2B000088D1 /* ReferFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */; };
 		842B32FE1EDDB224000088D1 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842B32FD1EDDB224000088D1 /* Social.framework */; };
+		843425C41EE7D80500282419 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843425C31EE7D80400282419 /* UserNotifications.framework */; };
+		843425C81EE7ED5F00282419 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 843425C71EE7ED5F00282419 /* GoogleService-Info.plist */; };
 		8439E04E1EC5F3C000FC2A12 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */; };
 		843A6AB91EE1824C00D86591 /* linkedin-sdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843A6AB81EE1824C00D86591 /* linkedin-sdk.framework */; };
 		8440DF701ED706CB0003F05B /* MenuViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8440DF6F1ED706CB0003F05B /* MenuViewViewController.swift */; };
@@ -71,7 +72,6 @@
 		090579246A9D10601667A174 /* Pods-investHRTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-investHRTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-investHRTests/Pods-investHRTests.debug.xcconfig"; sourceTree = "<group>"; };
 		33A1F246F586B35A47C60808 /* Pods-investHRUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-investHRUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-investHRUITests/Pods-investHRUITests.release.xcconfig"; sourceTree = "<group>"; };
 		7EB4DA99D60A83D450E70BF7 /* Pods-investHRUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-investHRUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-investHRUITests/Pods-investHRUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		841C71A81ECC167400C3111F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		841C71AA1ECC5C0300C3111F /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		84239B821EC475200076EF33 /* investHR-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "investHR-Bridging-Header.h"; sourceTree = "<group>"; };
 		84239B921EC476C60076EF33 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
@@ -80,6 +80,8 @@
 		842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadVideoViewController.swift; sourceTree = "<group>"; };
 		842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferFriendViewController.swift; sourceTree = "<group>"; };
 		842B32FD1EDDB224000088D1 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		843425C31EE7D80400282419 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		843425C71EE7ED5F00282419 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		843A6AB81EE1824C00D86591 /* linkedin-sdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = "linkedin-sdk.framework"; sourceTree = "<group>"; };
 		8440DF6F1ED706CB0003F05B /* MenuViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewViewController.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				843425C41EE7D80500282419 /* UserNotifications.framework in Frameworks */,
 				8451F62A1EDEE39100B1DEDF /* AVFoundation.framework in Frameworks */,
 				842B32FE1EDDB224000088D1 /* Social.framework in Frameworks */,
 				BD7B2F45DBC9DE328FC4F1DC /* Pods_investHR.framework in Frameworks */,
@@ -160,6 +163,7 @@
 		5553AA6A2507EFF67043F30C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				843425C31EE7D80400282419 /* UserNotifications.framework */,
 				8451F6291EDEE39100B1DEDF /* AVFoundation.framework */,
 				842B32FD1EDDB224000088D1 /* Social.framework */,
 				FCD0E64D8DDF1F4E0360E6EB /* Pods_investHR.framework */,
@@ -243,8 +247,8 @@
 				8493B83A1EC4678200D8F7F9 /* Assets.xcassets */,
 				8493B83C1EC4678200D8F7F9 /* LaunchScreen.storyboard */,
 				8493B83F1EC4678200D8F7F9 /* Info.plist */,
+				843425C71EE7ED5F00282419 /* GoogleService-Info.plist */,
 				8493B8371EC4678200D8F7F9 /* investHR.xcdatamodeld */,
-				841C71A81ECC167400C3111F /* GoogleService-Info.plist */,
 				84239B821EC475200076EF33 /* investHR-Bridging-Header.h */,
 			);
 			path = investHR;
@@ -412,6 +416,9 @@
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
 							com.apple.iCloud = {
 								enabled = 1;
 							};
@@ -457,7 +464,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8493B83E1EC4678200D8F7F9 /* LaunchScreen.storyboard in Resources */,
-				841C71A91ECC167400C3111F /* GoogleService-Info.plist in Resources */,
+				843425C81EE7ED5F00282419 /* GoogleService-Info.plist in Resources */,
 				8493B83B1EC4678200D8F7F9 /* Assets.xcassets in Resources */,
 				8493B8361EC4678200D8F7F9 /* Main.storyboard in Resources */,
 			);

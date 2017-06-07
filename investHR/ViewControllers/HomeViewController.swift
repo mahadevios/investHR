@@ -9,15 +9,15 @@
 import UIKit
 import FirebaseAuth
 
-import FBSDKLoginKit
+//import FBSDKLoginKit
 
 import Firebase
 
 import FirebaseAnalytics
 
-import LinkedinSwift
+//import LinkedinSwift
 
-import IOSLinkedInAPIFix
+//import IOSLinkedInAPIFix
 
 class HomeViewController: UIViewController
 {
@@ -121,15 +121,15 @@ class HomeViewController: UIViewController
 
     @IBAction func logoutButtonClicked(_ sender: Any)
     {
-        GIDSignIn.sharedInstance().signOut()
+        //GIDSignIn.sharedInstance().signOut()
         
         try! FIRAuth.auth()!.signOut()
         
-        let loginManager = FBSDKLoginManager()
+        //let loginManager = FBSDKLoginManager()
         
-        FBSDKLoginManager().logOut()
+        //FBSDKLoginManager().logOut()
         
-        loginManager.logOut() // this is an instance function
+      //  loginManager.logOut() // this is an instance function
         
         UserDefaults.standard.removeObject(forKey: "fbAccessToken")
         
@@ -145,7 +145,7 @@ class HomeViewController: UIViewController
         // Dispose of any resources that can be recreated.
     }
     
-
+    
     /*
     // MARK: - Navigation
 

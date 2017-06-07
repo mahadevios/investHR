@@ -7,21 +7,21 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>839937834401-eic8774uoun089nvgdqd1dme9q46gl7d.apps.googleusercontent.com</string>
+	<string>921042585467-dq8vsuv5bj1fp199sc9k21k7mjha5k12.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.839937834401-eic8774uoun089nvgdqd1dme9q46gl7d</string>
+	<string>com.googleusercontent.apps.921042585467-dq8vsuv5bj1fp199sc9k21k7mjha5k12</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDNfjhCXQM9LiYih0_BtDkLv4fo0S7bD-M</string>
+	<string>AIzaSyBosYHm9ATxgnln_ive3glH8m2wNBs3KP4</string>
 	<key>GCM_SENDER_ID</key>
-	<string>839937834401</string>
+	<string>921042585467</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.xanadutec.googleSignInDemo</string>
+	<string>com.xanadutec.investHR</string>
 	<key>PROJECT_ID</key>
-	<string>project--8826703613581065317</string>
+	<string>investhr-351df</string>
 	<key>STORAGE_BUCKET</key>
-	<string>project--8826703613581065317.appspot.com</string>
+	<string>investhr-351df.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true/>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:839937834401:ios:50e32d3f6782311a</string>
+	<string>1:921042585467:ios:a5321160458a2cee</string>
 	<key>DATABASE_URL</key>
-	<string>https://project--8826703613581065317.firebaseio.com</string>
+	<string>https://investhr-351df.firebaseio.com</string>
 </dict>
 </plist>

@@ -7,20 +7,22 @@
 //
 
 import UIKit
+
 import CoreData
+
 import FirebaseAuth
 
-import FBSDKLoginKit
+//import FBSDKLoginKit
 
 import Firebase
 
 import FirebaseAnalytics
 
-import LinkedinSwift
+//import LinkedinSwift
 
-import IOSLinkedInAPIFix
+//import IOSLinkedInAPIFix
 
-class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegate {
+class LoginViewController: UIViewController,UITextFieldDelegate {
 
     @IBOutlet weak var googleSignInCircleButton: UIButton!
     
@@ -44,9 +46,9 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
     {
         super.viewDidLoad()
         
-        GIDSignIn.sharedInstance().delegate = self
+      //  GIDSignIn.sharedInstance().delegate = self
         
-        GIDSignIn.sharedInstance().uiDelegate = self
+       // GIDSignIn.sharedInstance().uiDelegate = self
         //        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
         //
         //
@@ -128,7 +130,7 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
         imageView.image = image
         
         emailTextField.addSubview(imageView)
-        
+        emailTextField.delegate = self
         
         passwordTextField.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
@@ -137,7 +139,10 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
         imageView1.image = image1
         
         passwordTextField.addSubview(imageView1)
+        passwordTextField.delegate = self
         
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         //self.showData()
         
 //        self.loadAccount(then: { () in
@@ -147,6 +152,11 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
 
         
         
+    }
+    
+    override func viewWillDisappear(_ animated: Bool)
+    {
+        NotificationCenter.default.removeObserver(self)
     }
 
     func showData() -> Void
@@ -188,31 +198,6 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
     }
     func checkForAvailableLinkedInSession() -> Void
     {
-//        let performFetch:() -> Void = {
-//            
-//            if LISDKSessionManager.hasValidSession() {
-//                LISDKAPIHelper.sharedInstance().getRequest("https://api.linkedin.com/v1/people/~:(id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json",
-//                                                           success: {
-//                                                            response in
-//                                                            print(response?.data ?? "hh")
-//                                                            
-//                                                            let token = LISDKSessionManager.sharedInstance().session.accessToken.serializedString()
-//                                                            UserDefaults.standard.setValue(token, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
-//                                                            UserDefaults.standard.synchronize()
-//                                                            //then?()
-//                                                            
-//                                                            
-//                },
-//                                                           error: {
-//                                                            error in
-//                                                            print(error ?? "kk")
-//                                                            // or?("error")
-//                }
-//                )
-//            }
-//            
-//        }
-
         let serializedToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
         
         if let serializedToken = serializedToken
@@ -225,16 +210,7 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
                 {
                     LISDKSessionManager.createSession(with: accessToken)
                     
-                    //performFetch()
                     dismiss(animated: true, completion: nil)
-
-//                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//                    let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
-//                    let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
-//                    
-//                    appDelegate.window?.rootViewController = rootViewController
-                    
-                    
                     
                 }
             }
@@ -244,12 +220,12 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
     }
     @IBAction func fbLoginButtonClicked(_ sender: Any)
     {
-        self.fbLoginButtonClicked()
+       // self.fbLoginButtonClicked()
     }
     
     @IBAction func googleLoginButtonClicked(_ sender: Any)
     {
-        self.googleLoginButtonClicked()
+       // self.googleLoginButtonClicked()
     }
     @IBAction func linkedInLoginButtonClicked(_ sender: Any)
     {
@@ -328,8 +304,11 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
 //                                                                        else
 //                                                                        {
                                                                             let firstName = jsonResponse?["firstName"]
+                                                                        
                                                                             let lastName = jsonResponse?["lastName"]
+                                                                        
                                                                             let occupation = jsonResponse?["headline"]
+                                                                        
                                                                             let emailAddress = jsonResponse?["emailAddress"]
                                                                             
                                                                             let pictureUrlsJson = jsonResponse?["pictureUrls"] as! [String:AnyObject]
@@ -344,13 +323,7 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
                                                                         
                                                                             if(totalUrlsNumber == 0)
                                                                             {
-//                                                                                    let resourcePath = Bundle.main.resourcePath
-//                                                                                
-//                                                                                    let imgName = "DefaultUser.png"
-//                                                                                
-//                                                                                    pictureUrlString = resourcePath! + "/" + imgName
-//                                                                                
-//                                                                                    pictureUrl = NSURL(string: pictureUrlString)
+//
                                                                                 pictureUrlString = ""
                                                                                 
                                                                             }
@@ -363,54 +336,6 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
                                                                             
                                                                                 pictureUrl = NSURL(string: pictureUrlArray[0])
                                                                             }
-                                                                            //do
-//                                                                            {
-//                                                                                let imageData = try Data(contentsOf: pictureUrl as URL)
-//                                                                                
-//                                                                                let userImage = UIImage(data: imageData)
-//
-//                                                                                let documentsDirectoryURL = try! FileManager().url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-//                                                                                // create a name for your image
-//                                                                                fileURL = documentsDirectoryURL.appendingPathComponent("DefaultUser.png") as NSURL!
-//                                                                                
-//                                                                                if FileManager.default.fileExists(atPath: fileURL.path!)
-//                                                                                {
-//                                                                                    do
-//                                                                                    {
-//                                                                                        try FileManager.default.removeItem(atPath: fileURL.path!)
-//                                                                                        try UIImageJPEGRepresentation(userImage!, 1.0)!.write(to: fileURL as URL)
-//                                                                                        print("file saved")
-//                                                                                        
-//                                                                                    }
-//                                                                                    catch
-//                                                                                        let error as NSError
-//                                                                                    {
-//                                                                                        print(error.localizedDescription)
-//                                                                                    }
-//
-//                                                                                }
-//                                                                                else
-//                                                                                {
-//                                                                                    do
-//                                                                                    {
-//                                                                                        try UIImageJPEGRepresentation(userImage!, 1.0)!.write(to: fileURL as URL)
-//                                                                                        print("file saved")
-//                                                                                        
-//                                                                                    }
-//                                                                                    catch
-//                                                                                        let error as NSError
-//                                                                                    {
-//                                                                                        print(error.localizedDescription)
-//                                                                                    }
-//                                                                                
-//                                                                                }
-//                                                                                
-//                                                                                
-//                                                                            }
-//                                                                            catch let error as NSError
-//                                                                            {
-//                                                                              print(error.localizedDescription)
-//                                                                            }
                                                                             let managedObject = CoreDataManager.sharedManager.save(entity: "User", ["firstName":firstName ?? "nil","lastName":lastName ?? "nil","userId":userId ?? "nil","occupation":occupation ?? "nil","emailAddress":emailAddress ?? "nil","pictureUrl":pictureUrlString])
                                                                         //}
                                                                         
@@ -446,15 +371,7 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
                 
                 if (accessToken?.expiration)! > Date()
                 {
-                   // LISDKSessionManager.createSession(with: accessToken)
-                    
-                   // performFetch()
-                    
-//                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//                    let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
-//                    let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
-//                    
-//                    appDelegate.window?.rootViewController = rootViewController
+
                     DispatchQueue.main.async
                         {
                             
@@ -602,296 +519,104 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
         }
     }
     
-//    @IBAction func signUpButtonClicked(_ sender: Any)
+//       func googleLoginButtonClicked() -> Void
 //    {
-//        if emailTextField.text == "" || passwordTextField.text == ""
+//        GIDSignIn.sharedInstance().signIn()
+//        
+//    }
+//    
+//    func sign(_ signIn: GIDSignIn!, present viewController: UIViewController!)
+//    {
+//        self.present(viewController, animated: true, completion: nil)
+//        
+//    }
+//    
+//    
+//    func sign(_ signIn: GIDSignIn!, dismiss viewController: UIViewController!)
+//    {
+//        self.dismiss(animated: true, completion: nil) // this will get called to dismiss "the presented google sign in view" after user successfully sign in
+//        
+//    }
+//    
+//    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!)
+//    {
+//        
+//    }
+//    
+//    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!)
+//    {
+//        if (user != nil)
 //        {
-//            let alertController = UIAlertController(title: "Login Error", message: "Please enter valid credentials", preferredStyle: .alert)
-//            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-//            alertController.addAction(okayAction)
-//            self.present(alertController, animated: true, completion: nil)
-//        }
-//        else
-//        {
-//            FIRAuth.auth()?.createUser(withEmail:emailTextField.text!, password: passwordTextField.text!) { (user, error) in
-//                if let error = error
-//                {
-//                    if let errCode = FIRAuthErrorCode(rawValue: error._code)
-//                    {
-//                        switch errCode
-//                        {
-//                        case .errorCodeEmailAlreadyInUse:
-//                            let alertController = UIAlertController(title: "Login Error", message: "The email is already in use with another account", preferredStyle: .alert)
-//                            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-//                            alertController.addAction(okayAction)
-//                            self.present(alertController, animated: true, completion: nil)
-//                            break
-//                            
-//                        case .errorCodeUserDisabled:
-//                            let alertController = UIAlertController(title: "Login Error", message: "Your account has been disabled. Please contact support.", preferredStyle: .alert)
-//                            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-//                            alertController.addAction(okayAction)
-//                            self.present(alertController, animated: true, completion: nil)
-//                            break
-//                            
-//                            
-//                        case .errorCodeInvalidEmail, .errorCodeInvalidSender, .errorCodeInvalidRecipientEmail:
-//                            let alertController = UIAlertController(title: "Login Error", message: "Please enter a valid email", preferredStyle: .alert)
-//                            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-//                            alertController.addAction(okayAction)
-//                            self.present(alertController, animated: true, completion: nil)
-//                            break
-//                            
-//                        case .errorCodeNetworkError:
-//                            let alertController = UIAlertController(title: "Login Error", message: "Network error. Please try again.", preferredStyle: .alert)
-//                            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-//                            alertController.addAction(okayAction)
-//                            self.present(alertController, animated: true, completion: nil)
-//                            break
-//                            
-//                        case .errorCodeWeakPassword:
-//                            let alertController = UIAlertController(title: "Login Error", message: "Your password is too weak", preferredStyle: .alert)
-//                            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-//                            alertController.addAction(okayAction)
-//                            self.present(alertController, animated: true, completion: nil)
-//                            break
-//                            
-//                            
-//                        default:
-//                            let alertController = UIAlertController(title: "Login Error", message: "Unknown error occurred, please try again", preferredStyle: .alert)
-//                            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-//                            alertController.addAction(okayAction)
-//                            self.present(alertController, animated: true, completion: nil)
-//                            break
-//                        }
-//                        print(error.localizedDescription)
-//                    }
-//                    
-//                }
-//                else if let user = user
-//                {
-//                    user.sendEmailVerification { (error) in
-//                        // ...
-//                        
-//                        print("email sent")
-//                    }
-//                    let alertController = UIAlertController(title: "Verify email", message: "We have sent verification mail to \(self.emailTextField.text!), please verify your email and login again", preferredStyle: .alert)
-//                    let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-//                    alertController.addAction(okayAction)
-//                    self.present(alertController, animated: true, completion: nil)
-//
-//                    print(user)
-//                }
-//            }
+//            guard let authentication = user.authentication else { return }
+//            let credential = FIRGoogleAuthProvider.credential(withIDToken: authentication.idToken,
+//                                                              accessToken: authentication.accessToken)
 //            
-//        }
-//
-//    }
-   
-   
-    
-//    @IBAction func fbLoginButtonClicked(_ sender: Any)
-//    {
-//       // self.fbLoginButtonClicked()
-//    }
-
-       func googleLoginButtonClicked() -> Void
-    {
-        GIDSignIn.sharedInstance().signIn()
-        
-    }
-    
-    func sign(_ signIn: GIDSignIn!, present viewController: UIViewController!)
-    {
-        self.present(viewController, animated: true, completion: nil)
-        
-    }
-    
-    
-    func sign(_ signIn: GIDSignIn!, dismiss viewController: UIViewController!)
-    {
-        self.dismiss(animated: true, completion: nil) // this will get called to dismiss "the presented google sign in view" after user successfully sign in
-        
-    }
-    
-    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!)
-    {
-        
-    }
-    
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!)
-    {
-        if (user != nil)
-        {
-            guard let authentication = user.authentication else { return }
-            let credential = FIRGoogleAuthProvider.credential(withIDToken: authentication.idToken,
-                                                              accessToken: authentication.accessToken)
-            
-            FIRAuth.auth()?.signIn(with: credential, completion: { (user, error) in
-                if let error = error {
-                    print("Login error: \(error.localizedDescription)")
-                    let alertController = UIAlertController(title: "Login Error", message: error.localizedDescription, preferredStyle: .alert)
-                    let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                    alertController.addAction(okayAction)
-                    self.present(alertController, animated: true, completion: nil)
-                    
-//                    FIRAuth.auth()?.currentUser?.link(with: credential)
-//                    { (user, error) in
-//                        
-//                        // ...
-//                        if let error = error
-//                        {
-//                            print("Login error: \(error.localizedDescription)")
-//                            let alertController = UIAlertController(title: "Login Error", message: error.localizedDescription, preferredStyle: .alert)
-//                            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-//                            alertController.addAction(okayAction)
-//                            self.present(alertController, animated: true, completion: nil)
-//                            
-//                            return
-//                        }
-//                        
-//                        //  Present the main view
-//                        if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") {
-//                            UIApplication.shared.keyWindow?.rootViewController = viewController
-//                            self.dismiss(animated: true, completion: nil)
-//                        }
-//                    }
-
-                    
-                    return
-                }
-                
-                
-                
-                // Present the main view
-                if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") {
-                    UIApplication.shared.keyWindow?.rootViewController = viewController
-                    self.dismiss(animated: true, completion: nil)
-                }
-                
-            })
-            
-            
 //            FIRAuth.auth()?.signIn(with: credential, completion: { (user, error) in
-//                if let error = error
-//                {
+//                if let error = error {
 //                    print("Login error: \(error.localizedDescription)")
 //                    let alertController = UIAlertController(title: "Login Error", message: error.localizedDescription, preferredStyle: .alert)
 //                    let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
 //                    alertController.addAction(okayAction)
 //                    self.present(alertController, animated: true, completion: nil)
 //                    
+//                    
 //                    return
 //                }
 //                
-//               //  Present the main view
+//                
+//                
+//                // Present the main view
 //                if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") {
 //                    UIApplication.shared.keyWindow?.rootViewController = viewController
 //                    self.dismiss(animated: true, completion: nil)
 //                }
 //                
 //            })
-            
-        }
-        
-    }
+//            
+//            
+//        }
+//        
+//    }
 
     
-    func fbLoginButtonClicked() -> Void
-    {
-        let fbLoginManager = FBSDKLoginManager()
-        
-        //        fbLoginManager.logIn(withPublishPermissions: ["publish_actions"], from: self, handler: {
-        //
-        //            (result, error) -> Void in
-        //            if ((error) != nil)
-        //            {
-        //                // Process error
-        //                print("There were an error: \(error)")
-        //            }
-        //            else if (result?.isCancelled)! {
-        //                // Handle cancellations
-        //                fbLoginManager.logOut()
-        //            }
-        //            else
-        //            {
-        //                let fbloginresult : FBSDKLoginManagerLoginResult = result!
-        //                if(fbloginresult.grantedPermissions.contains("publish_actions"))
-        //                {
-        //                    print(fbloginresult)
-        //                    print( "tokenString is \(FBSDKAccessToken.current().tokenString)")
-        //
-        //                    self.showUserData()
-        //                }
-        //            }
-        //
-        //        })
-        fbLoginManager.logIn(withReadPermissions: ["public_profile", "email", "user_friends"], from: self, handler: {
-            
-            (result, error) -> Void in
-            if ((error) != nil)
-            {
-                // Process error
-                print("There were an error: \(error)")
-            }
-            else if (result?.isCancelled)! {
-                // Handle cancellations
-                fbLoginManager.logOut()
-            }
-            else
-            {
-//                let fbloginresult : FBSDKLoginManagerLoginResult = result!
-//                if(fbloginresult.grantedPermissions.contains("email"))
-//                {
-//                    print(fbloginresult)
-//                    print( "tokenString is \(FBSDKAccessToken.current().tokenString)")
-//                    
-//                    UserDefaults.standard.set(FBSDKAccessToken.current().tokenString, forKey: "fbAccessToken")
-//                    self.showUserData()
-//                }
-                
-            
-                let credential = FIRFacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
-
-                
-               
-                FIRAuth.auth()?.signIn(with: credential, completion: { (user, error) in
-                    if let error = error {
-                        print("Login error: \(error.localizedDescription)")
-                        let alertController = UIAlertController(title: "Login Error", message: error.localizedDescription, preferredStyle: .alert)
-                        let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                        alertController.addAction(okayAction)
-                        self.present(alertController, animated: true, completion: nil)
-                        
-//                        FIRAuth.auth()?.currentUser?.link(with: credential)
-//                        { (user, error) in
+//    func fbLoginButtonClicked() -> Void
+//    {
+//        let fbLoginManager = FBSDKLoginManager()
+//        
+//                fbLoginManager.logIn(withReadPermissions: ["public_profile", "email", "user_friends"], from: self, handler: {
+//            
+//            (result, error) -> Void in
+//            if ((error) != nil)
+//            {
+//                // Process error
+//                print("There were an error: \(error)")
+//            }
+//            else if (result?.isCancelled)! {
+//                // Handle cancellations
+//                fbLoginManager.logOut()
+//            }
+//            else
+//            {
+//
+//                
+//            
+//                let credential = FIRFacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+//
+//                
+//               
+//                FIRAuth.auth()?.signIn(with: credential, completion: { (user, error) in
+//                    if let error = error {
+//                        print("Login error: \(error.localizedDescription)")
+//                        let alertController = UIAlertController(title: "Login Error", message: error.localizedDescription, preferredStyle: .alert)
+//                        let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+//                        alertController.addAction(okayAction)
+//                        self.present(alertController, animated: true, completion: nil)
 //                        
-//                                                // ...
-//                           if let error = error
-//                            {
-//                                    print("Login error: \(error.localizedDescription)")
-//                                    let alertController = UIAlertController(title: "Login Error", message: error.localizedDescription, preferredStyle: .alert)
-//                                    let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-//                                                    alertController.addAction(okayAction)
-//                                    self.present(alertController, animated: true, completion: nil)
 //                        
-//                                    return
-//                            }
 //                        
-//                                                //  Present the main view
-//                            if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") {
-//                            UIApplication.shared.keyWindow?.rootViewController = viewController
-//                            self.dismiss(animated: true, completion: nil)
-//                                
-//                            }
-//                            
-//                        }
-                        
-                        
-                        
-                        return
-                    }
-                    
+//                        return
+//                    }
+    
                     
 //                    FIRAuth.auth()?.currentUser?.link(with: credential)
 //                    { (user, error) in
@@ -916,72 +641,164 @@ class LoginViewController: UIViewController,GIDSignInDelegate,GIDSignInUIDelegat
 //                    }
 
                     // Present the main view
-                    
-                    UserDefaults.standard.set(FBSDKAccessToken.current().tokenString, forKey: "fbAccessToken")
+//                    
+//                    UserDefaults.standard.set(FBSDKAccessToken.current().tokenString, forKey: "fbAccessToken")
+//
+//                    self.showUserData()
+//                    if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") {
+//                        UIApplication.shared.keyWindow?.rootViewController = viewController
+//                        self.dismiss(animated: true, completion: nil)
+//                    }
+//                
+//                })
+//                
+//            }
+//            
+//        })
+//        
+//    }
 
-                    self.showUserData()
-                    if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") {
-                        UIApplication.shared.keyWindow?.rootViewController = viewController
-                        self.dismiss(animated: true, completion: nil)
-                    }
-                
-                })
-                
-            }
+//    func showUserData() -> Void
+//    {
+//        
+//        
+//        FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "first_name, last_name, picture.type(large), email, name, id, gender,timezone,friends"], tokenString: UserDefaults.standard.value(forKey: "fbAccessToken") as! String!, version: nil, httpMethod: "GET").start(completionHandler: {(connection, result, error) -> Void in
+//            
+//            if error != nil
+//            {
+//                print("error is \(error))")
+//            }
+//            else
+//            {
+//                print("userInfo is \(result))")
+//                let userDict = result as! Dictionary<String, AnyObject>
+//                let id = userDict["id"]
+//                print("user id = \(id)")
+//                
+//            }
+//            
+//            
+//        })
+//        
+//        
+//        
+//    }
+
+    func keyboardWillShow()
+    {
+        // Animate the current view out of the way
+        if self.view.frame.origin.y >= 0
+        {
             
-        })
-        
+//            if passwordTextField.isFirstResponder
+//            {
+                setViewMovedUp(movedUp: true, localOffset: 145)
+            //}
+            
+        }
+        //        else
+        //            if self.view.frame.origin.y < 0
+        //            {
+        //                setViewMovedUp(movedUp: false, offset: 100)
+        //            }
     }
-
-    func showUserData() -> Void
+    
+    func keyboardWillHide()
+    {
+        //        if self.view.frame.origin.y > 0
+        //        {
+        //
+        //            setViewMovedUp(movedUp: true, offset: 100)
+        //        }
+        //        else
+        if self.view.frame.origin.y < 0
+        {
+            setViewMovedUp(movedUp: false, localOffset: 145)
+        }
+    }
+    
+    func setViewMovedUp(movedUp:ObjCBool, localOffset:CGFloat)
     {
         
-        //        FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "first_name, last_name, picture.type(large), email, name, id, gender,timezone,friends"]).start(completionHandler: {(connection, result, error) -> Void in
-        //            if error != nil{
-        //                print("error is \(error))")
-        //
-        //
-        //            }else{
-        //
-        //
-        //                print("userInfo is \(result))")
-        //
+        //        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+        //        {
+        //            if (movedUpBy == "email" || movedUpBy == "password")
+        //            {
+        //                localOffset = 220
         //            }
-        //        })
+        //            else
+        //            {
+        //                localOffset = 150
+        //            }
+        //        }
+        //        else
+        //        {
+        //            localOffset = 100
+        //        }
         
-        FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "first_name, last_name, picture.type(large), email, name, id, gender,timezone,friends"], tokenString: UserDefaults.standard.value(forKey: "fbAccessToken") as! String!, version: nil, httpMethod: "GET").start(completionHandler: {(connection, result, error) -> Void in
+        
+        UIView.beginAnimations("", context: nil)
+        UIView.setAnimationDuration(0.3)
+        
+        var rect = self.view.frame
+        if movedUp.boolValue
+        {
+            // 1. move the view's origin up so that the text field that will be hidden come above the keyboard
+            // 2. increase the size of the view so that the area behind the keyboard is covered up.
+            rect.origin.y -= localOffset;
+            rect.size.height += localOffset;
             
-            if error != nil{
-                print("error is \(error))")
-                
-                
-            }else{
-                
-               // result.valueForKey("id") as! NSString
-                
-                
-                print("userInfo is \(result))")
-                let userDict = result as! Dictionary<String, AnyObject>
-
-                let id = userDict["id"]
-                print("user id = \(id)")
-                
-//                for (key, value) in userDict
-//                {
-//                    
-//                    print("\(key) -> \(value)")
-//                }
-//                for ob in userDict
-//                {
-//                  
-//                }
-            }
-            
-            
-        })
+        }
+        else
+        {
+            // revert back to the normal state.
+            rect.origin.y += localOffset;
+            rect.size.height -= localOffset;
+        }
+        self.view.frame = rect;
         
-        
-        
+        UIView.commitAnimations()
+    }
+    
+    
+    func textFieldDidBeginEditing(_ textField: UITextField)
+    {
+        //        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+        //        {
+        //            if textField == emailTextField || textField == passwordTextField
+        //            {
+        //                setViewMovedUp(movedUp: true, offset: 180)
+        //            }
+        //            else
+        //            {
+        //                setViewMovedUp(movedUp: true, offset: 100)
+        //            }
+        //        }
+        //        else
+        //        {
+        //            setViewMovedUp(movedUp: true, offset: 100)
+        //        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool
+    {
+        //        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+        //        {
+        //            if textField == emailTextField || textField == passwordTextField
+        //            {
+        //                setViewMovedUp(movedUp: false, offset: 180)
+        //            }
+        //            else
+        //            {
+        //                setViewMovedUp(movedUp: false, offset: 100)
+        //            }
+        //        }
+        //        else
+        //        {
+        //            setViewMovedUp(movedUp: false, offset: 100)
+        //        }
+        textField.resignFirstResponder()
+        return true
     }
 
 
