@@ -46,36 +46,64 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         
         var parameter:NSMutableString = ""
         
-        for param in paramArray
+        
+        var webservicePath = ""
+        
+        if resourcePath == Constant.LINKEDIN_ACCESS_TOKEN_ENDPOINT_API
         {
-            if paramArray[0] == param
-            {
-                parameter.append(param)
-            }
-            else
-            {
-                parameter.append("&\(param)")
-            }
+            webservicePath = "\(resourcePath)"
         }
         
-       // let webservicePath = "\(Constant.BASE_URL_PATH)\(resourcePath)\(parameter)"
-        
-        let webservicePath = "\(resourcePath)\(parameter)"
-
-        
-//        let url = NSURL.init(string: webservicePath.addingPercentEscapes(using: String.Encoding.utf8)!)
-        let url = NSURL.init(string: "https://api.linkedin.com/uas/oauth/invalidateToken?accessToken=AQUA1Wgb98ySYwMaw1QFJ1JYUVOHwnKK5vknu9T2qC7_dy_Xa-fUyYffrfx_zNG16BoUZNwYuFbXouICbqpz-yyUK-dZB7j1KNq2rrlNEBPoCgM3vSXfNZlz4HaNcT1k1qSjZVYWSLiMlJyxKisXGU6v1qct0d2zdjWfTgA2BQEO_I8r7WY")
-
-        
-        
+        else
+        {
+            webservicePath = "\(Constant.BASE_URL_PATH)\(resourcePath)\(parameter)"
+        }
+        let url = NSURL(string: webservicePath.addingPercentEscapes(using: String.Encoding.utf8)!)
         
         let request = NSMutableURLRequest(url: url as! URL, cachePolicy: NSURLRequest.CachePolicy.useProtocolCachePolicy, timeoutInterval: 120)
+
+        
+        if httpMethodParameter == Constant.GET
+        {
+            for param in paramArray
+            {
+                if paramArray[0] == param
+                {
+                    parameter.append(param)
+                }
+                else
+                {
+                    parameter.append("&\(param)")
+                }
+            }
+            
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        }
+        else
+        {
+            var parameterString = ""
+            
+            for stringParam:String in paramArray
+            {
+                parameterString.append(stringParam)
+            }
+            let postData = parameterString.data(using: .utf8)
+                        
+            // Set the HTTP body using the postData object created above.
+            request.httpBody = postData
+            
+            print(postData ?? "nil")
+            print(request.httpBody ?? "nil")
+
+            request.addValue("application/x-www-form-urlencoded;", forHTTPHeaderField: "Content-Type")
+        }
+        
+
+
         
         request.httpMethod = httpMethodParameter
-        
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
-        
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let urlConnection = NSURLConnection.init(request: request as URLRequest, delegate: self)
         
@@ -88,19 +116,92 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
     
     func connectionDidFinishLoading(_ connection: NSURLConnection)
     {
-        do
-        {
-           let response =  try JSONSerialization.jsonObject(with: responseData as Data, options: .allowFragments)
-            print(response)
+        if statusCode == 200 {
+            // Convert the received JSON data into a dictionary.
+            do {
+                let response1 = String(data: responseData as Data, encoding: .utf8)
+                print(response1)
+                
+                let dataDictionary =  try JSONSerialization.jsonObject(with: responseData as Data, options: .allowFragments) as! [String:AnyObject]
+                
+                //                let dataDictionary = try JSONSerialization.jsonObject(with: responseData as Data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
+                
+                let accessToken = dataDictionary["access_token"] as! String
+                
+                print(dataDictionary)
+                print(accessToken)
+                
+                UserDefaults.standard.set(accessToken, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+                UserDefaults.standard.synchronize()
+                
+                
+                if let accessToken = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+                {
+                    // Specify the URL string that we'll get the profile info from.
+                    let targetURLString = "https://api.linkedin.com/v1/people/~:(public-profile-url)?format=json"
+                    
+                    let request = NSMutableURLRequest(url: NSURL(string: targetURLString)! as URL)
+                    
+                    // Indicate that this is a GET request.
+                    request.httpMethod = "GET"
+                    
+                    // Add the access token as an HTTP header field.
+                    request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+                    
+                    let session = URLSession(configuration: URLSessionConfiguration.default)
+                    
+                    // Make the request.
+                    let task: URLSessionDataTask = session.dataTask(with: request as URLRequest) { (data, response, error) -> Void in
+                        
+                        let statusCode = (response as! HTTPURLResponse).statusCode
+                        
+                        if statusCode == 200
+                        {
+                            // Convert the received JSON data into a dictionary.
+                            do {
+                                let dataDictionary = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
+                                
+                                let profileURLString = dataDictionary["publicProfileUrl"] as! String
+                                
+                                print(profileURLString)
+                            }
+                            catch {
+                                print("Could not convert JSON data into a dictionary.")
+                            }
+                        }
+                        
+                        
+                    }
+                    
+                    task.resume()
+                }
+            }
+            catch {
+                print("Could not convert JSON data into a dictionary.")
+            }
         }
-        catch let error as NSError
+        else
         {
-            print(error.localizedDescription)
+            do {
+                let dataDictionary = try JSONSerialization.jsonObject(with: responseData as Data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
+                
+                let accessToken = dataDictionary["access_token"] as! String
+                
+                
+            }
+            catch {
+                print("Could not convert JSON data into a dictionary.")
+            }
+            
+            
         }
-
         
-    }
+        
     
+
+    
+    }
+
     func connection(_ connection: NSURLConnection, didReceive data: Data)
     {
         responseData.append(data)
@@ -108,6 +209,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
     
     func connection(_ connection: NSURLConnection, didFailWithError error: Error)
     {
+        print(error)
         if self.downLoadEntityJobName == Constant.NEW_USER_LOGIN_API
         {
             
@@ -122,8 +224,9 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         
         statusCode = httpResponse.statusCode
         
+        print(statusCode)
+        
     }
-    
     
     
 }

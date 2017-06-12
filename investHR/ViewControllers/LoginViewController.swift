@@ -14,16 +14,25 @@ import FirebaseAuth
 
 //import FBSDKLoginKit
 
+
+import SafariServices
+
 import Firebase
 
 import FirebaseAnalytics
+
+import Auth0
+
 
 //import LinkedinSwift
 
 //import IOSLinkedInAPIFix
 
-class LoginViewController: UIViewController,UITextFieldDelegate {
-
+class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegate
+{
+    
+    
+    
     @IBOutlet weak var googleSignInCircleButton: UIButton!
     
     @IBOutlet weak var fbCircleLoginButton: UIButton!
@@ -33,15 +42,85 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
     
     var accesToken:LISDKAccessToken?
     
+    @IBAction func forgotPasswordButtonClicked(_ sender: Any)
+    {
+        let storage = HTTPCookieStorage.shared
+        for cookie in storage.cookies! {
+            storage.deleteCookie(cookie)
+        }
+        APIManager.getSharedAPIManager().logoutFromLinkedIn(accesTOken: "ds")
+        
+        SessionManager.shared.logout()
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
+    }
     @IBAction func registerUserButtonClicked(_ sender: Any)
     {
 //       let viewController =  self.storyboard?.instantiateViewController(withIdentifier: "RegistrationViewController") as! RegistrationViewController
 
-        let viewController =  self.storyboard?.instantiateViewController(withIdentifier: "NavigationController")
+//        let viewController =  self.storyboard?.instantiateViewController(withIdentifier: "NavigationController")
+//        
+//        self.present(viewController!, animated: true, completion: nil)
         
-        self.present(viewController!, animated: true, completion: nil)
+//        let auth = HybridAuth()
+//        
+//        
+//        auth.showLogin(withScope: "openid profile", connection: "linkedin") { (error, cred) in
+//            
+//            DispatchQueue.main.async
+//                {
+//                    if let error = error
+//                    {
+//                        print(error)
+//                    }
+//                    else
+//                    {
+//                        let accesTOken = cred?.accessToken
+//                        
+//                        print(cred)
+//                        
+//                        auth.userInfo(accessToken: accesTOken!, callback: { (error, profile) in
+//                            
+//                            print(profile)
+//                        })
+//                    
+//                    }
+//            }
+//            
+//        }
+        
+        
+//        Auth0
+//            .webAuth()
+//            .scope("openid profile offline_access")
+//            .connection("linkedin")
+//            .start {
+//                switch $0 {
+//                case .failure(let error):
+//                    // Handle the error
+//                    print("Error: \(error)")
+//                case .success(let credentials):
+//                    guard let accessToken = credentials.accessToken, let refreshToken = credentials.refreshToken else { return }
+//                    SessionManager.shared.storeTokens(accessToken, refreshToken: refreshToken)
+//                    SessionManager.shared.retrieveProfile { error in
+////                        DispatchQueue.main.async {
+////                            self.performSegue(withIdentifier: "ShowProfileNonAnimated", sender: nil)
+////                        }
+//                    }
+//                }
+//        }
+
+        
+        
+        
+        
+      //  com.xanadutec.investHR://investhr.auth0.com/ios/com.xanadutec.investHR/callback
+        
+             
+       
+        
     }
     
+       
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -49,21 +128,22 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
       //  GIDSignIn.sharedInstance().delegate = self
         
        // GIDSignIn.sharedInstance().uiDelegate = self
-        //        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-        //
-        //
-        //            return
-        //        }        // Do any additional setup after loading the view, typically from a nib.
+                guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
         
-        //let coreDataManager = CoreDataManager.sharedManager
-        // let managedObjectContext = CoreDataManager.managedObjectContext
+        
+                    return
+                }        // Do any additional setup after loading the view, typically from a nib.
+        
+        let coreDataManager = CoreDataManager.sharedManager
+         let managedObjectContext = CoreDataManager.managedObjectContext
         
        
-        //let manageContext = appDelegate.persistentContainer.viewContext
+        let manageContext = appDelegate.persistentContainer.viewContext
         
-        //let entity = NSEntityDescription.entity(forEntityName: "User", in: manageObjectContext)!
+        let entity = NSEntityDescription.entity(forEntityName: "User", in: managedObjectContext)!
         
-        //let userObject = NSManagedObject(entity: entity, insertInto: manageObjectContext) as! User
+        //let userObject = NSManagedObject(entity: entity, insertInto: managedObjectContext) as! City
+        
         
         //userObject.firstName = "abc"
         //userObject.setValue("ABC", forKey: "firstName")
@@ -152,6 +232,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
 
         
         
+        
     }
     
     override func viewWillDisappear(_ animated: Bool)
@@ -232,10 +313,10 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         
         
         
-        self.loadAccount(then: { () in
-            
-            print("cancel pressed")
-        }, or: nil)
+//        self.loadAccount(then: { () in
+//            
+//            print("cancel pressed")
+//        }, or: nil)
         
         //        let conf = LinkedinSwiftConfiguration(clientId: "81no6kz3uepufn", clientSecret: "tgGDfootCo2zoLwB", state: "DLKDJF45DIWOERCM", permissions: ["r_basicprofile", "r_emailaddress"], redirectUrl: "investHR")
         //
@@ -259,6 +340,10 @@ class LoginViewController: UIViewController,UITextFieldDelegate {
         //            
         //        }, cancel: { () -> Void in
         //        })
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "LinkedInLoginViewController")
+        
+        self.present(vc!, animated: true, completion: nil)
 
     }
     

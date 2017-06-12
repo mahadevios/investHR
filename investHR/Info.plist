@@ -26,6 +26,7 @@
 				<string>com.googleusercontent.apps.839937834401-eic8774uoun089nvgdqd1dme9q46gl7d</string>
 				<string>fb1335965656520319</string>
 				<string>li4975115</string>
+				<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 			</array>
 		</dict>
 	</array>
@@ -46,12 +47,12 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
-	<key>NSCameraUsageDescription</key>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
+    <key>NSCameraUsageDescription</key>
 	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Allow to acces Microphone</string>

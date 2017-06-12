@@ -37,5 +37,19 @@ class APIManager: NSObject
         
         
     }
+    
+    func loginWithLinkedIn(accesTOken accesToken:String) -> Void
+    {
+        let params = ["invalidateToken=\(accesToken)"]
+        
+        let dic = [Constant.REQUEST_PARAMETER:params]
+        
+        let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.LINKEDIN_LOGOUT_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.LINKEDIN_LOGOUT_API, withHttpMethd: Constant.GET)
+        
+        downloadmetadatajob.startMetaDataDownLoad()
+        
+        
+        
+    }
 
 }

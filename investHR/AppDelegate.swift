@@ -7,6 +7,7 @@
 //
 
 import UIKit
+
 import CoreData
 
 import Firebase
@@ -14,6 +15,12 @@ import Firebase
 import UserNotifications
 
 import FirebaseMessaging
+
+import Auth0
+
+
+
+
 
 //import FBSDKLoginKit
 
@@ -31,6 +38,8 @@ import FirebaseMessaging
 // relative to margin http://coding.tabasoft.it/ios/ios8-layout-margins/
 
 //doc picker and metadata query  https://developer.xamarin.com/guides/ios/platform_features/introduction_to_the_document_picker/
+
+// auth 0 https://auth0.com/docs/quickstart/native/ios-objc/00-login#hybrid-objective-c-swift
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -161,14 +170,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
 //            if LinkedinSwiftHelper.shouldHandle(url)
 //            {
-                if LISDKCallbackHandler.shouldHandle(url) {
-                    return LISDKCallbackHandler.application(app, open: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String!, annotation: options [UIApplicationOpenURLOptionsKey.annotation])
-                }
+//                if LISDKCallbackHandler.shouldHandle(url) {
+//                    return LISDKCallbackHandler.application(app, open: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String!, annotation: options [UIApplicationOpenURLOptionsKey.annotation])
+//                }
+//        else
+//                {
+//                    if (url.host == "oauth-callback") {
+//                        
+//                        OAuthSwift.handle(url: url)
+//                    }
+                    
+        return Auth0.resumeAuth(url, options:options)
+       // }
 
                 
         //}
         
-        return true
 //        if([[FBSDKApplicationDelegate sharedInstance] application:application
 //            openURL:url
 //            sourceApplication:sourceApplication

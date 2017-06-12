@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="15G31" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="City" representedClassName="City" syncable="YES">
+        <attribute name="cityName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="stateId" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="State" syncable="YES"/>
+        <fetchedProperty name="fetchedProperty" optional="YES" syncable="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="City"/>
+        </fetchedProperty>
+    </entity>
+    <entity name="State" representedClassName="State" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="stateName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="User" representedClassName="User" syncable="YES">
         <attribute name="emailAddress" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
@@ -12,6 +24,8 @@
         <attribute name="domainName" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
+        <element name="City" positionX="-54" positionY="36" width="128" height="119"/>
+        <element name="State" positionX="-63" positionY="27" width="128" height="75"/>
         <element name="User" positionX="-63" positionY="-18" width="128" height="135"/>
         <element name="VerticalDomains" positionX="-63" positionY="0" width="128" height="60"/>
     </elements>

@@ -12,17 +12,19 @@ import Foundation
 
 struct Constant
 {
-    static let  REQUEST_PARAMETER           = "requestParameter"
-    static let  POST                        = "POST"
-    static let  GET                         = "GET"
-    static let  PUT                         = "PUT"
-    static let  SUCCESS                     = "1000"
-    static let  FAILURE                     = "1001"
-    static let  DATE_TIME_FORMAT            = "yyyy-MM-dd HH:mm:ss"
-    static let  BASE_URL_PATH               = "http://115.249.195.23:8080/Communicator/feedcom"
-    static let  NEW_USER_LOGIN_API          = ""
-    static let  LINKEDIN_LOGOUT_API         = "https://api.linkedin.com/uas/oauth/invalidateToken"
-    static let  LINKEDIN_ACCESS_TOKEN       = "linkedInAccessToken"
+    static let  REQUEST_PARAMETER                        = "requestParameter"
+    static let  POST                                     = "POST"
+    static let  GET                                      = "GET"
+    static let  PUT                                      = "PUT"
+    static let  SUCCESS                                  = "1000"
+    static let  FAILURE                                  = "1001"
+    static let  DATE_TIME_FORMAT                         = "yyyy-MM-dd HH:mm:ss"
+    static let  BASE_URL_PATH                            = "http://115.249.195.23:8080/Communicator/feedcom"
+    static let  NEW_USER_LOGIN_API                       = ""
+    static let  LINKEDIN_LOGOUT_API                      = "https://api.linkedin.com/uas/oauth/invalidateToken"
+    static let  LINKEDIN_ACCESS_TOKEN                    = "linkedInAccessToken"
+    static let  LINKEDIN_ACCESS_TOKEN_ENDPOINT_API       = "https://www.linkedin.com/uas/oauth2/accessToken"
+
 }
 
 enum MyAlertType

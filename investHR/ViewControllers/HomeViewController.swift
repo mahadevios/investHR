@@ -72,12 +72,14 @@ class HomeViewController: UIViewController
         vc.domainType = "vertical"
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    
     @IBAction func rolesWiseButtonPressed(_ sender: Any)
     {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "VerticalViewController") as! VerticalViewController
         vc.domainType = "roles"
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    
     @IBAction func locationWiseButtonPressed(_ sender: Any)
     {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "LocationViewController") as! LocationViewController
@@ -92,12 +94,14 @@ class HomeViewController: UIViewController
         //self.revealViewController().pushFrontViewController(vc1, animated: true)
        
     }
+    
     @IBAction func horizontalWiseButtonPressed(_ sender: Any)
     {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "VerticalViewController") as! VerticalViewController
         vc.domainType = "horizontal"
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    
     @IBAction func sliderButtonClicked(_ sender: Any)
     {
         if self.revealViewController() != nil
@@ -105,7 +109,9 @@ class HomeViewController: UIViewController
             self.revealViewController().revealToggle(sender)
         }
     }
-    @IBAction func notificationButtonClicked(_ sender: Any) {
+    
+    @IBAction func notificationButtonClicked(_ sender: Any)
+    {
     }
     
     //-(void)createSWRevealView
@@ -131,16 +137,18 @@ class HomeViewController: UIViewController
         
       //  loginManager.logOut() // this is an instance function
         
-        UserDefaults.standard.removeObject(forKey: "fbAccessToken")
+      //  UserDefaults.standard.removeObject(forKey: "fbAccessToken")
         
-        if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "ViewController") {
+        if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "ViewController")
+        {
             UIApplication.shared.keyWindow?.rootViewController = viewController
             self.dismiss(animated: true, completion: nil)
         }
 
         //self.dismiss(animated: true, completion: nil)
     }
-    override func didReceiveMemoryWarning() {
+    override func didReceiveMemoryWarning()
+    {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
