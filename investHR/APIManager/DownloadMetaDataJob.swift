@@ -117,67 +117,19 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
     func connectionDidFinishLoading(_ connection: NSURLConnection)
     {
         if statusCode == 200 {
-            // Convert the received JSON data into a dictionary.
+            
             do {
                 let response1 = String(data: responseData as Data, encoding: .utf8)
                 print(response1)
                 
                 let dataDictionary =  try JSONSerialization.jsonObject(with: responseData as Data, options: .allowFragments) as! [String:AnyObject]
                 
-                //                let dataDictionary = try JSONSerialization.jsonObject(with: responseData as Data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
-                
-                let accessToken = dataDictionary["access_token"] as! String
-                
-                print(dataDictionary)
-                print(accessToken)
-                
-                UserDefaults.standard.set(accessToken, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
-                UserDefaults.standard.synchronize()
-                
-                
-                if let accessToken = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN)
-                {
-                    // Specify the URL string that we'll get the profile info from.
-                    let targetURLString = "https://api.linkedin.com/v1/people/~:(public-profile-url)?format=json"
-                    
-                    let request = NSMutableURLRequest(url: NSURL(string: targetURLString)! as URL)
-                    
-                    // Indicate that this is a GET request.
-                    request.httpMethod = "GET"
-                    
-                    // Add the access token as an HTTP header field.
-                    request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-                    
-                    let session = URLSession(configuration: URLSessionConfiguration.default)
-                    
-                    // Make the request.
-                    let task: URLSessionDataTask = session.dataTask(with: request as URLRequest) { (data, response, error) -> Void in
-                        
-                        let statusCode = (response as! HTTPURLResponse).statusCode
-                        
-                        if statusCode == 200
-                        {
-                            // Convert the received JSON data into a dictionary.
-                            do {
-                                let dataDictionary = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
-                                
-                                let profileURLString = dataDictionary["publicProfileUrl"] as! String
-                                
-                                print(profileURLString)
-                            }
-                            catch {
-                                print("Could not convert JSON data into a dictionary.")
-                            }
-                        }
-                        
-                        
-                    }
-                    
-                    task.resume()
-                }
+                NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: dataDictionary, userInfo: nil)
+
             }
-            catch {
-                print("Could not convert JSON data into a dictionary.")
+            catch let error as NSError
+            {
+            
             }
         }
         else

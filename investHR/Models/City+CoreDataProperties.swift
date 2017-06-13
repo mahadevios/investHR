@@ -2,7 +2,7 @@
 //  City+CoreDataProperties.swift
 //  investHR
 //
-//  Created by mac on 12/06/17.
+//  Created by mac on 13/06/17.
 //  Copyright © 2017 Xanadutec. All rights reserved.
 //
 
@@ -18,6 +18,6 @@ extension City {
 
     @NSManaged public var cityName: String?
     @NSManaged public var id: Int64
-    @NSManaged public var stateId: State?
+    @NSManaged public var stateId: Int16
 
 }

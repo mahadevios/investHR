@@ -1,5 +1,5 @@
 //
-//  State+CoreDataClass.swift
+//  VertcalDomains+CoreDataClass.swift
 //  investHR
 //
 //  Created by mac on 13/06/17.
@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-@objc(State)
-public class State: NSManagedObject {
+@objc(VertcalDomains)
+public class VertcalDomains: NSManagedObject {
 
 }

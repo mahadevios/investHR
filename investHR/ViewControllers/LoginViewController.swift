@@ -128,52 +128,53 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
       //  GIDSignIn.sharedInstance().delegate = self
         
        // GIDSignIn.sharedInstance().uiDelegate = self
-                guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
         
         
-                    return
-                }        // Do any additional setup after loading the view, typically from a nib.
-        
-        let coreDataManager = CoreDataManager.sharedManager
-         let managedObjectContext = CoreDataManager.managedObjectContext
-        
-       
-        let manageContext = appDelegate.persistentContainer.viewContext
-        
-        let entity = NSEntityDescription.entity(forEntityName: "User", in: managedObjectContext)!
-        
-        //let userObject = NSManagedObject(entity: entity, insertInto: managedObjectContext) as! City
-        
-        
-        //userObject.firstName = "abc"
-        //userObject.setValue("ABC", forKey: "firstName")
-        //userObject.setValue("XYZ", forKey: "lastName")
-        
-        //        do {
-        //            try manageObjectContext.save()
-        //
-        //        } catch let error as NSError {
-        //            print(error.localizedDescription)
-        //        }
+//        let con = appDelegate.persistentContainer.viewContext
+//
+//        //let managedObjectContext1 = appDelegate.managedObjectContext
+//
+//        let entity1 = NSEntityDescription.entity(forEntityName: "City", in: managedObjectContext)!
+//
+//        let cityObject = NSManagedObject(entity: entity1, insertInto: managedObjectContext) as! City
+//
+//        
+//        
+//        
+//        cityObject.id = 1
+//        cityObject.cityName = "Pune"
+//        cityObject.stateId = 1
+//        //userObject.setValue("ABC", forKey: "firstName")
+//       // userObject.setValue("XYZ", forKey: "lastName")
+//        
+//                do {
+//                    try managedObjectContext.save()
+//        
+//                } catch let error as NSError {
+//                    print(error.localizedDescription)
+//                }
         
         
        // let result : [String: Any] = ["firstName" : "Steve", "surName" : "Jobs"]
         
 //        let obj = coreDataManager.save(entity: "User", result)
 //        
-//        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "User")
+//        let entityName = "City"
+//        
+//        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
 //        
 //                do
 //                {
 //                    let manageObject = try managedObjectContext.fetch(fetchRequest)
 //                    var managedObjects:[NSManagedObject]?
 //                    
-//        managedObjects = coreDataManager.fetch(entity: "User")
-//        for userObject in managedObjects as! [User]
+//        managedObjects = CoreDataManager.sharedManager.fetch(entity: entityName)
+//        for userObject in managedObjects as! [City]
 //        {
-//            let firstName = userObject.firstName
-//            let lastName = userObject.lastName
-//            
+//            let firstName = userObject.id
+//            let lastName = userObject.cityName
+//            let stateId = userObject.stateId
+//
 //            print(firstName ?? "nil")
 //            
 //            guard let lastname = lastName else
@@ -182,6 +183,8 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
 //                continue
 //            }
 //            print(lastname)
+//            print(stateId)
+//
 //        }
 //        
 //                } catch let error as NSError
@@ -191,8 +194,117 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         
         // Do any additional setup after loading the view.
+        
+      //  NotificationCenter.default.addObserver(self, selector: #selector(fetchUserProfile(dataDictionary:)), name: NSNotification.Name(rawValue: Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: [String:AnyObject]())
+//       NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.fetchUserProfile(dataDictionary:)), name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: nil)
+//
+//        let context = appDelegate.managedObjectContext
+        print("finished")
     }
     
+    
+    func fetchUserProfile(dataDictionary:NSNotification)
+    {
+        // Convert the received JSON data into a dictionary.
+        //self.presentedViewController?.dismiss(animated: true, completion: nil)
+        do {
+            
+            //                let dataDictionary = try JSONSerialization.jsonObject(with: responseData as Data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
+            let dic = dataDictionary.object as! [String:AnyObject]
+            let accessToken = dic["access_token"]
+            
+            print(dataDictionary)
+            print(accessToken ?? "")
+            
+            UserDefaults.standard.set(accessToken, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+            UserDefaults.standard.synchronize()
+            
+            
+            if let accessToken = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+            {
+                // Specify the URL string that we'll get the profile info from.
+                let targetURLString = "https://api.linkedin.com/v1/people/~:(public-profile-url,id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json"
+                
+                let request = NSMutableURLRequest(url: NSURL(string: targetURLString)! as URL)
+                
+                // Indicate that this is a GET request.
+                request.httpMethod = "GET"
+                
+                // Add the access token as an HTTP header field.
+                request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+                
+                let session = URLSession(configuration: URLSessionConfiguration.default)
+                
+                // Make the request.
+                let task: URLSessionDataTask = session.dataTask(with: request as URLRequest) { (data, response, error) -> Void in
+                    
+                    let statusCode = (response as! HTTPURLResponse).statusCode
+                    
+                    if statusCode == 200
+                    {
+                        // Convert the received JSON data into a dictionary.
+                        do {
+                            let dataDictionary = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
+                            
+                            let profileURLString = dataDictionary["publicProfileUrl"] as! String
+                            
+                            print(profileURLString)
+                            
+                            DispatchQueue.main.async
+                                {
+                                    
+                                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                                    
+                                    let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
+                                    
+                                    print(currentRootVC)
+                                    
+                                    let className = String(describing: type(of: currentRootVC))
+                                    
+                                    if className == "LoginViewController"
+                                    {
+                                        let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+                                        let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                                        appDelegate.window?.rootViewController = rootViewController
+                                        
+                                    }
+                                    else
+                                    {
+                                        self.dismiss(animated: true, completion: nil)
+                                        
+                                    }
+                                    
+                            }
+                            
+                        }
+                        catch {
+                            print("Could not convert JSON data into a dictionary.")
+                        }
+                    }
+                    else
+                    {
+                        do {
+                            let dataDictionary = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
+                            
+                            let profileURLString = dataDictionary["publicProfileUrl"] as! String
+                            
+                            print(profileURLString)
+                        }
+                        catch {
+                            print("Could not convert JSON data into a dictionary.")
+                        }
+                    }
+                    
+                    
+                }
+                
+                task.resume()
+            }
+        }
+        catch {
+            print("Could not convert JSON data into a dictionary.")
+        }
+    }
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(true)
@@ -223,6 +335,8 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+       
+        //NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.fetchUserProfile(dataDictionary:)), name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: nil)
         //self.showData()
         
 //        self.loadAccount(then: { () in
@@ -237,44 +351,44 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
     
     override func viewWillDisappear(_ animated: Bool)
     {
-        NotificationCenter.default.removeObserver(self)
+        //NotificationCenter.default.removeObserver(self)
     }
 
     func showData() -> Void
     {
         let coreDataManager = CoreDataManager.sharedManager
         
-        let managedObjectContext = CoreDataManager.managedObjectContext
+        let managedObjectContext = AppDelegate().managedObjectContext
         
         //let obj = coreDataManager.save(entity: "User", result)
-        
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "User")
-        
-        do
-        {
-            let manageObject = try managedObjectContext.fetch(fetchRequest)
-            var managedObjects:[NSManagedObject]?
-            
-            managedObjects = coreDataManager.fetch(entity: "User")
-            for userObject in managedObjects as! [User]
-            {
-                let firstName = userObject.firstName
-                let lastName = userObject.lastName
-                
-                print(firstName ?? "nil")
-                
-                guard let lastname = lastName else
-                {
-                    print("nnil value")
-                    continue
-                }
-                print(lastname)
-            }
-            
-        } catch let error as NSError
-        {
-            print(error.localizedDescription)
-        }
+//        
+//        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "User")
+//        
+//        do
+//        {
+//            let manageObject = try managedObjectContext.fetch(fetchRequest)
+//            var managedObjects:[NSManagedObject]?
+//            
+//            managedObjects = coreDataManager.fetch(entity: "User")
+//            for userObject in managedObjects as! [User]
+//            {
+//                let firstName = userObject.firstName
+//                let lastName = userObject.lastName
+//                
+//                print(firstName ?? "nil")
+//                
+//                guard let lastname = lastName else
+//                {
+//                    print("nnil value")
+//                    continue
+//                }
+//                print(lastname)
+//            }
+//            
+//        } catch let error as NSError
+//        {
+//            print(error.localizedDescription)
+//        }
 
     }
     func checkForAvailableLinkedInSession() -> Void
@@ -848,44 +962,143 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
     
     func textFieldDidBeginEditing(_ textField: UITextField)
     {
-        //        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
-        //        {
-        //            if textField == emailTextField || textField == passwordTextField
-        //            {
-        //                setViewMovedUp(movedUp: true, offset: 180)
-        //            }
-        //            else
-        //            {
-        //                setViewMovedUp(movedUp: true, offset: 100)
-        //            }
-        //        }
-        //        else
-        //        {
-        //            setViewMovedUp(movedUp: true, offset: 100)
-        //        }
+        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
     {
-        //        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
-        //        {
-        //            if textField == emailTextField || textField == passwordTextField
-        //            {
-        //                setViewMovedUp(movedUp: false, offset: 180)
-        //            }
-        //            else
-        //            {
-        //                setViewMovedUp(movedUp: false, offset: 100)
-        //            }
-        //        }
-        //        else
-        //        {
-        //            setViewMovedUp(movedUp: false, offset: 100)
-        //        }
+        
         textField.resignFirstResponder()
         return true
     }
 
+    func getStateAndCityUsingWebService()
+    {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            
+            
+            return
+        }        // Do any additional setup after loading the view, typically from a nib.
+        
+        // let coreDataManager = CoreDataManager.sharedManager
+        //let managedObjectContext = (UIApplication.shared.delegate as? AppDelegate)?.managedObjectContext
+        
+        let managedObjectContext = appDelegate.managedObjectContext
+        
+        let entity = NSEntityDescription.entity(forEntityName: "State", in: managedObjectContext)!
+        
+        let entity1 = NSEntityDescription.entity(forEntityName: "City", in: managedObjectContext)!
+        
+        // Specify the URL string that we'll get the profile info from.
+        let targetURLString = "http://192.168.3.74:9090/coreflex/StateCity"
+        
+        let request = NSMutableURLRequest(url: NSURL(string: targetURLString)! as URL)
+        
+        // Indicate that this is a GET request.
+        request.httpMethod = "POST"
+        
+        // Add the access token as an HTTP header field.
+        
+        let session = URLSession(configuration: URLSessionConfiguration.default)
+        
+        // Make the request.
+        let task: URLSessionDataTask = session.dataTask(with: request as URLRequest) { (data, response, error) -> Void in
+            
+            let statusCode = (response as! HTTPURLResponse).statusCode
+            
+            if statusCode == 200
+            {
+                // Convert the received JSON data into a dictionary.
+                do
+                {
+                    let dataDictionary = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
+                    
+                    let stateString = dataDictionary["State"] as! String
+                    
+                    let stateData = stateString.data(using: .utf8, allowLossyConversion: true)
+                    
+                    let stateArray =  try JSONSerialization.jsonObject(with: stateData as Data!, options: .allowFragments) as! [AnyObject]
+                    
+                    for index in 0 ..< stateArray.count
+                    {
+                        let stateIdAndNameDic = stateArray[index] as! [String:AnyObject]
+                        
+                        let stateId = stateIdAndNameDic["id"] as! Int
+                        
+                        let stateName = stateIdAndNameDic["state_Name"] as! String
+                        
+                        let stateObject = NSManagedObject(entity: entity, insertInto: managedObjectContext) as! State
+                        
+                        stateObject.id = Int16(stateId)
+                        
+                        stateObject.stateName = stateName
+                        
+                        do {
+                            print("inserting state num:",(index))
+                            
+                            try managedObjectContext.save()
+                            
+                        } catch let error as NSError {
+                            print(error.localizedDescription)
+                        }
+                    }
+                    
+                    
+                    let stateCityString = dataDictionary["StateCity"] as! String
+                    
+                    let stateCityData = stateCityString.data(using: .utf8, allowLossyConversion: true)
+                    
+                    let stateCityArray =  try JSONSerialization.jsonObject(with: stateCityData as Data!, options: .allowFragments) as! [AnyObject]
+                    
+                    for index in 0 ..< stateCityArray.count
+                    {
+                        let stateCityIdAndNameDic = stateCityArray[index] as! [String:AnyObject]
+                        
+                        let cityId = stateCityIdAndNameDic["id"] as! Int
+                        
+                        let cityName = stateCityIdAndNameDic["city_Name"] as! String
+                        
+                        let stateIdNameDic = stateCityIdAndNameDic["state"] as! [String:AnyObject]
+                        
+                        let stateId = stateIdNameDic["id"] as! Int
+                        
+                        //let stateName = stateIdNameDic["state_Name"]
+                        
+                        let cityObject = NSManagedObject(entity: entity1, insertInto: managedObjectContext) as! City
+                        
+                        cityObject.id = Int64(cityId)
+                        
+                        cityObject.stateId = Int16(stateId)
+                        
+                        cityObject.cityName = cityName
+                        
+                        do {
+                            try managedObjectContext.save()
+                            
+                            print("inserting city num:",(index))
+                            
+                        } catch let error as NSError {
+                            print(error.localizedDescription)
+                        }
+                    }
+                    
+                }
+                catch let error as NSError
+                {
+                    print(error.localizedDescription)
+                }
+            }
+            else
+            {
+                print(error?.localizedDescription)
+            }
+            
+            
+        }
+        
+        task.resume()
+        
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

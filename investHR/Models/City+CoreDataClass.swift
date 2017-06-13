@@ -2,7 +2,7 @@
 //  City+CoreDataClass.swift
 //  investHR
 //
-//  Created by mac on 12/06/17.
+//  Created by mac on 13/06/17.
 //  Copyright © 2017 Xanadutec. All rights reserved.
 //
 

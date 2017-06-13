@@ -13,7 +13,7 @@ import CoreData
 class CoreDataManager: NSObject
 {
     static let sharedManager = CoreDataManager()
-    static let managedObjectContext = AppDelegate().getManageObjectContext()
+    //static let managedObjectContext = AppDelegate().getManageObjectContext()
     
     private override init()
     {
@@ -29,8 +29,8 @@ class CoreDataManager: NSObject
     {
         //let sharedManager = CoreDataManager.sharedManager // to initialize managedObjectContext
         
-        let entity = NSEntityDescription.entity(forEntityName: entity, in: CoreDataManager.managedObjectContext)
-        let object = NSManagedObject(entity: entity!, insertInto: CoreDataManager.managedObjectContext)
+        let entity = NSEntityDescription.entity(forEntityName: entity, in: AppDelegate().managedObjectContext)
+        let object = NSManagedObject(entity: entity!, insertInto: AppDelegate().managedObjectContext)
         
         for (key, attr) in attributes {
             object.setValue(attr, forKey: key)
@@ -38,7 +38,7 @@ class CoreDataManager: NSObject
         
         do
         {
-            try CoreDataManager.managedObjectContext.save()
+            try AppDelegate().managedObjectContext.save()
             
         } catch let error as NSError {
             print(error.localizedDescription)
@@ -49,10 +49,15 @@ class CoreDataManager: NSObject
     
     func fetch(entity: String) -> [NSManagedObject]?
     {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            
+            
+            return nil
+        }
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
         
         do {
-            let manageObjects = try CoreDataManager.managedObjectContext.fetch(fetchRequest)
+            let manageObjects = try appDelegate.managedObjectContext.fetch(fetchRequest)
 
                 if manageObjects.count > 0
                 {
@@ -77,13 +82,13 @@ class CoreDataManager: NSObject
         var data = fetch(entity: entity)
         if data != nil
         {
-            CoreDataManager.managedObjectContext.delete(data![index])
+            AppDelegate().managedObjectContext.delete(data![index])
             
             data!.remove(at: index)
             
             do
             {
-                try CoreDataManager.managedObjectContext.save()
+                try AppDelegate().managedObjectContext.save()
                 
             } catch let error as NSError
             {
@@ -100,16 +105,16 @@ class CoreDataManager: NSObject
     {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
         
-        fetchRequest.entity = NSEntityDescription.entity(forEntityName: entity, in: CoreDataManager.managedObjectContext)
+        fetchRequest.entity = NSEntityDescription.entity(forEntityName: entity, in: AppDelegate().managedObjectContext)
         fetchRequest.includesPropertyValues = false
         
         do
         {
-            let results = try CoreDataManager.managedObjectContext.fetch(fetchRequest) as? [NSManagedObject]
+            let results = try AppDelegate().managedObjectContext.fetch(fetchRequest) as? [NSManagedObject]
             
                 for result in results!
                 {
-                    CoreDataManager.managedObjectContext.delete(result)
+                    AppDelegate().managedObjectContext.delete(result)
                 }
             
         }
@@ -120,7 +125,7 @@ class CoreDataManager: NSObject
             
         do
         {
-            try CoreDataManager.managedObjectContext.save()
+            try AppDelegate().managedObjectContext.save()
             
         } catch let error as NSError
         {
@@ -140,7 +145,7 @@ class CoreDataManager: NSObject
         
         do
         {
-            let count = try CoreDataManager.managedObjectContext.count(for: request)
+            let count = try AppDelegate().managedObjectContext.count(for: request)
             
             if count == 0 {
                 return false

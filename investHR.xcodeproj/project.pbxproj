@@ -7,12 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8414925C1EF004CA007133D0 /* City+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8414925A1EF004CA007133D0 /* City+CoreDataClass.swift */; };
+		8414925D1EF004CA007133D0 /* City+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8414925B1EF004CA007133D0 /* City+CoreDataProperties.swift */; };
+		841492681EF005D6007133D0 /* State+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841492661EF005D6007133D0 /* State+CoreDataClass.swift */; };
+		841492691EF005D6007133D0 /* State+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841492671EF005D6007133D0 /* State+CoreDataProperties.swift */; };
+		8414926C1EF0060D007133D0 /* User+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8414926A1EF0060D007133D0 /* User+CoreDataClass.swift */; };
+		8414926D1EF0060D007133D0 /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8414926B1EF0060D007133D0 /* User+CoreDataProperties.swift */; };
+		841492701EF00639007133D0 /* VertcalDomains+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8414926E1EF00639007133D0 /* VertcalDomains+CoreDataClass.swift */; };
+		841492711EF00639007133D0 /* VertcalDomains+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8414926F1EF00639007133D0 /* VertcalDomains+CoreDataProperties.swift */; };
 		841C71AB1ECC5C0300C3111F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841C71AA1ECC5C0300C3111F /* HomeViewController.swift */; };
 		84239B941EC476C60076EF33 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84239B931EC476C60076EF33 /* SWRevealViewController.m */; };
 		842B32F81EDD7A97000088D1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842B32F71EDD7A97000088D1 /* SettingsViewController.swift */; };
 		842B32FA1EDD8F62000088D1 /* UploadVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */; };
 		842B32FC1EDDAE2B000088D1 /* ReferFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */; };
 		842B32FE1EDDB224000088D1 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842B32FD1EDDB224000088D1 /* Social.framework */; };
+		8431B5C21EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8431B5C01EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld */; };
+		8431B5E01EEFF78E0015C7E1 /* investHR.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 8431B5DD1EEFF78E0015C7E1 /* investHR.sqlite */; };
+		8431B5E11EEFF78E0015C7E1 /* investHR.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 8431B5DE1EEFF78E0015C7E1 /* investHR.sqlite-shm */; };
+		8431B5E21EEFF78E0015C7E1 /* investHR.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 8431B5DF1EEFF78E0015C7E1 /* investHR.sqlite-wal */; };
 		843425C41EE7D80500282419 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843425C31EE7D80400282419 /* UserNotifications.framework */; };
 		843425C81EE7ED5F00282419 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 843425C71EE7ED5F00282419 /* GoogleService-Info.plist */; };
 		8439E04E1EC5F3C000FC2A12 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */; };
@@ -22,13 +34,7 @@
 		844387B81ED46D2D002E71D6 /* Registration1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844387B71ED46D2D002E71D6 /* Registration1ViewController.swift */; };
 		8449B6091EE578EB0072A8DD /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8449B6051EE578EB0072A8DD /* CoreDataManager.swift */; };
 		8449B60A1EE578EB0072A8DD /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8449B6061EE578EB0072A8DD /* TextField.swift */; };
-		8449B60B1EE578EB0072A8DD /* User+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8449B6071EE578EB0072A8DD /* User+CoreDataClass.swift */; };
-		8449B60C1EE578EB0072A8DD /* User+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8449B6081EE578EB0072A8DD /* User+CoreDataProperties.swift */; };
 		844E5B001EEE59D600E69646 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844E5AFF1EEE59D600E69646 /* SessionManager.swift */; };
-		844E5B231EEECC2D00E69646 /* State+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844E5B211EEECC2D00E69646 /* State+CoreDataClass.swift */; };
-		844E5B241EEECC2D00E69646 /* State+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844E5B221EEECC2D00E69646 /* State+CoreDataProperties.swift */; };
-		844E5B271EEECC8F00E69646 /* City+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844E5B251EEECC8F00E69646 /* City+CoreDataClass.swift */; };
-		844E5B281EEECC8F00E69646 /* City+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844E5B261EEECC8F00E69646 /* City+CoreDataProperties.swift */; };
 		844E5B2A1EEED4CF00E69646 /* LinkedInLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844E5B291EEED4CF00E69646 /* LinkedInLoginViewController.swift */; };
 		844F5F2D1EDBF0B20073A7D7 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844F5F2C1EDBF0B20073A7D7 /* EditProfileViewController.swift */; };
 		844F5F2F1EDC23A20073A7D7 /* NotificationJobsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844F5F2E1EDC23A20073A7D7 /* NotificationJobsViewController.swift */; };
@@ -42,11 +48,12 @@
 		8467DEE11EEA68E300974A3D /* HybridAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8467DEE01EEA68E300974A3D /* HybridAuth.swift */; };
 		8493B8311EC4678200D8F7F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8493B8301EC4678200D8F7F9 /* AppDelegate.swift */; };
 		8493B8361EC4678200D8F7F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8493B8341EC4678200D8F7F9 /* Main.storyboard */; };
-		8493B8391EC4678200D8F7F9 /* investHR.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8493B8371EC4678200D8F7F9 /* investHR.xcdatamodeld */; };
 		8493B83B1EC4678200D8F7F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8493B83A1EC4678200D8F7F9 /* Assets.xcassets */; };
 		8493B83E1EC4678200D8F7F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8493B83C1EC4678200D8F7F9 /* LaunchScreen.storyboard */; };
 		8493B8491EC4678300D8F7F9 /* investHRTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8493B8481EC4678300D8F7F9 /* investHRTests.swift */; };
 		8493B8541EC4678300D8F7F9 /* investHRUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8493B8531EC4678300D8F7F9 /* investHRUITests.swift */; };
+		84AD18391EF000140049675A /* investHR.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84AD18371EF000140049675A /* investHR.xcdatamodeld */; };
+		84AD183A1EF000DE0049675A /* investHR.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = 84AD18371EF000140049675A /* investHR.xcdatamodeld */; };
 		84DAD40F1ED7F5440008BB09 /* VerticalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DAD40E1ED7F5440008BB09 /* VerticalViewController.swift */; };
 		84DAD4111ED822200008BB09 /* JobsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DAD4101ED822200008BB09 /* JobsViewController.swift */; };
 		84EB8F3D1EDFE90B00014DA4 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB8F3B1EDFE90B00014DA4 /* APIManager.swift */; };
@@ -80,6 +87,14 @@
 		090579246A9D10601667A174 /* Pods-investHRTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-investHRTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-investHRTests/Pods-investHRTests.debug.xcconfig"; sourceTree = "<group>"; };
 		33A1F246F586B35A47C60808 /* Pods-investHRUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-investHRUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-investHRUITests/Pods-investHRUITests.release.xcconfig"; sourceTree = "<group>"; };
 		7EB4DA99D60A83D450E70BF7 /* Pods-investHRUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-investHRUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-investHRUITests/Pods-investHRUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		8414925A1EF004CA007133D0 /* City+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "City+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8414925B1EF004CA007133D0 /* City+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "City+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		841492661EF005D6007133D0 /* State+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "State+CoreDataClass.swift"; sourceTree = "<group>"; };
+		841492671EF005D6007133D0 /* State+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "State+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8414926A1EF0060D007133D0 /* User+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8414926B1EF0060D007133D0 /* User+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8414926E1EF00639007133D0 /* VertcalDomains+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VertcalDomains+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8414926F1EF00639007133D0 /* VertcalDomains+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VertcalDomains+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		841C71AA1ECC5C0300C3111F /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		84239B821EC475200076EF33 /* investHR-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "investHR-Bridging-Header.h"; sourceTree = "<group>"; };
 		84239B921EC476C60076EF33 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
@@ -88,6 +103,10 @@
 		842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadVideoViewController.swift; sourceTree = "<group>"; };
 		842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferFriendViewController.swift; sourceTree = "<group>"; };
 		842B32FD1EDDB224000088D1 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		8431B5C11EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataDemo.xcdatamodel; sourceTree = "<group>"; };
+		8431B5DD1EEFF78E0015C7E1 /* investHR.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = investHR.sqlite; sourceTree = "<group>"; };
+		8431B5DE1EEFF78E0015C7E1 /* investHR.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "investHR.sqlite-shm"; sourceTree = "<group>"; };
+		8431B5DF1EEFF78E0015C7E1 /* investHR.sqlite-wal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "investHR.sqlite-wal"; sourceTree = "<group>"; };
 		843425C31EE7D80400282419 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		843425C71EE7ED5F00282419 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -97,13 +116,7 @@
 		844387B71ED46D2D002E71D6 /* Registration1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registration1ViewController.swift; sourceTree = "<group>"; };
 		8449B6051EE578EB0072A8DD /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		8449B6061EE578EB0072A8DD /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
-		8449B6071EE578EB0072A8DD /* User+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataClass.swift"; sourceTree = "<group>"; };
-		8449B6081EE578EB0072A8DD /* User+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		844E5AFF1EEE59D600E69646 /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
-		844E5B211EEECC2D00E69646 /* State+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "State+CoreDataClass.swift"; sourceTree = "<group>"; };
-		844E5B221EEECC2D00E69646 /* State+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "State+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		844E5B251EEECC8F00E69646 /* City+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "City+CoreDataClass.swift"; sourceTree = "<group>"; };
-		844E5B261EEECC8F00E69646 /* City+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "City+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		844E5B291EEED4CF00E69646 /* LinkedInLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkedInLoginViewController.swift; sourceTree = "<group>"; };
 		844F5F2C1EDBF0B20073A7D7 /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		844F5F2E1EDC23A20073A7D7 /* NotificationJobsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationJobsViewController.swift; sourceTree = "<group>"; };
@@ -119,7 +132,6 @@
 		8493B82D1EC4678200D8F7F9 /* investHR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = investHR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8493B8301EC4678200D8F7F9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8493B8351EC4678200D8F7F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		8493B8381EC4678200D8F7F9 /* investHR.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = investHR.xcdatamodel; sourceTree = "<group>"; };
 		8493B83A1EC4678200D8F7F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8493B83D1EC4678200D8F7F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8493B83F1EC4678200D8F7F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -129,6 +141,7 @@
 		8493B84F1EC4678300D8F7F9 /* investHRUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = investHRUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8493B8531EC4678300D8F7F9 /* investHRUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = investHRUITests.swift; sourceTree = "<group>"; };
 		8493B8551EC4678300D8F7F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		84AD18381EF000140049675A /* investHR.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = investHR.xcdatamodel; sourceTree = "<group>"; };
 		84DAD40E1ED7F5440008BB09 /* VerticalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalViewController.swift; sourceTree = "<group>"; };
 		84DAD4101ED822200008BB09 /* JobsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobsViewController.swift; sourceTree = "<group>"; };
 		84EB8F3B1EDFE90B00014DA4 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
@@ -209,6 +222,15 @@
 			path = SWrevealView;
 			sourceTree = "<group>";
 		};
+		8431B5BF1EEFE28F0015C7E1 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				8431B5C01EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld */,
+				84AD18371EF000140049675A /* investHR.xcdatamodeld */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
 		843A6AB71EE1824C00D86591 /* LinkedIn */ = {
 			isa = PBXGroup;
 			children = (
@@ -220,14 +242,16 @@
 		8449B6041EE578EB0072A8DD /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				844E5B251EEECC8F00E69646 /* City+CoreDataClass.swift */,
-				844E5B261EEECC8F00E69646 /* City+CoreDataProperties.swift */,
-				844E5B211EEECC2D00E69646 /* State+CoreDataClass.swift */,
-				844E5B221EEECC2D00E69646 /* State+CoreDataProperties.swift */,
+				8414926E1EF00639007133D0 /* VertcalDomains+CoreDataClass.swift */,
+				8414926F1EF00639007133D0 /* VertcalDomains+CoreDataProperties.swift */,
+				8414926A1EF0060D007133D0 /* User+CoreDataClass.swift */,
+				8414926B1EF0060D007133D0 /* User+CoreDataProperties.swift */,
+				841492661EF005D6007133D0 /* State+CoreDataClass.swift */,
+				841492671EF005D6007133D0 /* State+CoreDataProperties.swift */,
+				8414925A1EF004CA007133D0 /* City+CoreDataClass.swift */,
+				8414925B1EF004CA007133D0 /* City+CoreDataProperties.swift */,
 				8449B6051EE578EB0072A8DD /* CoreDataManager.swift */,
 				8449B6061EE578EB0072A8DD /* TextField.swift */,
-				8449B6071EE578EB0072A8DD /* User+CoreDataClass.swift */,
-				8449B6081EE578EB0072A8DD /* User+CoreDataProperties.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -266,6 +290,10 @@
 			isa = PBXGroup;
 			children = (
 				8451F6281EDE8E2F00B1DEDF /* investHR.entitlements */,
+				8431B5DD1EEFF78E0015C7E1 /* investHR.sqlite */,
+				8431B5DE1EEFF78E0015C7E1 /* investHR.sqlite-shm */,
+				8431B5DF1EEFF78E0015C7E1 /* investHR.sqlite-wal */,
+				8431B5BF1EEFE28F0015C7E1 /* Database */,
 				8449B6041EE578EB0072A8DD /* Models */,
 				84EB8F3F1EDFE94900014DA4 /* Constant */,
 				84EB8F3A1EDFE90B00014DA4 /* APIManager */,
@@ -278,7 +306,6 @@
 				8493B83F1EC4678200D8F7F9 /* Info.plist */,
 				8453BDEF1EE96F6300C9B956 /* Auth0.plist */,
 				843425C71EE7ED5F00282419 /* GoogleService-Info.plist */,
-				8493B8371EC4678200D8F7F9 /* investHR.xcdatamodeld */,
 				844E5AFF1EEE59D600E69646 /* SessionManager.swift */,
 				84239B821EC475200076EF33 /* investHR-Bridging-Header.h */,
 			);
@@ -495,11 +522,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84AD183A1EF000DE0049675A /* investHR.xcdatamodeld in Resources */,
 				8453BDF01EE96F6400C9B956 /* Auth0.plist in Resources */,
+				8431B5E11EEFF78E0015C7E1 /* investHR.sqlite-shm in Resources */,
 				8493B83E1EC4678200D8F7F9 /* LaunchScreen.storyboard in Resources */,
+				8431B5E01EEFF78E0015C7E1 /* investHR.sqlite in Resources */,
 				843425C81EE7ED5F00282419 /* GoogleService-Info.plist in Resources */,
 				8493B83B1EC4678200D8F7F9 /* Assets.xcassets in Resources */,
 				8493B8361EC4678200D8F7F9 /* Main.storyboard in Resources */,
+				8431B5E21EEFF78E0015C7E1 /* investHR.sqlite-wal in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -667,9 +698,9 @@
 				84EB8F451EDFFCC900014DA4 /* AppPreferences.swift in Sources */,
 				84EB8F3D1EDFE90B00014DA4 /* APIManager.swift in Sources */,
 				84EB8F3E1EDFE90B00014DA4 /* DownloadMetaDataJob.swift in Sources */,
-				8493B8391EC4678200D8F7F9 /* investHR.xcdatamodeld in Sources */,
-				8449B60B1EE578EB0072A8DD /* User+CoreDataClass.swift in Sources */,
 				84EB8F481EE03D6600014DA4 /* Reachability.swift in Sources */,
+				841492691EF005D6007133D0 /* State+CoreDataProperties.swift in Sources */,
+				841492711EF00639007133D0 /* VertcalDomains+CoreDataProperties.swift in Sources */,
 				8493B8311EC4678200D8F7F9 /* AppDelegate.swift in Sources */,
 				842B32FC1EDDAE2B000088D1 /* ReferFriendViewController.swift in Sources */,
 				844F5F311EDC2A160073A7D7 /* SavedJobsViewController.swift in Sources */,
@@ -677,23 +708,26 @@
 				8450ACCD1ED5B5EF001D57E1 /* AdditionalInfoViewController.swift in Sources */,
 				844F5F351EDC3BA10073A7D7 /* UploadResumeViewController.swift in Sources */,
 				84DAD40F1ED7F5440008BB09 /* VerticalViewController.swift in Sources */,
+				8414926C1EF0060D007133D0 /* User+CoreDataClass.swift in Sources */,
 				841C71AB1ECC5C0300C3111F /* HomeViewController.swift in Sources */,
 				8449B60A1EE578EB0072A8DD /* TextField.swift in Sources */,
 				8467DEE11EEA68E300974A3D /* HybridAuth.swift in Sources */,
-				844E5B271EEECC8F00E69646 /* City+CoreDataClass.swift in Sources */,
+				8414925C1EF004CA007133D0 /* City+CoreDataClass.swift in Sources */,
+				841492701EF00639007133D0 /* VertcalDomains+CoreDataClass.swift in Sources */,
+				8431B5C21EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld in Sources */,
 				84DAD4111ED822200008BB09 /* JobsViewController.swift in Sources */,
+				8414926D1EF0060D007133D0 /* User+CoreDataProperties.swift in Sources */,
 				842B32F81EDD7A97000088D1 /* SettingsViewController.swift in Sources */,
 				844E5B001EEE59D600E69646 /* SessionManager.swift in Sources */,
 				844F5F2F1EDC23A20073A7D7 /* NotificationJobsViewController.swift in Sources */,
 				844387B81ED46D2D002E71D6 /* Registration1ViewController.swift in Sources */,
 				8439E04E1EC5F3C000FC2A12 /* LoginViewController.swift in Sources */,
-				8449B60C1EE578EB0072A8DD /* User+CoreDataProperties.swift in Sources */,
-				844E5B231EEECC2D00E69646 /* State+CoreDataClass.swift in Sources */,
-				844E5B241EEECC2D00E69646 /* State+CoreDataProperties.swift in Sources */,
+				84AD18391EF000140049675A /* investHR.xcdatamodeld in Sources */,
+				841492681EF005D6007133D0 /* State+CoreDataClass.swift in Sources */,
 				8449B6091EE578EB0072A8DD /* CoreDataManager.swift in Sources */,
 				84EB8F431EDFEB8600014DA4 /* Constant.swift in Sources */,
 				844E5B2A1EEED4CF00E69646 /* LinkedInLoginViewController.swift in Sources */,
-				844E5B281EEECC8F00E69646 /* City+CoreDataProperties.swift in Sources */,
+				8414925D1EF004CA007133D0 /* City+CoreDataProperties.swift in Sources */,
 				84239B941EC476C60076EF33 /* SWRevealViewController.m in Sources */,
 				8440DF701ED706CB0003F05B /* MenuViewViewController.swift in Sources */,
 				844F5F331EDC34B20073A7D7 /* AppliedJobsViewController.swift in Sources */,
@@ -996,12 +1030,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		8493B8371EC4678200D8F7F9 /* investHR.xcdatamodeld */ = {
+		8431B5C01EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				8493B8381EC4678200D8F7F9 /* investHR.xcdatamodel */,
+				8431B5C11EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodel */,
 			);
-			currentVersion = 8493B8381EC4678200D8F7F9 /* investHR.xcdatamodel */;
+			currentVersion = 8431B5C11EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodel */;
+			path = CoreDataDemo.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		84AD18371EF000140049675A /* investHR.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				84AD18381EF000140049675A /* investHR.xcdatamodel */,
+			);
+			currentVersion = 84AD18381EF000140049675A /* investHR.xcdatamodel */;
 			path = investHR.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

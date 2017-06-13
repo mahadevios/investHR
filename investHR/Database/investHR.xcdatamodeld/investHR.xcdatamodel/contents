@@ -3,10 +3,7 @@
     <entity name="City" representedClassName="City" syncable="YES">
         <attribute name="cityName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="stateId" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="State" syncable="YES"/>
-        <fetchedProperty name="fetchedProperty" optional="YES" syncable="YES">
-            <fetchRequest name="fetchedPropertyFetchRequest" entity="City"/>
-        </fetchedProperty>
+        <attribute name="stateId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <entity name="State" representedClassName="State" syncable="YES">
         <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -20,13 +17,13 @@
         <attribute name="pictureUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userId" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="VerticalDomains" representedClassName="VerticalDomains" syncable="YES" codeGenerationType="class">
+    <entity name="VertcalDomains" representedClassName="VertcalDomains" syncable="YES">
         <attribute name="domainName" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="City" positionX="-54" positionY="36" width="128" height="119"/>
-        <element name="State" positionX="-63" positionY="27" width="128" height="75"/>
+        <element name="City" positionX="-36" positionY="45" width="128" height="90"/>
+        <element name="State" positionX="-18" positionY="63" width="128" height="75"/>
         <element name="User" positionX="-63" positionY="-18" width="128" height="135"/>
-        <element name="VerticalDomains" positionX="-63" positionY="0" width="128" height="60"/>
+        <element name="VertcalDomains" positionX="-54" positionY="36" width="128" height="60"/>
     </elements>
 </model>

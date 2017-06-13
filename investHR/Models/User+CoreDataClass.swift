@@ -1,9 +1,9 @@
 //
 //  User+CoreDataClass.swift
-//  
+//  investHR
 //
-//  Created by mac on 05/06/17.
-//
+//  Created by mac on 13/06/17.
+//  Copyright © 2017 Xanadutec. All rights reserved.
 //
 
 import Foundation

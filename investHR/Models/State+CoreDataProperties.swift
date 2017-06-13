@@ -2,7 +2,7 @@
 //  State+CoreDataProperties.swift
 //  investHR
 //
-//  Created by mac on 12/06/17.
+//  Created by mac on 13/06/17.
 //  Copyright © 2017 Xanadutec. All rights reserved.
 //
 
@@ -12,8 +12,7 @@ import CoreData
 
 extension State {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<State>
-    {
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<State> {
         return NSFetchRequest<State>(entityName: "State");
     }
 
