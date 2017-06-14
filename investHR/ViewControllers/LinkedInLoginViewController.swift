@@ -223,20 +223,22 @@ class LinkedInLoginViewController: UIViewController,UIWebViewDelegate
         
         let redirectURL = "https://www.example.com".addingPercentEncoding(withAllowedCharacters: NSCharacterSet.alphanumerics)
         // }
+        
+//        APIManager.getSharedAPIManager().getLinkedInAccessToken(grant_type: grantType, code: authorizationCode, redirect_uri: redirectURL!, client_id: linkedInKey, client_secret: linkedInSecret)
         // Set the POST parameters.
-        var postParams = "grant_type=\(grantType)&"
-        postParams += "code=\(authorizationCode)&"
-        postParams += "redirect_uri=\(redirectURL!)&"
-        postParams += "client_id=\(linkedInKey)&"
-        postParams += "client_secret=\(linkedInSecret)"
-        
-        let params = ["grant_type=\(grantType)&","code=\(authorizationCode)&","redirect_uri=\(redirectURL!)&","client_id=\(linkedInKey)&","client_secret=\(linkedInSecret)"]
-        
-        let dic = [Constant.REQUEST_PARAMETER:params]
-        
-        let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.LINKEDIN_ACCESS_TOKEN_ENDPOINT_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.LINKEDIN_ACCESS_TOKEN_ENDPOINT_API, withHttpMethd: Constant.POST)
-        
-        downloadmetadatajob.startMetaDataDownLoad()
+//        var postParams = "grant_type=\(grantType)&"
+//        postParams += "code=\(authorizationCode)&"
+//        postParams += "redirect_uri=\(redirectURL!)&"
+//        postParams += "client_id=\(linkedInKey)&"
+//        postParams += "client_secret=\(linkedInSecret)"
+//        
+//        let params = ["grant_type=\(grantType)&","code=\(authorizationCode)&","redirect_uri=\(redirectURL!)&","client_id=\(linkedInKey)&","client_secret=\(linkedInSecret)"]
+//        
+//        let dic = [Constant.REQUEST_PARAMETER:params]
+//        
+//        let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.LINKEDIN_ACCESS_TOKEN_ENDPOINT_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.LINKEDIN_ACCESS_TOKEN_ENDPOINT_API, withHttpMethd: Constant.POST)
+//        
+//        downloadmetadatajob.startMetaDataDownLoad()
         
 //        let postData = postParams.data(using: .utf8)
 //        

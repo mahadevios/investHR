@@ -27,6 +27,8 @@ struct Constant
 
     static let  LINKEDIN_ACCESS_TOKEN_ENDPOINT_API       = "https://www.linkedin.com/uas/oauth2/accessToken"
     static let  NOTIFICATION_LIACCESSTOKEN_FETCHED       = "LIAccessTokenFetched"
+    static let  NOTIFICATION_NEW_USER_LOGGED_IN          = "newUserLoggedIn"
+
 }
 
 enum MyAlertType

@@ -125,10 +125,29 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     }
     @IBAction func nextButtonPressed(_ sender: Any)
     {
+//        if nameTextField.text == ""
+//        {
+//            AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Please enter a name", withCancelText: "Ok")
+//        }
+//        else
+//            if emailTextField.text == "" || !(emailTextField.text?.contains("@"))!
+//            {
+//                AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Please enter a valid email address", withCancelText: "Ok")
+//            }
+//            else
+//                if passwordTextField.text == ""
+//                {
+//                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Please enter a password", withCancelText: "Ok")
+//                }
+//                else
+//                {
+                    let viewController =  self.storyboard?.instantiateViewController(withIdentifier: "Registration1ViewController") as! Registration1ViewController
+                    
+                    self.navigationController?.pushViewController(viewController, animated: true)
+                //}
         
-        let viewController =  self.storyboard?.instantiateViewController(withIdentifier: "Registration1ViewController") as! Registration1ViewController
         
-        self.navigationController?.pushViewController(viewController, animated: true)
+        
         //self.present(viewController, animated: true, completion: nil)
         
     }

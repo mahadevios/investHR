@@ -12,13 +12,20 @@ import CoreData
 
 class CoreDataManager: NSObject
 {
-    static let sharedManager = CoreDataManager()
-    //static let managedObjectContext = AppDelegate().getManageObjectContext()
+    private static let sharedCoreDataManager = CoreDataManager()
+    //private var dummyObject:APIManager
     
     private override init()
     {
-        //managedObjectContext = AppDelegate().getManageObjectContext()
+        super.init()
+        // dummyObject = APIManager()
     }
+    
+    class func getSharedCoreDataManager() -> CoreDataManager
+    {
+        return sharedCoreDataManager;
+    }
+
     
 //    class func getSharedCoreDataManager() -> CoreDataManager
 //    {
@@ -28,9 +35,10 @@ class CoreDataManager: NSObject
     func save(entity: String, _ attributes: [String: Any]) -> NSManagedObject?
     {
         //let sharedManager = CoreDataManager.sharedManager // to initialize managedObjectContext
-        
-        let entity = NSEntityDescription.entity(forEntityName: entity, in: AppDelegate().managedObjectContext)
-        let object = NSManagedObject(entity: entity!, insertInto: AppDelegate().managedObjectContext)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+
+        let entity = NSEntityDescription.entity(forEntityName: entity, in: appDelegate.managedObjectContext)
+        let object = NSManagedObject(entity: entity!, insertInto: appDelegate.managedObjectContext)
         
         for (key, attr) in attributes {
             object.setValue(attr, forKey: key)
@@ -38,7 +46,7 @@ class CoreDataManager: NSObject
         
         do
         {
-            try AppDelegate().managedObjectContext.save()
+            try appDelegate.managedObjectContext.save()
             
         } catch let error as NSError {
             print(error.localizedDescription)
@@ -77,18 +85,52 @@ class CoreDataManager: NSObject
         return nil
     }
     
+    func fetchCitiesFromStateId(entity: String, stateId:Int16) -> [NSManagedObject]?
+    {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            
+            
+            return nil
+        }
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        
+        print(stateId)
+        fetchRequest.predicate = NSPredicate(format: "stateId == %d", stateId)
+
+        do {
+            let manageObjects = try appDelegate.managedObjectContext.fetch(fetchRequest)
+            
+            if manageObjects.count > 0
+            {
+                return manageObjects as? [NSManagedObject]
+            }
+        } catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        //        if let entities = managedObjectContext.fetch(request) as? [NSManagedObject]
+        //        {
+        //            if entities.count > 0
+        //            {
+        //                return entities
+        //            }
+        //        }
+        return nil
+    }
     func delete(entity: String, index: Int) -> Bool
     {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+
         var data = fetch(entity: entity)
         if data != nil
         {
-            AppDelegate().managedObjectContext.delete(data![index])
+            appDelegate.managedObjectContext.delete(data![index])
             
             data!.remove(at: index)
             
             do
             {
-                try AppDelegate().managedObjectContext.save()
+                try appDelegate.managedObjectContext.save()
                 
             } catch let error as NSError
             {
@@ -103,18 +145,20 @@ class CoreDataManager: NSObject
     
     func deleteAllRecords(entity:String) -> Void
     {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
         
-        fetchRequest.entity = NSEntityDescription.entity(forEntityName: entity, in: AppDelegate().managedObjectContext)
+        fetchRequest.entity = NSEntityDescription.entity(forEntityName: entity, in: appDelegate.managedObjectContext)
         fetchRequest.includesPropertyValues = false
         
         do
         {
-            let results = try AppDelegate().managedObjectContext.fetch(fetchRequest) as? [NSManagedObject]
+            let results = try appDelegate.managedObjectContext.fetch(fetchRequest) as? [NSManagedObject]
             
                 for result in results!
                 {
-                    AppDelegate().managedObjectContext.delete(result)
+                    appDelegate.managedObjectContext.delete(result)
                 }
             
         }
@@ -125,7 +169,7 @@ class CoreDataManager: NSObject
             
         do
         {
-            try AppDelegate().managedObjectContext.save()
+            try appDelegate.managedObjectContext.save()
             
         } catch let error as NSError
         {
@@ -136,6 +180,8 @@ class CoreDataManager: NSObject
     }
     func idExists (aToken:String,  entityName:String) -> Bool
     {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         
         let predicate = NSPredicate(format: "userId == %@", argumentArray: [aToken])
@@ -145,7 +191,7 @@ class CoreDataManager: NSObject
         
         do
         {
-            let count = try AppDelegate().managedObjectContext.count(for: request)
+            let count = try appDelegate.managedObjectContext.count(for: request)
             
             if count == 0 {
                 return false

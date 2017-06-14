@@ -218,7 +218,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     }
     func showData() -> Void
     {
-        let coreDataManager = CoreDataManager.sharedManager
+        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
         
         
         do

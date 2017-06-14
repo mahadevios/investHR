@@ -17,14 +17,17 @@
 		841492711EF00639007133D0 /* VertcalDomains+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8414926F1EF00639007133D0 /* VertcalDomains+CoreDataProperties.swift */; };
 		841C71AB1ECC5C0300C3111F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841C71AA1ECC5C0300C3111F /* HomeViewController.swift */; };
 		84239B941EC476C60076EF33 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84239B931EC476C60076EF33 /* SWRevealViewController.m */; };
+		8424ECD91EF0FCDA00E68B3D /* investHR.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 8424ECD61EF0FCDA00E68B3D /* investHR.sqlite */; };
+		8424ECDA1EF0FCDA00E68B3D /* investHR.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 8424ECD71EF0FCDA00E68B3D /* investHR.sqlite-shm */; };
+		8424ECDB1EF0FCDA00E68B3D /* investHR.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 8424ECD81EF0FCDA00E68B3D /* investHR.sqlite-wal */; };
+		8424ECDF1EF0FEED00E68B3D /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 8424ECDE1EF0FEED00E68B3D /* MBProgressHUD.m */; };
+		8424ED1E1EF14C6000E68B3D /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8424ED1D1EF14C6000E68B3D /* TextField.swift */; };
+		8424ED201EF14C8800E68B3D /* SearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8424ED1F1EF14C8800E68B3D /* SearchTextField.swift */; };
 		842B32F81EDD7A97000088D1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842B32F71EDD7A97000088D1 /* SettingsViewController.swift */; };
 		842B32FA1EDD8F62000088D1 /* UploadVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */; };
 		842B32FC1EDDAE2B000088D1 /* ReferFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */; };
 		842B32FE1EDDB224000088D1 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842B32FD1EDDB224000088D1 /* Social.framework */; };
 		8431B5C21EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8431B5C01EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld */; };
-		8431B5E01EEFF78E0015C7E1 /* investHR.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 8431B5DD1EEFF78E0015C7E1 /* investHR.sqlite */; };
-		8431B5E11EEFF78E0015C7E1 /* investHR.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 8431B5DE1EEFF78E0015C7E1 /* investHR.sqlite-shm */; };
-		8431B5E21EEFF78E0015C7E1 /* investHR.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 8431B5DF1EEFF78E0015C7E1 /* investHR.sqlite-wal */; };
 		843425C41EE7D80500282419 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843425C31EE7D80400282419 /* UserNotifications.framework */; };
 		843425C81EE7ED5F00282419 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 843425C71EE7ED5F00282419 /* GoogleService-Info.plist */; };
 		8439E04E1EC5F3C000FC2A12 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */; };
@@ -33,7 +36,6 @@
 		844387B61ED41FF0002E71D6 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844387B51ED41FF0002E71D6 /* RegistrationViewController.swift */; };
 		844387B81ED46D2D002E71D6 /* Registration1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844387B71ED46D2D002E71D6 /* Registration1ViewController.swift */; };
 		8449B6091EE578EB0072A8DD /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8449B6051EE578EB0072A8DD /* CoreDataManager.swift */; };
-		8449B60A1EE578EB0072A8DD /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8449B6061EE578EB0072A8DD /* TextField.swift */; };
 		844E5B001EEE59D600E69646 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844E5AFF1EEE59D600E69646 /* SessionManager.swift */; };
 		844E5B2A1EEED4CF00E69646 /* LinkedInLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844E5B291EEED4CF00E69646 /* LinkedInLoginViewController.swift */; };
 		844F5F2D1EDBF0B20073A7D7 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844F5F2C1EDBF0B20073A7D7 /* EditProfileViewController.swift */; };
@@ -99,14 +101,18 @@
 		84239B821EC475200076EF33 /* investHR-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "investHR-Bridging-Header.h"; sourceTree = "<group>"; };
 		84239B921EC476C60076EF33 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		84239B931EC476C60076EF33 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
+		8424ECD61EF0FCDA00E68B3D /* investHR.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = investHR.sqlite; sourceTree = "<group>"; };
+		8424ECD71EF0FCDA00E68B3D /* investHR.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "investHR.sqlite-shm"; sourceTree = "<group>"; };
+		8424ECD81EF0FCDA00E68B3D /* investHR.sqlite-wal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "investHR.sqlite-wal"; sourceTree = "<group>"; };
+		8424ECDD1EF0FEED00E68B3D /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		8424ECDE1EF0FEED00E68B3D /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		8424ED1D1EF14C6000E68B3D /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		8424ED1F1EF14C8800E68B3D /* SearchTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTextField.swift; sourceTree = "<group>"; };
 		842B32F71EDD7A97000088D1 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadVideoViewController.swift; sourceTree = "<group>"; };
 		842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferFriendViewController.swift; sourceTree = "<group>"; };
 		842B32FD1EDDB224000088D1 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		8431B5C11EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataDemo.xcdatamodel; sourceTree = "<group>"; };
-		8431B5DD1EEFF78E0015C7E1 /* investHR.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = investHR.sqlite; sourceTree = "<group>"; };
-		8431B5DE1EEFF78E0015C7E1 /* investHR.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "investHR.sqlite-shm"; sourceTree = "<group>"; };
-		8431B5DF1EEFF78E0015C7E1 /* investHR.sqlite-wal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "investHR.sqlite-wal"; sourceTree = "<group>"; };
 		843425C31EE7D80400282419 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		843425C71EE7ED5F00282419 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -114,8 +120,7 @@
 		8440DF6F1ED706CB0003F05B /* MenuViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewViewController.swift; sourceTree = "<group>"; };
 		844387B51ED41FF0002E71D6 /* RegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		844387B71ED46D2D002E71D6 /* Registration1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registration1ViewController.swift; sourceTree = "<group>"; };
-		8449B6051EE578EB0072A8DD /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
-		8449B6061EE578EB0072A8DD /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		8449B6051EE578EB0072A8DD /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataManager.swift; path = ../Models/CoreDataManager.swift; sourceTree = "<group>"; };
 		844E5AFF1EEE59D600E69646 /* SessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		844E5B291EEED4CF00E69646 /* LinkedInLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkedInLoginViewController.swift; sourceTree = "<group>"; };
 		844F5F2C1EDBF0B20073A7D7 /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
@@ -205,6 +210,8 @@
 		84239B901EC476AD0076EF33 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				8424ED1C1EF14C6000E68B3D /* CustomTextFields */,
+				8424ECDC1EF0FEED00E68B3D /* MBProgressHUD */,
 				8467DEDF1EEA68E300974A3D /* OAuth */,
 				843A6AB71EE1824C00D86591 /* LinkedIn */,
 				84EB8F461EE03D6600014DA4 /* Reachability */,
@@ -220,6 +227,24 @@
 				84239B931EC476C60076EF33 /* SWRevealViewController.m */,
 			);
 			path = SWrevealView;
+			sourceTree = "<group>";
+		};
+		8424ECDC1EF0FEED00E68B3D /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				8424ECDD1EF0FEED00E68B3D /* MBProgressHUD.h */,
+				8424ECDE1EF0FEED00E68B3D /* MBProgressHUD.m */,
+			);
+			path = MBProgressHUD;
+			sourceTree = "<group>";
+		};
+		8424ED1C1EF14C6000E68B3D /* CustomTextFields */ = {
+			isa = PBXGroup;
+			children = (
+				8424ED1F1EF14C8800E68B3D /* SearchTextField.swift */,
+				8424ED1D1EF14C6000E68B3D /* TextField.swift */,
+			);
+			path = CustomTextFields;
 			sourceTree = "<group>";
 		};
 		8431B5BF1EEFE28F0015C7E1 /* Database */ = {
@@ -250,8 +275,6 @@
 				841492671EF005D6007133D0 /* State+CoreDataProperties.swift */,
 				8414925A1EF004CA007133D0 /* City+CoreDataClass.swift */,
 				8414925B1EF004CA007133D0 /* City+CoreDataProperties.swift */,
-				8449B6051EE578EB0072A8DD /* CoreDataManager.swift */,
-				8449B6061EE578EB0072A8DD /* TextField.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -290,9 +313,9 @@
 			isa = PBXGroup;
 			children = (
 				8451F6281EDE8E2F00B1DEDF /* investHR.entitlements */,
-				8431B5DD1EEFF78E0015C7E1 /* investHR.sqlite */,
-				8431B5DE1EEFF78E0015C7E1 /* investHR.sqlite-shm */,
-				8431B5DF1EEFF78E0015C7E1 /* investHR.sqlite-wal */,
+				8424ECD61EF0FCDA00E68B3D /* investHR.sqlite */,
+				8424ECD71EF0FCDA00E68B3D /* investHR.sqlite-shm */,
+				8424ECD81EF0FCDA00E68B3D /* investHR.sqlite-wal */,
 				8431B5BF1EEFE28F0015C7E1 /* Database */,
 				8449B6041EE578EB0072A8DD /* Models */,
 				84EB8F3F1EDFE94900014DA4 /* Constant */,
@@ -361,6 +384,7 @@
 				84EB8F3B1EDFE90B00014DA4 /* APIManager.swift */,
 				84EB8F3C1EDFE90B00014DA4 /* DownloadMetaDataJob.swift */,
 				84EB8F441EDFFCC900014DA4 /* AppPreferences.swift */,
+				8449B6051EE578EB0072A8DD /* CoreDataManager.swift */,
 			);
 			path = APIManager;
 			sourceTree = "<group>";
@@ -524,13 +548,13 @@
 			files = (
 				84AD183A1EF000DE0049675A /* investHR.xcdatamodeld in Resources */,
 				8453BDF01EE96F6400C9B956 /* Auth0.plist in Resources */,
-				8431B5E11EEFF78E0015C7E1 /* investHR.sqlite-shm in Resources */,
 				8493B83E1EC4678200D8F7F9 /* LaunchScreen.storyboard in Resources */,
-				8431B5E01EEFF78E0015C7E1 /* investHR.sqlite in Resources */,
+				8424ECDA1EF0FCDA00E68B3D /* investHR.sqlite-shm in Resources */,
 				843425C81EE7ED5F00282419 /* GoogleService-Info.plist in Resources */,
 				8493B83B1EC4678200D8F7F9 /* Assets.xcassets in Resources */,
 				8493B8361EC4678200D8F7F9 /* Main.storyboard in Resources */,
-				8431B5E21EEFF78E0015C7E1 /* investHR.sqlite-wal in Resources */,
+				8424ECDB1EF0FCDA00E68B3D /* investHR.sqlite-wal in Resources */,
+				8424ECD91EF0FCDA00E68B3D /* investHR.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -700,6 +724,7 @@
 				84EB8F3E1EDFE90B00014DA4 /* DownloadMetaDataJob.swift in Sources */,
 				84EB8F481EE03D6600014DA4 /* Reachability.swift in Sources */,
 				841492691EF005D6007133D0 /* State+CoreDataProperties.swift in Sources */,
+				8424ECDF1EF0FEED00E68B3D /* MBProgressHUD.m in Sources */,
 				841492711EF00639007133D0 /* VertcalDomains+CoreDataProperties.swift in Sources */,
 				8493B8311EC4678200D8F7F9 /* AppDelegate.swift in Sources */,
 				842B32FC1EDDAE2B000088D1 /* ReferFriendViewController.swift in Sources */,
@@ -710,9 +735,10 @@
 				84DAD40F1ED7F5440008BB09 /* VerticalViewController.swift in Sources */,
 				8414926C1EF0060D007133D0 /* User+CoreDataClass.swift in Sources */,
 				841C71AB1ECC5C0300C3111F /* HomeViewController.swift in Sources */,
-				8449B60A1EE578EB0072A8DD /* TextField.swift in Sources */,
 				8467DEE11EEA68E300974A3D /* HybridAuth.swift in Sources */,
 				8414925C1EF004CA007133D0 /* City+CoreDataClass.swift in Sources */,
+				8424ED1E1EF14C6000E68B3D /* TextField.swift in Sources */,
+				8424ED201EF14C8800E68B3D /* SearchTextField.swift in Sources */,
 				841492701EF00639007133D0 /* VertcalDomains+CoreDataClass.swift in Sources */,
 				8431B5C21EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld in Sources */,
 				84DAD4111ED822200008BB09 /* JobsViewController.swift in Sources */,

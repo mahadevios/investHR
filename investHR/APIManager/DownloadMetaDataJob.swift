@@ -44,7 +44,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         
         let paramArray = (self.requestParameter?[Constant.REQUEST_PARAMETER]) as! [String]
         
-        var parameter:NSMutableString = ""
+        var parameter = ""
         
         
         var webservicePath = ""
@@ -62,20 +62,20 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         
         let request = NSMutableURLRequest(url: url as! URL, cachePolicy: NSURLRequest.CachePolicy.useProtocolCachePolicy, timeoutInterval: 120)
 
+        for param in paramArray
+        {
+            if paramArray[0] == param
+            {
+                parameter.append(param)
+            }
+            else
+            {
+                parameter.append("&\(param)")
+            }
+        }
         
         if httpMethodParameter == Constant.GET
         {
-            for param in paramArray
-            {
-                if paramArray[0] == param
-                {
-                    parameter.append(param)
-                }
-                else
-                {
-                    parameter.append("&\(param)")
-                }
-            }
             
             request.setValue("application/json", forHTTPHeaderField: "Accept")
             
@@ -83,13 +83,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         }
         else
         {
-            var parameterString = ""
-            
-            for stringParam:String in paramArray
-            {
-                parameterString.append(stringParam)
-            }
-            let postData = parameterString.data(using: .utf8)
+            let postData = parameter.data(using: .utf8)
                         
             // Set the HTTP body using the postData object created above.
             request.httpBody = postData

@@ -32,34 +32,40 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
 {
     
     
+    let authorizationEndPoint = "https://www.linkedin.com/uas/oauth2/authorization"
+    
+    let accessTokenEndPoint = "https://www.linkedin.com/uas/oauth2/accessToken"
+    
+    let linkedInKey = "81no6kz3uepufn"
+    
+    let linkedInSecret = "tgGDfootCo2zoLwB"
     
     @IBOutlet weak var googleSignInCircleButton: UIButton!
     
     @IBOutlet weak var fbCircleLoginButton: UIButton!
+    
     @IBOutlet weak var linkedInLoginCircleButton: UIButton!
+    
     @IBOutlet weak var emailTextField: UITextField!
+    
     @IBOutlet weak var passwordTextField: UITextField!
     
     var accesToken:LISDKAccessToken?
     
     @IBAction func forgotPasswordButtonClicked(_ sender: Any)
     {
-        let storage = HTTPCookieStorage.shared
-        for cookie in storage.cookies! {
-            storage.deleteCookie(cookie)
-        }
-        APIManager.getSharedAPIManager().logoutFromLinkedIn(accesTOken: "ds")
+        //APIManager.getSharedAPIManager().logoutFromLinkedIn(accesTOken: "ds")
         
-        SessionManager.shared.logout()
-        self.presentingViewController?.dismiss(animated: true, completion: nil)
+        //SessionManager.shared.logout()
+        //self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     @IBAction func registerUserButtonClicked(_ sender: Any)
     {
-//       let viewController =  self.storyboard?.instantiateViewController(withIdentifier: "RegistrationViewController") as! RegistrationViewController
+       //let viewController =  self.storyboard?.instantiateViewController(withIdentifier: "RegistrationViewController") as! RegistrationViewController
 
-//        let viewController =  self.storyboard?.instantiateViewController(withIdentifier: "NavigationController")
-//        
-//        self.present(viewController!, animated: true, completion: nil)
+        let viewController =  self.storyboard?.instantiateViewController(withIdentifier: "NavigationController")
+        
+        self.present(viewController!, animated: true, completion: nil)
         
 //        let auth = HybridAuth()
 //        
@@ -125,14 +131,13 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
     {
         super.viewDidLoad()
         
-      //  GIDSignIn.sharedInstance().delegate = self
+             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            
+            
+            return
+        }
         
-       // GIDSignIn.sharedInstance().uiDelegate = self
-        
-        
-//        let con = appDelegate.persistentContainer.viewContext
-//
-//        //let managedObjectContext1 = appDelegate.managedObjectContext
+        let managedObjectContext1 = appDelegate.managedObjectContext
 //
 //        let entity1 = NSEntityDescription.entity(forEntityName: "City", in: managedObjectContext)!
 //
@@ -202,11 +207,45 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         print("finished")
     }
     
+    override func viewWillAppear(_ animated: Bool)
+    {
+        super.viewWillAppear(true)
+        
+        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
+        
+        self.checkForAvailableLinkedInSession()
+        
+        emailTextField.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        
+        let imageView = UIImageView(frame: CGRect(x: 15, y: 7, width: 15, height: 20))
+        let image = UIImage(named: "Username")
+        imageView.image = image
+        emailTextField.addSubview(imageView)
+        emailTextField.delegate = self
+        
+        passwordTextField.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        let imageView1 = UIImageView(frame: CGRect(x: 15, y: 6, width: 16, height: 21))
+        let image1 = UIImage(named: "Password")
+        imageView1.image = image1
+        passwordTextField.addSubview(imageView1)
+        passwordTextField.delegate = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.fetchUserProfile(dataDictionary:)), name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: nil)
+        
+        
+    }
     
+    override func viewWillDisappear(_ animated: Bool)
+    {
+        //NotificationCenter.default.removeObserver(self)
+    }
+
     func fetchUserProfile(dataDictionary:NSNotification)
     {
         // Convert the received JSON data into a dictionary.
-        //self.presentedViewController?.dismiss(animated: true, completion: nil)
         do {
             
             //                let dataDictionary = try JSONSerialization.jsonObject(with: responseData as Data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
@@ -227,15 +266,12 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                 
                 let request = NSMutableURLRequest(url: NSURL(string: targetURLString)! as URL)
                 
-                // Indicate that this is a GET request.
                 request.httpMethod = "GET"
                 
-                // Add the access token as an HTTP header field.
                 request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
                 
                 let session = URLSession(configuration: URLSessionConfiguration.default)
                 
-                // Make the request.
                 let task: URLSessionDataTask = session.dataTask(with: request as URLRequest) { (data, response, error) -> Void in
                     
                     let statusCode = (response as! HTTPURLResponse).statusCode
@@ -246,12 +282,53 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                         do {
                             let dataDictionary = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
                             
-                            let profileURLString = dataDictionary["publicProfileUrl"] as! String
-                            
-                            print(profileURLString)
-                            
                             DispatchQueue.main.async
                                 {
+                                    let userId = dataDictionary["id"]
+                                    
+                                    // let idExist = CoreDataManager.sharedManager.idExists(aToken: userId as! String, entityName: "User")
+                                    let coreDataManager = CoreDataManager.getSharedCoreDataManager()
+                                    //                                                                        if idExist
+                                    //                                                                        {
+                                    //
+                                    //                                                                        }
+                                    //                                                                        else
+                                    //                                                                        {
+                                    let firstName = dataDictionary["firstName"]
+                                    
+                                    let lastName = dataDictionary["lastName"]
+                                    
+                                    let occupation = dataDictionary["headline"]
+                                    
+                                    let emailAddress = dataDictionary["emailAddress"]
+                                    
+                                    let pictureUrlsJson = dataDictionary["pictureUrls"] as! [String:AnyObject]
+                                    
+                                    let totalUrlsNumber = pictureUrlsJson["_total"] as! Int
+                                    
+                                    let pictureUrlString:String!
+                                    
+                                    let pictureUrl:NSURL!
+                                    
+                                    var fileURL:NSURL! = NSURL()
+                                    
+                                    if(totalUrlsNumber == 0)
+                                    {
+                                        //
+                                        pictureUrlString = ""
+                                        
+                                    }
+                                    else
+                                    {
+                                        
+                                        let pictureUrlArray = pictureUrlsJson["values"] as! [String]
+                                        
+                                        pictureUrlString = pictureUrlArray[0]
+                                        
+                                        pictureUrl = NSURL(string: pictureUrlArray[0])
+                                    }
+                                    CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+                                    let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["firstName":firstName ?? "nil","lastName":lastName ?? "nil","userId":userId ?? "nil","occupation":occupation ?? "nil","emailAddress":emailAddress ?? "nil","pictureUrl":pictureUrlString])
                                     
                                     let appDelegate = UIApplication.shared.delegate as! AppDelegate
                                     
@@ -260,6 +337,8 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                                     print(currentRootVC)
                                     
                                     let className = String(describing: type(of: currentRootVC))
+                                    
+                                    self.view.viewWithTag(789)?.removeFromSuperview() // remove hud
                                     
                                     if className == "LoginViewController"
                                     {
@@ -271,7 +350,8 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                                     else
                                     {
                                         self.dismiss(animated: true, completion: nil)
-                                        
+                                        NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_LOGGED_IN), object: nil, userInfo: nil)
+
                                     }
                                     
                             }
@@ -305,58 +385,10 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
             print("Could not convert JSON data into a dictionary.")
         }
     }
-    override func viewWillAppear(_ animated: Bool)
-    {
-        super.viewWillAppear(true)
-        
-        let coreDataManager = CoreDataManager.sharedManager
-
-        self.checkForAvailableLinkedInSession()
-        
-        emailTextField.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
-        
-//        emailTextField.leftViewMode = UITextFieldViewMode.always;
-        
-        let imageView = UIImageView(frame: CGRect(x: 15, y: 7, width: 15, height: 20))
-        let image = UIImage(named: "Username")
-        imageView.image = image
-        
-        emailTextField.addSubview(imageView)
-        emailTextField.delegate = self
-        
-        passwordTextField.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
-        
-        let imageView1 = UIImageView(frame: CGRect(x: 15, y: 6, width: 16, height: 21))
-        let image1 = UIImage(named: "Password")
-        imageView1.image = image1
-        
-        passwordTextField.addSubview(imageView1)
-        passwordTextField.delegate = self
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-       
-        //NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.fetchUserProfile(dataDictionary:)), name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: nil)
-        //self.showData()
-        
-//        self.loadAccount(then: { () in
-//            
-//            print("cancel pressed")
-//        }, or: nil)
-
-        
-        
-        
-    }
     
-    override func viewWillDisappear(_ animated: Bool)
-    {
-        //NotificationCenter.default.removeObserver(self)
-    }
-
     func showData() -> Void
     {
-        let coreDataManager = CoreDataManager.sharedManager
+        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
         
         let managedObjectContext = AppDelegate().managedObjectContext
         
@@ -455,9 +487,11 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         //        }, cancel: { () -> Void in
         //        })
         
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "LinkedInLoginViewController")
+//        let vc = self.storyboard?.instantiateViewController(withIdentifier: "LinkedInLoginViewController")
+//        
+//        self.present(vc!, animated: true, completion: nil)
         
-        self.present(vc!, animated: true, completion: nil)
+        showWebView()
 
     }
     
@@ -495,7 +529,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                                                                         let userId = jsonResponse?["id"]
 
                                                                        // let idExist = CoreDataManager.sharedManager.idExists(aToken: userId as! String, entityName: "User")
-                                                                        CoreDataManager.sharedManager.deleteAllRecords(entity: "User")
+                                                                        CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
 //                                                                        if idExist
 //                                                                        {
 //                                                                         
@@ -535,7 +569,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                                                                             
                                                                                 pictureUrl = NSURL(string: pictureUrlArray[0])
                                                                             }
-                                                                            let managedObject = CoreDataManager.sharedManager.save(entity: "User", ["firstName":firstName ?? "nil","lastName":lastName ?? "nil","userId":userId ?? "nil","occupation":occupation ?? "nil","emailAddress":emailAddress ?? "nil","pictureUrl":pictureUrlString])
+                                                                            let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["firstName":firstName ?? "nil","lastName":lastName ?? "nil","userId":userId ?? "nil","occupation":occupation ?? "nil","emailAddress":emailAddress ?? "nil","pictureUrl":pictureUrlString])
                                                                         //}
                                                                         
                                                                         
@@ -1098,6 +1132,154 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         task.resume()
         
+    }
+
+    
+    func showWebView() -> Void
+    {
+        let state = "linkedin\(Int(NSDate().timeIntervalSince1970))"
+        
+        
+        let responseType = "code"
+        
+        let clientId = responseType
+        
+        var redirectUrl = "https://www.example.com"
+        //var redirectUrl = "https://www.investhr.auth0.com/ios/com.xanadutec.investHR/callback"
+        let scope = "r_basicprofile,r_emailaddress"
+        
+        
+        
+        
+        redirectUrl = redirectUrl.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.alphanumerics)!
+        
+        let authUrl = "https://www.linkedin.com/oauth/v2/authorization?scope=\(scope)%20r_emailaddress&redirect_uri=\(redirectUrl)&client_id=81no6kz3uepufn&state=\(state)&responseType=\(responseType)"
+        
+        
+        var authorizationURL = "\(authorizationEndPoint)?"
+        authorizationURL += "response_type=\(responseType)&"
+        authorizationURL += "client_id=\(linkedInKey)&"
+        authorizationURL += "redirect_uri=\(redirectUrl)&"
+        authorizationURL += "state=\(state)&"
+        authorizationURL += "scope=\(scope)"
+        
+        print("1=",authorizationURL)
+        print("2=",authUrl)
+        
+        //        let authUrl = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&redirect_uri=http%3A%2F%2Fwww.example.com%2Fauth%2Flinkedin&state=987654321&scope=r_basicprofile&client_id=F27W4sBvOjnfRKXZNGiL2V18uttDvQZu"
+        //https://investhr.auth0.com/ios/com.xanadutec.investHR/callback
+        
+        
+        //
+        
+        let linkedInLoginView = UIView(frame: self.view.bounds)
+
+        linkedInLoginView.tag = 1000
+        
+        let cancelLinkedInViewButton = UIButton(frame: CGRect(x:linkedInLoginView.frame.origin.x , y: linkedInLoginView.frame.origin.y+10, width: 30, height: 20))
+        
+        cancelLinkedInViewButton.addTarget(self, action: #selector(cancelLinkedInViewButtonClicked), for: .touchUpInside)
+        
+        let webView = UIWebView(frame: CGRect(x:linkedInLoginView.frame.origin.x , y: linkedInLoginView.frame.origin.y+40, width: linkedInLoginView.frame.size.width, height: linkedInLoginView.frame.size.height-40))
+        
+        linkedInLoginView.addSubview(cancelLinkedInViewButton)
+        linkedInLoginView.addSubview(webView)
+        
+        webView.delegate = self
+        
+        webView.loadRequest(NSURLRequest(url: NSURL(string: authorizationURL) as! URL) as URLRequest)
+        
+        self.view.addSubview(linkedInLoginView)
+        
+        
+        
+    }
+    
+    func cancelLinkedInViewButtonClicked()
+    {
+      self.view.viewWithTag(1000)?.removeFromSuperview()
+    }
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool
+    {
+        let url = request.url!
+        print(url)
+        
+        if url.host == "www.example.com"
+        {
+            if url.absoluteString.range(of: "code") != nil
+            {
+                // Extract the authorization code.
+                let urlParts = url.absoluteString.components(separatedBy: "?")
+                let code = (urlParts[1].components(separatedBy:"=")[1]).components(separatedBy: "&")[0]
+                
+                requestForAccessToken(authorizationCode: code)
+                
+                //self.dismiss(animated: true, completion: nil)
+            }
+            else
+            {
+                //self.dismiss(animated: true, completion: nil)
+                cancelLinkedInViewButtonClicked()
+            }
+        }
+        
+        return true
+    }
+    
+    func requestForAccessToken(authorizationCode: String)
+    {
+        let grantType = "authorization_code"
+        
+        let redirectURL = "https://www.example.com".addingPercentEncoding(withAllowedCharacters: NSCharacterSet.alphanumerics)
+        // }
+        // Set the POST parameters.
+        var postParams = "grant_type=\(grantType)&"
+        postParams += "code=\(authorizationCode)&"
+        postParams += "redirect_uri=\(redirectURL!)&"
+        postParams += "client_id=\(linkedInKey)&"
+        postParams += "client_secret=\(linkedInSecret)"
+        
+        //let params = ["grant_type=\(grantType)&","code=\(authorizationCode)&","redirect_uri=\(redirectURL!)&","client_id=\(linkedInKey)&","client_secret=\(linkedInSecret)"]
+        
+        //let dic = [Constant.REQUEST_PARAMETER:params]
+        
+       // let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.LINKEDIN_ACCESS_TOKEN_ENDPOINT_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.LINKEDIN_ACCESS_TOKEN_ENDPOINT_API, withHttpMethd: Constant.POST)
+        
+        //downloadmetadatajob.startMetaDataDownLoad()
+        
+         APIManager.getSharedAPIManager().getLinkedInAccessToken(grant_type: grantType, code: authorizationCode, redirect_uri: redirectURL!, client_id: linkedInKey, client_secret: linkedInSecret)
+        
+        cancelLinkedInViewButtonClicked()
+        
+        //self.hud().show(animated: true)
+        
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        
+        hud.tag = 789
+        
+        hud.minSize = CGSize(width: 150.0, height: 100.0)
+        
+        hud.label.text = "Logging in.."
+        
+        hud.detailsLabel.text = "Please wait"
+        
+       
+        //
+        
+    }
+    func webViewDidStartLoad(_ webView: UIWebView)
+    {
+        
+    }
+    
+    func webViewDidFinishLoad(_ webView: UIWebView)
+    {
+        
+    }
+    
+    func webView(_ webView: UIWebView, didFailLoadWithError error: Error)
+    {
+        print(error)
     }
 
     override func didReceiveMemoryWarning() {

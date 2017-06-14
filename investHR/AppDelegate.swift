@@ -221,11 +221,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
                     //performFetch()
                   //  fetchUserProfile(accessToken: accessToken)
-//                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//                    let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
-//                    let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
-//                    
-//                    appDelegate.window?.rootViewController = rootViewController
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+                    let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                    
+                    appDelegate.window?.rootViewController = rootViewController
                 
                     
                // }

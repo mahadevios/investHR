@@ -34,9 +34,15 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         menuItemsArray = ["Profile","Notification","Saved Jobs","Applied Jobs","Search Job","Upload Resume","Upload Video","Refer a Friend","Setting","Log Out"]
         
         menuImageNamesArray = ["SideMenuProfile","SideMenuNoti","SideMenuSavedJob","SideMenuAppliedJob","SideMenuSearchJob","SideMenuUploadResume","SideMenuUploadVideo","SideMenuReferFriend","SideMenuSetting","SideMenuLogout"]
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(upadateUserData), name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_LOGGED_IN), object: nil)
         // Do any additional setup after loading the view.
     }
     
+    func upadateUserData()
+    {
+       showData()
+    }
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(true)
@@ -283,7 +289,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
     
     func showData() -> Void
     {
-        let coreDataManager = CoreDataManager.sharedManager
+        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
         
         
         do
@@ -321,7 +327,13 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
                             print(error.localizedDescription)
                         }
                     }
+                    else
+                    {
+                        circleImageView.image = UIImage(named:"InsideDefaultCircle")
+                        
+                    }
                 }
+                
                 
     
             }
