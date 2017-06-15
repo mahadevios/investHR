@@ -17,16 +17,17 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
     @IBOutlet weak var location1TextField: SearchTextField!
     @IBOutlet weak var currentRoleTextField: TextField!
     @IBOutlet weak var currentCompanyTextField: TextField!
-    var name = ""
-    var email = ""
-    var mobile = ""
-    var password = ""
+    var name:String?
+    var email:String?
+    var mobile:String?
+    var password:String?
 
     
     var statesArray:[String] = []
     var cityArray:[String] = []
     var stateNameAndIdDic = [String:Int16]()
-    
+    var cityNameAndIdDic = [String:Int64]()
+
 
     override func viewDidLoad()
     {
@@ -116,7 +117,9 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         currentRoleTextField.delegate = self
         currentCompanyTextField.delegate = self
         visaStatusTextField.delegate = self
-        
+        locationTextField.delegate = self
+        location1TextField.delegate = self
+
         // LISDKSessionManager.clearSession()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
@@ -167,6 +170,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             {
                 cityArray.append(userObject.cityName!)
                 
+                cityNameAndIdDic[userObject.cityName!] = userObject.id
                 //stateNameAndIdDic[userObject.stateName!] = userObject.id as AnyObject?
                 
             }
@@ -254,7 +258,40 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
 
         let className = String(describing: type(of: currentRootVC))
         
-        //APIManager.getSharedAPIManager().registaerUser(name: <#T##String#>, emailId: <#T##String#>)
+        guard let mobileNumber = self.mobile else {
+            
+            return
+        }
+        guard let currentRole = currentRoleTextField.text else {
+            
+            return
+        }
+        guard let currentCompany = currentCompanyTextField.text else {
+            
+            return
+        }
+        guard let state = locationTextField.text else {
+            
+            return
+        }
+        guard let city = location1TextField.text else {
+            
+            return
+        }
+        guard let visaStatus = visaStatusTextField.text else {
+            
+            return
+        }
+        
+        print(visaStatus)
+        
+        
+        
+        
+        
+        
+        
+        APIManager.getSharedAPIManager().registerUser(name: self.name!, emailId: self.email!, mobileNumber:mobileNumber, password: self.password!, curentRole: currentRole, currentCompany: currentCompany, state: String(state), city: String(city), visaStatus: visaStatus, service: "", linkedInProfileUrl: "", candidateRole: "", verticals: "", revenueQuota: "", PL: "", experience: "", cuurrentCompany: "", companyInterViewed: "", expectedCompany: "", relocation: "", joiningTimeReq: "", benefits: "", notJoin: "")
         
         
         if className == "LoginViewController"
@@ -275,9 +312,44 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
     }
     @IBAction func additionalInformationButtonPressed(_ sender: Any)
     {
-                let viewController =  self.storyboard?.instantiateViewController(withIdentifier: "AdditionalInfoViewController") as! AdditionalInfoViewController
+        let vc =  self.storyboard?.instantiateViewController(withIdentifier: "AdditionalInfoViewController") as! AdditionalInfoViewController
         
-                self.navigationController?.pushViewController(viewController, animated: true)
+        guard let mobileNumber = self.mobile else {
+            
+            return
+        }
+        guard let currentRole = currentRoleTextField.text else {
+            
+            return
+        }
+        guard let currentCompany = currentCompanyTextField.text else {
+            
+            return
+        }
+        guard let state = locationTextField.text else {
+            
+            return
+        }
+        guard let city = location1TextField.text else {
+            
+            return
+        }
+        guard let visaStatus = visaStatusTextField.text else {
+            
+            return
+        }
+        
+        vc.name = self.name
+        vc.email = self.email
+        vc.password = self.password
+        vc.mobile = mobileNumber
+        vc.state = state
+        vc.currentRole = currentRole
+        vc.visaStatus = visaStatus
+        vc.city = city
+        vc.currentCompany = currentCompany
+        
+        self.navigationController?.present(vc, animated: true, completion: nil)
 
               //  self.present(viewController, animated: true, completion: nil)
     }
@@ -305,9 +377,9 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         if self.view.frame.origin.y >= 0
         {
                         
-            if visaStatusTextField.isFirstResponder
+            if visaStatusTextField.isFirstResponder || locationTextField.isFirstResponder || location1TextField.isFirstResponder
             {
-                setViewMovedUp(movedUp: true, localOffset: 150)
+                setViewMovedUp(movedUp: true, localOffset: 136)
             }
             
         }
@@ -328,7 +400,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
 //        else
             if self.view.frame.origin.y < 0
             {
-                setViewMovedUp(movedUp: false, localOffset: 150)
+                setViewMovedUp(movedUp: false, localOffset: 136)
             }
     }
     

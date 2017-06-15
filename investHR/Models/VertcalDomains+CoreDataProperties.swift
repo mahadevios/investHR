@@ -2,7 +2,7 @@
 //  VertcalDomains+CoreDataProperties.swift
 //  investHR
 //
-//  Created by mac on 13/06/17.
+//  Created by mac on 15/06/17.
 //  Copyright © 2017 Xanadutec. All rights reserved.
 //
 
@@ -16,6 +16,7 @@ extension VertcalDomains {
         return NSFetchRequest<VertcalDomains>(entityName: "VertcalDomains");
     }
 
-    @NSManaged public var domainName: String?
+    @NSManaged public var verticalName: String?
+    @NSManaged public var verticalId: Int16
 
 }

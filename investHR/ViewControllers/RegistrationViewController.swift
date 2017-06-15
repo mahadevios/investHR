@@ -8,7 +8,9 @@
 
 import UIKit
 
-class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate {
+import AssetsLibrary
+
+class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
 
     @IBOutlet weak var circleImageView: UIImageView!
     @IBOutlet weak var outSideCircleView: UIImageView!
@@ -142,7 +144,15 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
 //                else
 //                {
                     let viewController =  self.storyboard?.instantiateViewController(withIdentifier: "Registration1ViewController") as! Registration1ViewController
-                    
+        
+                    viewController.email = emailTextField.text
+        
+                    viewController.name = nameTextField.text
+        
+                    viewController.mobile = mobileNumberTextField.text
+        
+                    viewController.password = passwordTextField.text
+        
                     self.navigationController?.pushViewController(viewController, animated: true)
                 //}
         
@@ -153,8 +163,36 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     }
     @IBAction func changeProfilePictureButtonClicked(_ sender: Any)
     {
+        let imagePickerController = UIImagePickerController()
+        
+        imagePickerController.delegate = self
+        
+        imagePickerController.sourceType = .photoLibrary
+        
+        self.addChildViewController(imagePickerController)
+        
+        imagePickerController.didMove(toParentViewController: self)
+        
+        self.view.addSubview(imagePickerController.view)
         
     }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        let chosenImage = info[UIImagePickerControllerOriginalImage]
+        
+        let refURL = info[UIImagePickerControllerReferenceURL]
+        
+        let v = info[UIImagePickerControllerOriginalImage] as? UIImage
+        
+        circleImageView.image = v
+        
+        picker.view!.removeFromSuperview()
+        
+        picker.removeFromParentViewController()
+        
+    }
+    
     
     func addView() -> Void
     {
@@ -174,19 +212,19 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     
     func deviceRotated() -> Void
     {
-        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
-        {
-            //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
-            addView()
-            print("Landscape")
-        }
-        
-        if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
-        {
-            //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
-            addView()
-            print("Portrait")
-        }
+//        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+//        {
+//            //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
+//            addView()
+//            print("Landscape")
+//        }
+//        
+//        if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+//        {
+//            //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
+//            addView()
+//            print("Portrait")
+//        }
     }
     
     func keyboardWillShow()

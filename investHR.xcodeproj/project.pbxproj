@@ -27,6 +27,10 @@
 		842B32FA1EDD8F62000088D1 /* UploadVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */; };
 		842B32FC1EDDAE2B000088D1 /* ReferFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */; };
 		842B32FE1EDDB224000088D1 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842B32FD1EDDB224000088D1 /* Social.framework */; };
+		842BAFC81EF2A27C005327B0 /* HorizontalDomains+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842BAFC61EF2A27C005327B0 /* HorizontalDomains+CoreDataClass.swift */; };
+		842BAFC91EF2A27C005327B0 /* HorizontalDomains+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842BAFC71EF2A27C005327B0 /* HorizontalDomains+CoreDataProperties.swift */; };
+		842BAFCC1EF2A368005327B0 /* Roles+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842BAFCA1EF2A368005327B0 /* Roles+CoreDataClass.swift */; };
+		842BAFCD1EF2A368005327B0 /* Roles+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842BAFCB1EF2A368005327B0 /* Roles+CoreDataProperties.swift */; };
 		8431B5C21EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8431B5C01EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld */; };
 		843425C41EE7D80500282419 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843425C31EE7D80400282419 /* UserNotifications.framework */; };
 		843425C81EE7ED5F00282419 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 843425C71EE7ED5F00282419 /* GoogleService-Info.plist */; };
@@ -112,6 +116,10 @@
 		842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadVideoViewController.swift; sourceTree = "<group>"; };
 		842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferFriendViewController.swift; sourceTree = "<group>"; };
 		842B32FD1EDDB224000088D1 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		842BAFC61EF2A27C005327B0 /* HorizontalDomains+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HorizontalDomains+CoreDataClass.swift"; sourceTree = "<group>"; };
+		842BAFC71EF2A27C005327B0 /* HorizontalDomains+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HorizontalDomains+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		842BAFCA1EF2A368005327B0 /* Roles+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Roles+CoreDataClass.swift"; sourceTree = "<group>"; };
+		842BAFCB1EF2A368005327B0 /* Roles+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Roles+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8431B5C11EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataDemo.xcdatamodel; sourceTree = "<group>"; };
 		843425C31EE7D80400282419 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		843425C71EE7ED5F00282419 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -267,6 +275,10 @@
 		8449B6041EE578EB0072A8DD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				842BAFCA1EF2A368005327B0 /* Roles+CoreDataClass.swift */,
+				842BAFCB1EF2A368005327B0 /* Roles+CoreDataProperties.swift */,
+				842BAFC61EF2A27C005327B0 /* HorizontalDomains+CoreDataClass.swift */,
+				842BAFC71EF2A27C005327B0 /* HorizontalDomains+CoreDataProperties.swift */,
 				8414926E1EF00639007133D0 /* VertcalDomains+CoreDataClass.swift */,
 				8414926F1EF00639007133D0 /* VertcalDomains+CoreDataProperties.swift */,
 				8414926A1EF0060D007133D0 /* User+CoreDataClass.swift */,
@@ -723,6 +735,7 @@
 				84EB8F3D1EDFE90B00014DA4 /* APIManager.swift in Sources */,
 				84EB8F3E1EDFE90B00014DA4 /* DownloadMetaDataJob.swift in Sources */,
 				84EB8F481EE03D6600014DA4 /* Reachability.swift in Sources */,
+				842BAFCD1EF2A368005327B0 /* Roles+CoreDataProperties.swift in Sources */,
 				841492691EF005D6007133D0 /* State+CoreDataProperties.swift in Sources */,
 				8424ECDF1EF0FEED00E68B3D /* MBProgressHUD.m in Sources */,
 				841492711EF00639007133D0 /* VertcalDomains+CoreDataProperties.swift in Sources */,
@@ -742,9 +755,11 @@
 				841492701EF00639007133D0 /* VertcalDomains+CoreDataClass.swift in Sources */,
 				8431B5C21EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld in Sources */,
 				84DAD4111ED822200008BB09 /* JobsViewController.swift in Sources */,
+				842BAFC91EF2A27C005327B0 /* HorizontalDomains+CoreDataProperties.swift in Sources */,
 				8414926D1EF0060D007133D0 /* User+CoreDataProperties.swift in Sources */,
 				842B32F81EDD7A97000088D1 /* SettingsViewController.swift in Sources */,
 				844E5B001EEE59D600E69646 /* SessionManager.swift in Sources */,
+				842BAFCC1EF2A368005327B0 /* Roles+CoreDataClass.swift in Sources */,
 				844F5F2F1EDC23A20073A7D7 /* NotificationJobsViewController.swift in Sources */,
 				844387B81ED46D2D002E71D6 /* Registration1ViewController.swift in Sources */,
 				8439E04E1EC5F3C000FC2A12 /* LoginViewController.swift in Sources */,
@@ -754,6 +769,7 @@
 				84EB8F431EDFEB8600014DA4 /* Constant.swift in Sources */,
 				844E5B2A1EEED4CF00E69646 /* LinkedInLoginViewController.swift in Sources */,
 				8414925D1EF004CA007133D0 /* City+CoreDataProperties.swift in Sources */,
+				842BAFC81EF2A27C005327B0 /* HorizontalDomains+CoreDataClass.swift in Sources */,
 				84239B941EC476C60076EF33 /* SWRevealViewController.m in Sources */,
 				8440DF701ED706CB0003F05B /* MenuViewViewController.swift in Sources */,
 				844F5F331EDC34B20073A7D7 /* AppliedJobsViewController.swift in Sources */,

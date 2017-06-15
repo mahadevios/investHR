@@ -66,7 +66,7 @@ class APIManager: NSObject
         
     }
     
-    func registaerUser(name:String, emailId:String, mobileNumber:String, password:String, curentRole:String, currentCompany:String,state:String, city:String, visaStatus:String, service:String, linkedInProfileUrl:String, candidateRole:String, verticals:String, revenueQuota:String, PL:String, experience:String, cuurrentCompany:String, companyInterViewed:String, expectedCompany:String, relocation:String, joiningTimeReq:String, benefits:String, notJoin:String) -> Void
+    func registerUser(name:String, emailId:String, mobileNumber:String, password:String, curentRole:String, currentCompany:String,state:String, city:String, visaStatus:String, service:String, linkedInProfileUrl:String, candidateRole:String, verticals:String, revenueQuota:String, PL:String, experience:String, cuurrentCompany:String, companyInterViewed:String, expectedCompany:String, relocation:String, joiningTimeReq:String, benefits:String, notJoin:String) -> Void
     {
         let parameterArray = ["name=\(name)","emailId=\(emailId)","mobileNumber=\(mobileNumber)","password=\(password)","currentRole=\(curentRole)","currentCompany=\(currentCompany)","stateId=\(state)","cityId=\(city)","visaStatus=\(visaStatus)","candidateRole=\(candidateRole)","services=\(service)","linkedInProfileUrl=\(linkedInProfileUrl)","verticalsServiceTo=\(verticals)","revenueQuota=\(revenueQuota)","PandL=\(PL)","currentCompLastYrW2=\(cuurrentCompany)","expectedCompany=\(expectedCompany)","joiningTime=\(joiningTimeReq)","compInterviewPast1Yr=\(companyInterViewed)","benifits=\(benefits)","notJoinSpecificOrg=\(notJoin)"]
         

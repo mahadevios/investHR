@@ -8,7 +8,9 @@
 
 import UIKit
 
-class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPickerViewDelegate,UITextViewDelegate {
+import CoreData
+
+class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPickerViewDelegate,UITextViewDelegate,UITextFieldDelegate {
 
     @IBOutlet weak var candidateFunctionTextField: UITextField!
     @IBOutlet weak var serviceTextField: UITextField!
@@ -28,35 +30,106 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
     @IBOutlet weak var benefitsTextView: UITextView!
     @IBOutlet weak var nonCompeteTextView: UITextView!
     
-    let candidateFunctionArray : [String] = ["Candidate Role","Candidate 2","Candidate 3","Candidate 4","Candidate 5"]
+    var name:String!
+    var email:String!
+    var mobile:String!
+    var password:String!
+    var state:String!
+    var city:String!
+    var currentRole:String!
+    var currentCompany:String!
+    var visaStatus:String!
+    
+    var candidateFunctionArray : [String] = []
     let servicesArray : [String] = ["Services","Service 2","Service 3","Service 4","Service 5"]
 
     @IBAction func submitButtonClicked(_ sender: Any)
     {
+        guard let joinigTime = joiningTimeTextfield.text else {
+            
+            return
+        }
+        guard let companiesInterViewed = companiesInterViewedTextView.text else {
+            
+            return
+        }
+        guard let benefits = benefitsTextView.text else {
+            
+            return
+        }
+        guard let nonCompete = nonCompeteTextView.text else {
+            
+            return
+        }
+
+        guard let revenueQuota = revenueQuotaTextField.text else {
+            
+            return
+        }
+        guard let PL = PLTexField.text else {
+            
+            return
+        }
+        guard let expOffshore = expOffshoreTextField.text else {
+            
+            return
+        }
+        guard let expectedCompany = expectedCompanyTextField.text else {
+            
+            return
+        }
+        guard let relocation = relocationTextField.text else {
+            
+            return
+        }
+
+        guard let candidateFunction = candidateFunctionTextField.text else {
+            
+            return
+        }
+        guard let service = serviceTextField.text else {
+            
+            return
+        }
+        guard let linkedInUR = linkedInURLTextField.text else {
+            
+            return
+        }
+        guard let candidateRole = currentRoleTextField.text else {
+            
+            return
+        }
+        guard let vertical = verticalTextField.text else {
+            
+            return
+        }
+        
+
+        APIManager.getSharedAPIManager().registerUser(name: self.name!, emailId: self.email!, mobileNumber:self.mobile, password: self.password!, curentRole: currentRole, currentCompany: currentCompany, state: String(state), city: String(city), visaStatus: visaStatus, service: service, linkedInProfileUrl: linkedInUR, candidateRole: candidateRole, verticals: vertical, revenueQuota: revenueQuota, PL: PL, experience: expOffshore, cuurrentCompany: currentCompany, companyInterViewed: companiesInterViewed, expectedCompany: expectedCompany, relocation: relocation, joiningTimeReq: joinigTime, benefits: benefits, notJoin: nonCompete)
         
     }
     @IBAction func backButtonPressed(_ sender: Any)
     {
-        self.navigationController?.popViewController(animated: true)
+       // self.navigationController?.popViewController(animated: true)
 
-       //self.dismiss(animated: true, completion: nil)
+       self.dismiss(animated: true, completion: nil)
     }
     override func viewDidLoad()
     {
         super.viewDidLoad()
 
+        print(visaStatus)
+        //let candidateFunctionPickerView = UIPickerView(frame: CGRect(x: 15, y: 0, width: candidateFunctionTextField.frame.size.width * 0.80, height: 35))
+        //candidateFunctionPickerView.dataSource = self
+        //candidateFunctionPickerView.delegate = self
+        //candidateFunctionTextField.addSubview(candidateFunctionPickerView)
+        //candidateFunctionPickerView.tag = 1
         
-        let candidateFunctionPickerView = UIPickerView(frame: CGRect(x: 15, y: 0, width: candidateFunctionTextField.frame.size.width * 0.80, height: 35))
-        candidateFunctionPickerView.dataSource = self
-        candidateFunctionPickerView.delegate = self
-        candidateFunctionTextField.addSubview(candidateFunctionPickerView)
-        candidateFunctionPickerView.tag = 1
-        
-        let servicePickerView = UIPickerView(frame: CGRect(x: 15, y: 0, width: serviceTextField.frame.size.width * 0.80, height: 35))
-        servicePickerView.dataSource = self
-        servicePickerView.delegate = self
-        serviceTextField.addSubview(servicePickerView)
-        servicePickerView.tag = 2
+//        let servicePickerView = UIPickerView(frame: CGRect(x: 15, y: 0, width: serviceTextField.frame.size.width * 0.80, height: 35))
+//        servicePickerView.dataSource = self
+//        servicePickerView.delegate = self
+//        serviceTextField.addSubview(servicePickerView)
+//        servicePickerView.tag = 2
         
         companiesInterViewedTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
@@ -67,9 +140,34 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         companiesInterViewedTextView.delegate = self
         benefitsTextView.delegate = self
         nonCompeteTextView.delegate = self
+        candidateFunctionTextField.delegate = self
+        getCandidateRoles()
         // Do any additional setup after loading the view.
     }
     
+    func getCandidateRoles()
+    {
+        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
+        
+        
+        do
+        {
+            var managedObjects:[NSManagedObject]?
+            
+            managedObjects = coreDataManager.fetch(entity: "Roles")
+            for userObject in managedObjects as! [Roles]
+            {
+                candidateFunctionArray.append(userObject.roleName!)
+                
+            }
+            
+        } catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        
+        
+    }
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool
     {
         if textView == companiesInterViewedTextView
@@ -124,34 +222,52 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
                 }
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+        if textField == candidateFunctionTextField
+        {
+            DispatchQueue.main.async {
+                self.candidateFunctionTextField.resignFirstResponder()
+                
+                self.addPickerToolBar()
+                
+                if self.candidateFunctionTextField.text == ""
+                {
+                    self.candidateFunctionTextField.text = self.candidateFunctionArray[0]
+                }
+            }
+            
+        }
+    }
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int
     {
         return 1
     }
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int
     {
-        if pickerView.tag == 1
-        {
+//        if pickerView.tag == 1
+//        {
             return candidateFunctionArray.count
             
-        }
-        else
-        {
-            return servicesArray.count
-        }
+//        }
+//        else
+//        {
+//            return servicesArray.count
+//        }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?
     {
-        if pickerView.tag == 1
-        {
+//        if pickerView.tag == 1
+//        {
             return candidateFunctionArray[row]
             
-        }
-        else
-        {
-            return servicesArray[row]
-        }
+//        }
+//        else
+//        {
+//            return servicesArray[row]
+//        }
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView{
@@ -160,24 +276,93 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         if label == nil {
             label = UILabel()
         }
-        
-        if pickerView.tag == 1
-        {
-            label?.font = UIFont.systemFont(ofSize: 12)
-            label?.text =  candidateFunctionArray[row] as? String
-            label?.textAlignment = .left
-        }
-        else
-        {
-            label?.font = UIFont.systemFont(ofSize: 12)
-            label?.text =  servicesArray[row] as? String
-            label?.textAlignment = .left
-        }
+//
+//        if pickerView.tag == 1
+//        {
+//            label?.font = UIFont.systemFont(ofSize: 12)
+//            label?.text =  candidateFunctionArray[row] as? String
+//            label?.textAlignment = .left
+//        }
+//        else
+//        {
+            label?.font = UIFont.systemFont(ofSize: 14)
+            label?.text =  candidateFunctionArray[row] as String
+            label?.textAlignment = .center
+           // label?.textAlignment = .left
+        //}
         
         return label!
         
     }
 
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int)
+    {
+        let selectedRole = candidateFunctionArray[row]
+        
+        candidateFunctionTextField.text = selectedRole
+    }
+    
+    func addPickerToolBar()
+    {
+    if self.view.viewWithTag(10000) == nil
+    {
+    
+        let picker = UIPickerView()
+        
+        picker.tag = 10001;
+        
+        picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
+
+        picker.delegate = self
+        
+        picker.dataSource = self
+        
+        picker.showsSelectionIndicator = true
+        
+        self.view.addSubview(picker)
+        
+        picker.isUserInteractionEnabled = true
+        
+        picker.backgroundColor = UIColor.lightGray
+        
+//        UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneBtnPressToGetValue:)];
+        let btn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(pickerDoneButtonPressed))
+        
+//        UIToolbar *toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, picker.frame.origin.y - 40.0f, self.view.frame.size.width, 40.0f)];
+        let toolBar = UIToolbar(frame: CGRect(x: 0, y: picker.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0))
+
+        toolBar.tag = 10000
+        
+        toolBar.setItems([btn], animated: true)
+        
+        self.view.addSubview(toolBar)
+    //     OperatorTextField.inputAccessoryView=toolBar;
+    }
+    }
+
+    func pickerDoneButtonPressed()
+    {
+        removePickerToolBar()
+    }
+    
+    func removePickerToolBar()
+    {
+        guard let picker = self.view.viewWithTag(10001) else {
+            return
+        }
+        
+        picker.removeFromSuperview()
+        
+        guard let toolbar = self.view.viewWithTag(10000) else {
+            return
+        }
+        
+        toolbar.removeFromSuperview()
+    // [DescriptionTextView becomeFirstResponder];
+    
+    }
+    
+    
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()

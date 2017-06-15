@@ -204,6 +204,8 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
 //       NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.fetchUserProfile(dataDictionary:)), name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: nil)
 //
 //        let context = appDelegate.managedObjectContext
+       // getStateAndCityUsingWebService()
+        showData()
         print("finished")
     }
     
@@ -394,33 +396,33 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         //let obj = coreDataManager.save(entity: "User", result)
 //        
-//        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "User")
-//        
-//        do
-//        {
-//            let manageObject = try managedObjectContext.fetch(fetchRequest)
-//            var managedObjects:[NSManagedObject]?
-//            
-//            managedObjects = coreDataManager.fetch(entity: "User")
-//            for userObject in managedObjects as! [User]
-//            {
-//                let firstName = userObject.firstName
-//                let lastName = userObject.lastName
-//                
-//                print(firstName ?? "nil")
-//                
-//                guard let lastname = lastName else
-//                {
-//                    print("nnil value")
-//                    continue
-//                }
-//                print(lastname)
-//            }
-//            
-//        } catch let error as NSError
-//        {
-//            print(error.localizedDescription)
-//        }
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "VertcalDomains")
+        
+        do
+        {
+            let manageObject = try managedObjectContext.fetch(fetchRequest)
+            var managedObjects:[NSManagedObject]?
+            
+            managedObjects = coreDataManager.fetch(entity: "VertcalDomains")
+            for userObject in managedObjects as! [VertcalDomains]
+            {
+                let firstName = userObject.verticalId
+                let lastName = userObject.verticalName
+                
+                print(firstName ?? "nil")
+                
+                guard let lastname = lastName else
+                {
+                    print("nnil value")
+                    continue
+                }
+                print(lastname)
+            }
+            
+        } catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
 
     }
     func checkForAvailableLinkedInSession() -> Void
@@ -1019,9 +1021,12 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         let managedObjectContext = appDelegate.managedObjectContext
         
-        let entity = NSEntityDescription.entity(forEntityName: "State", in: managedObjectContext)!
+        let entity = NSEntityDescription.entity(forEntityName: "Roles", in: managedObjectContext)!
         
-        let entity1 = NSEntityDescription.entity(forEntityName: "City", in: managedObjectContext)!
+        let entity1 = NSEntityDescription.entity(forEntityName: "HorizontalDomains", in: managedObjectContext)!
+        
+        let entity2 = NSEntityDescription.entity(forEntityName: "VertcalDomains", in: managedObjectContext)!
+
         
         // Specify the URL string that we'll get the profile info from.
         let targetURLString = "http://192.168.3.74:9090/coreflex/StateCity"
@@ -1039,7 +1044,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         let task: URLSessionDataTask = session.dataTask(with: request as URLRequest) { (data, response, error) -> Void in
             
             let statusCode = (response as! HTTPURLResponse).statusCode
-            
+           
             if statusCode == 200
             {
                 // Convert the received JSON data into a dictionary.
@@ -1047,7 +1052,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                 {
                     let dataDictionary = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
                     
-                    let stateString = dataDictionary["State"] as! String
+                    let stateString = dataDictionary["Role"] as! String
                     
                     let stateData = stateString.data(using: .utf8, allowLossyConversion: true)
                     
@@ -1057,15 +1062,15 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                     {
                         let stateIdAndNameDic = stateArray[index] as! [String:AnyObject]
                         
-                        let stateId = stateIdAndNameDic["id"] as! Int
+                        let roleId = stateIdAndNameDic["role_id"] as! Int
                         
-                        let stateName = stateIdAndNameDic["state_Name"] as! String
+                        let roleName = stateIdAndNameDic["role_name"] as! String
                         
-                        let stateObject = NSManagedObject(entity: entity, insertInto: managedObjectContext) as! State
+                        let stateObject = NSManagedObject(entity: entity, insertInto: managedObjectContext) as! Roles
                         
-                        stateObject.id = Int16(stateId)
+                        stateObject.roleId = Int16(roleId)
                         
-                        stateObject.stateName = stateName
+                        stateObject.roleName = roleName
                         
                         do {
                             print("inserting state num:",(index))
@@ -1078,43 +1083,105 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                     }
                     
                     
-                    let stateCityString = dataDictionary["StateCity"] as! String
+                    let horizontalsString = dataDictionary["Horizontals"] as! String
                     
-                    let stateCityData = stateCityString.data(using: .utf8, allowLossyConversion: true)
+                    let horizontalsData = horizontalsString.data(using: .utf8, allowLossyConversion: true)
                     
-                    let stateCityArray =  try JSONSerialization.jsonObject(with: stateCityData as Data!, options: .allowFragments) as! [AnyObject]
+                    let horizontalsArray =  try JSONSerialization.jsonObject(with: horizontalsData as Data!, options: .allowFragments) as! [AnyObject]
                     
-                    for index in 0 ..< stateCityArray.count
+                    for index in 0 ..< horizontalsArray.count
                     {
-                        let stateCityIdAndNameDic = stateCityArray[index] as! [String:AnyObject]
+                        let horizontalIdAndNameDic = horizontalsArray[index] as! [String:AnyObject]
                         
-                        let cityId = stateCityIdAndNameDic["id"] as! Int
+                        let horizontalId = horizontalIdAndNameDic["horizontal_id"] as! Int
                         
-                        let cityName = stateCityIdAndNameDic["city_Name"] as! String
+                        let horizontalName = horizontalIdAndNameDic["horizontal_name"] as! String
                         
-                        let stateIdNameDic = stateCityIdAndNameDic["state"] as! [String:AnyObject]
+                        let horizontalObject = NSManagedObject(entity: entity1, insertInto: managedObjectContext) as! HorizontalDomains
                         
-                        let stateId = stateIdNameDic["id"] as! Int
+                        horizontalObject.horizontalId = Int16(horizontalId)
                         
-                        //let stateName = stateIdNameDic["state_Name"]
-                        
-                        let cityObject = NSManagedObject(entity: entity1, insertInto: managedObjectContext) as! City
-                        
-                        cityObject.id = Int64(cityId)
-                        
-                        cityObject.stateId = Int16(stateId)
-                        
-                        cityObject.cityName = cityName
+                        horizontalObject.horizontalName = horizontalName
                         
                         do {
-                            try managedObjectContext.save()
+                            print("inserting state num:",(index))
                             
-                            print("inserting city num:",(index))
+                            try managedObjectContext.save()
                             
                         } catch let error as NSError {
                             print(error.localizedDescription)
                         }
                     }
+
+                    let verticalsString = dataDictionary["Verticals"] as! String
+                    
+                    let verticalsData = verticalsString.data(using: .utf8, allowLossyConversion: true)
+                    
+                    let verticalsArray =  try JSONSerialization.jsonObject(with: verticalsData as Data!, options: .allowFragments) as! [AnyObject]
+                    
+                    for index in 0 ..< verticalsArray.count
+                    {
+                        let verticalIdAndNameDic = verticalsArray[index] as! [String:AnyObject]
+                        
+                        let verticalId = verticalIdAndNameDic["vertical_id"] as! Int
+                        
+                        let verticalName = verticalIdAndNameDic["vertical_name"] as! String
+                        
+                        let verticalObject = NSManagedObject(entity: entity2, insertInto: managedObjectContext) as! VertcalDomains
+                        
+                        verticalObject.verticalId = Int16(verticalId)
+                        
+                        verticalObject.verticalName = verticalName
+                        
+                        do {
+                            print("inserting state num:",(index))
+                            
+                            try managedObjectContext.save()
+                            
+                        } catch let error as NSError {
+                            print(error.localizedDescription)
+                        }
+                    }
+
+                    
+                    
+//                    let stateCityString = dataDictionary["StateCity"] as! String
+//                    
+//                    let stateCityData = stateCityString.data(using: .utf8, allowLossyConversion: true)
+//                    
+//                    let stateCityArray =  try JSONSerialization.jsonObject(with: stateCityData as Data!, options: .allowFragments) as! [AnyObject]
+//                    
+//                    for index in 0 ..< stateCityArray.count
+//                    {
+//                        let stateCityIdAndNameDic = stateCityArray[index] as! [String:AnyObject]
+//                        
+//                        let cityId = stateCityIdAndNameDic["id"] as! Int
+//                        
+//                        let cityName = stateCityIdAndNameDic["city_Name"] as! String
+//                        
+//                        let stateIdNameDic = stateCityIdAndNameDic["state"] as! [String:AnyObject]
+//                        
+//                        let stateId = stateIdNameDic["id"] as! Int
+//                        
+//                        //let stateName = stateIdNameDic["state_Name"]
+//                        
+//                        let cityObject = NSManagedObject(entity: entity1, insertInto: managedObjectContext) as! City
+//                        
+//                        cityObject.id = Int64(cityId)
+//                        
+//                        cityObject.stateId = Int16(stateId)
+//                        
+//                        cityObject.cityName = cityName
+//                        
+//                        do {
+//                            try managedObjectContext.save()
+//                            
+//                            print("inserting city num:",(index))
+//                            
+//                        } catch let error as NSError {
+//                            print(error.localizedDescription)
+//                        }
+//                    }
                     
                 }
                 catch let error as NSError
