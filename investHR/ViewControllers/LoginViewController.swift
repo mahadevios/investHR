@@ -31,7 +31,7 @@ import Auth0
 class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegate
 {
     
-    
+    // params
     let authorizationEndPoint = "https://www.linkedin.com/uas/oauth2/authorization"
     
     let accessTokenEndPoint = "https://www.linkedin.com/uas/oauth2/accessToken"
