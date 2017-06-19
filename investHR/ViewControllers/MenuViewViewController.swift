@@ -128,12 +128,13 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             //self.revealViewController().navigationController?.pushViewController(vc, animated: true)
             // let vc1 = self.revealViewController().rearViewController as! UINavigationController
-            
             let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
             
-            vc1.pushViewController(vc, animated: true)
+            vc1.pushViewController(vc, animated: false)
             
-            self.revealViewController().pushFrontViewController(vc1, animated: true)
+            self.revealViewController().pushFrontViewController(vc1, animated: false)
+            
+            self.revealViewController().revealToggle(animated: true)
             
             
             
@@ -148,10 +149,12 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
             
-            vc1.pushViewController(vc, animated: true)
+            vc1.pushViewController(vc, animated: false)
             
-            self.revealViewController().pushFrontViewController(vc1, animated: true)
-            
+            self.revealViewController().pushFrontViewController(vc1, animated: false)
+
+            self.revealViewController().revealToggle(animated: true)
+            //self.revealViewController().setFront(vc1, animated: true)
             
             
             break
@@ -164,10 +167,11 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
             
-            vc1.pushViewController(vc, animated: true)
+            vc1.pushViewController(vc, animated: false)
             
-            self.revealViewController().pushFrontViewController(vc1, animated: true)
+            self.revealViewController().pushFrontViewController(vc1, animated: false)
             
+            self.revealViewController().revealToggle(animated: true)
             
             
             break
@@ -180,11 +184,11 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
             
-            vc1.pushViewController(vc, animated: true)
+            vc1.pushViewController(vc, animated: false)
             
-            self.revealViewController().pushFrontViewController(vc1, animated: true)
+            self.revealViewController().pushFrontViewController(vc1, animated: false)
             
-            
+            self.revealViewController().revealToggle(animated: true)
             
             break
             
@@ -196,10 +200,11 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
             
-            vc1.pushViewController(vc, animated: true)
+            vc1.pushViewController(vc, animated: false)
             
-            self.revealViewController().pushFrontViewController(vc1, animated: true)
+            self.revealViewController().pushFrontViewController(vc1, animated: false)
             
+            self.revealViewController().revealToggle(animated: true)
             
             
             break
@@ -210,11 +215,11 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
             
-            vc1.pushViewController(vc, animated: true)
+            vc1.pushViewController(vc, animated: false)
             
-            self.revealViewController().pushFrontViewController(vc1, animated: true)
+            self.revealViewController().pushFrontViewController(vc1, animated: false)
             
-            
+            self.revealViewController().revealToggle(animated: true)
             
             break
             
@@ -224,11 +229,11 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
             
-            vc1.pushViewController(vc, animated: true)
+            vc1.pushViewController(vc, animated: false)
             
-            self.revealViewController().pushFrontViewController(vc1, animated: true)
+            self.revealViewController().pushFrontViewController(vc1, animated: false)
             
-            
+            self.revealViewController().revealToggle(animated: true)
             
             break
         case 8:
@@ -237,11 +242,11 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
             
-            vc1.pushViewController(vc, animated: true)
+            vc1.pushViewController(vc, animated: false)
             
-            self.revealViewController().pushFrontViewController(vc1, animated: true)
+            self.revealViewController().pushFrontViewController(vc1, animated: false)
             
-            
+            self.revealViewController().revealToggle(animated: true)
             
             break
             
@@ -255,6 +260,11 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             //self.revealViewController().pushFrontViewController(vc, animated: true)
             LISDKSessionManager.clearSession()
+            
+            let cookieStorage =  HTTPCookieStorage.shared
+            for cookie in cookieStorage.cookies! {
+                cookieStorage.deleteCookie(cookie)
+            }
             
             UserDefaults.standard.setValue(nil, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
             
@@ -307,32 +317,75 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
                 {
                     userNameLabel.text = firstName
                 }
-                if let pictureUrlString = pictureUrlString
-                {
-                    let pictureUrl = URL(string: pictureUrlString)
-                    
-                    if let pictureUrl = pictureUrl
+                
+                DispatchQueue.global(qos: .background).async
                     {
-                        do
+                    print("This is run on the background queue")
+                        if let pictureUrlString = pictureUrlString
                         {
-                            let imageData = try Data(contentsOf: pictureUrl as URL)
-                    
-                            let userImage = UIImage(data: imageData)
-                    
-                            circleImageView.image = userImage
-                    
+                            let pictureUrl = URL(string: pictureUrlString)
+                            
+                            if let pictureUrl = pictureUrl
+                            {
+                                do
+                                {
+                                    
+                                    let imageData = try Data(contentsOf: pictureUrl as URL)
+                                    
+                                    let userImage = UIImage(data: imageData)
+                                    
+                                    DispatchQueue.main.async
+                                        {
+                                            self.circleImageView.image = userImage
+                                        }
+                                    
+                                }
+                                catch let error as NSError
+                                {
+                                    print(error.localizedDescription)
+                                }
+                            }
+                            else
+                            {
+                                DispatchQueue.main.async
+                                    {
+                                        self.circleImageView.image = UIImage(named:"InsideDefaultCircle")
+                                    }
+                                
+                            }
                         }
-                        catch let error as NSError
-                        {
-                            print(error.localizedDescription)
-                        }
+//                    DispatchQueue.main.async
+//                        {
+//                        print("This is run on the main queue, after the previous code in outer block")
+//                        }
                     }
-                    else
-                    {
-                        circleImageView.image = UIImage(named:"InsideDefaultCircle")
-                        
-                    }
-                }
+//                if let pictureUrlString = pictureUrlString
+//                {
+//                    let pictureUrl = URL(string: pictureUrlString)
+//                    
+//                    if let pictureUrl = pictureUrl
+//                    {
+//                        do
+//                        {
+//                            
+//                            let imageData = try Data(contentsOf: pictureUrl as URL)
+//                    
+//                            let userImage = UIImage(data: imageData)
+//                    
+//                            circleImageView.image = userImage
+//                    
+//                        }
+//                        catch let error as NSError
+//                        {
+//                            print(error.localizedDescription)
+//                        }
+//                    }
+//                    else
+//                    {
+//                        circleImageView.image = UIImage(named:"InsideDefaultCircle")
+//                        
+//                    }
+//                }
                 
                 
     

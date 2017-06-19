@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource,UITextViewDelegate,UITextFieldDelegate
+class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource,UITextViewDelegate,UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate
 {
     @IBOutlet weak var circleImageView: UIImageView!
 
@@ -28,7 +28,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     @IBOutlet weak var editProfileButton: UIButton!
     @IBAction func editProfileButtonClicked(_ sender: Any)
     {
-        print("ji")
+        showImagePickerController()
     }
     override func viewDidLoad()
     {
@@ -36,14 +36,53 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
         coutryCodesArray = ["+90","+91","+92","+93","+94","+95","+96"]
 
+        
+        setNavigationItem()
+        
+        setProfileView()
+        // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool)
+    {
+    //    super.viewWillAppear(true)
+      editProfileButton.setTitle("", for: .normal)
+      //  NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+      //  NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+
+        locationTextField.delegate = self
+    }
+    override func viewWillDisappear(_ animated: Bool)
+    {
+       NotificationCenter.default.removeObserver(self)
+    }
+    
+    func popViewController() -> Void
+    {
+        self.revealViewController().revealToggle(animated: true)
+        
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    func setNavigationItem()
+    {
+        
+        setLeftBarButtonItem()
+        setRightBarButtonItemEdit()
+        
+    }
+    func setLeftBarButtonItem()
+    {
         self.navigationItem.hidesBackButton = true;
         let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
         self.navigationItem.leftBarButtonItem = barButtonItem
         self.navigationItem.title = "Profile"
-        
+    }
+    func setRightBarButtonItemEdit()
+    {
         let editProfileButton = UIButton(frame: CGRect(x: 75, y: 0, width: 50, height: 50))
         editProfileButton.setTitle("Edit", for: UIControlState.normal)
-        editProfileButton.addTarget(self, action: #selector(rightBArButtonCLicked), for: UIControlEvents.touchUpInside)
+        editProfileButton.addTarget(self, action: #selector(rightbarButtonClickedEdit), for: UIControlEvents.touchUpInside)
         editProfileButton.titleLabel?.textAlignment = NSTextAlignment.center
         editProfileButton.setTitleColor(UIColor.init(colorLiteralRed: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1), for: UIControlState.normal)
         
@@ -57,14 +96,60 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
         let rightBarButtonItem = UIBarButtonItem(customView: editProfileView)
         self.navigationItem.rightBarButtonItem = rightBarButtonItem
+    
+    }
+    func setRightBarButtonItemCancel()
+    {
+        let editProfileButton = UIButton(frame: CGRect(x: 55, y: 0, width: 80, height: 50))
+        
+        editProfileButton.setTitle("Cancel", for: UIControlState.normal)
+        
+        editProfileButton.addTarget(self, action: #selector(rightbarButtonClickedCancel), for: UIControlEvents.touchUpInside)
+        
+        editProfileButton.titleLabel?.textAlignment = NSTextAlignment.center
+        
+        editProfileButton.setTitleColor(UIColor.init(colorLiteralRed: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1), for: UIControlState.normal)
+        
+        let editProfileView = UIView(frame: CGRect(x: 0, y: 0, width: 120, height: 50))
+        //editProfileView.backgroundColor = UIColor.red
+        editProfileView.addSubview(editProfileButton)
+        
+        let rightBarButtonItem = UIBarButtonItem(customView: editProfileView)
+        
+        self.navigationItem.rightBarButtonItem = rightBarButtonItem
+        
+    }
+    
+    func rightbarButtonClickedEdit()
+    {
+        
+    }
+    func rightbarButtonClickedCancel()
+    {
+        self.view.viewWithTag(1000)?.removeFromSuperview()
+        
+        let vcArray = self.childViewControllers
+        
+        for vc in vcArray
+        {
+            if vc.isKind(of: UIImagePickerController.classForCoder())
+            {
+                vc.removeFromParentViewController()
+            }
+        }
+        
+        hideBarButtonItems(hide: false)
 
-
+       // picker.removeFromParentViewController()
+    }
+    func setProfileView()
+    {
         self.perform(#selector(addView), with: nil, afterDelay: 0.2)
         
         aboutYouTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
         aboutYouTextView.delegate = self
-
+        
         let imageView = UIImageView(frame: CGRect(x: 15, y: 5, width: 15, height: 20))
         let image = UIImage(named: "Username")
         imageView.image = image
@@ -115,30 +200,26 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         imageView7.image = image7
         locationTextField.addSubview(imageView7)
 
-        // Do any additional setup after loading the view.
+    
     }
     
-    override func viewWillAppear(_ animated: Bool)
-    {
-    //    super.viewWillAppear(true)
-      editProfileButton.setTitle("", for: .normal)
-      //  NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-      //  NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-
-        locationTextField.delegate = self
-    }
-    override func viewWillDisappear(_ animated: Bool)
-    {
-       NotificationCenter.default.removeObserver(self)
-    }
     
-    func popViewController() -> Void
+    
+    func hideBarButtonItems( hide:Bool)
     {
-        self.revealViewController().revealToggle(animated: true)
+        if hide
+        {
+            self.navigationItem.leftBarButtonItem = nil
+            setRightBarButtonItemCancel()
+        }
+        else
+        {
+           setLeftBarButtonItem()
+           setRightBarButtonItemEdit()
+        }
         
-        self.navigationController?.popViewController(animated: true)
+        //self.navigationItem.leftBarButtonItem.hide
     }
-    
     func addView() -> Void
     {
         outSideCircleView.layer.cornerRadius = outSideCircleView.frame.size.width/2.0
@@ -157,6 +238,48 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
     }
     
+    
+    
+    func showImagePickerController()
+    {
+        let imagePickerController = UIImagePickerController()
+        
+        
+        imagePickerController.view.frame = self.view.frame
+        
+        imagePickerController.delegate = self
+        
+        imagePickerController.view.tag = 1000
+        
+        imagePickerController.sourceType = .photoLibrary
+        
+        self.addChildViewController(imagePickerController)
+        
+        imagePickerController.didMove(toParentViewController: self)
+        
+        self.view.addSubview(imagePickerController.view)
+        
+        hideBarButtonItems(hide: true)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        let chosenImage = info[UIImagePickerControllerOriginalImage]
+        
+        let refURL = info[UIImagePickerControllerReferenceURL]
+        
+        let v = info[UIImagePickerControllerOriginalImage] as? UIImage
+        
+        circleImageView.image = v
+        
+        picker.view!.removeFromSuperview()
+        
+        picker.removeFromParentViewController()
+        
+        hideBarButtonItems(hide: false)
+
+        
+    }
 
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool
     {
@@ -212,7 +335,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
     }
     
-    func rightBArButtonCLicked() -> Void
+    func Edit() -> Void
     {
         
     }
@@ -250,30 +373,41 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
                 }
                 cuurentRoleTextField.text = userObject.occupation
                 
-                if let pictureUrlString = pictureUrlString
-                {
-                    let pictureUrl = URL(string: pictureUrlString)
-                    
-                    guard pictureUrl != nil else
+                DispatchQueue.global(qos: .background).async
                     {
-                        break
-                    }
-//                    if let pictureUrl = pictureUrl
-//                    {
-                        do
+                    
+                        if let pictureUrlString = pictureUrlString
                         {
-                            let imageData = try Data(contentsOf: pictureUrl! as URL)
+                            let pictureUrl = URL(string: pictureUrlString)
                             
-                            let userImage = UIImage(data: imageData)
-                            
-                            circleImageView.image = userImage
-                            
+                            guard pictureUrl != nil else
+                            {
+                                return
+                            }
+                            //                    if let pictureUrl = pictureUrl
+                            //                    {
+                            do
+                            {
+                                let imageData = try Data(contentsOf: pictureUrl! as URL)
+                                
+                                let userImage = UIImage(data: imageData)
+                                
+                                DispatchQueue.main.async
+                                    {
+                                        self.circleImageView.image = userImage
+
+                                    }
+
+                                
+                            }
+                            catch let error as NSError
+                            {
+                                print(error.localizedDescription)
+                            }
+                            // }
                         }
-                        catch let error as NSError
-                        {
-                            print(error.localizedDescription)
-                        }
-                   // }
+
+                    
                 }
                 
                 

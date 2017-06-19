@@ -197,6 +197,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // handle tap events
         print("You selected cell #\(indexPath.item)!")
+        
     }
 
     override func didReceiveMemoryWarning() {

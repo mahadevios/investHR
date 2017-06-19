@@ -8,6 +8,8 @@
 
 import UIKit
 
+import CoreData
+
 class VerticalViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
 {
 
@@ -32,27 +34,85 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
         
         if self.domainType == "vertical"
         {
-            domainNameArray = ["Banking & Financial Serivces","Insurance(P&C and Life & Annuity)","Healthcare Insurance","Healthcare Provider(Hospitals)","Pharma & Biotech","Life Sciences","Media & Entertainment & Gaming","Travel & Transportation & Hospitality","Manufacturing","Retail","Consumer Product Goods(CPG)","High Tech & ISV","Communication & Telecom","Aerospace","Oil and Gas","Utilities & Energy","Semi-Conductor","Logistics","Defence","Government & Public Sector","Education","Publishing","Medical Devices"]
+            //domainNameArray = ["Banking & Financial Serivces","Insurance(P&C and Life & Annuity)","Healthcare Insurance","Healthcare Provider(Hospitals)","Pharma & Biotech","Life Sciences","Media & Entertainment & Gaming","Travel & Transportation & Hospitality","Manufacturing","Retail","Consumer Product Goods(CPG)","High Tech & ISV","Communication & Telecom","Aerospace","Oil and Gas","Utilities & Energy","Semi-Conductor","Logistics","Defence","Government & Public Sector","Education","Publishing","Medical Devices"]
             
             self.navigationItem.title = "Vertical"
-
+            getdomainNames(type: "VertcalDomains")
         }
         else
             if self.domainType == "roles"
             {
-                domainNameArray = ["Hunter or New Business Acquisation","Farner or Account Management or Client Partner","Leadership","Human Resources","Recriuter or Talent manager","Practice Manager","Program Manager","Delivery MAnager","Finance","Marketing"]
+                //domainNameArray = ["Hunter or New Business Acquisation","Farner or Account Management or Client Partner","Leadership","Human Resources","Recriuter or Talent manager","Practice Manager","Program Manager","Delivery MAnager","Finance","Marketing"]
                 
                 self.navigationItem.title = "Roles"
+
+                getdomainNames(type: "Roles")
 
             }
             else
                 if self.domainType == "horizontal"
                 {
-                    domainNameArray = ["IT Services","Digital Services","Engineering Services","BPO","Staffing or Staff Augmentation","Inside Sales"]
+                    //domainNameArray = ["IT Services","Digital Services","Engineering Services","BPO","Staffing or Staff Augmentation","Inside Sales"]
                     
                     self.navigationItem.title = "Horizontal"
 
+                    getdomainNames(type: "HorizontalDomains")
+
                 }
+        
+    }
+
+    func getdomainNames( type:String)
+    {
+        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
+        
+        
+        do
+        {
+            var managedObjects:[NSManagedObject]?
+            
+            managedObjects = coreDataManager.fetch(entity: type)
+            
+            if type == "VertcalDomains"
+            {
+                for userObject in managedObjects as! [VertcalDomains]
+                {
+                    domainNameArray.append(userObject.verticalName!)
+                    
+                    //stateNameAndIdDic[userObject.stateName!] = userObject.id
+                    
+                }
+
+            }
+            else
+                if type == "HorizontalDomains"
+                {
+                    for userObject in managedObjects as! [HorizontalDomains]
+                    {
+                        domainNameArray.append(userObject.horizontalName!)
+                        
+                        //stateNameAndIdDic[userObject.stateName!] = userObject.id
+                        
+                    }
+                    
+                }
+            else
+                    if type == "Roles"
+                    {
+                        for userObject in managedObjects as! [Roles]
+                        {
+                            domainNameArray.append(userObject.roleName!)
+                            
+                            //stateNameAndIdDic[userObject.stateName!] = userObject.id
+                            
+                        }
+                        
+                    }
+        } catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        
         
     }
 

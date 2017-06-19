@@ -18,8 +18,6 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
     var statusCode:Int!
     
     
- 
-    
     func initWithdownLoadEntityJobName( jobName:String, withRequestParameter localRequestParameter:AnyObject, withResourcePath resourcePath:String, withHttpMethd httpMethodParameter:String) -> DownloadMetaDataJob
     {
         let downloadJob = DownloadMetaDataJob()
@@ -48,16 +46,9 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         
         
         var webservicePath = ""
+    
+        webservicePath = "\(Constant.BASE_URL_PATH)\(resourcePath)"
         
-        if resourcePath == Constant.LINKEDIN_ACCESS_TOKEN_ENDPOINT_API
-        {
-            webservicePath = "\(resourcePath)"
-        }
-        
-        else
-        {
-            webservicePath = "\(Constant.BASE_URL_PATH)\(resourcePath)\(parameter)"
-        }
         let url = NSURL(string: webservicePath.addingPercentEscapes(using: String.Encoding.utf8)!)
         
         let request = NSMutableURLRequest(url: url as! URL, cachePolicy: NSURLRequest.CachePolicy.useProtocolCachePolicy, timeoutInterval: 120)
@@ -84,18 +75,15 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         else
         {
             let postData = parameter.data(using: .utf8)
-                        
+            
             // Set the HTTP body using the postData object created above.
             request.httpBody = postData
             
             print(postData ?? "nil")
             print(request.httpBody ?? "nil")
 
-            request.addValue("application/x-www-form-urlencoded;", forHTTPHeaderField: "Content-Type")
+            //request.addValue("application/x-www-form-urlencoded;", forHTTPHeaderField: "Content-Type")
         }
-        
-
-
         
         request.httpMethod = httpMethodParameter
         
@@ -104,7 +92,6 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         print(urlConnection ?? "urlConnection = nil")
 
         //let url = NSURL.init(string: webservicePath.addingPercentEncoding(withAllowedCharacters: CharacterSet)
-
         
     }
     

@@ -17,7 +17,6 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
 
     @IBOutlet weak var linkedInURLTextField: UITextField!
     
-    @IBOutlet weak var currentRoleTextField: UITextField!
     @IBOutlet weak var verticalTextField: UITextField!
     @IBOutlet weak var revenueQuotaTextField: UITextField!
     @IBOutlet weak var PLTexField: UITextField!
@@ -95,7 +94,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
             
             return
         }
-        guard let candidateRole = currentRoleTextField.text else {
+        guard let candidateRole = candidateFunctionTextField.text else {
             
             return
         }
@@ -104,8 +103,33 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
             return
         }
         
+       let dict = ["name":self.name,"email":self.email,"mobileNumber":self.mobile,"password":self.password,"mobile":mobile,"currentRole":self.currentRole,"currentCompany":self.currentCompany,"stateId":self.state,"cityId":self.city,"visaStatus":self.visaStatus,"candidateFunction":candidateRole,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed,"benifits":benefits,"notJoinSpecificOrg":nonCompete,"image":"","expInOffshoreEng":expOffshore,"relocation":relocation] as [String : String]
+        
+//let parameterArray = ["name=\(name)","emailId=\(emailId)","mobileNumber=\(mobileNumber)","password=\(password)","currentRole=\(curentRole)","currentCompany=\(currentCompany)","stateId=\(state)","cityId=\(city)","visaStatus=\(visaStatus)","candidateRole=\(candidateRole)","services=\(service)","linkedInProfileUrl=\(linkedInProfileUrl)","verticalsServiceTo=\(vertical)","revenueQuota=\(revenueQuota)","PandL=\(PL)","currentCompLastYrW2=\(currentCompany)","expectedCompany=\(expectedCompany)","joiningTime=\(joiningTimeReq)","compInterviewPast1Yr=\(companiesInterViewed)","benifits=\(benefits)","notJoinSpecificOrg=\(notJoin)"]
+        
+//        APIManager.getSharedAPIManager().registerUser(name: self.name!, emailId: self.email!, mobileNumber:self.mobile, password: self.password!, curentRole: currentRole, currentCompany: currentCompany, state: String(state), city: String(city), visaStatus: visaStatus, service: service, linkedInProfileUrl: linkedInUR, candidateRole: candidateRole, verticals: vertical, revenueQuota: revenueQuota, PL: PL, experience: expOffshore, cuurrentCompany: currentCompany, companyInterViewed: companiesInterViewed, expectedCompany: expectedCompany, relocation: relocation, joiningTimeReq: joinigTime, benefits: benefits, notJoin: nonCompete)
+        
+//        let dict = ["name":"kpk","mobile":"+93-9096284028","email":"kuldeepk@xanadutec.com","password":"kk123","currentRole":"dont","currentCompany":"new","stateId":"9","cityId":"3712","visaStatus":"","candidateFunction":"8","services":"","linkedInProfileUrl":"","verticalsServiceTo":"","revenueQuota":"","PandL":"","expInOffshoreEng":"","currentCompLastYrW2":"","expectedCompany":"","relocation":"","joiningTime":"","compInterviewPast1Yr":"","benifits":"","notJoinSpecificOrg":"hjkjjh","image":""]
+        
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+            // here "jsonData" is the dictionary encoded in JSON data
+            
+            let decoded = try JSONSerialization.jsonObject(with: jsonData, options: [])
+            
+            print(decoded)
+            // here "decoded" is of type `Any`, decoded from JSON data
+            
+            APIManager.getSharedAPIManager().registerUser(dict: decoded)
 
-        APIManager.getSharedAPIManager().registerUser(name: self.name!, emailId: self.email!, mobileNumber:self.mobile, password: self.password!, curentRole: currentRole, currentCompany: currentCompany, state: String(state), city: String(city), visaStatus: visaStatus, service: service, linkedInProfileUrl: linkedInUR, candidateRole: candidateRole, verticals: vertical, revenueQuota: revenueQuota, PL: PL, experience: expOffshore, cuurrentCompany: currentCompany, companyInterViewed: companiesInterViewed, expectedCompany: expectedCompany, relocation: relocation, joiningTimeReq: joinigTime, benefits: benefits, notJoin: nonCompete)
+            // you can now cast it with the right type
+            if let dictFromJSON = decoded as? [String:String] {
+                // use dictFromJSON
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+//        APIManager.getSharedAPIManager().registerUser(dict: dict)
         
     }
     @IBAction func backButtonPressed(_ sender: Any)

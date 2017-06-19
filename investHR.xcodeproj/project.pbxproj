@@ -373,6 +373,7 @@
 				844E5B291EEED4CF00E69646 /* LinkedInLoginViewController.swift */,
 				844387B51ED41FF0002E71D6 /* RegistrationViewController.swift */,
 				844387B71ED46D2D002E71D6 /* Registration1ViewController.swift */,
+				844F5F2C1EDBF0B20073A7D7 /* EditProfileViewController.swift */,
 				8450ACCC1ED5B5EF001D57E1 /* AdditionalInfoViewController.swift */,
 				8440DF6F1ED706CB0003F05B /* MenuViewViewController.swift */,
 				84DAD40E1ED7F5440008BB09 /* VerticalViewController.swift */,
@@ -385,7 +386,6 @@
 				844F5F341EDC3BA10073A7D7 /* UploadResumeViewController.swift */,
 				842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */,
 				842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */,
-				844F5F2C1EDBF0B20073A7D7 /* EditProfileViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";

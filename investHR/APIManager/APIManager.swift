@@ -76,5 +76,16 @@ class APIManager: NSObject
         
         downloadmetadatajob.startMetaDataDownLoad()
     }
+    
+    func registerUser( dict:Any) -> Void
+    {
+        let parameterArray = ["registrationDict=\(dict)"]
+        
+        let dic = [Constant.REQUEST_PARAMETER:parameterArray]
+        
+        let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.NEW_USER_REGISTRATION_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.NEW_USER_REGISTRATION_API, withHttpMethd: Constant.POST)
+        
+        downloadmetadatajob.startMetaDataDownLoad()
+    }
 
 }
