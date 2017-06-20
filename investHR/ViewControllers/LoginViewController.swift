@@ -40,6 +40,11 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
     
     let linkedInSecret = "tgGDfootCo2zoLwB"
     
+    var webView:UIWebView!
+    
+    var linkedInLoginView:UIView!
+    
+    
     @IBOutlet weak var googleSignInCircleButton: UIButton!
     
     @IBOutlet weak var fbCircleLoginButton: UIButton!
@@ -137,8 +142,10 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
             
             return
         }
-        
         let managedObjectContext1 = appDelegate.managedObjectContext
+
+       // CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "City")
+
 //
 //        let entity1 = NSEntityDescription.entity(forEntityName: "City", in: managedObjectContext)!
 //
@@ -236,14 +243,66 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.fetchUserProfile(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.fetchUserProfile(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: nil) // after getting the accessToken from linkedin webview, ask for user info and get back to this view with hud, NOTIFICATION_LIACCESSTOKEN_FETCHED when webview fetch the user info, get this info in this controller and pass it to the server and validate the user
+        NotificationCenter.default.addObserver(self, selector: #selector(checkRegistrationResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_REGISTERED), object: nil)
+        
+    }
+    func checkRegistrationResponse(dataDic:NSNotification)
+    {
+        //        self.view.viewWithTag(789)?.removeFromSuperview()
+        
+        guard let responseDic = dataDic.object as? [String:String] else
+        {
+            //AppPreferences.sharedPreferences().showAlertViewWith(title: "Something went wrong!", withMessage: "Please try again", withCancelText: "Ok")
+            // hide hud
+            return
+        }
+        
+        guard let code = responseDic["code"] else {
+            // hide hud
+            
+            return
+        }
+        //let code = responseDic["code"]
+        
+        let name = responseDic["name"]
+        
+        let message = responseDic["Message"]
+        
+        let imageName = responseDic["ImageName"]
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
+        
+        print(currentRootVC)
+        
+        let className = String(describing: type(of: currentRootVC))
+        
+        self.view.viewWithTag(789)?.removeFromSuperview() // remove hud
+        
+        if className == "LoginViewController"
+        {
+            let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+            let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+            appDelegate.window?.rootViewController = rootViewController
+            self.dismiss(animated: true, completion: nil)
+
+            
+        }
+        else
+        {
+            self.dismiss(animated: true, completion: nil)
+            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_LOGGED_IN), object: nil, userInfo: nil)
+            
+        }
         
         
     }
-    
+
     override func viewWillDisappear(_ animated: Bool)
     {
-        //NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
     func fetchUserProfile(dataDic:NSNotification)
@@ -285,7 +344,6 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                             
                             DispatchQueue.main.async
                                 {
-                                    let userId = dataDictionary["id"]
                                     
                                     // let idExist = CoreDataManager.sharedManager.idExists(aToken: userId as! String, entityName: "User")
                                     let coreDataManager = CoreDataManager.getSharedCoreDataManager()
@@ -294,21 +352,55 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                                     //
                                     //                                                                        }
                                     //                                                                        else
-                                    //      
+                                    //   
+                                    print(dataDictionary)
                                     
-                                    let firstName = dataDictionary["firstName"]
+                                    guard let userId = dataDictionary["id"] as? String else
+                                    {
+                                        return
+                                    }
+
+
+                                    guard let firstName = dataDictionary["firstName"] as? String else
+                                    {
+                                     return
+                                    }
                                     
-                                    let lastName = dataDictionary["lastName"]
+                                    guard let lastName = dataDictionary["lastName"] as? String else
+                                    {
+                                        return
+                                    }
+
                                     
-                                    let occupation = dataDictionary["headline"]
+                                    guard let occupation = dataDictionary["headline"] as? String else
+                                    {
+                                        return
+                                    }
+
                                     
-                                    let emailAddress = dataDictionary["emailAddress"]
+                                    guard let emailAddress = dataDictionary["emailAddress"] as? String else
+                                    {
+                                        return
+                                    }
+
                                     
-                                    let publicProfileUrl = dataDictionary["publicProfileUrl"]
+                                    guard let publicProfileUrl = dataDictionary["publicProfileUrl"] as? String else
+                                    {
+                                        return
+                                    }
+
                                     
-                                    let pictureUrlsJson = dataDictionary["pictureUrls"] as! [String:AnyObject]
+                                    guard let pictureUrlsJson = dataDictionary["pictureUrls"] as? [String:AnyObject] else
+                                    {
+                                        return
+                                    }
+
                                     
-                                    let totalUrlsNumber = pictureUrlsJson["_total"] as! Int
+                                    guard let totalUrlsNumber = pictureUrlsJson["_total"] as? Int else
+                                    {
+                                        return
+                                    }
+
                                     
 //                                    let locationDic = dataDictionary["location"] as! [String:AnyObject]
 //
@@ -371,32 +463,40 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                                         
                                         pictureUrl = NSURL(string: pictureUrlArray[0])
                                     }
-                                    CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
-                                    let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["firstName":firstName ?? "nil","lastName":lastName ?? "nil","userId":userId ?? "nil","occupation":occupation ?? "nil","emailAddress":emailAddress ?? "nil","pictureUrl":pictureUrlString])
                                     
-                                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
                                     
-                                    let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
                                     
-                                    print(currentRootVC)
+                                    let linkedInDict = ["firstName":firstName,"lastName":lastName,"userId":userId,"occupation":occupation,"emailAddress":emailAddress,"pictureUrl":pictureUrlString,"profileUrl":publicProfileUrl,"linkedInId":userId] as [String : Any]
                                     
-                                    let className = String(describing: type(of: currentRootVC))
                                     
-                                    self.view.viewWithTag(789)?.removeFromSuperview() // remove hud
+                                    self.registerOrLoginuser(linkedInDict: linkedInDict)
                                     
-                                    if className == "LoginViewController"
-                                    {
-                                        let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
-                                        let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
-                                        appDelegate.window?.rootViewController = rootViewController
-                                        
-                                    }
-                                    else
-                                    {
-                                        self.dismiss(animated: true, completion: nil)
-                                        NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_LOGGED_IN), object: nil, userInfo: nil)
-
-                                    }
+//                                    CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+//                                    let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["firstName":firstName,"lastName":lastName ,"userId":userId ,"occupation":occupation ,"emailAddress":emailAddress,"pictureUrl":pictureUrlString])
+//                                    
+//                                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//                                    
+//                                    let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
+//                                    
+//                                    print(currentRootVC)
+//                                    
+//                                    let className = String(describing: type(of: currentRootVC))
+//                                    
+//                                    self.view.viewWithTag(789)?.removeFromSuperview() // remove hud
+//                                    
+//                                    if className == "LoginViewController"
+//                                    {
+//                                        let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+//                                        let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+//                                        appDelegate.window?.rootViewController = rootViewController
+//                                        
+//                                    }
+//                                    else
+//                                    {
+//                                        self.dismiss(animated: true, completion: nil)
+//                                        NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_LOGGED_IN), object: nil, userInfo: nil)
+//
+//                                    }
                                     
                             }
                             
@@ -450,6 +550,59 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
             
         }
 
+    }
+    
+    func registerOrLoginuser( linkedInDict:[String:Any])
+    {
+        
+        //let linkedInDict = ["firstName":firstName,"lastName":lastName,"userId":userId,"occupation":occupation,"emailAddress":emailAddress,"pictureUrl":pictureUrlString] as [String : Any]
+        
+        let dict = ["name":"\(linkedInDict["firstName"]!) \(linkedInDict["lastName"]!)","email":"\(linkedInDict["emailAddress"]!)","password":"","mobile":"","currentRole":"","currentCompany":"","stateId":"","cityId":"","visaStatus":"","candidateFunction":"","services":"","linkedInProfileUrl":"\(linkedInDict["profileUrl"]!)","verticalsServiceTo":"","revenueQuota":"","PandL":"","currentCompLastYrW2":"","expectedCompany":"","joiningTime":"","compInterviewPast1Yr":"","benifits":"","notJoinSpecificOrg":"","image":"","expInOffshoreEng":"","relocation":"","deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":"\(linkedInDict["linkedInId"]!)"] as [String : String]
+        
+        //let parameterArray = ["name=\(name)","emailId=\(emailId)","mobileNumber=\(mobileNumber)","password=\(password)","currentRole=\(curentRole)","currentCompany=\(currentCompany)","stateId=\(state)","cityId=\(city)","visaStatus=\(visaStatus)","candidateRole=\(candidateRole)","services=\(service)","linkedInProfileUrl=\(linkedInProfileUrl)","verticalsServiceTo=\(vertical)","revenueQuota=\(revenueQuota)","PandL=\(PL)","currentCompLastYrW2=\(currentCompany)","expectedCompany=\(expectedCompany)","joiningTime=\(joiningTimeReq)","compInterviewPast1Yr=\(companiesInterViewed)","benifits=\(benefits)","notJoinSpecificOrg=\(notJoin)"]
+        
+        //        APIManager.getSharedAPIManager().registerUser(name: self.name!, emailId: self.email!, mobileNumber:self.mobile, password: self.password!, curentRole: currentRole, currentCompany: currentCompany, state: String(state), city: String(city), visaStatus: visaStatus, service: service, linkedInProfileUrl: linkedInUR, candidateRole: candidateRole, verticals: vertical, revenueQuota: revenueQuota, PL: PL, experience: expOffshore, cuurrentCompany: currentCompany, companyInterViewed: companiesInterViewed, expectedCompany: expectedCompany, relocation: relocation, joiningTimeReq: joinigTime, benefits: benefits, notJoin: nonCompete)
+        
+        //        let dict = ["name":"kpk","mobile":"+93-9096284028","email":"kuldeepk@xanadutec.com","password":"kk123","currentRole":"dont","currentCompany":"new","stateId":"9","cityId":"3712","visaStatus":"","candidateFunction":"8","services":"","linkedInProfileUrl":"","verticalsServiceTo":"","revenueQuota":"","PandL":"","expInOffshoreEng":"","currentCompLastYrW2":"","expectedCompany":"","relocation":"","joiningTime":"","compInterviewPast1Yr":"","benifits":"","notJoinSpecificOrg":"hjkjjh","image":""]
+        
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+            // here "jsonData" is the dictionary encoded in JSON data
+            
+            let decoded = try JSONSerialization.jsonObject(with: jsonData, options: [])
+            
+            print(decoded)
+            // here "decoded" is of type `Any`, decoded from JSON data
+            
+            //            if AppPreferences.sharedPreferences().isReachable
+            //            {
+            APIManager.getSharedAPIManager().registerUser(dict: decoded)
+            
+//            let hud = MBProgressHUD.showAdded(to: UIApplication.shared.keyWindow!, animated: true)
+//            
+//            hud.tag = 789
+//            
+//            hud.minSize = CGSize(width: 150.0, height: 100.0)
+//            
+//            hud.label.text = "Logging in.."
+//            
+//            hud.detailsLabel.text = "Please wait"
+            //            }
+            //            else
+            //            {
+            //                AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            //
+            //            }
+            
+            // you can now cast it with the right type
+            if let dictFromJSON = decoded as? [String:String] {
+                // use dictFromJSON
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+
+     
     }
     @IBAction func fbLoginButtonClicked(_ sender: Any)
     {
@@ -671,91 +824,92 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
 
     @IBAction func emailLoginButtonPressed(_ sender: Any)
     {
-        if emailTextField.text == "" || passwordTextField.text == ""
-        {
-            let alertController = UIAlertController(title: "Login Error", message: "Please enter valid credentials", preferredStyle: .alert)
-            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(okayAction)
-            self.present(alertController, animated: true, completion: nil)
-        }
-        else
-        {
-            FIRAuth.auth()?.signIn(withEmail: emailTextField.text!, password: passwordTextField.text!, completion:{ (user, error) in
-                if let error = error
-                {
-                    if let errCode = FIRAuthErrorCode(rawValue: error._code)
-                    {
-                        switch errCode
-                        {
-                        case .errorCodeEmailAlreadyInUse:
-                            let alertController = UIAlertController(title: "Login Error", message: "The email is already in use with another account", preferredStyle: .alert)
-                            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                            alertController.addAction(okayAction)
-                            self.present(alertController, animated: true, completion: nil)
-                            break
-                            
-                        case .errorCodeUserDisabled:
-                            let alertController = UIAlertController(title: "Login Error", message: "Your account has been disabled. Please contact support.", preferredStyle: .alert)
-                            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                            alertController.addAction(okayAction)
-                            self.present(alertController, animated: true, completion: nil)
-                            break
-                            
-                            
-                        case .errorCodeInvalidEmail, .errorCodeInvalidSender, .errorCodeInvalidRecipientEmail:
-                            let alertController = UIAlertController(title: "Login Error", message: "Please enter a valid email", preferredStyle: .alert)
-                            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                            alertController.addAction(okayAction)
-                            self.present(alertController, animated: true, completion: nil)
-                            break
-                            
-                        case .errorCodeNetworkError:
-                            let alertController = UIAlertController(title: "Login Error", message: "Network error. Please try again.", preferredStyle: .alert)
-                            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                            alertController.addAction(okayAction)
-                            self.present(alertController, animated: true, completion: nil)
-                            break
-                            
-                        case .errorCodeWeakPassword:
-                            let alertController = UIAlertController(title: "Login Error", message: "Your password is too weak", preferredStyle: .alert)
-                            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                            alertController.addAction(okayAction)
-                            self.present(alertController, animated: true, completion: nil)
-                            break
-                            
-                            
-                        default:
-                            let alertController = UIAlertController(title: "Login Error", message: "Unknown error occurred, please try again", preferredStyle: .alert)
-                            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                            alertController.addAction(okayAction)
-                            self.present(alertController, animated: true, completion: nil)
-                            break
-                        }
-                        print(error.localizedDescription)
-                    }
-                    
-                }
-                else if let user = user
-                {
-                    if user.isEmailVerified
-                    {
-                        if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") {
-                            UIApplication.shared.keyWindow?.rootViewController = viewController
-                            self.dismiss(animated: true, completion: nil)
-                        }
-                    }
-                    else
-                    {
-                        let alertController = UIAlertController(title: "Email not verified", message: "Please verify your email try again", preferredStyle: .alert)
-                        let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                        alertController.addAction(okayAction)
-                        self.present(alertController, animated: true, completion: nil)
-                    }
-                    print(user)
-                }
-            }
-        )
-        }
+        self.dismiss(animated: true, completion: nil)
+//        if emailTextField.text == "" || passwordTextField.text == ""
+//        {
+//            let alertController = UIAlertController(title: "Login Error", message: "Please enter valid credentials", preferredStyle: .alert)
+//            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+//            alertController.addAction(okayAction)
+//            self.present(alertController, animated: true, completion: nil)
+//        }
+//        else
+//        {
+//            FIRAuth.auth()?.signIn(withEmail: emailTextField.text!, password: passwordTextField.text!, completion:{ (user, error) in
+//                if let error = error
+//                {
+//                    if let errCode = FIRAuthErrorCode(rawValue: error._code)
+//                    {
+//                        switch errCode
+//                        {
+//                        case .errorCodeEmailAlreadyInUse:
+//                            let alertController = UIAlertController(title: "Login Error", message: "The email is already in use with another account", preferredStyle: .alert)
+//                            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+//                            alertController.addAction(okayAction)
+//                            self.present(alertController, animated: true, completion: nil)
+//                            break
+//                            
+//                        case .errorCodeUserDisabled:
+//                            let alertController = UIAlertController(title: "Login Error", message: "Your account has been disabled. Please contact support.", preferredStyle: .alert)
+//                            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+//                            alertController.addAction(okayAction)
+//                            self.present(alertController, animated: true, completion: nil)
+//                            break
+//                            
+//                            
+//                        case .errorCodeInvalidEmail, .errorCodeInvalidSender, .errorCodeInvalidRecipientEmail:
+//                            let alertController = UIAlertController(title: "Login Error", message: "Please enter a valid email", preferredStyle: .alert)
+//                            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+//                            alertController.addAction(okayAction)
+//                            self.present(alertController, animated: true, completion: nil)
+//                            break
+//                            
+//                        case .errorCodeNetworkError:
+//                            let alertController = UIAlertController(title: "Login Error", message: "Network error. Please try again.", preferredStyle: .alert)
+//                            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+//                            alertController.addAction(okayAction)
+//                            self.present(alertController, animated: true, completion: nil)
+//                            break
+//                            
+//                        case .errorCodeWeakPassword:
+//                            let alertController = UIAlertController(title: "Login Error", message: "Your password is too weak", preferredStyle: .alert)
+//                            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+//                            alertController.addAction(okayAction)
+//                            self.present(alertController, animated: true, completion: nil)
+//                            break
+//                            
+//                            
+//                        default:
+//                            let alertController = UIAlertController(title: "Login Error", message: "Unknown error occurred, please try again", preferredStyle: .alert)
+//                            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+//                            alertController.addAction(okayAction)
+//                            self.present(alertController, animated: true, completion: nil)
+//                            break
+//                        }
+//                        print(error.localizedDescription)
+//                    }
+//                    
+//                }
+//                else if let user = user
+//                {
+//                    if user.isEmailVerified
+//                    {
+//                        if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") {
+//                            UIApplication.shared.keyWindow?.rootViewController = viewController
+//                            self.dismiss(animated: true, completion: nil)
+//                        }
+//                    }
+//                    else
+//                    {
+//                        let alertController = UIAlertController(title: "Email not verified", message: "Please verify your email try again", preferredStyle: .alert)
+//                        let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+//                        alertController.addAction(okayAction)
+//                        self.present(alertController, animated: true, completion: nil)
+//                    }
+//                    print(user)
+//                }
+//            }
+//        )
+//        }
     }
     
 //       func googleLoginButtonClicked() -> Void
@@ -1031,7 +1185,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         redirectUrl = redirectUrl.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.alphanumerics)!
         
-        let authUrl = "https://www.linkedin.com/oauth/v2/authorization?scope=\(scope)%20r_emailaddress&redirect_uri=\(redirectUrl)&client_id=81no6kz3uepufn&state=\(state)&responseType=\(responseType)"
+        //let authUrl = "https://www.linkedin.com/oauth/v2/authorization?scope=\(scope)%20r_emailaddress&redirect_uri=\(redirectUrl)&client_id=81no6kz3uepufn&state=\(state)&responseType=\(responseType)"
         
         
         var authorizationURL = "\(authorizationEndPoint)?"
@@ -1042,7 +1196,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         authorizationURL += "scope=\(scope)"
         
         print("1=",authorizationURL)
-        print("2=",authUrl)
+        //print("2=",authUrl)
         
         //        let authUrl = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&redirect_uri=http%3A%2F%2Fwww.example.com%2Fauth%2Flinkedin&state=987654321&scope=r_basicprofile&client_id=F27W4sBvOjnfRKXZNGiL2V18uttDvQZu"
         //https://investhr.auth0.com/ios/com.xanadutec.investHR/callback
@@ -1050,7 +1204,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         //
         
-        let linkedInLoginView = UIView(frame: self.view.bounds)
+        self.linkedInLoginView = UIView(frame: self.view.bounds)
 
         linkedInLoginView.tag = 1000
         
@@ -1058,18 +1212,25 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         cancelLinkedInViewButton.addTarget(self, action: #selector(cancelLinkedInViewButtonClicked), for: .touchUpInside)
         
+        cancelLinkedInViewButton.tag = 999
         //cancelLinkedInViewButton.setTitleColor(UIColor.red, for: UIControlState.normal)
         //cancelLinkedInViewButton.setTitle("Cancel", for: .normal)
         cancelLinkedInViewButton.setBackgroundImage(UIImage(named:"Cross"), for: .normal)
         
-        let webView = UIWebView(frame: CGRect(x:linkedInLoginView.frame.origin.x , y: linkedInLoginView.frame.origin.y+40, width: linkedInLoginView.frame.size.width, height: linkedInLoginView.frame.size.height-40))
+        self.webView = UIWebView(frame: CGRect(x:linkedInLoginView.frame.origin.x , y: linkedInLoginView.frame.origin.y+40, width: linkedInLoginView.frame.size.width, height: linkedInLoginView.frame.size.height-40))
+        
+        webView.tag = 998
         
         linkedInLoginView.addSubview(cancelLinkedInViewButton)
         linkedInLoginView.addSubview(webView)
         
         webView.delegate = self
         
-        webView.loadRequest(NSURLRequest(url: NSURL(string: authorizationURL) as! URL) as URLRequest)
+        DispatchQueue.global(qos: .background).async
+            {
+                self.webView.loadRequest(NSURLRequest(url: NSURL(string: authorizationURL) as! URL) as URLRequest)
+
+        }
         
         self.view.addSubview(linkedInLoginView)
         
@@ -1079,7 +1240,19 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
     
     func cancelLinkedInViewButtonClicked()
     {
-      self.view.viewWithTag(1000)?.removeFromSuperview()
+        self.webView.delegate = nil
+        self.linkedInLoginView.removeFromSuperview()
+        self.webView.stopLoading()
+        self.webView.delete(self)
+      //self.view.viewWithTag(1000)?.removeFromSuperview()
+        
+        
+        let cookieStorage =  HTTPCookieStorage.shared
+        for cookie in cookieStorage.cookies! {
+            cookieStorage.deleteCookie(cookie)
+        }
+        //URLCache.shared.removeAllCachedResponses()
+        //self.removeFromParentViewController()
     }
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool
     {
@@ -1135,7 +1308,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         //self.hud().show(animated: true)
         
-        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        let hud = MBProgressHUD.showAdded(to: UIApplication.shared.keyWindow!, animated: true)
         
         hud.tag = 789
         
@@ -1216,16 +1389,16 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         let managedObjectContext = appDelegate.managedObjectContext
         
-        let entity = NSEntityDescription.entity(forEntityName: "Roles", in: managedObjectContext)!
+        //let entity = NSEntityDescription.entity(forEntityName: "Roles", in: managedObjectContext)!
         
-        let entity1 = NSEntityDescription.entity(forEntityName: "HorizontalDomains", in: managedObjectContext)!
-        
-        let entity2 = NSEntityDescription.entity(forEntityName: "VertcalDomains", in: managedObjectContext)!
+        //let entity1 = NSEntityDescription.entity(forEntityName: "HorizontalDomains", in: managedObjectContext)!
+        let entity1 = NSEntityDescription.entity(forEntityName: "City", in: managedObjectContext)!
+        //let entity2 = NSEntityDescription.entity(forEntityName: "VertcalDomains", in: managedObjectContext)!
         
         
         // Specify the URL string that we'll get the profile info from.
-        let targetURLString = "http://192.168.3.74:9090/coreflex/StateCity"
-        
+        //let targetURLString = "http://192.168.3.74:9090/coreflex/StateCity"
+        let targetURLString = "http://192.168.3.67:8080/coreflex/investhr/login/city"
         let request = NSMutableURLRequest(url: NSURL(string: targetURLString)! as URL)
         
         // Indicate that this is a GET request.
@@ -1246,137 +1419,137 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                 do
                 {
                     let dataDictionary = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
+//                    
+//                    let stateString = dataDictionary["Role"] as! String
+//                    
+//                    let stateData = stateString.data(using: .utf8, allowLossyConversion: true)
+//                    
+//                    let stateArray =  try JSONSerialization.jsonObject(with: stateData as Data!, options: .allowFragments) as! [AnyObject]
+//                    
+//                    for index in 0 ..< stateArray.count
+//                    {
+//                        let stateIdAndNameDic = stateArray[index] as! [String:AnyObject]
+//                        
+//                        let roleId = stateIdAndNameDic["role_id"] as! Int
+//                        
+//                        let roleName = stateIdAndNameDic["role_name"] as! String
+//                        
+//                        let stateObject = NSManagedObject(entity: entity, insertInto: managedObjectContext) as! Roles
+//                        
+//                        stateObject.roleId = Int16(roleId)
+//                        
+//                        stateObject.roleName = roleName
+//                        
+//                        do {
+//                            print("inserting state num:",(index))
+//                            
+//                            try managedObjectContext.save()
+//                            
+//                        } catch let error as NSError {
+//                            print(error.localizedDescription)
+//                        }
+//                    }
+//                    
+//                    
+//                    let horizontalsString = dataDictionary["Horizontals"] as! String
+//                    
+//                    let horizontalsData = horizontalsString.data(using: .utf8, allowLossyConversion: true)
+//                    
+//                    let horizontalsArray =  try JSONSerialization.jsonObject(with: horizontalsData as Data!, options: .allowFragments) as! [AnyObject]
+//                    
+//                    for index in 0 ..< horizontalsArray.count
+//                    {
+//                        let horizontalIdAndNameDic = horizontalsArray[index] as! [String:AnyObject]
+//                        
+//                        let horizontalId = horizontalIdAndNameDic["horizontal_id"] as! Int
+//                        
+//                        let horizontalName = horizontalIdAndNameDic["horizontal_name"] as! String
+//                        
+//                        let horizontalObject = NSManagedObject(entity: entity1, insertInto: managedObjectContext) as! HorizontalDomains
+//                        
+//                        horizontalObject.horizontalId = Int16(horizontalId)
+//                        
+//                        horizontalObject.horizontalName = horizontalName
+//                        
+//                        do {
+//                            print("inserting state num:",(index))
+//                            
+//                            try managedObjectContext.save()
+//                            
+//                        } catch let error as NSError {
+//                            print(error.localizedDescription)
+//                        }
+//                    }
+//                    
+//                    let verticalsString = dataDictionary["Verticals"] as! String
+//                    
+//                    let verticalsData = verticalsString.data(using: .utf8, allowLossyConversion: true)
+//                    
+//                    let verticalsArray =  try JSONSerialization.jsonObject(with: verticalsData as Data!, options: .allowFragments) as! [AnyObject]
+//                    
+//                    for index in 0 ..< verticalsArray.count
+//                    {
+//                        let verticalIdAndNameDic = verticalsArray[index] as! [String:AnyObject]
+//                        
+//                        let verticalId = verticalIdAndNameDic["vertical_id"] as! Int
+//                        
+//                        let verticalName = verticalIdAndNameDic["vertical_name"] as! String
+//                        
+//                        let verticalObject = NSManagedObject(entity: entity2, insertInto: managedObjectContext) as! VertcalDomains
+//                        
+//                        verticalObject.verticalId = Int16(verticalId)
+//                        
+//                        verticalObject.verticalName = verticalName
+//                        
+//                        do {
+//                            print("inserting state num:",(index))
+//                            
+//                            try managedObjectContext.save()
+//                            
+//                        } catch let error as NSError {
+//                            print(error.localizedDescription)
+//                        }
+//                    }
+//                    
                     
-                    let stateString = dataDictionary["Role"] as! String
                     
-                    let stateData = stateString.data(using: .utf8, allowLossyConversion: true)
+                                        let stateCityString = dataDictionary["cityList"] as! String
                     
-                    let stateArray =  try JSONSerialization.jsonObject(with: stateData as Data!, options: .allowFragments) as! [AnyObject]
+                                        let stateCityData = stateCityString.data(using: .utf8, allowLossyConversion: true)
                     
-                    for index in 0 ..< stateArray.count
-                    {
-                        let stateIdAndNameDic = stateArray[index] as! [String:AnyObject]
-                        
-                        let roleId = stateIdAndNameDic["role_id"] as! Int
-                        
-                        let roleName = stateIdAndNameDic["role_name"] as! String
-                        
-                        let stateObject = NSManagedObject(entity: entity, insertInto: managedObjectContext) as! Roles
-                        
-                        stateObject.roleId = Int16(roleId)
-                        
-                        stateObject.roleName = roleName
-                        
-                        do {
-                            print("inserting state num:",(index))
-                            
-                            try managedObjectContext.save()
-                            
-                        } catch let error as NSError {
-                            print(error.localizedDescription)
-                        }
-                    }
+                                        let stateCityArray =  try JSONSerialization.jsonObject(with: stateCityData as Data!, options: .allowFragments) as! [AnyObject]
                     
+                                        for index in 0 ..< stateCityArray.count
+                                        {
+                                            let stateCityIdAndNameDic = stateCityArray[index] as! [String:AnyObject]
                     
-                    let horizontalsString = dataDictionary["Horizontals"] as! String
+                                            let cityId = stateCityIdAndNameDic["id"] as! Int
                     
-                    let horizontalsData = horizontalsString.data(using: .utf8, allowLossyConversion: true)
+                                            let cityName = stateCityIdAndNameDic["city_Name"] as! String
                     
-                    let horizontalsArray =  try JSONSerialization.jsonObject(with: horizontalsData as Data!, options: .allowFragments) as! [AnyObject]
+                                            let stateIdNameDic = stateCityIdAndNameDic["state"] as! [String:AnyObject]
                     
-                    for index in 0 ..< horizontalsArray.count
-                    {
-                        let horizontalIdAndNameDic = horizontalsArray[index] as! [String:AnyObject]
-                        
-                        let horizontalId = horizontalIdAndNameDic["horizontal_id"] as! Int
-                        
-                        let horizontalName = horizontalIdAndNameDic["horizontal_name"] as! String
-                        
-                        let horizontalObject = NSManagedObject(entity: entity1, insertInto: managedObjectContext) as! HorizontalDomains
-                        
-                        horizontalObject.horizontalId = Int16(horizontalId)
-                        
-                        horizontalObject.horizontalName = horizontalName
-                        
-                        do {
-                            print("inserting state num:",(index))
-                            
-                            try managedObjectContext.save()
-                            
-                        } catch let error as NSError {
-                            print(error.localizedDescription)
-                        }
-                    }
+                                            let stateId = stateIdNameDic["id"] as! Int
                     
-                    let verticalsString = dataDictionary["Verticals"] as! String
+                                            //let stateName = stateIdNameDic["state_Name"]
                     
-                    let verticalsData = verticalsString.data(using: .utf8, allowLossyConversion: true)
+                                            let cityObject = NSManagedObject(entity: entity1, insertInto: managedObjectContext) as! City
                     
-                    let verticalsArray =  try JSONSerialization.jsonObject(with: verticalsData as Data!, options: .allowFragments) as! [AnyObject]
+                                            cityObject.id = Int64(cityId)
                     
-                    for index in 0 ..< verticalsArray.count
-                    {
-                        let verticalIdAndNameDic = verticalsArray[index] as! [String:AnyObject]
-                        
-                        let verticalId = verticalIdAndNameDic["vertical_id"] as! Int
-                        
-                        let verticalName = verticalIdAndNameDic["vertical_name"] as! String
-                        
-                        let verticalObject = NSManagedObject(entity: entity2, insertInto: managedObjectContext) as! VertcalDomains
-                        
-                        verticalObject.verticalId = Int16(verticalId)
-                        
-                        verticalObject.verticalName = verticalName
-                        
-                        do {
-                            print("inserting state num:",(index))
-                            
-                            try managedObjectContext.save()
-                            
-                        } catch let error as NSError {
-                            print(error.localizedDescription)
-                        }
-                    }
+                                            cityObject.stateId = Int16(stateId)
                     
+                                            cityObject.cityName = cityName
                     
+                                            do {
+                                                try managedObjectContext.save()
                     
-                    //                    let stateCityString = dataDictionary["StateCity"] as! String
-                    //
-                    //                    let stateCityData = stateCityString.data(using: .utf8, allowLossyConversion: true)
-                    //
-                    //                    let stateCityArray =  try JSONSerialization.jsonObject(with: stateCityData as Data!, options: .allowFragments) as! [AnyObject]
-                    //
-                    //                    for index in 0 ..< stateCityArray.count
-                    //                    {
-                    //                        let stateCityIdAndNameDic = stateCityArray[index] as! [String:AnyObject]
-                    //
-                    //                        let cityId = stateCityIdAndNameDic["id"] as! Int
-                    //
-                    //                        let cityName = stateCityIdAndNameDic["city_Name"] as! String
-                    //
-                    //                        let stateIdNameDic = stateCityIdAndNameDic["state"] as! [String:AnyObject]
-                    //
-                    //                        let stateId = stateIdNameDic["id"] as! Int
-                    //
-                    //                        //let stateName = stateIdNameDic["state_Name"]
-                    //
-                    //                        let cityObject = NSManagedObject(entity: entity1, insertInto: managedObjectContext) as! City
-                    //
-                    //                        cityObject.id = Int64(cityId)
-                    //
-                    //                        cityObject.stateId = Int16(stateId)
-                    //
-                    //                        cityObject.cityName = cityName
-                    //
-                    //                        do {
-                    //                            try managedObjectContext.save()
-                    //
-                    //                            print("inserting city num:",(index))
-                    //                            
-                    //                        } catch let error as NSError {
-                    //                            print(error.localizedDescription)
-                    //                        }
-                    //                    }
+                                                print("inserting city num:",(index))
+                                                
+                                            } catch let error as NSError {
+                                                print(error.localizedDescription)
+                                            }
+                                        }
                     
                 }
                 catch let error as NSError

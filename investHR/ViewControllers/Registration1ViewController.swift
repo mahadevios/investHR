@@ -291,7 +291,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         
         
         
-        APIManager.getSharedAPIManager().registerUser(name: self.name!, emailId: self.email!, mobileNumber:mobileNumber, password: self.password!, curentRole: currentRole, currentCompany: currentCompany, state: String(state), city: String(city), visaStatus: visaStatus, service: "", linkedInProfileUrl: "", candidateRole: "", verticals: "", revenueQuota: "", PL: "", experience: "", cuurrentCompany: "", companyInterViewed: "", expectedCompany: "", relocation: "", joiningTimeReq: "", benefits: "", notJoin: "")
+//        APIManager.getSharedAPIManager().registerUser(name: self.name!, emailId: self.email!, mobileNumber:mobileNumber, password: self.password!, curentRole: currentRole, currentCompany: currentCompany, state: String(state), city: String(city), visaStatus: visaStatus, service: "", linkedInProfileUrl: "", candidateRole: "", verticals: "", revenueQuota: "", PL: "", experience: "", cuurrentCompany: "", companyInterViewed: "", expectedCompany: "", relocation: "", joiningTimeReq: "", benefits: "", notJoin: "")
         
         
         if className == "LoginViewController"
@@ -330,10 +330,36 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             
             return
         }
-        guard let city = location1TextField.text else {
+        
+        var stateId:String? = ""
+        if state == ""
+        {
+        
+        }
+        else
+        {
+          stateId = String(describing: stateNameAndIdDic[state]!)
+            
+            
+        }
+        
+        guard let city = location1TextField.text else
+        {
             
             return
         }
+        
+        var cityId:String! = ""
+        
+        if city == ""
+        {
+            
+        }
+        else
+        {
+            cityId = String(describing: cityNameAndIdDic[city]!)
+        }
+        
         guard let visaStatus = visaStatusTextField.text else {
             
             return
@@ -343,10 +369,10 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         vc.email = self.email
         vc.password = self.password
         vc.mobile = mobileNumber
-        vc.state = state
+        vc.state = stateId!
         vc.currentRole = currentRole
         vc.visaStatus = visaStatus
-        vc.city = city
+        vc.city = cityId!
         vc.currentCompany = currentCompany
         
         self.navigationController?.present(vc, animated: true, completion: nil)

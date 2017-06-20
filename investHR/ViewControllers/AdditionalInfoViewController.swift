@@ -38,10 +38,99 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
     var currentRole:String!
     var currentCompany:String!
     var visaStatus:String!
-    
+    var roleNameAndIdDic = [String:Int16]()
+
     var candidateFunctionArray : [String] = []
     let servicesArray : [String] = ["Services","Service 2","Service 3","Service 4","Service 5"]
 
+    
+    override func viewDidLoad()
+    {
+        super.viewDidLoad()
+        
+        print(visaStatus)
+        //let candidateFunctionPickerView = UIPickerView(frame: CGRect(x: 15, y: 0, width: candidateFunctionTextField.frame.size.width * 0.80, height: 35))
+        //candidateFunctionPickerView.dataSource = self
+        //candidateFunctionPickerView.delegate = self
+        //candidateFunctionTextField.addSubview(candidateFunctionPickerView)
+        //candidateFunctionPickerView.tag = 1
+        
+        //        let servicePickerView = UIPickerView(frame: CGRect(x: 15, y: 0, width: serviceTextField.frame.size.width * 0.80, height: 35))
+        //        servicePickerView.dataSource = self
+        //        servicePickerView.delegate = self
+        //        serviceTextField.addSubview(servicePickerView)
+        //        servicePickerView.tag = 2
+        
+        companiesInterViewedTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        
+        benefitsTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        
+        nonCompeteTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        
+        companiesInterViewedTextView.delegate = self
+        benefitsTextView.delegate = self
+        nonCompeteTextView.delegate = self
+        candidateFunctionTextField.delegate = self
+        getCandidateRoles()
+        NotificationCenter.default.addObserver(self, selector: #selector(checkRegistrationResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_REGISTERED), object: nil)
+        // Do any additional setup after loading the view.
+    }
+
+    func checkRegistrationResponse(dataDic:NSNotification)
+    {
+//        self.view.viewWithTag(789)?.removeFromSuperview()
+
+        guard let responseDic = dataDic.object as? [String:String] else
+        {
+            //AppPreferences.sharedPreferences().showAlertViewWith(title: "Something went wrong!", withMessage: "Please try again", withCancelText: "Ok")
+            // hide hud
+            return
+        }
+        
+        guard let code = responseDic["code"] else {
+            // hide hud
+            
+            return
+        }
+        //let code = responseDic["code"]
+        
+        let name = responseDic["name"]
+        
+        let message = responseDic["Message"]
+        
+        let imageName = responseDic["ImageName"]
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
+        
+        print(currentRootVC)
+        
+        let className = String(describing: type(of: currentRootVC))
+        
+        self.view.viewWithTag(789)?.removeFromSuperview() // remove hud
+        
+        if className == "LoginViewController"
+        {
+            let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+            let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+            appDelegate.window?.rootViewController = rootViewController
+            
+        }
+        else
+        {
+            self.dismiss(animated: true, completion: nil)
+            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_LOGGED_IN), object: nil, userInfo: nil)
+            
+        }
+
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool)
+    {
+        NotificationCenter.default.removeObserver(self)
+    }
     @IBAction func submitButtonClicked(_ sender: Any)
     {
         guard let joinigTime = joiningTimeTextfield.text else {
@@ -86,6 +175,18 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
             
             return
         }
+        
+        var roleId:String! = ""
+        
+        if candidateFunction == ""
+        {
+            
+        }
+        else
+        {
+            roleId = String(describing: roleNameAndIdDic[candidateFunction]!)
+        }
+
         guard let service = serviceTextField.text else {
             
             return
@@ -94,16 +195,18 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
             
             return
         }
-        guard let candidateRole = candidateFunctionTextField.text else {
-            
-            return
-        }
+//        guard let candidateRole = candidateFunctionTextField.text else {
+//            
+//            return
+//        }
         guard let vertical = verticalTextField.text else {
             
             return
         }
         
-       let dict = ["name":self.name,"email":self.email,"mobileNumber":self.mobile,"password":self.password,"mobile":mobile,"currentRole":self.currentRole,"currentCompany":self.currentCompany,"stateId":self.state,"cityId":self.city,"visaStatus":self.visaStatus,"candidateFunction":candidateRole,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed,"benifits":benefits,"notJoinSpecificOrg":nonCompete,"image":"","expInOffshoreEng":expOffshore,"relocation":relocation] as [String : String]
+    
+        
+       let dict = ["name":self.name,"email":self.email,"password":self.password,"mobile":self.mobile,"currentRole":self.currentRole,"currentCompany":self.currentCompany,"stateId":self.state!,"cityId":self.city!,"visaStatus":self.visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed,"benifits":benefits,"notJoinSpecificOrg":nonCompete,"image":"","expInOffshoreEng":expOffshore,"relocation":relocation,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":""] as [String : String]
         
 //let parameterArray = ["name=\(name)","emailId=\(emailId)","mobileNumber=\(mobileNumber)","password=\(password)","currentRole=\(curentRole)","currentCompany=\(currentCompany)","stateId=\(state)","cityId=\(city)","visaStatus=\(visaStatus)","candidateRole=\(candidateRole)","services=\(service)","linkedInProfileUrl=\(linkedInProfileUrl)","verticalsServiceTo=\(vertical)","revenueQuota=\(revenueQuota)","PandL=\(PL)","currentCompLastYrW2=\(currentCompany)","expectedCompany=\(expectedCompany)","joiningTime=\(joiningTimeReq)","compInterviewPast1Yr=\(companiesInterViewed)","benifits=\(benefits)","notJoinSpecificOrg=\(notJoin)"]
         
@@ -120,7 +223,25 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
             print(decoded)
             // here "decoded" is of type `Any`, decoded from JSON data
             
-            APIManager.getSharedAPIManager().registerUser(dict: decoded)
+//            if AppPreferences.sharedPreferences().isReachable
+//            {
+                APIManager.getSharedAPIManager().registerUser(dict: decoded)
+
+                let hud = MBProgressHUD.showAdded(to: UIApplication.shared.keyWindow!, animated: true)
+                
+                hud.tag = 789
+                
+                hud.minSize = CGSize(width: 150.0, height: 100.0)
+                
+                hud.label.text = "Logging in.."
+                
+                hud.detailsLabel.text = "Please wait"
+//            }
+//            else
+//            {
+//                AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+//
+//            }
 
             // you can now cast it with the right type
             if let dictFromJSON = decoded as? [String:String] {
@@ -138,36 +259,6 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
 
        self.dismiss(animated: true, completion: nil)
     }
-    override func viewDidLoad()
-    {
-        super.viewDidLoad()
-
-        print(visaStatus)
-        //let candidateFunctionPickerView = UIPickerView(frame: CGRect(x: 15, y: 0, width: candidateFunctionTextField.frame.size.width * 0.80, height: 35))
-        //candidateFunctionPickerView.dataSource = self
-        //candidateFunctionPickerView.delegate = self
-        //candidateFunctionTextField.addSubview(candidateFunctionPickerView)
-        //candidateFunctionPickerView.tag = 1
-        
-//        let servicePickerView = UIPickerView(frame: CGRect(x: 15, y: 0, width: serviceTextField.frame.size.width * 0.80, height: 35))
-//        servicePickerView.dataSource = self
-//        servicePickerView.delegate = self
-//        serviceTextField.addSubview(servicePickerView)
-//        servicePickerView.tag = 2
-        
-        companiesInterViewedTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
-        
-        benefitsTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
-        
-        nonCompeteTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
-        
-        companiesInterViewedTextView.delegate = self
-        benefitsTextView.delegate = self
-        nonCompeteTextView.delegate = self
-        candidateFunctionTextField.delegate = self
-        getCandidateRoles()
-        // Do any additional setup after loading the view.
-    }
     
     func getCandidateRoles()
     {
@@ -182,7 +273,8 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
             for userObject in managedObjects as! [Roles]
             {
                 candidateFunctionArray.append(userObject.roleName!)
-                
+                roleNameAndIdDic[userObject.roleName!] = userObject.roleId
+
             }
             
         } catch let error as NSError

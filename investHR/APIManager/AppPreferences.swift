@@ -15,10 +15,15 @@ class AppPreferences: NSObject,UIAlertViewDelegate
     
     var isReachable:Bool
     
+    var firebaseInstanceId:String
+    
+    
     private override init()
     {
         isReachable = false
 
+        firebaseInstanceId = ""
+        
         super.init()
     }
     

@@ -104,6 +104,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
         application.registerForRemoteNotifications()
         connectToFcm()
+        
+        
+        if let refreshedToken = FIRInstanceID.instanceID().token()
+        {
+            AppPreferences.sharedPreferences().firebaseInstanceId = refreshedToken
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(tokenRefreshNotification), name:NSNotification.Name.firInstanceIDTokenRefresh, object: nil)
+
        // let obj = CoreDataManager.sharedManager
         self.loadAccount(then: { () in
             
@@ -112,13 +121,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
+    func tokenRefreshNotification( notification:Notification)
+    {
+        if let refreshedToken = FIRInstanceID.instanceID().token()
+        {
+            AppPreferences.sharedPreferences().firebaseInstanceId = refreshedToken
+        }
+
+    }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data)
     {
         // Convert token to string
         let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
         
-        if let refreshedToken = FIRInstanceID.instanceID().token() {
+        if let refreshedToken = FIRInstanceID.instanceID().token()
+        {
             print("InstanceID token: \(refreshedToken)")
         }
         // Print it to console
@@ -126,6 +144,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Persist it in your backend in case it's new
     }
+    
     
     func application(_ application: UIApplication, didReceiveRemoteNotification data: [AnyHashable : Any])
     {
@@ -207,7 +226,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //let accessToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
         let accessToken = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-        let accessTokenExpiresIn = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN_EXPIRES_IN) as? String
+       // let accessTokenExpiresIn = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN_EXPIRES_IN) as? String
 
         if let accessToken = accessToken
         {

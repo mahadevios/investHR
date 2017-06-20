@@ -35,7 +35,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         
         menuImageNamesArray = ["SideMenuProfile","SideMenuNoti","SideMenuSavedJob","SideMenuAppliedJob","SideMenuSearchJob","SideMenuUploadResume","SideMenuUploadVideo","SideMenuReferFriend","SideMenuSetting","SideMenuLogout"]
         
-        NotificationCenter.default.addObserver(self, selector: #selector(upadateUserData), name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_LOGGED_IN), object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(upadateUserData), name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_LOGGED_IN), object: nil)
         // Do any additional setup after loading the view.
     }
     
@@ -84,7 +84,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
 //            }
 //        }
         
-        showData()
+       // showData()
     }
     func numberOfSections(in tableView: UITableView) -> Int
     {
@@ -307,7 +307,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             var managedObjects:[NSManagedObject]?
             
             managedObjects = coreDataManager.fetch(entity: "User")
-            for userObject in managedObjects as! [User]
+            for userObject in (managedObjects as? [User])!
             {
                 let firstName = userObject.firstName
                 let lastName = userObject.lastName
@@ -354,38 +354,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
                                 
                             }
                         }
-//                    DispatchQueue.main.async
-//                        {
-//                        print("This is run on the main queue, after the previous code in outer block")
-//                        }
                     }
-//                if let pictureUrlString = pictureUrlString
-//                {
-//                    let pictureUrl = URL(string: pictureUrlString)
-//                    
-//                    if let pictureUrl = pictureUrl
-//                    {
-//                        do
-//                        {
-//                            
-//                            let imageData = try Data(contentsOf: pictureUrl as URL)
-//                    
-//                            let userImage = UIImage(data: imageData)
-//                    
-//                            circleImageView.image = userImage
-//                    
-//                        }
-//                        catch let error as NSError
-//                        {
-//                            print(error.localizedDescription)
-//                        }
-//                    }
-//                    else
-//                    {
-//                        circleImageView.image = UIImage(named:"InsideDefaultCircle")
-//                        
-//                    }
-//                }
                 
                 
     

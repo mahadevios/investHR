@@ -17,9 +17,6 @@
 		841492711EF00639007133D0 /* VertcalDomains+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8414926F1EF00639007133D0 /* VertcalDomains+CoreDataProperties.swift */; };
 		841C71AB1ECC5C0300C3111F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841C71AA1ECC5C0300C3111F /* HomeViewController.swift */; };
 		84239B941EC476C60076EF33 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84239B931EC476C60076EF33 /* SWRevealViewController.m */; };
-		8424ECD91EF0FCDA00E68B3D /* investHR.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 8424ECD61EF0FCDA00E68B3D /* investHR.sqlite */; };
-		8424ECDA1EF0FCDA00E68B3D /* investHR.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 8424ECD71EF0FCDA00E68B3D /* investHR.sqlite-shm */; };
-		8424ECDB1EF0FCDA00E68B3D /* investHR.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 8424ECD81EF0FCDA00E68B3D /* investHR.sqlite-wal */; };
 		8424ECDF1EF0FEED00E68B3D /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 8424ECDE1EF0FEED00E68B3D /* MBProgressHUD.m */; };
 		8424ED1E1EF14C6000E68B3D /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8424ED1D1EF14C6000E68B3D /* TextField.swift */; };
 		8424ED201EF14C8800E68B3D /* SearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8424ED1F1EF14C8800E68B3D /* SearchTextField.swift */; };
@@ -52,6 +49,9 @@
 		8451F62A1EDEE39100B1DEDF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8451F6291EDEE39100B1DEDF /* AVFoundation.framework */; };
 		8453BDF01EE96F6400C9B956 /* Auth0.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8453BDEF1EE96F6300C9B956 /* Auth0.plist */; };
 		8467DEE11EEA68E300974A3D /* HybridAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8467DEE01EEA68E300974A3D /* HybridAuth.swift */; };
+		8477F6441EF92905007AEBAC /* investHR.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 8477F6411EF92905007AEBAC /* investHR.sqlite */; };
+		8477F6451EF92905007AEBAC /* investHR.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 8477F6421EF92905007AEBAC /* investHR.sqlite-shm */; };
+		8477F6461EF92905007AEBAC /* investHR.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 8477F6431EF92905007AEBAC /* investHR.sqlite-wal */; };
 		8493B8311EC4678200D8F7F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8493B8301EC4678200D8F7F9 /* AppDelegate.swift */; };
 		8493B8361EC4678200D8F7F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8493B8341EC4678200D8F7F9 /* Main.storyboard */; };
 		8493B83B1EC4678200D8F7F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8493B83A1EC4678200D8F7F9 /* Assets.xcassets */; };
@@ -105,9 +105,6 @@
 		84239B821EC475200076EF33 /* investHR-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "investHR-Bridging-Header.h"; sourceTree = "<group>"; };
 		84239B921EC476C60076EF33 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		84239B931EC476C60076EF33 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
-		8424ECD61EF0FCDA00E68B3D /* investHR.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = investHR.sqlite; sourceTree = "<group>"; };
-		8424ECD71EF0FCDA00E68B3D /* investHR.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "investHR.sqlite-shm"; sourceTree = "<group>"; };
-		8424ECD81EF0FCDA00E68B3D /* investHR.sqlite-wal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "investHR.sqlite-wal"; sourceTree = "<group>"; };
 		8424ECDD1EF0FEED00E68B3D /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		8424ECDE1EF0FEED00E68B3D /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		8424ED1D1EF14C6000E68B3D /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
@@ -142,6 +139,9 @@
 		8451F6291EDEE39100B1DEDF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		8453BDEF1EE96F6300C9B956 /* Auth0.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Auth0.plist; sourceTree = "<group>"; };
 		8467DEE01EEA68E300974A3D /* HybridAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HybridAuth.swift; sourceTree = "<group>"; };
+		8477F6411EF92905007AEBAC /* investHR.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = investHR.sqlite; sourceTree = "<group>"; };
+		8477F6421EF92905007AEBAC /* investHR.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "investHR.sqlite-shm"; sourceTree = "<group>"; };
+		8477F6431EF92905007AEBAC /* investHR.sqlite-wal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "investHR.sqlite-wal"; sourceTree = "<group>"; };
 		8493B82D1EC4678200D8F7F9 /* investHR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = investHR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8493B8301EC4678200D8F7F9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8493B8351EC4678200D8F7F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -325,9 +325,9 @@
 			isa = PBXGroup;
 			children = (
 				8451F6281EDE8E2F00B1DEDF /* investHR.entitlements */,
-				8424ECD61EF0FCDA00E68B3D /* investHR.sqlite */,
-				8424ECD71EF0FCDA00E68B3D /* investHR.sqlite-shm */,
-				8424ECD81EF0FCDA00E68B3D /* investHR.sqlite-wal */,
+				8477F6411EF92905007AEBAC /* investHR.sqlite */,
+				8477F6421EF92905007AEBAC /* investHR.sqlite-shm */,
+				8477F6431EF92905007AEBAC /* investHR.sqlite-wal */,
 				8431B5BF1EEFE28F0015C7E1 /* Database */,
 				8449B6041EE578EB0072A8DD /* Models */,
 				84EB8F3F1EDFE94900014DA4 /* Constant */,
@@ -561,12 +561,12 @@
 				84AD183A1EF000DE0049675A /* investHR.xcdatamodeld in Resources */,
 				8453BDF01EE96F6400C9B956 /* Auth0.plist in Resources */,
 				8493B83E1EC4678200D8F7F9 /* LaunchScreen.storyboard in Resources */,
-				8424ECDA1EF0FCDA00E68B3D /* investHR.sqlite-shm in Resources */,
+				8477F6451EF92905007AEBAC /* investHR.sqlite-shm in Resources */,
 				843425C81EE7ED5F00282419 /* GoogleService-Info.plist in Resources */,
 				8493B83B1EC4678200D8F7F9 /* Assets.xcassets in Resources */,
 				8493B8361EC4678200D8F7F9 /* Main.storyboard in Resources */,
-				8424ECDB1EF0FCDA00E68B3D /* investHR.sqlite-wal in Resources */,
-				8424ECD91EF0FCDA00E68B3D /* investHR.sqlite in Resources */,
+				8477F6461EF92905007AEBAC /* investHR.sqlite-wal in Resources */,
+				8477F6441EF92905007AEBAC /* investHR.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

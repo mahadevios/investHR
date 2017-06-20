@@ -47,7 +47,16 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         
         var webservicePath = ""
     
-        webservicePath = "\(Constant.BASE_URL_PATH)\(resourcePath)"
+        if jobName == Constant.LINKEDIN_ACCESS_TOKEN_ENDPOINT_API
+        {
+            webservicePath = jobName
+
+        }
+        else
+        {
+            webservicePath = "\(Constant.BASE_URL_PATH)\(resourcePath)"
+
+        }
         
         let url = NSURL(string: webservicePath.addingPercentEscapes(using: String.Encoding.utf8)!)
         
@@ -97,37 +106,105 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
     
     func connectionDidFinishLoading(_ connection: NSURLConnection)
     {
-        if statusCode == 200 {
-            
-            do {
-                let response1 = String(data: responseData as Data, encoding: .utf8)
-                print(response1)
-                
-                let dataDictionary =  try JSONSerialization.jsonObject(with: responseData as Data, options: .allowFragments) as! [String:AnyObject]
-                
-                NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: dataDictionary, userInfo: nil)
-
-            }
-            catch let error as NSError
-            {
-            
-            }
-        }
-        else
+        let response:[String:AnyObject]?
+        //let dictFromJSON:[String:String]?
+        do
         {
-            do {
-                let dataDictionary = try JSONSerialization.jsonObject(with: responseData as Data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
-                
-                let accessToken = dataDictionary["access_token"] as! String
-                
+            response =  try JSONSerialization.jsonObject(with: responseData as Data, options: .allowFragments) as? [String:AnyObject]
+            
+            guard response != nil else
+            {
+                AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage: "please try again", withCancelText: "Ok")
+                return
+            }
+            
+            
+                if self.downLoadEntityJobName == Constant.LINKEDIN_ACCESS_TOKEN_ENDPOINT_API
+                {
+                    //                if dictFromJSON["code"] == Constant.SUCCESS
+                    //                {
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: response, userInfo: nil)
+                    //
+                    //                }
+                    //                else
+                    //                {
+                    //                   AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage: "username or password is incorrect, please try again", withCancelText: "Cancel")
+                    //                }
+                    return
+                }
+
+            
+            
+            guard let dictFromJSON = response as? [String:String] else
+            {
+                return
+            }
+            
+           
+            
+            if self.downLoadEntityJobName == Constant.NEW_USER_REGISTRATION_API
+            {
+                if dictFromJSON["code"] == Constant.SUCCESS
+                {
+                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_REGISTERED), object: dictFromJSON, userInfo: nil)
+                    
+                }
+                else
+                {
+                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+
+                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage: "username or password is incorrect, please try again", withCancelText: "Ok")
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_REGISTERED), object: dictFromJSON, userInfo: nil)
+
+                }
                 
             }
-            catch {
-                print("Could not convert JSON data into a dictionary.")
-            }
+            
             
             
         }
+        catch let error as NSError
+        {
+            UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+            print(error.localizedDescription)
+        }
+        
+    
+//        
+//        if statusCode == 200
+//        {
+//            
+//            do {
+//                let response1 = String(data: responseData as Data, encoding: .utf8)
+//                print(response1)
+//                
+//                let dataDictionary =  try JSONSerialization.jsonObject(with: responseData as Data, options: .allowFragments) as! [String:AnyObject]
+//                
+//                NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: dataDictionary, userInfo: nil)
+//
+//            }
+//            catch let error as NSError
+//            {
+//            
+//            }
+//        }
+//        else
+//        {
+//            do {
+//                let dataDictionary = try JSONSerialization.jsonObject(with: responseData as Data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
+//                
+//                let accessToken = dataDictionary["access_token"] as! String
+//                
+//                
+//            }
+//            catch {
+//                print("Could not convert JSON data into a dictionary.")
+//            }
+//            
+//            
+//        }
         
         
     
@@ -140,12 +217,33 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         responseData.append(data)
     }
     
+    func showErrorFromErro( error:NSError) -> String
+    {
+      return error.localizedDescription
+    }
     func connection(_ connection: NSURLConnection, didFailWithError error: Error)
     {
         print(error)
-        if self.downLoadEntityJobName == Constant.NEW_USER_LOGIN_API
+        if self.downLoadEntityJobName == Constant.LINKEDIN_ACCESS_TOKEN_ENDPOINT_API
         {
-            
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage:showErrorFromErro(error: error as NSError) , withCancelText: "Ok")
+            UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+            //NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: nil, userInfo: nil)
+
+        }
+        else
+        if self.downLoadEntityJobName == Constant.NEW_USER_REGISTRATION_API
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage:showErrorFromErro(error: error as NSError) , withCancelText: "Ok")
+            UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+
+            //NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_REGISTERED), object: nil, userInfo: nil)
+
+        }
+        else
+        if self.downLoadEntityJobName == Constant.NEW_USER_REGISTRATION_API
+        {
+                    
         }
     }
     
