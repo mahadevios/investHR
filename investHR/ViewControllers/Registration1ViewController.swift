@@ -124,6 +124,8 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(checkRegistrationResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_REGISTERED), object: nil)
+
     }
     
     override func viewWillDisappear(_ animated: Bool)
@@ -131,6 +133,67 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         NotificationCenter.default.removeObserver(self)
     }
     
+    func checkRegistrationResponse(dataDic:NSNotification)
+    {
+        //        self.view.viewWithTag(789)?.removeFromSuperview()
+        
+        guard let responseDic = dataDic.object as? [String:String] else
+        {
+            //AppPreferences.sharedPreferences().showAlertViewWith(title: "Something went wrong!", withMessage: "Please try again", withCancelText: "Ok")
+            // hide hud
+            return
+        }
+        
+        guard let code = responseDic["code"] else {
+            // hide hud
+            
+            return
+        }
+        //let code = responseDic["code"]
+        
+        let name = responseDic["name"]
+        
+        let message = responseDic["Message"]
+        
+        let imageName = responseDic["ImageName"]
+        
+        CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+        
+        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["name":name! ,"username":self.email,"password":self.password,"pictureUrl":imageName!])
+        
+        UserDefaults.standard.set(self.email!, forKey: Constant.USERNAME)
+        UserDefaults.standard.set(self.password!, forKey: Constant.PASSWORD)
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
+        
+        print(currentRootVC)
+        
+        let className = String(describing: type(of: currentRootVC))
+        
+        self.view.viewWithTag(789)?.removeFromSuperview() // remove hud
+        
+        if className == "LoginViewController"
+        {
+            let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+            let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+            appDelegate.window?.rootViewController = rootViewController
+            
+        }
+        else
+        {
+            self.dismiss(animated: true, completion: nil)
+            self.presentingViewController?.dismiss(animated: true, completion: nil)
+            self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+            
+            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
+            
+        }
+        
+        
+    }
+
     func getState()
     {
         let coreDataManager = CoreDataManager.getSharedCoreDataManager()
@@ -258,6 +321,12 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
 
         let className = String(describing: type(of: currentRootVC))
         
+        currentRoleTextField.resignFirstResponder()
+        currentCompanyTextField.resignFirstResponder()
+        locationTextField.resignFirstResponder()
+        location1TextField.resignFirstResponder()
+        visaStatusTextField.resignFirstResponder()
+        
         guard let mobileNumber = self.mobile else {
             
             return
@@ -278,6 +347,29 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             
             return
         }
+        var stateId:String? = ""
+        if state == ""
+        {
+            
+        }
+        else
+        {
+            stateId = String(describing: stateNameAndIdDic[state]!)
+            
+            
+        }
+        
+        var cityId:String! = ""
+        
+        if city == ""
+        {
+            
+        }
+        else
+        {
+            cityId = String(describing: cityNameAndIdDic[city]!)
+        }
+
         guard let visaStatus = visaStatusTextField.text else {
             
             return
@@ -287,27 +379,43 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         
         
         
+        let dict = ["name":self.name!,"email":self.email!,"password":self.password!,"mobile":mobileNumber,"currentRole":currentRole,"currentCompany":currentCompany,"stateId":stateId!,"cityId":cityId!,"visaStatus":visaStatus,"candidateFunction":"","services":"","linkedInProfileUrl":"","verticalsServiceTo":"","revenueQuota":"","PandL":"","currentCompLastYrW2":"","expectedCompany":"","joiningTime":"","compInterviewPast1Yr":"","benifits":"","notJoinSpecificOrg":"","image":"","expInOffshoreEng":"","relocation":"","deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":""] as [String : String]
         
+        
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+            // here "jsonData" is the dictionary encoded in JSON data
+            
+            let decoded = try JSONSerialization.jsonObject(with: jsonData, options: [])
+            
+            print(decoded)
+            // here "decoded" is of type `Any`, decoded from JSON data
+            
+            //            if AppPreferences.sharedPreferences().isReachable
+            //            {
+            APIManager.getSharedAPIManager().registerUser(dict: decoded)
+            
+            let hud = MBProgressHUD.showAdded(to: UIApplication.shared.keyWindow!, animated: true)
+            
+            hud.tag = 789
+            
+            hud.minSize = CGSize(width: 150.0, height: 100.0)
+            
+            hud.label.text = "Logging in.."
+            
+            hud.detailsLabel.text = "Please wait"
+           
+        } catch {
+            print(error.localizedDescription)
+        }
+
         
         
         
 //        APIManager.getSharedAPIManager().registerUser(name: self.name!, emailId: self.email!, mobileNumber:mobileNumber, password: self.password!, curentRole: currentRole, currentCompany: currentCompany, state: String(state), city: String(city), visaStatus: visaStatus, service: "", linkedInProfileUrl: "", candidateRole: "", verticals: "", revenueQuota: "", PL: "", experience: "", cuurrentCompany: "", companyInterViewed: "", expectedCompany: "", relocation: "", joiningTimeReq: "", benefits: "", notJoin: "")
         
         
-        if className == "LoginViewController"
-        {
-            let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
-            let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
-            appDelegate.window?.rootViewController = rootViewController
-            
-        }
-        else
-        {
-            self.navigationController?.dismiss(animated: true, completion: nil)
-
-            self.navigationController?.presentingViewController?.dismiss(animated: true, completion: nil)
-            
-        }
+       
 
     }
     @IBAction func additionalInformationButtonPressed(_ sender: Any)

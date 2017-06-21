@@ -141,12 +141,37 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
             }
             
            
-            
+            if self.downLoadEntityJobName == Constant.NEW_USER_LOGIN_API
+            {
+                if dictFromJSON["code"] == Constant.SUCCESS
+                {
+                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"], withCancelText: "Ok")
+                    
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_LOGGED_IN), object: dictFromJSON, userInfo: nil)
+                    
+                }
+                else
+                {
+                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    
+                   // AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+
+//                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage: "username or password is incorrect, please try again", withCancelText: "Ok")
+                    // NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_REGISTERED), object: dictFromJSON, userInfo: nil)
+                    
+                }
+                
+            }
+            else
             if self.downLoadEntityJobName == Constant.NEW_USER_REGISTRATION_API
             {
                 if dictFromJSON["code"] == Constant.SUCCESS
                 {
                     UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+
+                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
 
                     NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_REGISTERED), object: dictFromJSON, userInfo: nil)
                     
@@ -155,8 +180,10 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                 {
                     UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
 
-                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage: "username or password is incorrect, please try again", withCancelText: "Ok")
-                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_REGISTERED), object: dictFromJSON, userInfo: nil)
+                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+
+//                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage: "username or password is incorrect, please try again", withCancelText: "Ok")
+                   // NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_REGISTERED), object: dictFromJSON, userInfo: nil)
 
                 }
                 
@@ -224,18 +251,31 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
     func connection(_ connection: NSURLConnection, didFailWithError error: Error)
     {
         print(error)
+        if self.downLoadEntityJobName == Constant.NEW_USER_LOGIN_API
+        {
+           
+            UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+           // NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_LOGGED_IN), object: nil, userInfo: nil)
+
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage:showErrorFromErro(error: error as NSError) , withCancelText: "Ok")
+            
+        }
+        else
+
         if self.downLoadEntityJobName == Constant.LINKEDIN_ACCESS_TOKEN_ENDPOINT_API
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage:showErrorFromErro(error: error as NSError) , withCancelText: "Ok")
             UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage:showErrorFromErro(error: error as NSError) , withCancelText: "Ok")
             //NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: nil, userInfo: nil)
 
         }
         else
         if self.downLoadEntityJobName == Constant.NEW_USER_REGISTRATION_API
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage:showErrorFromErro(error: error as NSError) , withCancelText: "Ok")
             UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage:showErrorFromErro(error: error as NSError) , withCancelText: "Ok")
 
             //NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_REGISTERED), object: nil, userInfo: nil)
 
@@ -243,7 +283,9 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         else
         if self.downLoadEntityJobName == Constant.NEW_USER_REGISTRATION_API
         {
-                    
+            UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+            
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage:showErrorFromErro(error: error as NSError) , withCancelText: "Ok")
         }
     }
     

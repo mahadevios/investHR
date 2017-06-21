@@ -19,10 +19,18 @@ struct Constant
     static let  SUCCESS                                  = "1000"
     static let  FAILURE                                  = "1001"
     static let  DATE_TIME_FORMAT                         = "yyyy-MM-dd HH:mm:ss"
-    //static let  BASE_URL_PATH                            = "http://115.249.195.23:8080/Communicator/feedcom"
-    static let  BASE_URL_PATH                            = "http://192.168.3.67:8080/coreflex/investhr/login/"
-    static let  NEW_USER_REGISTRATION_API                = "registration"
-    static let  NEW_USER_LOGIN_API                       = ""
+    static let  USERNAME                                 = "username"
+    static let  PASSWORD                                 = "password"
+    static let  FTP_HOST_NAME                            = "ftp.mtcommunicator.com"
+    static let  FTP_FILES_FOLDER_NAME                    = "/TEST/"
+    static let  FTP_USERNAME                             = "mt%40mtcommunicator.com"
+    static let  FTP_PASSWORD                             = "mtone%40123"
+
+    //static let  BASE_URL_PATH                            = "http://192.168.3.75:9091/coreflex/investhr/"
+
+    static let  BASE_URL_PATH                            = "http://192.168.3.67:8080/coreflex/investhr/"
+    static let  NEW_USER_REGISTRATION_API                = "login/registration"
+    static let  NEW_USER_LOGIN_API                       = "login"
     static let  LINKEDIN_LOGOUT_API                      = "https://api.linkedin.com/uas/oauth/invalidateToken"
     static let  LINKEDIN_ACCESS_TOKEN                    = "linkedInAccessToken"
     static let  LINKEDIN_ACCESS_TOKEN_EXPIRES_IN         = "linkedInAccessTokenExpiresIn"
@@ -30,7 +38,9 @@ struct Constant
     static let  LINKEDIN_ACCESS_TOKEN_ENDPOINT_API       = "https://www.linkedin.com/uas/oauth2/accessToken"
     
     static let  NOTIFICATION_LIACCESSTOKEN_FETCHED       = "LIAccessTokenFetched"
+    static let  NOTIFICATION_USER_CHANGED                = "userChanged"
     static let  NOTIFICATION_NEW_USER_LOGGED_IN          = "newUserLoggedIn"
+
     static let  NOTIFICATION_NEW_USER_REGISTERED         = "newUserRegistered"
 
 }

@@ -224,33 +224,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func loadAccount(then: (() -> Void)?, or: ((String) -> Void)?)
     {
         
-        //let accessToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-        let accessToken = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-       // let accessTokenExpiresIn = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN_EXPIRES_IN) as? String
-
-        if let accessToken = accessToken
+        if let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String, let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
         {
-            if accessToken.characters.count > 0
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+            let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+            
+            appDelegate.window?.rootViewController = rootViewController
+        }
+        else
+        {
+            //let accessToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            let accessToken = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            // let accessTokenExpiresIn = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN_EXPIRES_IN) as? String
+            
+            if let accessToken = accessToken
             {
-//                let accessToken = LISDKAccessToken.init(serializedString: serializedToken)
-                
-//                if (accessTokenExpiresIn)! > Date()
-//                {
-//                    LISDKSessionManager.createSession(with: accessToken)
-                
+                if accessToken.characters.count > 0
+                {
+                    //                let accessToken = LISDKAccessToken.init(serializedString: serializedToken)
+                    
+                    //                if (accessTokenExpiresIn)! > Date()
+                    //                {
+                    //                    LISDKSessionManager.createSession(with: accessToken)
+                    
                     //performFetch()
-                  //  fetchUserProfile(accessToken: accessToken)
+                    //  fetchUserProfile(accessToken: accessToken)
                     let appDelegate = UIApplication.shared.delegate as! AppDelegate
                     let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
                     let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
                     
                     appDelegate.window?.rootViewController = rootViewController
-                
                     
-               // }
+                    
+                    // }
+                }
+                
             }
 
         }
+        
+        
             
 
     }

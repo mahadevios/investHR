@@ -35,7 +35,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         
         menuImageNamesArray = ["SideMenuProfile","SideMenuNoti","SideMenuSavedJob","SideMenuAppliedJob","SideMenuSearchJob","SideMenuUploadResume","SideMenuUploadVideo","SideMenuReferFriend","SideMenuSetting","SideMenuLogout"]
         
-        //NotificationCenter.default.addObserver(self, selector: #selector(upadateUserData), name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_LOGGED_IN), object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(upadateUserData), name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil)
         // Do any additional setup after loading the view.
     }
     
@@ -309,8 +309,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             managedObjects = coreDataManager.fetch(entity: "User")
             for userObject in (managedObjects as? [User])!
             {
-                let firstName = userObject.firstName
-                let lastName = userObject.lastName
+                let firstName = userObject.name
                 let pictureUrlString = userObject.pictureUrl
                 
                 if let firstName = firstName

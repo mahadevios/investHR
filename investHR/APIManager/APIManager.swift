@@ -56,13 +56,28 @@ class APIManager: NSObject
             AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
         }
 
-//        var postParams = "grant_type=\(grantType)&"
-//        postParams += "code=\(authorizationCode)&"
-//        postParams += "redirect_uri=\(redirectURL!)&"
-//        postParams += "client_id=\(linkedInKey)&"
-//        postParams += "client_secret=\(linkedInSecret)"
     }
     
+    func loginWithEmail(username:String, password:String, deviceToken:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","deviceToken=\(deviceToken)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.NEW_USER_LOGIN_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.NEW_USER_LOGIN_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+
     func getLinkedInAccessToken(grant_type:String, code:String, redirect_uri:String, client_id:String, client_secret:String)
     {
         if AppPreferences.sharedPreferences().isReachable

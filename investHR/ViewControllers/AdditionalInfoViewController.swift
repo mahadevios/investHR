@@ -10,7 +10,7 @@ import UIKit
 
 import CoreData
 
-class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPickerViewDelegate,UITextViewDelegate,UITextFieldDelegate {
+class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPickerViewDelegate,UITextViewDelegate,UITextFieldDelegate,UIScrollViewDelegate {
 
     @IBOutlet weak var candidateFunctionTextField: UITextField!
     @IBOutlet weak var serviceTextField: UITextField!
@@ -29,6 +29,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
     @IBOutlet weak var benefitsTextView: UITextView!
     @IBOutlet weak var nonCompeteTextView: UITextView!
     
+    @IBOutlet weak var scrollView: UIScrollView!
     var name:String!
     var email:String!
     var mobile:String!
@@ -42,8 +43,12 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
 
     var candidateFunctionArray : [String] = []
     let servicesArray : [String] = ["Services","Service 2","Service 3","Service 4","Service 5"]
-
+    let relocationArray = ["Not available","Yes","No","May be"]
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView)
+    {
+      removePickerToolBar()
+    }
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -71,6 +76,8 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         benefitsTextView.delegate = self
         nonCompeteTextView.delegate = self
         candidateFunctionTextField.delegate = self
+        scrollView.delegate = self
+        relocationTextField.delegate = self
         getCandidateRoles()
         NotificationCenter.default.addObserver(self, selector: #selector(checkRegistrationResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_REGISTERED), object: nil)
         // Do any additional setup after loading the view.
@@ -100,6 +107,13 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         
         let imageName = responseDic["ImageName"]
         
+        CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+
+        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["name":name! ,"username":self.email!,"password":self.password!,"pictureUrl":imageName!])
+
+        UserDefaults.standard.set(self.email!, forKey: Constant.USERNAME)
+        UserDefaults.standard.set(self.password!, forKey: Constant.PASSWORD)
+        
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
@@ -120,7 +134,10 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         else
         {
             self.dismiss(animated: true, completion: nil)
-            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_LOGGED_IN), object: nil, userInfo: nil)
+            self.presentingViewController?.dismiss(animated: true, completion: nil)
+            self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+
+            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
             
         }
 
@@ -208,11 +225,6 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         
        let dict = ["name":self.name,"email":self.email,"password":self.password,"mobile":self.mobile,"currentRole":self.currentRole,"currentCompany":self.currentCompany,"stateId":self.state!,"cityId":self.city!,"visaStatus":self.visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed,"benifits":benefits,"notJoinSpecificOrg":nonCompete,"image":"","expInOffshoreEng":expOffshore,"relocation":relocation,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":""] as [String : String]
         
-//let parameterArray = ["name=\(name)","emailId=\(emailId)","mobileNumber=\(mobileNumber)","password=\(password)","currentRole=\(curentRole)","currentCompany=\(currentCompany)","stateId=\(state)","cityId=\(city)","visaStatus=\(visaStatus)","candidateRole=\(candidateRole)","services=\(service)","linkedInProfileUrl=\(linkedInProfileUrl)","verticalsServiceTo=\(vertical)","revenueQuota=\(revenueQuota)","PandL=\(PL)","currentCompLastYrW2=\(currentCompany)","expectedCompany=\(expectedCompany)","joiningTime=\(joiningTimeReq)","compInterviewPast1Yr=\(companiesInterViewed)","benifits=\(benefits)","notJoinSpecificOrg=\(notJoin)"]
-        
-//        APIManager.getSharedAPIManager().registerUser(name: self.name!, emailId: self.email!, mobileNumber:self.mobile, password: self.password!, curentRole: currentRole, currentCompany: currentCompany, state: String(state), city: String(city), visaStatus: visaStatus, service: service, linkedInProfileUrl: linkedInUR, candidateRole: candidateRole, verticals: vertical, revenueQuota: revenueQuota, PL: PL, experience: expOffshore, cuurrentCompany: currentCompany, companyInterViewed: companiesInterViewed, expectedCompany: expectedCompany, relocation: relocation, joiningTimeReq: joinigTime, benefits: benefits, notJoin: nonCompete)
-        
-//        let dict = ["name":"kpk","mobile":"+93-9096284028","email":"kuldeepk@xanadutec.com","password":"kk123","currentRole":"dont","currentCompany":"new","stateId":"9","cityId":"3712","visaStatus":"","candidateFunction":"8","services":"","linkedInProfileUrl":"","verticalsServiceTo":"","revenueQuota":"","PandL":"","expInOffshoreEng":"","currentCompLastYrW2":"","expectedCompany":"","relocation":"","joiningTime":"","compInterviewPast1Yr":"","benifits":"","notJoinSpecificOrg":"hjkjjh","image":""]
         
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
@@ -221,10 +233,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
             let decoded = try JSONSerialization.jsonObject(with: jsonData, options: [])
             
             print(decoded)
-            // here "decoded" is of type `Any`, decoded from JSON data
-            
-//            if AppPreferences.sharedPreferences().isReachable
-//            {
+
                 APIManager.getSharedAPIManager().registerUser(dict: decoded)
 
                 let hud = MBProgressHUD.showAdded(to: UIApplication.shared.keyWindow!, animated: true)
@@ -236,12 +245,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
                 hud.label.text = "Logging in.."
                 
                 hud.detailsLabel.text = "Please wait"
-//            }
-//            else
-//            {
-//                AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
-//
-//            }
+
 
             // you can now cast it with the right type
             if let dictFromJSON = decoded as? [String:String] {
@@ -354,6 +358,21 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
             }
             
         }
+        else
+            if textField == relocationTextField
+            {
+                DispatchQueue.main.async {
+                    self.relocationTextField.resignFirstResponder()
+                    
+                    self.addPickerToolBarForRelocation()
+                    
+                    if self.relocationTextField.text == ""
+                    {
+                        self.relocationTextField.text = self.relocationArray[0]
+                    }
+                }
+                
+        }
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int
@@ -362,28 +381,28 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
     }
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int
     {
-//        if pickerView.tag == 1
-//        {
+        if pickerView.tag == 10001
+        {
             return candidateFunctionArray.count
             
-//        }
-//        else
-//        {
-//            return servicesArray.count
-//        }
+        }
+        else
+        {
+            return relocationArray.count
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?
     {
-//        if pickerView.tag == 1
-//        {
+        if pickerView.tag == 10001
+        {
             return candidateFunctionArray[row]
             
-//        }
-//        else
-//        {
-//            return servicesArray[row]
-//        }
+        }
+        else
+        {
+            return relocationArray[row]
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView{
@@ -402,7 +421,16 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
 //        else
 //        {
             label?.font = UIFont.systemFont(ofSize: 14)
+        if pickerView.tag == 10001
+        {
             label?.text =  candidateFunctionArray[row] as String
+
+        }
+        else
+        {
+            label?.text =  relocationArray[row] as String
+
+        }
             label?.textAlignment = .center
            // label?.textAlignment = .left
         //}
@@ -413,47 +441,96 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int)
     {
-        let selectedRole = candidateFunctionArray[row]
+        if pickerView.tag == 10001
+        {
+            let selectedRole = candidateFunctionArray[row]
+            
+            candidateFunctionTextField.text = selectedRole
+        }
+        else
+        {
+            let selectedRole = relocationArray[row]
+            
+            relocationTextField.text = selectedRole
+        }
         
-        candidateFunctionTextField.text = selectedRole
     }
     
     func addPickerToolBar()
     {
-    if self.view.viewWithTag(10000) == nil
-    {
+        if self.view.viewWithTag(10000) == nil
+        {
     
-        let picker = UIPickerView()
+            let picker = UIPickerView()
         
-        picker.tag = 10001;
+            picker.tag = 10001;
         
-        picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
+            picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
 
-        picker.delegate = self
+            picker.delegate = self
         
-        picker.dataSource = self
+            picker.dataSource = self
         
-        picker.showsSelectionIndicator = true
+            picker.showsSelectionIndicator = true
         
-        self.view.addSubview(picker)
+            self.view.addSubview(picker)
         
-        picker.isUserInteractionEnabled = true
+            picker.isUserInteractionEnabled = true
         
-        picker.backgroundColor = UIColor.lightGray
+            picker.backgroundColor = UIColor.lightGray
         
 //        UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneBtnPressToGetValue:)];
-        let btn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(pickerDoneButtonPressed))
+            let btn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(pickerDoneButtonPressed))
         
 //        UIToolbar *toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, picker.frame.origin.y - 40.0f, self.view.frame.size.width, 40.0f)];
-        let toolBar = UIToolbar(frame: CGRect(x: 0, y: picker.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0))
+            let toolBar = UIToolbar(frame: CGRect(x: 0, y: picker.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0))
 
-        toolBar.tag = 10000
+            toolBar.tag = 10000
         
-        toolBar.setItems([btn], animated: true)
+            toolBar.setItems([btn], animated: true)
         
-        self.view.addSubview(toolBar)
+            self.view.addSubview(toolBar)
     //     OperatorTextField.inputAccessoryView=toolBar;
     }
+    }
+
+    
+    func addPickerToolBarForRelocation()
+    {
+        if self.view.viewWithTag(20000) == nil
+        {
+            
+            let picker = UIPickerView()
+            
+            picker.tag = 20001;
+            
+            picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
+            
+            picker.delegate = self
+            
+            picker.dataSource = self
+            
+            picker.showsSelectionIndicator = true
+            
+            self.view.addSubview(picker)
+            
+            picker.isUserInteractionEnabled = true
+            
+            picker.backgroundColor = UIColor.lightGray
+            
+            //        UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneBtnPressToGetValue:)];
+            let btn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(pickerDoneButtonPressed))
+            
+            //        UIToolbar *toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, picker.frame.origin.y - 40.0f, self.view.frame.size.width, 40.0f)];
+            let toolBar = UIToolbar(frame: CGRect(x: 0, y: picker.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0))
+            
+            toolBar.tag = 10000
+            
+            toolBar.setItems([btn], animated: true)
+            
+            self.view.addSubview(toolBar)
+            //     OperatorTextField.inputAccessoryView=toolBar;
+        }
     }
 
     func pickerDoneButtonPressed()
@@ -463,17 +540,33 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
     
     func removePickerToolBar()
     {
-        guard let picker = self.view.viewWithTag(10001) else {
-            return
+        if let picker = self.view.viewWithTag(10001)
+        {
+            picker.removeFromSuperview()
+
         }
         
-        picker.removeFromSuperview()
         
-        guard let toolbar = self.view.viewWithTag(10000) else {
-            return
+        if let toolbar = self.view.viewWithTag(10000)
+        {
+            toolbar.removeFromSuperview()
+
         }
         
-        toolbar.removeFromSuperview()
+        
+        if let picker1 = self.view.viewWithTag(20001)
+        {
+            picker1.removeFromSuperview()
+
+        }
+        
+        
+        if let toolbar1 = self.view.viewWithTag(20000)
+        {
+            toolbar1.removeFromSuperview()
+
+        }
+        
     // [DescriptionTextView becomeFirstResponder];
     
     }

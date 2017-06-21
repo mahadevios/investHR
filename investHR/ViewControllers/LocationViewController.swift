@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class LocationViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout {
 
@@ -17,7 +18,12 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
     var locationAreaArray:[String] = []
     var selectedCollectionCell = 0
     var selectedTableViewCell:Int = 0
-
+    
+    var statesArray:[String] = []
+    var cityArray:[String] = []
+    var stateNameAndIdDic = [String:Int16]()
+    var cityNameAndIdDic = [String:Int64]()
+    
     override func viewDidLoad()
     
     {
@@ -32,6 +38,12 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
         self.navigationItem.leftBarButtonItem = barButtonItem
         
         self.navigationItem.title = "Location"
+        
+        self.cityArray.removeAll()
+        
+        self.getState()
+
+        self.getCitiesFromState(stateName: statesArray[0] as! String)
 
         // Do any additional setup after loading the view.
     }
@@ -62,7 +74,7 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
-        return locationAreaArray.count
+        return statesArray.count
     }
     
     // make a cell for each cell index path
@@ -85,7 +97,7 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
 //        {
 //            cell.viewWithTag(102)?.removeFromSuperview()
 //        }
-        if indexPath.row == locationAreaArray.count-1
+        if indexPath.row == statesArray.count-1
         {
             cell.viewWithTag(103)?.isHidden = true
         }
@@ -99,7 +111,7 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
         
         let locationAreaLabel = cell.viewWithTag(201) as! UILabel
         
-        locationAreaLabel.text = locationAreaArray[indexPath.row]
+        locationAreaLabel.text = statesArray[indexPath.row]
 
         //locationAreaLabel.tag = 102
         
@@ -138,9 +150,19 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
     {
         //let cell = self.collectionView.cellForItem(at: indexPath)
         
+        let cell = collectionView.cellForItem(at: indexPath)
+
+        let stateNameLabel = cell?.viewWithTag(201) as! UILabel
+        
+        self.cityArray.removeAll()
+
+        self.getCitiesFromState(stateName: stateNameLabel.text!)
+        
         selectedCollectionCell = indexPath.row
         
         self.collectionView.reloadData()
+        
+        self.tableView.reloadData()
     }
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
@@ -156,7 +178,7 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
     // number of rows in table view
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        return locationsArray.count
+        return cityArray.count
     }
     
     // create a cell for each table view row
@@ -172,7 +194,7 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
         
         
         let locationLabel = cell.viewWithTag(104) as! UILabel
-        locationLabel.text = locationsArray[indexPath.row]
+        locationLabel.text = cityArray[indexPath.row]
         if indexPath.row == selectedTableViewCell
         {
             locationLabel.textColor = UIColor(red: 24/255.0, green: 127/255.0, blue: 239/255.0, alpha: 1)
@@ -196,6 +218,58 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
         self.tableView.reloadData()
         
     }
+    
+    func getState()
+    {
+        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
+        
+        
+        do
+        {
+            var managedObjects:[NSManagedObject]?
+            
+            managedObjects = coreDataManager.fetch(entity: "State")
+            for userObject in managedObjects as! [State]
+            {
+                statesArray.append(userObject.stateName!)
+                
+                stateNameAndIdDic[userObject.stateName!] = userObject.id
+                
+            }
+            
+        } catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        
+        
+    }
+    
+    func getCitiesFromState( stateName:String)
+    {
+        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
+        
+        do
+        {
+            var managedObjects:[NSManagedObject]?
+            
+            managedObjects = coreDataManager.fetchCitiesFromStateId(entity: "City", stateId: Int16(stateNameAndIdDic[stateName]!))
+            for userObject in managedObjects as! [City]
+            {
+                cityArray.append(userObject.cityName!)
+                
+                cityNameAndIdDic[userObject.cityName!] = userObject.id
+                //stateNameAndIdDic[userObject.stateName!] = userObject.id as AnyObject?
+                
+            }
+            
+        } catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        
+    }
+
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()

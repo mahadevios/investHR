@@ -15,6 +15,7 @@ import Firebase
 
 import FirebaseAnalytics
 
+
 //import LinkedinSwift
 
 //import IOSLinkedInAPIFix
@@ -64,8 +65,86 @@ class HomeViewController: UIViewController
         {
             print("reachable")
         }
+       
+    uploadFtp()
     }
 
+    func uploadFtp()
+    {
+        let data1    = UIImagePNGRepresentation(UIImage(named:"Cross")!) as NSData!
+       // let data    = NSData(contentsOfFile: "example.txt")! as Data
+
+        //let data = UIImagePNGRepresentation(UIImage(named:"Cross")!) as NSData?
+        let data    = UIImagePNGRepresentation(UIImage(named:"Cross")!) as Data!
+        data?.withUnsafeBytes { (u8Ptr: UnsafePointer<UInt8>) in
+            var buf = UnsafePointer(u8Ptr)
+            
+            var buf2    = UnsafePointer(u8Ptr)
+            var buf3    = UnsafeMutableRawPointer(mutating: u8Ptr)
+            //var buf     = UnsafePointer(data.bytes)
+
+            // ... use `rawPtr` ...
+        
+        //var buf     = UnsafePointer(data.bytes)
+       // var buf     = UnsafeRawPointer(data.bytes)
+
+       // let buf2    = UnsafeRawPointer(data.bytes)
+        ///let buf3    = UnsafeRawPointer(data.bytes)
+        print(data1?.length)
+        
+        var leftOverSize        = data1?.length
+        var bytesFile           = data1?.length
+        var totalBytesWritten   = 0
+        var bytesWritten        = 0
+        
+        let login       = "mt@mtcommunicator.com"
+        let password    = "mtone@123"
+        let ftpServer   = "ftp.mtcommunicator.com"
+        var fileName    = ""
+        
+            if let resourcePath = Bundle.main.resourcePath {
+                let imgName = "Cross.png"
+                fileName = resourcePath + "/" + imgName
+            }
+        let ftpUrl = NSURL(string: "ftp://\(login):\(password)@\(ftpServer):21/\(fileName)")
+        let stream      = CFWriteStreamCreateWithFTPURL(nil,ftpUrl!).takeUnretainedValue()
+        var cfstatus    = CFWriteStreamOpen(stream) as Bool
+        // connection fail
+        if cfstatus == false {
+            print("Not connected")
+        }
+        
+        repeat{
+            // Write the data to the write stream
+            print(String(describing: stream))
+            bytesWritten = CFWriteStreamWrite(stream, buf, leftOverSize!)
+            print("bytesWritten: \(bytesWritten)")
+            if (bytesWritten > 0) {
+                totalBytesWritten += bytesWritten
+                // Store leftover data until kCFStreamEventCanAcceptBytes event occurs again
+                if (bytesWritten < bytesFile!) {
+                    leftOverSize = bytesFile! - totalBytesWritten
+                    memmove(buf3, buf2 + bytesWritten, leftOverSize!)
+                }else{
+                    leftOverSize = 0
+                }
+                
+            }else{
+                print("CFWriteStreamWrite returned \(bytesWritten)")
+                break
+            }
+            
+            if CFWriteStreamCanAcceptBytes(stream) != true{
+                sleep(1)
+            }
+        }while((totalBytesWritten < bytesFile!))
+        
+        print("totalBytesWritten: \(totalBytesWritten)")
+        
+        CFWriteStreamClose(stream)
+            
+        }
+    }
     @IBAction func verticalWiseButtonPressed(_ sender: Any)
     {
        

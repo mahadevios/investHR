@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource,UITextViewDelegate,UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate
+class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource,UITextViewDelegate,UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,URLSessionDelegate
 {
     @IBOutlet weak var circleImageView: UIImageView!
 
@@ -40,9 +40,92 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         setNavigationItem()
         
         setProfileView()
+        
+        uploadFIleUsingFTP()
         // Do any additional setup after loading the view.
     }
+    func uploadFIleUsingFTP()
+    {
+        
+            //                let dataDictionary = try JSONSerialization.jsonObject(with: responseData as Data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
+            
+            
+            UserDefaults.standard.synchronize()
+            
+            
+            // Specify the URL string that we'll get the profile info from.
+            //let targetURLString = "https://api.linkedin.com/v1/people/~:(public-profile-url,id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json"
+            
+            let targetURLString = "ftp://\(Constant.FTP_USERNAME):\(Constant.FTP_PASSWORD)\(Constant.FTP_HOST_NAME)\(Constant.FTP_FILES_FOLDER_NAME)\("abc")"
+            
+            let request = NSMutableURLRequest(url: NSURL(string: targetURLString)! as URL)
+            
+            // Indicate that this is a GET request.
+            request.httpMethod = "POST"
+            
+            let data = UIImagePNGRepresentation(UIImage(named:"Cross")!) as NSData?
+            
+            request.httpBody = data! as Data
+            // Add the access token as an HTTP header field.
+            //request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            
+            //let session = URLSession(configuration: URLSessionConfiguration.default)
+            
+            // Make the request.
+            let sessionConfiguration = URLSessionConfiguration.default
+            //sessionConfiguration.URLCredentialStorage = cred_storage;
+            sessionConfiguration.allowsCellularAccess = true
+            
+            
+            let session = URLSession(configuration: sessionConfiguration)
+        
+        
+            let uploadTask = session.uploadTask(with: request as URLRequest, from: data as! Data)
+            uploadTask.resume()
+//            let task: URLSessionDataTask = session.dataTask(with: request as URLRequest) { (data, response, error) -> Void in
+//                
+//                let statusCode = (response as! HTTPURLResponse).statusCode
+//                
+//                if statusCode == 200
+//                {
+//                    // Convert the received JSON data into a dictionary.
+//                    
+//                }
+//                else
+//                {
+//                    
+//                }
+//                
+//                
+//            }
+//            
+//            task.resume()
+            
+        
+        
+    }
+    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+        print("hi")
+
+    }
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+        
+        print(data)
+        print("hi")
+
+    }
     
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        if error != nil {
+            print("Failed to download data")
+        }else {
+            print("Data downloaded")
+        }
+    }
+    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
+        
+        print(error?.localizedDescription)
+    }
     override func viewWillAppear(_ animated: Bool)
     {
     //    super.viewWillAppear(true)
@@ -281,6 +364,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
     }
 
+    
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool
     {
         
@@ -351,15 +435,14 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             managedObjects = coreDataManager.fetch(entity: "User")
             for userObject in managedObjects as! [User]
             {
-                let firstName = userObject.firstName
-                let lastName = userObject.lastName
+                let firstName = userObject.name
                 let pictureUrlString = userObject.pictureUrl
                 
                 guard firstName != nil else
                 {
                     break
                 }
-                nameTextField.text = "\(firstName!) \(lastName!)"
+                nameTextField.text = "\(firstName!)"
 
                 guard userObject.emailAddress != nil else
                 {

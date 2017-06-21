@@ -120,6 +120,8 @@
 		8431B5C11EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataDemo.xcdatamodel; sourceTree = "<group>"; };
 		843425C31EE7D80400282419 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		843425C71EE7ED5F00282419 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		843782D91EFABD0A00A7E7D1 /* WhiteRaccoon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhiteRaccoon.h; sourceTree = "<group>"; };
+		843782DA1EFABD0A00A7E7D1 /* WhiteRaccoon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WhiteRaccoon.m; sourceTree = "<group>"; };
 		8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		843A6AB81EE1824C00D86591 /* linkedin-sdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = "linkedin-sdk.framework"; sourceTree = "<group>"; };
 		8440DF6F1ED706CB0003F05B /* MenuViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewViewController.swift; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 		84239B901EC476AD0076EF33 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				843782D81EFABD0A00A7E7D1 /* White */,
 				8424ED1C1EF14C6000E68B3D /* CustomTextFields */,
 				8424ECDC1EF0FEED00E68B3D /* MBProgressHUD */,
 				8467DEDF1EEA68E300974A3D /* OAuth */,
@@ -262,6 +265,15 @@
 				84AD18371EF000140049675A /* investHR.xcdatamodeld */,
 			);
 			path = Database;
+			sourceTree = "<group>";
+		};
+		843782D81EFABD0A00A7E7D1 /* White */ = {
+			isa = PBXGroup;
+			children = (
+				843782D91EFABD0A00A7E7D1 /* WhiteRaccoon.h */,
+				843782DA1EFABD0A00A7E7D1 /* WhiteRaccoon.m */,
+			);
+			path = White;
 			sourceTree = "<group>";
 		};
 		843A6AB71EE1824C00D86591 /* LinkedIn */ = {
