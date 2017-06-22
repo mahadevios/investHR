@@ -66,7 +66,7 @@ class HomeViewController: UIViewController
             print("reachable")
         }
        
-    uploadFtp()
+    //uploadFtp()
     }
 
     func uploadFtp()

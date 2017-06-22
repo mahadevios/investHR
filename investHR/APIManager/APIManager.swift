@@ -8,6 +8,8 @@
 
 import UIKit
 
+import MobileCoreServices
+
 class APIManager: NSObject
 {
     private static let sharedManager = APIManager()
@@ -98,25 +100,6 @@ class APIManager: NSObject
         
     }
     
-//    func registerUser(name:String, emailId:String, mobileNumber:String, password:String, curentRole:String, currentCompany:String,state:String, city:String, visaStatus:String, service:String, linkedInProfileUrl:String, candidateRole:String, verticals:String, revenueQuota:String, PL:String, experience:String, cuurrentCompany:String, companyInterViewed:String, expectedCompany:String, relocation:String, joiningTimeReq:String, benefits:String, notJoin:String) -> Void
-//    {
-//        if AppPreferences.sharedPreferences().isReachable
-//        {
-//            let parameterArray = ["name=\(name)","emailId=\(emailId)","mobileNumber=\(mobileNumber)","password=\(password)","currentRole=\(curentRole)","currentCompany=\(currentCompany)","stateId=\(state)","cityId=\(city)","visaStatus=\(visaStatus)","candidateRole=\(candidateRole)","services=\(service)","linkedInProfileUrl=\(linkedInProfileUrl)","verticalsServiceTo=\(verticals)","revenueQuota=\(revenueQuota)","PandL=\(PL)","currentCompLastYrW2=\(cuurrentCompany)","expectedCompany=\(expectedCompany)","joiningTime=\(joiningTimeReq)","compInterviewPast1Yr=\(companyInterViewed)","benifits=\(benefits)","notJoinSpecificOrg=\(notJoin)"]
-//            
-//            let dic = [Constant.REQUEST_PARAMETER:parameterArray]
-//            
-//            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.LINKEDIN_ACCESS_TOKEN_ENDPOINT_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.LINKEDIN_ACCESS_TOKEN_ENDPOINT_API, withHttpMethd: Constant.POST)
-//            
-//            downloadmetadatajob.startMetaDataDownLoad()
-//        }
-//        else
-//        {
-//           AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
-//        }
-//        
-//    }
-    
     func registerUser( dict:Any) -> Void
     {
         if AppPreferences.sharedPreferences().isReachable
@@ -135,5 +118,234 @@ class APIManager: NSObject
             AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
         }
     }
+    
+    
+    func getVerticalJobs(username:String, password:String, varticalId:String, linkedinId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","varticalId=\(varticalId)","linkedinId=\(linkedinId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.VERTICAL_JOB_LIST_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.VERTICAL_JOB_LIST_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+    
+    func getHorizontalJobs(username:String, password:String, horizontalId:String, linkedinId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","horizontalId=\(horizontalId)","linkedinId=\(linkedinId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.HORIZONTAL_JOB_LIST_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.HORIZONTAL_JOB_LIST_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+
+    func getRoleJobs(username:String, password:String, roleId:String, linkedinId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","roleId=\(roleId)","linkedinId=\(linkedinId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.ROLE_JOB_LIST_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.ROLE_JOB_LIST_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+    
+    
+    func getSavedJobs(username:String, password:String, linkedinId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.SAVED_JOBS_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.SAVED_JOBS_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+    
+    func getAppliedJobs(username:String, password:String, linkedinId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.APPLIED_JOBS_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.APPLIED_JOBS_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+
+    func getJobDescription(username:String, password:String, linkedinId:String,varticalId:String, jobId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","varticalId=\(varticalId)","jobId=\(jobId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.JOB_DESCRIPTION_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.JOB_DESCRIPTION_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+    func createRequestAndSend(dict:Any, imageData:Data?)
+    {
+        var request:NSURLRequest!
+        do
+        {
+           request  = try createRequest(dict: dict, imageData: imageData) as NSURLRequest!
+
+        } catch let error as NSError
+        {
+            
+        }
+        let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.NEW_USER_REGISTRATION_API, withRequestParameter: "" as AnyObject, withResourcePath: Constant.NEW_USER_REGISTRATION_API, withHttpMethd: Constant.POST)
+        
+        downloadmetadatajob.makeMultipartRequest(request: request as URLRequest)
+    }
+    
+    func createRequest(dict:Any, imageData: Data?) throws -> URLRequest
+    {
+        let parameters = [
+            "registrationDict"  : dict
+            ]  // build your dictionary however appropriate
+        
+        let boundary = generateBoundaryString()
+        
+        let url = URL(string: "\(Constant.BASE_URL_PATH)\("login/registration")")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        let path1 = Bundle.main.path(forResource: "image", ofType: "png")!
+        request.httpBody = try createBody(with: parameters, filePathKey: "file", paths: [path1], boundary: boundary, imageData: imageData)
+        
+        return request
+    }
+    
+    /// Create body of the multipart/form-data request
+    ///
+    /// - parameter parameters:   The optional dictionary containing keys and values to be passed to web service
+    /// - parameter filePathKey:  The optional field name to be used when uploading files. If you supply paths, you must supply filePathKey, too.
+    /// - parameter paths:        The optional array of file paths of the files to be uploaded
+    /// - parameter boundary:     The multipart/form-data boundary
+    ///
+    /// - returns:                The NSData of the body of the request
+    
+    func createBody(with parameters: [String: Any]?, filePathKey: String, paths: [String], boundary: String, imageData:Data?) throws -> Data {
+        var body = Data()
+        
+        if parameters != nil {
+            for (key, value) in parameters! {
+                body.append("--\(boundary)\r\n")
+                body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+                body.append("\(value)\r\n")
+            }
+        }
+        if let data = imageData
+        {
+        for path in paths {
+            let url = URL(fileURLWithPath: path)
+            let filename = url.lastPathComponent
+//            let data = try Data(contentsOf: url)
+            
+
+            let data1 = UIImagePNGRepresentation(UIImage(named:"Cross")!)
+            let mimetype = mimeType(for: path)
+            
+            body.append("--\(boundary)\r\n")
+            body.append("Content-Disposition: form-data; name=\"\(filePathKey)\"; filename=\"\(filename)\"\r\n")
+            body.append("Content-Type: \(mimetype)\r\n\r\n")
+            
+                body.append(data)
+                body.append("\r\n")
+            }
+            
+        }
+        
+        body.append("--\(boundary)--\r\n")
+        return body
+    }
+    
+    /// Create boundary string for multipart/form-data request
+    ///
+    /// - returns:            The boundary string that consists of "Boundary-" followed by a UUID string.
+    
+    func generateBoundaryString() -> String {
+        return "Boundary-\(NSUUID().uuidString)"
+    }
+    
+    /// Determine mime type on the basis of extension of a file.
+    ///
+    /// This requires MobileCoreServices framework.
+    ///
+    /// - parameter path:         The path of the file for which we are going to determine the mime type.
+    ///
+    /// - returns:                Returns the mime type if successful. Returns application/octet-stream if unable to determine mime type.
+    
+    func mimeType(for path: String) -> String {
+        let url = NSURL(fileURLWithPath: path)
+        let pathExtension = url.pathExtension
+        
+        if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension! as NSString, nil)?.takeRetainedValue() {
+            if let mimetype = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType)?.takeRetainedValue() {
+                return mimetype as String
+            }
+        }
+        return "application/octet-stream";
+    }    
+    
 
 }

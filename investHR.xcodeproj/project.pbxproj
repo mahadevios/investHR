@@ -67,6 +67,13 @@
 		84EB8F431EDFEB8600014DA4 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB8F421EDFEB8600014DA4 /* Constant.swift */; };
 		84EB8F451EDFFCC900014DA4 /* AppPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB8F441EDFFCC900014DA4 /* AppPreferences.swift */; };
 		84EB8F481EE03D6600014DA4 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB8F471EE03D6600014DA4 /* Reachability.swift */; };
+		84F690F11EFB87410000B768 /* FTPImageUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F690F01EFB87410000B768 /* FTPImageUpload.swift */; };
+		84F690F31EFB8EBB0000B768 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F690F21EFB8EBB0000B768 /* DateExtension.swift */; };
+		84F690F61EFBE4220000B768 /* AppliedJobs+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F690F41EFBE4220000B768 /* AppliedJobs+CoreDataClass.swift */; };
+		84F690F71EFBE4220000B768 /* AppliedJobs+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F690F51EFBE4220000B768 /* AppliedJobs+CoreDataProperties.swift */; };
+		84F690FA1EFBE45D0000B768 /* SavedJobs+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F690F81EFBE45D0000B768 /* SavedJobs+CoreDataClass.swift */; };
+		84F690FB1EFBE45D0000B768 /* SavedJobs+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F690F91EFBE45D0000B768 /* SavedJobs+CoreDataProperties.swift */; };
+		84F690FF1EFC11D30000B768 /* NewJobsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F690FE1EFC11D30000B768 /* NewJobsViewController.swift */; };
 		BD7B2F45DBC9DE328FC4F1DC /* Pods_investHR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCD0E64D8DDF1F4E0360E6EB /* Pods_investHR.framework */; };
 		E174B35D143E3B30CB4E479B /* Pods_investHRUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9CF5180517057B4C05D18CF /* Pods_investHRUITests.framework */; };
 		FE7DA76949B0D82B0FD61BD3 /* Pods_investHRTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F373153BB0521F279CA83EB /* Pods_investHRTests.framework */; };
@@ -120,8 +127,6 @@
 		8431B5C11EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataDemo.xcdatamodel; sourceTree = "<group>"; };
 		843425C31EE7D80400282419 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		843425C71EE7ED5F00282419 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		843782D91EFABD0A00A7E7D1 /* WhiteRaccoon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhiteRaccoon.h; sourceTree = "<group>"; };
-		843782DA1EFABD0A00A7E7D1 /* WhiteRaccoon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WhiteRaccoon.m; sourceTree = "<group>"; };
 		8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		843A6AB81EE1824C00D86591 /* linkedin-sdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = "linkedin-sdk.framework"; sourceTree = "<group>"; };
 		8440DF6F1ED706CB0003F05B /* MenuViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewViewController.swift; sourceTree = "<group>"; };
@@ -164,6 +169,13 @@
 		84EB8F421EDFEB8600014DA4 /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		84EB8F441EDFFCC900014DA4 /* AppPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppPreferences.swift; sourceTree = "<group>"; };
 		84EB8F471EE03D6600014DA4 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		84F690F01EFB87410000B768 /* FTPImageUpload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FTPImageUpload.swift; sourceTree = "<group>"; };
+		84F690F21EFB8EBB0000B768 /* DateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		84F690F41EFBE4220000B768 /* AppliedJobs+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppliedJobs+CoreDataClass.swift"; sourceTree = "<group>"; };
+		84F690F51EFBE4220000B768 /* AppliedJobs+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AppliedJobs+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		84F690F81EFBE45D0000B768 /* SavedJobs+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SavedJobs+CoreDataClass.swift"; sourceTree = "<group>"; };
+		84F690F91EFBE45D0000B768 /* SavedJobs+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SavedJobs+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		84F690FE1EFC11D30000B768 /* NewJobsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewJobsViewController.swift; sourceTree = "<group>"; };
 		8F373153BB0521F279CA83EB /* Pods_investHRTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_investHRTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B46ECC2453C6493610B27C31 /* Pods-investHRTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-investHRTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-investHRTests/Pods-investHRTests.release.xcconfig"; sourceTree = "<group>"; };
 		BF1F6F4D1CE0CCB272F213F1 /* Pods-investHR.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-investHR.release.xcconfig"; path = "Pods/Target Support Files/Pods-investHR/Pods-investHR.release.xcconfig"; sourceTree = "<group>"; };
@@ -220,7 +232,6 @@
 		84239B901EC476AD0076EF33 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				843782D81EFABD0A00A7E7D1 /* White */,
 				8424ED1C1EF14C6000E68B3D /* CustomTextFields */,
 				8424ECDC1EF0FEED00E68B3D /* MBProgressHUD */,
 				8467DEDF1EEA68E300974A3D /* OAuth */,
@@ -267,15 +278,6 @@
 			path = Database;
 			sourceTree = "<group>";
 		};
-		843782D81EFABD0A00A7E7D1 /* White */ = {
-			isa = PBXGroup;
-			children = (
-				843782D91EFABD0A00A7E7D1 /* WhiteRaccoon.h */,
-				843782DA1EFABD0A00A7E7D1 /* WhiteRaccoon.m */,
-			);
-			path = White;
-			sourceTree = "<group>";
-		};
 		843A6AB71EE1824C00D86591 /* LinkedIn */ = {
 			isa = PBXGroup;
 			children = (
@@ -287,6 +289,10 @@
 		8449B6041EE578EB0072A8DD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				84F690F81EFBE45D0000B768 /* SavedJobs+CoreDataClass.swift */,
+				84F690F91EFBE45D0000B768 /* SavedJobs+CoreDataProperties.swift */,
+				84F690F41EFBE4220000B768 /* AppliedJobs+CoreDataClass.swift */,
+				84F690F51EFBE4220000B768 /* AppliedJobs+CoreDataProperties.swift */,
 				842BAFCA1EF2A368005327B0 /* Roles+CoreDataClass.swift */,
 				842BAFCB1EF2A368005327B0 /* Roles+CoreDataProperties.swift */,
 				842BAFC61EF2A27C005327B0 /* HorizontalDomains+CoreDataClass.swift */,
@@ -398,6 +404,7 @@
 				844F5F341EDC3BA10073A7D7 /* UploadResumeViewController.swift */,
 				842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */,
 				842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */,
+				84F690FE1EFC11D30000B768 /* NewJobsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -409,6 +416,8 @@
 				84EB8F3C1EDFE90B00014DA4 /* DownloadMetaDataJob.swift */,
 				84EB8F441EDFFCC900014DA4 /* AppPreferences.swift */,
 				8449B6051EE578EB0072A8DD /* CoreDataManager.swift */,
+				84F690F01EFB87410000B768 /* FTPImageUpload.swift */,
+				84F690F21EFB8EBB0000B768 /* DateExtension.swift */,
 			);
 			path = APIManager;
 			sourceTree = "<group>";
@@ -741,6 +750,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84F690F31EFB8EBB0000B768 /* DateExtension.swift in Sources */,
 				844F5F371EDC48640073A7D7 /* LocationViewController.swift in Sources */,
 				844F5F2D1EDBF0B20073A7D7 /* EditProfileViewController.swift in Sources */,
 				84EB8F451EDFFCC900014DA4 /* AppPreferences.swift in Sources */,
@@ -748,11 +758,14 @@
 				84EB8F3E1EDFE90B00014DA4 /* DownloadMetaDataJob.swift in Sources */,
 				84EB8F481EE03D6600014DA4 /* Reachability.swift in Sources */,
 				842BAFCD1EF2A368005327B0 /* Roles+CoreDataProperties.swift in Sources */,
+				84F690FB1EFBE45D0000B768 /* SavedJobs+CoreDataProperties.swift in Sources */,
 				841492691EF005D6007133D0 /* State+CoreDataProperties.swift in Sources */,
 				8424ECDF1EF0FEED00E68B3D /* MBProgressHUD.m in Sources */,
 				841492711EF00639007133D0 /* VertcalDomains+CoreDataProperties.swift in Sources */,
 				8493B8311EC4678200D8F7F9 /* AppDelegate.swift in Sources */,
+				84F690F11EFB87410000B768 /* FTPImageUpload.swift in Sources */,
 				842B32FC1EDDAE2B000088D1 /* ReferFriendViewController.swift in Sources */,
+				84F690F71EFBE4220000B768 /* AppliedJobs+CoreDataProperties.swift in Sources */,
 				844F5F311EDC2A160073A7D7 /* SavedJobsViewController.swift in Sources */,
 				844387B61ED41FF0002E71D6 /* RegistrationViewController.swift in Sources */,
 				8450ACCD1ED5B5EF001D57E1 /* AdditionalInfoViewController.swift in Sources */,
@@ -771,8 +784,10 @@
 				8414926D1EF0060D007133D0 /* User+CoreDataProperties.swift in Sources */,
 				842B32F81EDD7A97000088D1 /* SettingsViewController.swift in Sources */,
 				844E5B001EEE59D600E69646 /* SessionManager.swift in Sources */,
+				84F690FA1EFBE45D0000B768 /* SavedJobs+CoreDataClass.swift in Sources */,
 				842BAFCC1EF2A368005327B0 /* Roles+CoreDataClass.swift in Sources */,
 				844F5F2F1EDC23A20073A7D7 /* NotificationJobsViewController.swift in Sources */,
+				84F690FF1EFC11D30000B768 /* NewJobsViewController.swift in Sources */,
 				844387B81ED46D2D002E71D6 /* Registration1ViewController.swift in Sources */,
 				8439E04E1EC5F3C000FC2A12 /* LoginViewController.swift in Sources */,
 				84AD18391EF000140049675A /* investHR.xcdatamodeld in Sources */,
@@ -782,6 +797,7 @@
 				844E5B2A1EEED4CF00E69646 /* LinkedInLoginViewController.swift in Sources */,
 				8414925D1EF004CA007133D0 /* City+CoreDataProperties.swift in Sources */,
 				842BAFC81EF2A27C005327B0 /* HorizontalDomains+CoreDataClass.swift in Sources */,
+				84F690F61EFBE4220000B768 /* AppliedJobs+CoreDataClass.swift in Sources */,
 				84239B941EC476C60076EF33 /* SWRevealViewController.m in Sources */,
 				8440DF701ED706CB0003F05B /* MenuViewViewController.swift in Sources */,
 				844F5F331EDC34B20073A7D7 /* AppliedJobsViewController.swift in Sources */,

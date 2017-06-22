@@ -551,8 +551,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
             print(dataDic)
             print(accessToken ?? "")
             
-            UserDefaults.standard.set(accessToken, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
-            UserDefaults.standard.synchronize()
+            
             
             
             if let accessToken = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN)
@@ -589,7 +588,8 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                                         return
                                     }
 
-
+                                    UserDefaults.standard.set(accessToken, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+                                    UserDefaults.standard.synchronize()
                                     guard let firstName = dataDictionary["firstName"] as? String else
                                     {
                                      return
@@ -672,7 +672,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                                     
                                     let pictureUrlString:String!
                                     
-                                    let pictureUrl:NSURL!
+                                    var pictureUrl:NSURL!
                                     
                                     //location area, psition value
                                     var fileURL:NSURL! = NSURL()
@@ -692,13 +692,19 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                                         
                                         pictureUrl = NSURL(string: pictureUrlArray[0])
                                     }
-                                    
-                                    
+                                    var imageData:Data?
+                                    do
+                                    {
+                                         imageData = try Data(contentsOf: pictureUrl as URL)
+                                    } catch
+                                    {
+                                        print("Unable to load data: \(error)")
+                                    }
                                     
                                     let linkedInDict = ["firstName":firstName,"lastName":lastName,"userId":userId,"occupation":occupation,"emailAddress":emailAddress,"pictureUrl":pictureUrlString,"profileUrl":publicProfileUrl,"linkedInId":userId] as [String : Any]
                                     
                                     
-                                    self.registerOrLoginuser(linkedInDict: linkedInDict)
+                                    self.registerOrLoginuser(linkedInDict: linkedInDict, imageData: imageData)
                                     
 //                                    CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
 //                                    let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["firstName":firstName,"lastName":lastName ,"userId":userId ,"occupation":occupation ,"emailAddress":emailAddress,"pictureUrl":pictureUrlString])
@@ -759,7 +765,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         }
     }
     
-    func registerOrLoginuser( linkedInDict:[String:Any])
+    func registerOrLoginuser( linkedInDict:[String:Any], imageData:Data?)
     {
         
         //let linkedInDict = ["firstName":firstName,"lastName":lastName,"userId":userId,"occupation":occupation,"emailAddress":emailAddress,"pictureUrl":pictureUrlString] as [String : Any]
@@ -783,7 +789,10 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
             
             //            if AppPreferences.sharedPreferences().isReachable
             //            {
-            APIManager.getSharedAPIManager().registerUser(dict: decoded)
+
+            APIManager.getSharedAPIManager().createRequestAndSend(dict: decoded, imageData: imageData)
+
+           // APIManager.getSharedAPIManager().registerUser(dict: decoded)
             
 //            let hud = MBProgressHUD.showAdded(to: UIApplication.shared.keyWindow!, animated: true)
 //            

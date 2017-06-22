@@ -22,26 +22,39 @@ struct Constant
     static let  USERNAME                                 = "username"
     static let  PASSWORD                                 = "password"
     static let  FTP_HOST_NAME                            = "ftp.mtcommunicator.com"
-    static let  FTP_FILES_FOLDER_NAME                    = "/TEST/"
-    static let  FTP_USERNAME                             = "mt%40mtcommunicator.com"
-    static let  FTP_PASSWORD                             = "mtone%40123"
+    static let  FTP_USERNAME                             = "mt@mtcommunicator.com"
+    static let  FTP_PASSWORD                             = "mtone@123"
+    static let  FTP_DIRECTORY_PATH                       = "TEST"
 
     //static let  BASE_URL_PATH                            = "http://192.168.3.75:9091/coreflex/investhr/"
-
     static let  BASE_URL_PATH                            = "http://192.168.3.67:8080/coreflex/investhr/"
-    static let  NEW_USER_REGISTRATION_API                = "login/registration"
-    static let  NEW_USER_LOGIN_API                       = "login"
+
+    //static let  BASE_URL_PATH                            = "http://192.168.3.66:8080/coreflex/investhr/"
     static let  LINKEDIN_LOGOUT_API                      = "https://api.linkedin.com/uas/oauth/invalidateToken"
     static let  LINKEDIN_ACCESS_TOKEN                    = "linkedInAccessToken"
     static let  LINKEDIN_ACCESS_TOKEN_EXPIRES_IN         = "linkedInAccessTokenExpiresIn"
-
     static let  LINKEDIN_ACCESS_TOKEN_ENDPOINT_API       = "https://www.linkedin.com/uas/oauth2/accessToken"
+
+    static let  NEW_USER_REGISTRATION_API                = "login/registration"
+    static let  NEW_USER_LOGIN_API                       = "login"
+    static let  VERTICAL_JOB_LIST_API                    = "login/mobileVerticalJob"
+    static let  ROLE_JOB_LIST_API                        = "login/mobileRoleJob"
+    static let  HORIZONTAL_JOB_LIST_API                  = "login/mobileHorizontalJob"
+    static let  APPLIED_JOBS_API                         = "login/mobileAppliedJob"
+    static let  SAVED_JOBS_API                           = "login/mobileSavedJob"
+    static let  JOB_DESCRIPTION_API                      = "login/mobileVerticalJobDescription"
     
     static let  NOTIFICATION_LIACCESSTOKEN_FETCHED       = "LIAccessTokenFetched"
     static let  NOTIFICATION_USER_CHANGED                = "userChanged"
     static let  NOTIFICATION_NEW_USER_LOGGED_IN          = "newUserLoggedIn"
-
     static let  NOTIFICATION_NEW_USER_REGISTERED         = "newUserRegistered"
+    static let  NOTIFICATION_VERTICAL_JOB_LIST           = "verticalJobList"
+    static let  NOTIFICATION_HORIZONTAL_JOB_LIST         = "horizontalJobList"
+    static let  NOTIFICATION_ROLE_JOB_LIST               = "roleJobList"
+    static let  NOTIFICATION_SAVED_JOB_LIST              = "savedJobList"
+    static let  NOTIFICATION_APPLIED_JOB_LIST            = "appliedJobList"
+    static let  NOTIFICATION_JOB_DESCRIPTION             = "jobDescription"
+
 
 }
 

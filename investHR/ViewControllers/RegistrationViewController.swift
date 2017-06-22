@@ -8,6 +8,8 @@
 
 import UIKit
 
+import Photos
+
 import AssetsLibrary
 
 class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPickerViewDelegate,UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
@@ -20,6 +22,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     @IBOutlet weak var emailTextField: TextField!
     @IBOutlet weak var passwordTextField: TextField!
     var movedUpBy:String = ""
+    var imagedata:Any!
     
     var coutryCodesArray:[String] = []
     override func viewDidLoad()
@@ -152,6 +155,8 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
                     viewController.mobile = mobileNumberTextField.text
         
                     viewController.password = passwordTextField.text
+                    
+                    viewController.imageData = imagedata
         
                     self.navigationController?.pushViewController(viewController, animated: true)
                 }
@@ -181,18 +186,40 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         
         let chosenImage = info[UIImagePickerControllerOriginalImage]
         
+        let chosenImageName = info[UIImagePickerControllerOriginalImage]
+
+        
         let refURL = info[UIImagePickerControllerReferenceURL]
         
-        let v = info[UIImagePickerControllerOriginalImage] as? UIImage
+        let userImage = info[UIImagePickerControllerOriginalImage] as? UIImage
         
-        circleImageView.image = v
+        imagedata    = UIImagePNGRepresentation(userImage!) as Data!
+
+        var imageName:String!
+        if let imageURL = info[UIImagePickerControllerReferenceURL] as? URL {
+            let result = PHAsset.fetchAssets(withALAssetURLs: [imageURL], options: nil)
+            let asset = result.firstObject
+            imageName = asset?.value(forKey: "filename") as! String!
+            print(asset?.value(forKey: "filename") ?? "nil")
+            
+        }
+        circleImageView.image = userImage
         
         picker.view!.removeFromSuperview()
         
         picker.removeFromParentViewController()
         
+        let uniqueImageName = String(Date().millisecondsSince1970)
+        
+        print(uniqueImageName)
+        
+        ///let ftp = FTPImageUpload(baseUrl: Constant.FTP_HOST_NAME, userName: Constant.FTP_USERNAME, password: Constant.FTP_PASSWORD, directoryPath: Constant.FTP_DIRECTORY_PATH)
+        
+        //let result = ftp.send(data: data!, with: uniqueImageName+imageName)
+        
+        //print(result)
+        
     }
-    
     
     func addView() -> Void
     {

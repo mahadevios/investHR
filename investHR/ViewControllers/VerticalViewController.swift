@@ -19,6 +19,9 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
     
     var domainNameArray:[String] = []
     
+    var domainNameAndIdDic = [String:Int16]()
+    
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -79,7 +82,7 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
                 {
                     domainNameArray.append(userObject.verticalName!)
                     
-                    //stateNameAndIdDic[userObject.stateName!] = userObject.id
+                    domainNameAndIdDic[userObject.verticalName!] = userObject.verticalId
                     
                 }
 
@@ -91,7 +94,7 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
                     {
                         domainNameArray.append(userObject.horizontalName!)
                         
-                        //stateNameAndIdDic[userObject.stateName!] = userObject.id
+                        domainNameAndIdDic[userObject.horizontalName!] = userObject.horizontalId
                         
                     }
                     
@@ -103,7 +106,7 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
                         {
                             domainNameArray.append(userObject.roleName!)
                             
-                            //stateNameAndIdDic[userObject.stateName!] = userObject.id
+                            domainNameAndIdDic[userObject.roleName!] = userObject.roleId
                             
                         }
                         
@@ -140,8 +143,8 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
         
         // set the text from the data model
         
-        let itemName = cell.viewWithTag(101) as! UILabel
-        itemName.text = domainNameArray[indexPath.row]
+        let itemNameLabel = cell.viewWithTag(101) as! UILabel
+        itemNameLabel.text = domainNameArray[indexPath.row]
                 
         
         
@@ -151,8 +154,77 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
     // method to run when table view cell is tapped
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
+        //APIManager.getSharedAPIManager()
+        let cell = tableView.cellForRow(at: indexPath)!
+        
+        let itemNameLabel = cell.viewWithTag(101) as! UILabel
+
+        let itemName = itemNameLabel.text!
+        
+        let verticalId = domainNameAndIdDic[itemName]! 
+        
+        if self.domainType == "vertical"
+        {
+            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+
+            if username != nil && password != nil
+            {
+               APIManager.getSharedAPIManager().getVerticalJobs(username: username!, password: password!, varticalId: String(verticalId), linkedinId:"")
+            }
+            else
+                if linkedInId != nil
+                {
+                    APIManager.getSharedAPIManager().getVerticalJobs(username: "", password: "", varticalId: String(verticalId), linkedinId:linkedInId!)
+
+                }
+            
+            
+        }
+        else
+            if self.domainType == "horizontal"
+            {
+                let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+                let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+                let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+                
+                if username != nil && password != nil
+                {
+                    APIManager.getSharedAPIManager().getHorizontalJobs(username: username!, password: password!, horizontalId: String(verticalId), linkedinId:"")
+                }
+                else
+                    if linkedInId != nil
+                    {
+                        APIManager.getSharedAPIManager().getHorizontalJobs(username: "", password: "", horizontalId: String(verticalId), linkedinId:linkedInId!)
+                        
+                    }
+                
+                
+            }
+            else
+                if self.domainType == "roles"
+                {
+                    let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+                    let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+                    let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+                    
+                    if username != nil && password != nil
+                    {
+                        APIManager.getSharedAPIManager().getRoleJobs(username: username!, password: password!, roleId: String(verticalId), linkedinId:"")
+                    }
+                    else
+                        if linkedInId != nil
+                        {
+                            APIManager.getSharedAPIManager().getRoleJobs(username: "", password: "", roleId: String(verticalId), linkedinId:linkedInId!)
+                            
+                        }
+                    
+                    
+            }
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "JobsViewController") as! JobsViewController
         
+        vc.verticalId = String(verticalId)
             self.navigationController?.pushViewController(vc, animated: true)
         
             print("You tapped cell number \(indexPath.row).")

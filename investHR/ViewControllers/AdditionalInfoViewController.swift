@@ -34,6 +34,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
     var email:String!
     var mobile:String!
     var password:String!
+    var imageData:Any?
     var state:String!
     var city:String!
     var currentRole:String!
@@ -133,9 +134,12 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         }
         else
         {
+            //self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+
+            //self.presentingViewController?.dismiss(animated: true, completion: nil)
+            self.presentingViewController?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+
             self.dismiss(animated: true, completion: nil)
-            self.presentingViewController?.dismiss(animated: true, completion: nil)
-            self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
 
             NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
             
@@ -234,8 +238,15 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
             
             print(decoded)
 
-                APIManager.getSharedAPIManager().registerUser(dict: decoded)
-
+               // APIManager.getSharedAPIManager().registerUser(dict: decoded)
+            let data = imageData as? Data
+//            do {
+                 APIManager.getSharedAPIManager().createRequestAndSend(dict: decoded, imageData: data)
+//            } catch let error as NSError
+//            {
+//                
+//            }
+            
                 let hud = MBProgressHUD.showAdded(to: UIApplication.shared.keyWindow!, animated: true)
                 
                 hud.tag = 789

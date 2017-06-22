@@ -17,7 +17,6 @@ class AppPreferences: NSObject,UIAlertViewDelegate
     
     var firebaseInstanceId:String
     
-    
     private override init()
     {
         isReachable = false

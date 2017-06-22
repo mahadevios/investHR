@@ -21,6 +21,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
     var email:String?
     var mobile:String?
     var password:String?
+    var imageData:Any?
 
     
     var statesArray:[String] = []
@@ -393,7 +394,9 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             
             //            if AppPreferences.sharedPreferences().isReachable
             //            {
-            APIManager.getSharedAPIManager().registerUser(dict: decoded)
+            let data = imageData as? Data
+            APIManager.getSharedAPIManager().createRequestAndSend(dict: decoded, imageData: data)
+           // APIManager.getSharedAPIManager().registerUser(dict: decoded)
             
             let hud = MBProgressHUD.showAdded(to: UIApplication.shared.keyWindow!, animated: true)
             
@@ -477,6 +480,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         vc.email = self.email
         vc.password = self.password
         vc.mobile = mobileNumber
+        vc.imageData = imageData
         vc.state = stateId!
         vc.currentRole = currentRole
         vc.visaStatus = visaStatus

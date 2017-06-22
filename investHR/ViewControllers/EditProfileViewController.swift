@@ -41,69 +41,69 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
         setProfileView()
         
-        uploadFIleUsingFTP()
+        //uploadFIleUsingFTP()
         // Do any additional setup after loading the view.
     }
-    func uploadFIleUsingFTP()
-    {
-        
-            //                let dataDictionary = try JSONSerialization.jsonObject(with: responseData as Data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
-            
-            
-            UserDefaults.standard.synchronize()
-            
-            
-            // Specify the URL string that we'll get the profile info from.
-            //let targetURLString = "https://api.linkedin.com/v1/people/~:(public-profile-url,id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json"
-            
-            let targetURLString = "ftp://\(Constant.FTP_USERNAME):\(Constant.FTP_PASSWORD)\(Constant.FTP_HOST_NAME)\(Constant.FTP_FILES_FOLDER_NAME)\("abc")"
-            
-            let request = NSMutableURLRequest(url: NSURL(string: targetURLString)! as URL)
-            
-            // Indicate that this is a GET request.
-            request.httpMethod = "POST"
-            
-            let data = UIImagePNGRepresentation(UIImage(named:"Cross")!) as NSData?
-            
-            request.httpBody = data! as Data
-            // Add the access token as an HTTP header field.
-            //request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-            
-            //let session = URLSession(configuration: URLSessionConfiguration.default)
-            
-            // Make the request.
-            let sessionConfiguration = URLSessionConfiguration.default
-            //sessionConfiguration.URLCredentialStorage = cred_storage;
-            sessionConfiguration.allowsCellularAccess = true
-            
-            
-            let session = URLSession(configuration: sessionConfiguration)
-        
-        
-            let uploadTask = session.uploadTask(with: request as URLRequest, from: data as! Data)
-            uploadTask.resume()
-//            let task: URLSessionDataTask = session.dataTask(with: request as URLRequest) { (data, response, error) -> Void in
-//                
-//                let statusCode = (response as! HTTPURLResponse).statusCode
-//                
-//                if statusCode == 200
-//                {
-//                    // Convert the received JSON data into a dictionary.
-//                    
-//                }
-//                else
-//                {
-//                    
-//                }
-//                
-//                
-//            }
+//    func uploadFIleUsingFTP()
+//    {
+//        
+//            //                let dataDictionary = try JSONSerialization.jsonObject(with: responseData as Data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
 //            
-//            task.resume()
-            
-        
-        
-    }
+//            
+//            UserDefaults.standard.synchronize()
+//            
+//            
+//            // Specify the URL string that we'll get the profile info from.
+//            //let targetURLString = "https://api.linkedin.com/v1/people/~:(public-profile-url,id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json"
+//            
+//            let targetURLString = "ftp://\(Constant.FTP_USERNAME):\(Constant.FTP_PASSWORD)\(Constant.FTP_HOST_NAME)\(Constant.FTP_FILES_FOLDER_NAME)\("abc")"
+//            
+//            let request = NSMutableURLRequest(url: NSURL(string: targetURLString)! as URL)
+//            
+//            // Indicate that this is a GET request.
+//            request.httpMethod = "POST"
+//            
+//            let data = UIImagePNGRepresentation(UIImage(named:"Cross")!) as NSData?
+//            
+//            request.httpBody = data! as Data
+//            // Add the access token as an HTTP header field.
+//            //request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+//            
+//            //let session = URLSession(configuration: URLSessionConfiguration.default)
+//            
+//            // Make the request.
+//            let sessionConfiguration = URLSessionConfiguration.default
+//            //sessionConfiguration.URLCredentialStorage = cred_storage;
+//            sessionConfiguration.allowsCellularAccess = true
+//            
+//            
+//            let session = URLSession(configuration: sessionConfiguration)
+//        
+//        
+//            let uploadTask = session.uploadTask(with: request as URLRequest, from: data as! Data)
+//            uploadTask.resume()
+////            let task: URLSessionDataTask = session.dataTask(with: request as URLRequest) { (data, response, error) -> Void in
+////                
+////                let statusCode = (response as! HTTPURLResponse).statusCode
+////                
+////                if statusCode == 200
+////                {
+////                    // Convert the received JSON data into a dictionary.
+////                    
+////                }
+////                else
+////                {
+////                    
+////                }
+////                
+////                
+////            }
+////            
+////            task.resume()
+//            
+//        
+//        
+//    }
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
         print("hi")
 

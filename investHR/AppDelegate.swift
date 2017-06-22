@@ -269,120 +269,120 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     }
 
-    func fetchUserProfile(accessToken:String)
-    {
-        // Convert the received JSON data into a dictionary.
-        do {
-            
-            //                let dataDictionary = try JSONSerialization.jsonObject(with: responseData as Data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
-            
-            print(accessToken )
-            
-            UserDefaults.standard.set(accessToken, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
-            UserDefaults.standard.synchronize()
-            
-            
-            if let accessToken = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN)
-            {
-                // Specify the URL string that we'll get the profile info from.
-                let targetURLString = "https://api.linkedin.com/v1/people/~:(public-profile-url,id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json"
-                
-                let request = NSMutableURLRequest(url: NSURL(string: targetURLString)! as URL)
-                
-                // Indicate that this is a GET request.
-                request.httpMethod = "GET"
-                
-                // Add the access token as an HTTP header field.
-                request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-                
-                let session = URLSession(configuration: URLSessionConfiguration.default)
-                
-                // Make the request.
-                let task: URLSessionDataTask = session.dataTask(with: request as URLRequest) { (data, response, error) -> Void in
-                    
-                    let statusCode = (response as! HTTPURLResponse).statusCode
-                    
-                    if statusCode == 200
-                    {
-                        // Convert the received JSON data into a dictionary.
-                        do {
-                            let dataDictionary = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
-                            
-                            let profileURLString = dataDictionary["publicProfileUrl"] as! String
-                            
-                            print(profileURLString)
-                            
-                            DispatchQueue.main.async
-                                {
-                                    
-                                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                                    
-                                    let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
-                                    
-                                    print(currentRootVC)
-                                    
-                                    let className = String(describing: type(of: currentRootVC))
-                                    
-                                    if className == "LoginViewController"
-                                    {
-                                        let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
-                                        let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
-                                        appDelegate.window?.rootViewController = rootViewController
-                                        
-                                    }
-                                    else
-                                    {
-                                        //self.dismiss(animated: true, completion: nil)
-                                        
-                                    }
-                                    
-                            }
-                            
-                        }
-                        catch {
-                            print("Could not convert JSON data into a dictionary.")
-                        }
-                    }
-                    else
-                    {
-                        do {
-                            let dataDictionary = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
-                            
-                            let profileURLString = dataDictionary["publicProfileUrl"] as! String
-                            
-                            print(profileURLString)
-                        }
-                        catch {
-                            print("Could not convert JSON data into a dictionary.")
-                        }
-                    }
-                    
-                    
-                }
-                
-                task.resume()
-            }
-        }
-        catch {
-            print("Could not convert JSON data into a dictionary.")
-        }
-    }
-
-    func application(_ application: UIApplication,
-                     open url: URL,
-                     sourceApplication: String?,
-                     annotation: Any) -> Bool {
-        
-        // Linkedin sdk handle redirect
-        if LISDKCallbackHandler.shouldHandle(url)
-        {
-            return LISDKCallbackHandler.application(application, open: url, sourceApplication: sourceApplication as String!, annotation:annotation)
-        }
-        
-        
-        
-        return false
-    }
+//    func fetchUserProfile(accessToken:String)
+//    {
+//        // Convert the received JSON data into a dictionary.
+//        do {
+//            
+//            //                let dataDictionary = try JSONSerialization.jsonObject(with: responseData as Data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
+//            
+//            print(accessToken )
+//            
+//            UserDefaults.standard.set(accessToken, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+//            UserDefaults.standard.synchronize()
+//            
+//            
+//            if let accessToken = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+//            {
+//                // Specify the URL string that we'll get the profile info from.
+//                let targetURLString = "https://api.linkedin.com/v1/people/~:(public-profile-url,id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json"
+//                
+//                let request = NSMutableURLRequest(url: NSURL(string: targetURLString)! as URL)
+//                
+//                // Indicate that this is a GET request.
+//                request.httpMethod = "GET"
+//                
+//                // Add the access token as an HTTP header field.
+//                request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+//                
+//                let session = URLSession(configuration: URLSessionConfiguration.default)
+//                
+//                // Make the request.
+//                let task: URLSessionDataTask = session.dataTask(with: request as URLRequest) { (data, response, error) -> Void in
+//                    
+//                    let statusCode = (response as! HTTPURLResponse).statusCode
+//                    
+//                    if statusCode == 200
+//                    {
+//                        // Convert the received JSON data into a dictionary.
+//                        do {
+//                            let dataDictionary = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
+//                            
+//                            let profileURLString = dataDictionary["publicProfileUrl"] as! String
+//                            
+//                            print(profileURLString)
+//                            
+//                            DispatchQueue.main.async
+//                                {
+//                                    
+//                                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//                                    
+//                                    let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
+//                                    
+//                                    print(currentRootVC)
+//                                    
+//                                    let className = String(describing: type(of: currentRootVC))
+//                                    
+//                                    if className == "LoginViewController"
+//                                    {
+//                                        let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+//                                        let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+//                                        appDelegate.window?.rootViewController = rootViewController
+//                                        
+//                                    }
+//                                    else
+//                                    {
+//                                        //self.dismiss(animated: true, completion: nil)
+//                                        
+//                                    }
+//                                    
+//                            }
+//                            
+//                        }
+//                        catch {
+//                            print("Could not convert JSON data into a dictionary.")
+//                        }
+//                    }
+//                    else
+//                    {
+//                        do {
+//                            let dataDictionary = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
+//                            
+//                            let profileURLString = dataDictionary["publicProfileUrl"] as! String
+//                            
+//                            print(profileURLString)
+//                        }
+//                        catch {
+//                            print("Could not convert JSON data into a dictionary.")
+//                        }
+//                    }
+//                    
+//                    
+//                }
+//                
+//                task.resume()
+//            }
+//        }
+//        catch {
+//            print("Could not convert JSON data into a dictionary.")
+//        }
+//    }
+//
+//    func application(_ application: UIApplication,
+//                     open url: URL,
+//                     sourceApplication: String?,
+//                     annotation: Any) -> Bool {
+//        
+//        // Linkedin sdk handle redirect
+//        if LISDKCallbackHandler.shouldHandle(url)
+//        {
+//            return LISDKCallbackHandler.application(application, open: url, sourceApplication: sourceApplication as String!, annotation:annotation)
+//        }
+//        
+//        
+//        
+//        return false
+//    }
 //    func getManageObjectContext() -> NSManagedObjectContext
 //    {
 //        let manageObjectContext = self.persistentContainer.viewContext

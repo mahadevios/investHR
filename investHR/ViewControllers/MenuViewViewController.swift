@@ -164,7 +164,21 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         case 2:
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "SavedJobsViewController") as! SavedJobsViewController
             
+            //APIManager.getSharedAPIManager().
+            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
             
+            if username != nil && password != nil
+            {
+                APIManager.getSharedAPIManager().getSavedJobs(username: username!, password: password!,linkedinId:"")
+            }
+            else
+                if linkedInId != nil
+                {
+                    APIManager.getSharedAPIManager().getSavedJobs(username: "", password: "",linkedinId:linkedInId!)
+                    
+                }
             let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
             
             vc1.pushViewController(vc, animated: false)
@@ -184,6 +198,20 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
             
+            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            
+            if username != nil && password != nil
+            {
+                APIManager.getSharedAPIManager().getAppliedJobs(username: username!, password: password!,linkedinId:"")
+            }
+            else
+                if linkedInId != nil
+                {
+                    APIManager.getSharedAPIManager().getAppliedJobs(username:"", password:"",linkedinId:linkedInId!)
+                    
+                }
             vc1.pushViewController(vc, animated: false)
             
             self.revealViewController().pushFrontViewController(vc1, animated: false)
@@ -267,6 +295,8 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             }
             
             UserDefaults.standard.setValue(nil, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+            UserDefaults.standard.setValue(nil, forKey: Constant.USERNAME)
+            UserDefaults.standard.setValue(nil, forKey: Constant.PASSWORD)
             
             self.revealViewController().revealToggle(animated: true)
             
