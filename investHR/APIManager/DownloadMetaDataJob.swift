@@ -165,7 +165,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                 {
                     UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
                     
-                   // AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
 
 //                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage: "username or password is incorrect, please try again", withCancelText: "Ok")
                     // NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_REGISTERED), object: dictFromJSON, userInfo: nil)
@@ -354,8 +354,82 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                                 
                             }
             
-
-
+                            else
+                                if self.downLoadEntityJobName == Constant.SAVE_JOB_API
+                                {
+                                    guard let dictFromJSON = response else
+                                    {
+                                        return
+                                    }
+                                    if String(describing: dictFromJSON["code"]!) == Constant.SUCCESS
+                                    {
+                                        UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                                        
+                                        //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                                        
+                                        NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_SAVE_JOB), object: dictFromJSON, userInfo: nil)
+                                        
+                                    }
+                                    else
+                                    {
+                                        UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                                        
+                                        //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                                        
+                                    }
+                                    
+                                }
+                                else
+                                    if self.downLoadEntityJobName == Constant.APPLY_JOB_API
+                                    {
+                                        guard let dictFromJSON = response else
+                                        {
+                                            return
+                                        }
+                                        if String(describing: dictFromJSON["code"]!) == Constant.SUCCESS
+                                        {
+                                            UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                                            
+                                            //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                                            
+                                            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_APPLY_JOB), object: dictFromJSON, userInfo: nil)
+                                            
+                                        }
+                                        else
+                                        {
+                                            UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                                            
+                                            //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                                            
+                                        }
+                                        
+                                    }
+            
+                                    else
+                                        if self.downLoadEntityJobName == Constant.SAVED_APPLIED_JOB_DESCRIPTION_API
+                                        {
+                                            guard let dictFromJSON = response else
+                                            {
+                                                return
+                                            }
+                                            if String(describing: dictFromJSON["code"]!) == Constant.SUCCESS
+                                            {
+                                                UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                                                
+                                                //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                                                
+                                                NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_SAVED_APPLIED_JOB_DESCRIPTION), object: dictFromJSON, userInfo: nil)
+                                                
+                                            }
+                                            else
+                                            {
+                                                UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                                                
+                                                //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                                                
+                                            }
+                                            
+                                        }
             
             
             

@@ -18,9 +18,15 @@ extension Date
         self = Date(timeIntervalSince1970: TimeInterval(milliseconds / 1000))
     }
     
-    func getLocatDateFromMillisecods(millisecods:Double) -> String
+    func getLocatDateFromMillisecods(millisecods:Double?) -> String
     {
-        var date1 = Date(timeIntervalSince1970: (millisecods / 1000.0))
+        guard let milSeconds = millisecods
+        else
+        {
+          return ""
+        }
+        
+        var date1 = Date(timeIntervalSince1970: (milSeconds / 1000.0))
         
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = NSTimeZone.local

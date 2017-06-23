@@ -441,8 +441,8 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["name":name! ,"username":self.emailTextField.text!,"password":self.passwordTextField.text!,"pictureUrl":imageName!])
 
-        UserDefaults.standard.set(self.emailTextField.text!, forKey: Constant.USERNAME)
-        UserDefaults.standard.set(self.passwordTextField.text!, forKey: Constant.PASSWORD)
+        //UserDefaults.standard.set(self.emailTextField.text!, forKey: Constant.USERNAME)
+       // UserDefaults.standard.set(self.passwordTextField.text!, forKey: Constant.PASSWORD)
 
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
@@ -546,7 +546,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         do {
             
             let dic = dataDic.object as! [String:AnyObject]
-            let accessToken = dic["access_token"]
+            let accessToken = dic["access_token"] as! String
             
             print(dataDic)
             print(accessToken ?? "")
@@ -554,8 +554,9 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
             
             
             
-            if let accessToken = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN)
-            {
+            //if let accessToken = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+            //{
+            
                 let targetURLString = "https://api.linkedin.com/v1/people/~:(public-profile-url,id,first-name,last-name,maiden-name,headline,email-address,location,industry,specialties,positions,picture-urls::(original))?format=json"
                 
                 let request = NSMutableURLRequest(url: NSURL(string: targetURLString)! as URL)
@@ -588,7 +589,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                                         return
                                     }
 
-                                    UserDefaults.standard.set(accessToken, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+                                    UserDefaults.standard.set(userId, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
                                     UserDefaults.standard.synchronize()
                                     guard let firstName = dataDictionary["firstName"] as? String else
                                     {
@@ -695,7 +696,11 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                                     var imageData:Data?
                                     do
                                     {
-                                         imageData = try Data(contentsOf: pictureUrl as URL)
+                                        if (pictureUrl) != nil
+                                        {
+                                            imageData = try Data(contentsOf: pictureUrl as URL)
+
+                                        }
                                     } catch
                                     {
                                         print("Unable to load data: \(error)")
@@ -745,9 +750,9 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                         do {
                             let dataDictionary = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
                             
-                            let profileURLString = dataDictionary["publicProfileUrl"] as! String
+                            //let profileURLString = dataDictionary["publicProfileUrl"] as! String
                             
-                            print(profileURLString)
+                            //print(profileURLString)
                         }
                         catch {
                             print("Could not convert JSON data into a dictionary.")
@@ -758,7 +763,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                 }
                 
                 task.resume()
-            }
+            //}
         }
         catch {
             print("Could not convert JSON data into a dictionary.")

@@ -12,6 +12,8 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
 {
 
     @IBOutlet weak var collectionView: UICollectionView!
+    var verticalJobListArray:[AnyObject] = []
+
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -33,7 +35,31 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
         let rightBarButtonItem = UIBarButtonItem(customView: numberOfJobsLabel)
         
         self.navigationItem.rightBarButtonItem = rightBarButtonItem
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(checkSAvedJobList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVED_JOB_LIST), object: nil)
+
         // Do any additional setup after loading the view.
+    }
+    
+    func checkSAvedJobList(dataDic:Notification)
+    {
+        let appliedJobsDict = dataDic.object as! [String:AnyObject]
+        
+        //let appliedJobsNumber = appliedJobsDict["appliedJobSize"]
+        
+        let appliedJobsListString = appliedJobsDict["savedJobList"] as! String
+        
+        let jobData = appliedJobsListString.data(using: .utf8, allowLossyConversion: true)
+        
+        do {
+            verticalJobListArray = try JSONSerialization.jsonObject(with: jobData!, options: .allowFragments) as! [AnyObject]
+            
+            self.collectionView.reloadData()
+        } catch let error as NSError
+        {
+            
+        }
+
     }
     func popViewController() -> Void
     {
@@ -43,7 +69,7 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
-        return 10
+        return verticalJobListArray.count
     }
     
     // make a cell for each cell index path
@@ -53,9 +79,24 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
         // get a reference to our storyboard cell
         let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath)
         
-        let companyNameLabel = cell.viewWithTag(101) as! UILabel
-        let companyWebSiteLabel = cell.viewWithTag(102) as! UILabel
-        let applyButton = cell.viewWithTag(103) as! UIButton
+        let subjectLabel = cell.viewWithTag(101) as! UILabel
+        let positionLabel = cell.viewWithTag(103) as! UILabel
+        let appliedOnLabel = cell.viewWithTag(107) as! UILabel
+        
+        let appliedJobDict = verticalJobListArray[indexPath.row] as! [String:AnyObject]
+        
+        let subject = appliedJobDict["subject"] as! String
+        subjectLabel.text = subject
+        
+        let position = appliedJobDict["position"] as! String
+        positionLabel.text = position
+        
+        let dateInt = appliedJobDict["date"] as! Double
+        
+        let appliedJobDateString = Date().getLocatDateFromMillisecods(millisecods: dateInt)
+        appliedOnLabel.text = appliedJobDateString
+        
+        let applyButton = cell.viewWithTag(108) as! UIButton
         
         applyButton.layer.borderColor = UIColor(red: 77/255.0, green: 150/255.0, blue: 241/255.0, alpha: 1).cgColor
         //        applyButton.layer.cornerRadius = 3.0

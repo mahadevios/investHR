@@ -224,8 +224,9 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
             }
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "JobsViewController") as! JobsViewController
         
-        vc.verticalId = String(verticalId)
+            vc.verticalId = String(verticalId)
             self.navigationController?.pushViewController(vc, animated: true)
+        
         
             print("You tapped cell number \(indexPath.row).")
     }

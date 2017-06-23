@@ -13,35 +13,15 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
 
     
     @IBOutlet weak var collectionView: UICollectionView!
-    
+    var jobsArray:[String] = ["abc","bcd","cde","ghj"]
+    var searchController:UISearchController = UISearchController()
+    @IBOutlet weak var searchBarView: UIView!
     var verticalJobListArray:[AnyObject] = []
     var savedJobsArray:[Int] = []
     var verticalId:String = ""
-    
-    //var descriptionString: String = ""
-    
-    
     @IBOutlet weak var saveJobImage: UIImageView!
-    func saveJobButtonClicked(_ sender: UIButton)
-    {
-        let hint = Int(sender.accessibilityHint! as String)!
-        
-        if let elementIndex = savedJobsArray.index(of: hint)
-        {
-            savedJobsArray.remove(at: elementIndex)
-        }
-        else
-        {
-            savedJobsArray.append(hint)
-        }
-        self.collectionView.reloadData()
-    }
-    var jobsArray:[String] = ["abc","bcd","cde","ghj"]
     
     
-    var searchController:UISearchController = UISearchController()
-    
-    @IBOutlet weak var searchBarView: UIView!
 //    @property (nonatomic, strong) NSArray *search;
     override func viewDidLoad()
     {
@@ -68,6 +48,10 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
          NotificationCenter.default.addObserver(self, selector: #selector(checkHorizontalJobList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_HORIZONTAL_JOB_LIST), object: nil)
         
          NotificationCenter.default.addObserver(self, selector: #selector(checkRolesJobList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_ROLE_JOB_LIST), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(checkSaveJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_APPLY_JOB), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(checkApplyJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVE_JOB), object: nil)
         // Do any additional setup after loading the view.
     }
     
@@ -113,14 +97,20 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     
     func checkHorizontalJobList(dataDic:NSNotification)
     {
-        guard let dataDictionary = dataDic.object as? [String:String] else
+        guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
             return
         }
         
-        let verticalJobListString = dataDictionary["horizontalJobList"]
+        let verticalJobListString = dataDictionary["verticalJobList"] as! String
         
-        let verticalJobListData = verticalJobListString?.data(using: .utf8, allowLossyConversion: true)
+        let totalJobsString = dataDictionary["totalCount"] as! Int
+        
+        self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
+        //self.descriptionString = dataDictionary["discription"] as! String
+        
+        
+        let verticalJobListData = verticalJobListString.data(using: .utf8, allowLossyConversion: true)
         
         do
         {
@@ -132,26 +122,33 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         {
             
         }
+
+
         
     }
 
     func checkRolesJobList(dataDic:NSNotification)
     {
-        guard let dataDictionary = dataDic.object as? [String:String] else
+        guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
             return
         }
         
-        let verticalJobListString = dataDictionary["roleJobList"]
+        let verticalJobListString = dataDictionary["verticalJobList"] as! String
         
-        let verticalJobListData = verticalJobListString?.data(using: .utf8, allowLossyConversion: true)
+        let totalJobsString = dataDictionary["totalCount"] as! Int
+        
+        self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
+        //self.descriptionString = dataDictionary["discription"] as! String
+        
+        
+        let verticalJobListData = verticalJobListString.data(using: .utf8, allowLossyConversion: true)
         
         do
         {
             verticalJobListArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
             
             self.collectionView.reloadData()
-
             
         } catch let error as NSError
         {
@@ -159,6 +156,52 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         }
         
     }
+    
+    func checkSaveJob(dataDic:NSNotification)
+    {
+        guard let dataDictionary = dataDic.object as? [String:AnyObject] else
+        {
+            return
+        }
+        
+        let codeString = dataDictionary["code"] as! String
+        
+        if codeString == "1000"
+        {
+            
+        }
+    }
+
+    func checkApplyJob(dataDic:NSNotification)
+    {
+        guard let dataDictionary = dataDic.object as? [String:AnyObject] else
+        {
+            return
+        }
+        
+        let verticalJobListString = dataDictionary["verticalJobList"] as! String
+        
+        let totalJobsString = dataDictionary["totalCount"] as! Int
+        
+        self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
+        //self.descriptionString = dataDictionary["discription"] as! String
+        
+        
+        let verticalJobListData = verticalJobListString.data(using: .utf8, allowLossyConversion: true)
+        
+        do
+        {
+            verticalJobListArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
+            
+            self.collectionView.reloadData()
+            
+        } catch let error as NSError
+        {
+            
+        }
+        
+    }
+
     func popViewController() -> Void
     {
         //self.revealViewController().revealToggle(animated: true)
@@ -261,7 +304,28 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         let dateLabel = cell.viewWithTag(106) as! UILabel
         //let descriptionWebView = cell.viewWithTag(107) as! UIWebView
 
-
+        let jobDic = verticalJobListArray[indexPath.row] as! [String:AnyObject]
+        
+        let subject = jobDic["subject"] as! String
+        
+        subjectLabel.text = subject
+        
+        let jobId = jobDic["jobid"]
+        
+        let date = jobDic["date"] as! Double
+        
+        let dateString = Date().getLocatDateFromMillisecods(millisecods: date)
+        
+        dateLabel.text = dateString.components(separatedBy: " ")[0]
+        
+        //let discription = jobDic["discription"] as! String
+        
+        //descriptionWebView.loadHTMLString(discription, baseURL: nil)
+        
+        let location = jobDic["location"] as! String
+        
+        companyWebSiteLabel.text = location
+        
         saveButton.accessibilityHint = String(indexPath.row)
         
         if savedJobsArray.contains(indexPath.row)
@@ -273,33 +337,18 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
             saveImageView.image = UIImage(named: "SavedUnselected")
         }
         //saveButton.tag = indexPath.row
+        saveButton.tag = jobId as! Int
+        applyButton.tag = jobId as! Int
+
         saveButton.addTarget(self, action: #selector(saveJobButtonClicked), for: UIControlEvents.touchUpInside)
+        applyButton.addTarget(self, action: #selector(applyJobButtonClicked), for: UIControlEvents.touchUpInside)
+
         applyButton.layer.borderColor = UIColor(red: 77/255.0, green: 150/255.0, blue: 241/255.0, alpha: 1).cgColor
 //        applyButton.layer.cornerRadius = 3.0
 
 //        for index in 0 ..< verticalJobListArray.count
 //        {
-            let jobDic = verticalJobListArray[indexPath.row] as! [String:AnyObject]
         
-            let subject = jobDic["subject"] as! String
-
-            subjectLabel.text = subject
-        
-            let jobId = jobDic["jobid"]
-            
-            let date = jobDic["date"] as! Double
-            
-            let dateString = Date().getLocatDateFromMillisecods(millisecods: date)
-        
-            dateLabel.text = dateString.components(separatedBy: " ")[0]
-        
-            //let discription = jobDic["discription"] as! String
-
-            //descriptionWebView.loadHTMLString(discription, baseURL: nil)
-        
-            let location = jobDic["location"] as! String
-        
-            companyWebSiteLabel.text = location
         
         //}
         
@@ -343,6 +392,56 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         print("You tapped cell number \(indexPath.row).")
         
     }
+    
+    
+    func saveJobButtonClicked(_ sender: UIButton)
+    {
+//        let hint = Int(sender.accessibilityHint! as String)!
+//        
+//        if let elementIndex = savedJobsArray.index(of: hint)
+//        {
+//            savedJobsArray.remove(at: elementIndex)
+//        }
+//        else
+//        {
+//            savedJobsArray.append(hint)
+//        }
+//        self.collectionView.reloadData()
+        
+        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+        if username != nil && password != nil
+        {
+            APIManager.getSharedAPIManager().saveJob(username: username!, password: password!, linkedinId: "", jobId: String(describing: sender.tag))
+        }
+        else
+            if linkedInId != nil
+            {
+                APIManager.getSharedAPIManager().saveJob(username: "", password: "", linkedinId: linkedInId!, jobId: String(describing: sender.tag))
+        }
+
+    }
+    func applyJobButtonClicked(_ sender: UIButton)
+    {
+        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+        if username != nil && password != nil
+        {
+            APIManager.getSharedAPIManager().applyJob(username: username!, password: password!, linkedinId: "", jobId: String(describing: sender.tag))
+        }
+        else
+            if linkedInId != nil
+            {
+                APIManager.getSharedAPIManager().applyJob(username: "", password: "", linkedinId: linkedInId!, jobId: String(describing: sender.tag))
+        }
+
+        //self.collectionView.reloadData()
+    }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

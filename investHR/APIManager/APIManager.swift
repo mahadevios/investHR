@@ -221,6 +221,65 @@ class APIManager: NSObject
         
     }
 
+    func saveJob(username:String, password:String, linkedinId:String, jobId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","jobId=\(jobId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.SAVE_JOB_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.SAVE_JOB_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+    
+    func applyJob(username:String, password:String, linkedinId:String, jobId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","jobId=\(jobId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.APPLY_JOB_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.APPLY_JOB_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+    
+    func getSAvedOrAppliedJobDescription(username:String, password:String, linkedinId:String, jobId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","jobId=\(jobId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.SAVED_APPLIED_JOB_DESCRIPTION_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.SAVED_APPLIED_JOB_DESCRIPTION_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
     func getJobDescription(username:String, password:String, linkedinId:String,varticalId:String, jobId:String) -> Void
     {
         if AppPreferences.sharedPreferences().isReachable
@@ -269,7 +328,7 @@ class APIManager: NSObject
         request.httpMethod = "POST"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
-        let path1 = Bundle.main.path(forResource: "image", ofType: "png")!
+        let path1 = "userImage"
         request.httpBody = try createBody(with: parameters, filePathKey: "file", paths: [path1], boundary: boundary, imageData: imageData)
         
         return request
@@ -298,7 +357,9 @@ class APIManager: NSObject
         {
         for path in paths {
             let url = URL(fileURLWithPath: path)
-            let filename = url.lastPathComponent
+            //let filename = url.lastPathComponent
+            let filename = "userImage"
+
 //            let data = try Data(contentsOf: url)
             
 

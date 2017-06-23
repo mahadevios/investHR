@@ -66,6 +66,7 @@ class HomeViewController: UIViewController
             print("reachable")
         }
        
+        CoreDataManager.getSharedCoreDataManager().getMaxUserId(entityName: "User")
     //uploadFtp()
     }
 

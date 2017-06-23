@@ -204,4 +204,86 @@ class CoreDataManager: NSObject
         
         return true
     }
+    
+    func getMaxUserId(entityName:String) -> String
+    {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        
+        
+        fetchRequest.fetchLimit = 1
+        
+        //let predicate = NSPredicate(format: "userId == %@", argumentArray: [aToken])
+
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "userId", ascending: false)]
+        
+        do
+        {
+            let user = try appDelegate.managedObjectContext.fetch(fetchRequest) as! [User]
+            let max = user.first
+            
+            guard let userId = max?.value(forKey: "userId") as? String else
+            {
+                return "0"
+            }
+            //print(max?.value(forKey: "userId"))
+            return userId
+            
+            
+        }
+        catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        return "0"
+    }
+    
+    func checkUserAlreadyExistWithEmail(email:String?, linkledInId:String?) -> Bool
+    {
+        var predicate:NSPredicate!
+        if let emailId = email, let linkedIn = linkledInId
+        {
+            predicate = NSPredicate(format: "emailAddress == %@ OR linkedInId == %@", argumentArray: [emailId,linkedIn])
+        }
+        else
+        if let emailId = email
+        {
+            predicate = NSPredicate(format: "email == %@", argumentArray: [emailId])
+
+//            predicate = NSPredicate(format: "email == %@ OR linkedInId == %@", argumentArray: [email,linkledInId])
+        }
+        else
+        if let linkledInId = linkledInId
+        {
+            predicate = NSPredicate(format: "linkledInId == %@", argumentArray: [linkledInId])
+                
+                //            predicate = NSPredicate(format: "email == %@ OR linkedInId == %@", argumentArray: [email,linkledInId])
+        }
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+        
+        
+        //let predicate1 = NSPredicate(format: "linkedInId == %@", argumentArray: [linkledInId])
+
+        request.predicate = predicate
+        
+        
+        do
+        {
+            let count = try appDelegate.managedObjectContext.count(for: request)
+            
+            if count == 0 {
+                return false
+            }
+        }
+        catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        
+        return true
+    }
+
 }

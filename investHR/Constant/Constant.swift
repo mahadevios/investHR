@@ -43,17 +43,26 @@ struct Constant
     static let  APPLIED_JOBS_API                         = "login/mobileAppliedJob"
     static let  SAVED_JOBS_API                           = "login/mobileSavedJob"
     static let  JOB_DESCRIPTION_API                      = "login/mobileVerticalJobDescription"
+    static let  APPLY_JOB_API                            = "login/mobileSaveAppliedJob"
+    static let  SAVE_JOB_API                             = "login/mobileSaveUserJob"
+    static let  SAVED_APPLIED_JOB_DESCRIPTION_API        = "login/mobileSaveAppliedJobDescription"
+
+
     
-    static let  NOTIFICATION_LIACCESSTOKEN_FETCHED       = "LIAccessTokenFetched"
-    static let  NOTIFICATION_USER_CHANGED                = "userChanged"
-    static let  NOTIFICATION_NEW_USER_LOGGED_IN          = "newUserLoggedIn"
-    static let  NOTIFICATION_NEW_USER_REGISTERED         = "newUserRegistered"
-    static let  NOTIFICATION_VERTICAL_JOB_LIST           = "verticalJobList"
-    static let  NOTIFICATION_HORIZONTAL_JOB_LIST         = "horizontalJobList"
-    static let  NOTIFICATION_ROLE_JOB_LIST               = "roleJobList"
-    static let  NOTIFICATION_SAVED_JOB_LIST              = "savedJobList"
-    static let  NOTIFICATION_APPLIED_JOB_LIST            = "appliedJobList"
-    static let  NOTIFICATION_JOB_DESCRIPTION             = "jobDescription"
+    static let  NOTIFICATION_LIACCESSTOKEN_FETCHED          = "LIAccessTokenFetched"
+    static let  NOTIFICATION_USER_CHANGED                   = "userChanged"
+    static let  NOTIFICATION_NEW_USER_LOGGED_IN             = "newUserLoggedIn"
+    static let  NOTIFICATION_NEW_USER_REGISTERED            = "newUserRegistered"
+    static let  NOTIFICATION_VERTICAL_JOB_LIST              = "verticalJobList"
+    static let  NOTIFICATION_HORIZONTAL_JOB_LIST            = "horizontalJobList"
+    static let  NOTIFICATION_ROLE_JOB_LIST                  = "roleJobList"
+    static let  NOTIFICATION_SAVED_JOB_LIST                 = "savedJobList"
+    static let  NOTIFICATION_APPLIED_JOB_LIST               = "appliedJobList"
+    static let  NOTIFICATION_JOB_DESCRIPTION                = "jobDescription"
+    static let  NOTIFICATION_APPLY_JOB                      = "applyjob"
+    static let  NOTIFICATION_SAVE_JOB                       = "savejob"
+    static let  NOTIFICATION_SAVED_APPLIED_JOB_DESCRIPTION  = "savedapplieddesc"
+
 
 
 }
