@@ -204,7 +204,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         {
             var managedObjects:[NSManagedObject]?
             
-            managedObjects = coreDataManager.fetch(entity: "State")
+            managedObjects = coreDataManager.getAllRecords(entity: "State")
             for userObject in managedObjects as! [State]
             {
                 statesArray.append(userObject.stateName!)

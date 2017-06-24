@@ -26,8 +26,8 @@ struct Constant
     static let  FTP_PASSWORD                             = "mtone@123"
     static let  FTP_DIRECTORY_PATH                       = "TEST"
 
-    //static let  BASE_URL_PATH                            = "http://192.168.3.75:9091/coreflex/investhr/"
-    static let  BASE_URL_PATH                            = "http://192.168.3.67:8080/coreflex/investhr/"
+    static let  BASE_URL_PATH                            = "http://192.168.3.75:9091/coreflex/investhr/"
+    //static let  BASE_URL_PATH                            = "http://192.168.3.67:8080/coreflex/investhr/"
 
     //static let  BASE_URL_PATH                            = "http://192.168.3.66:8080/coreflex/investhr/"
     static let  LINKEDIN_LOGOUT_API                      = "https://api.linkedin.com/uas/oauth/invalidateToken"

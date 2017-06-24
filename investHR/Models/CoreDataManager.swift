@@ -55,7 +55,7 @@ class CoreDataManager: NSObject
         return object
     }
     
-    func fetch(entity: String) -> [NSManagedObject]?
+    func getAllRecords(entity: String) -> [NSManagedObject]?
     {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             
@@ -121,7 +121,7 @@ class CoreDataManager: NSObject
     {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
-        var data = fetch(entity: entity)
+        var data = getAllRecords(entity: entity)
         if data != nil
         {
             appDelegate.managedObjectContext.delete(data![index])

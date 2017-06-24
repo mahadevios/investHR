@@ -74,7 +74,7 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
         {
             var managedObjects:[NSManagedObject]?
             
-            managedObjects = coreDataManager.fetch(entity: type)
+            managedObjects = coreDataManager.getAllRecords(entity: type)
             
             if type == "VertcalDomains"
             {

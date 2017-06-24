@@ -228,7 +228,7 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
         {
             var managedObjects:[NSManagedObject]?
             
-            managedObjects = coreDataManager.fetch(entity: "State")
+            managedObjects = coreDataManager.getAllRecords(entity: "State")
             for userObject in managedObjects as! [State]
             {
                 statesArray.append(userObject.stateName!)

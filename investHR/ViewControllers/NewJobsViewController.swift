@@ -10,6 +10,11 @@ import UIKit
 
 class NewJobsViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout
 {
+    var applied:Bool = false
+    var saved:Bool = false
+    var appliedAndSaveHidden:Bool = false
+    var saveHidden:Bool = false
+
     var verticalId:String = ""
     var jobLocationArray = [String]()
     var jobDetailsDic:[String:Any]?
@@ -23,10 +28,27 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         super.viewDidLoad()
 
         NotificationCenter.default.addObserver(self, selector: #selector(checkJobDescriptionResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_JOB_DESCRIPTION), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(checkSavedOrAppliedJobDescriptionResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVED_APPLIED_JOB_DESCRIPTION), object: nil)
+
 
         // Do any additional setup after loading the view.
     }
 
+    override func viewWillAppear(_ animated: Bool)
+    {
+        NotificationCenter.default.addObserver(self, selector: #selector(checkApplyJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_APPLY_JOB), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(checkSaveJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVE_JOB), object: nil)
+        
+        self.collectionView.reloadData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool)
+    {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     func checkJobDescriptionResponse(dataDic:Notification) -> Void
     {
         guard let responseDic = dataDic.object as? [String:String] else
@@ -46,8 +68,6 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         let jobDetailsData = verticalJobDetailsString.data(using: .utf8, allowLossyConversion: true)
         
-        
-        
         do
         {
              jobDetailsDic = try JSONSerialization.jsonObject(with: jobDetailsData!, options: .allowFragments) as? [String:Any]
@@ -56,9 +76,8 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             
         }
         
-               let discription = jobDetailsDic?["discription"]
-//        let state = jobDetailsDic?["state"]
-//        let city = jobDetailsDic?["city"]
+        let discription = jobDetailsDic?["discription"]
+
 
         guard let cityStateListString = responseDic["cityStateList"] else {
             
@@ -94,6 +113,124 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         self.collectionView.reloadData()
     }
     
+    func checkSavedOrAppliedJobDescriptionResponse(dataDic:Notification) -> Void
+    {
+        guard let responseDic = dataDic.object as? [String:String] else
+        {
+            return
+        }
+        
+        guard let code = responseDic["code"] else {
+            
+            return
+        }
+        
+        guard let verticalJobDetailsString = responseDic["JobDetailList"] else {
+            
+            return
+        }
+        
+        let jobDetailsData = verticalJobDetailsString.data(using: .utf8, allowLossyConversion: true)
+        
+        do
+        {
+            jobDetailsDic = try JSONSerialization.jsonObject(with: jobDetailsData!, options: .allowFragments) as? [String:Any]
+        } catch let error as NSError
+        {
+            
+        }
+        
+        let discription = jobDetailsDic?["discription"]
+        
+        
+        guard let cityStateListString = responseDic["cityStateList"] else {
+            
+            return
+        }
+        
+        let cityStateListData = cityStateListString.data(using: .utf8, allowLossyConversion: true)
+        var cityStateArray:[Any]?
+        
+        do
+        {
+            cityStateArray = try JSONSerialization.jsonObject(with: cityStateListData!, options: .allowFragments) as? [Any]
+            
+            for index in 0 ..< cityStateArray!.count
+            {
+                let cityStateDic = cityStateArray![index] as? [String:String]
+                
+                let state = cityStateDic?["state"]
+                
+                let city = cityStateDic?["city"]
+                
+                jobLocationArray.append("\(state!)\(" ")\(city!)")
+                
+            }
+            
+            
+            
+        } catch let error as NSError
+        {
+            
+        }
+        
+        self.collectionView.reloadData()
+    }
+
+    func checkApplyJob(dataDic:NSNotification)
+    {
+        guard let dataDictionary = dataDic.object as? [String:AnyObject] else
+        {
+            return
+        }
+        
+        let appliedJobId = dataDictionary["jobId"] as! String
+        
+        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":appliedJobId,"userId":"1"])
+        
+        applied = true
+        
+        self.collectionView.reloadData()
+        
+        
+    }
+    func saveJobButtonClicked(_ sender: subclassedUIButton)
+    {
+        
+        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+        if username != nil && password != nil
+        {
+            APIManager.getSharedAPIManager().saveJob(username: username!, password: password!, linkedinId: "", jobId: String(describing: sender.jobId!))
+        }
+        else
+            if linkedInId != nil
+            {
+                APIManager.getSharedAPIManager().saveJob(username: "", password: "", linkedinId: linkedInId!, jobId: String(describing: sender.jobId!))
+        }
+        
+    }
+    func applyJobButtonClicked(_ sender: subclassedUIButton)
+    {
+        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+        if username != nil && password != nil
+        {
+            APIManager.getSharedAPIManager().applyJob(username: username!, password: password!, linkedinId: "", jobId: String(describing: sender.jobId!))
+        }
+        else
+            if linkedInId != nil
+            {
+                APIManager.getSharedAPIManager().applyJob(username: "", password: "", linkedinId: linkedInId!, jobId: String(describing: sender.jobId!))
+        }
+        
+        //self.collectionView.reloadData()
+    }
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
         return 1
@@ -113,11 +250,13 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         let dateLabel = cell.viewWithTag(107) as! UILabel
         let descriptionWebView = cell.viewWithTag(109) as! UIWebView
 
-        let applyButton = cell.viewWithTag(103) as! UIButton
+        let applyButton = cell.viewWithTag(103) as! subclassedUIButton
+        let saveButton = cell.viewWithTag(104) as! subclassedUIButton
+        let saveImageView = cell.viewWithTag(110) as! UIImageView
+
+
         
-        applyButton.layer.borderColor = UIColor(red: 77/255.0, green: 150/255.0, blue: 241/255.0, alpha: 1).cgColor
-        
-        let jobId = jobDetailsDic?["jobId"]
+        let jobId = jobDetailsDic?["jobid"]
         let relocation = jobDetailsDic?["relocation"]
         let date = jobDetailsDic?["date"] as? Double
         let subject = jobDetailsDic?["subject"]
@@ -151,27 +290,65 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         locationLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         locationLabel.numberOfLines = 0
-        //let cgrect = jobLocationString.boundingRect(with: CGSize.init(width: 50, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: locationLabel.font], context: nil)
-
-        //locationLabel.frame = cgrect
-        let height = heightForView(text: jobLocationString as String, font: UIFont.systemFont(ofSize: 14), width: self.view.frame.size.width*0.7) as CGFloat
+       
+        let height = heightForView(text: jobLocationString as String, font: UIFont.systemFont(ofSize: 14), width: locationLabel.frame.size.width) as CGFloat
         
-        //let label = UILabel(frame:  CGRect(x: locationLabel.frame.origin.x, y: locationLabel.frame.origin.y, width: self.view.frame.size.width*0.5, height: height))
-        locationLabel.frame = CGRect(x: locationLabel.frame.origin.x, y: locationLabel.frame.origin.y, width: self.view.frame.size.width*0.5, height: height)
+        
+        locationLabel.frame = CGRect(x: locationLabel.frame.origin.x, y: locationLabel.frame.origin.y, width: locationLabel.frame.size.width, height: height)
         locationLabel.text = jobLocationString as String
 
-        //let width = NSLayoutConstraint(item: locationLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: height)
-
-        //locationLabel.addConstraint(width)
-
-
+       
         descriptionWebView.loadHTMLString(discription, baseURL: nil)
-        //        let applyButton = cell.viewWithTag(103) as! UIButton
         
-        // applyButton.layer.borderColor = UIColor(red: 77/255.0, green: 150/255.0, blue: 241/255.0, alpha: 1).cgColor
-        //        applyButton.layer.cornerRadius = 3.0
+        if appliedAndSaveHidden // viewed from appliedjobs vc
+        {
+            applyButton.isHidden = true
+            saveButton.isHidden = true
+            saveImageView.isHidden = true
+        }
+        else
+        if saveHidden // viewed from saved job vc
+        {
+            saveButton.isHidden = true
+            saveImageView.isHidden = true
+        }
         
-        // Use the outlet in our custom class to get a reference to the UILabel in the cell
+        
+            if applied
+            {
+                applyButton.setTitle("Applied", for: .normal)
+                applyButton.setTitleColor(UIColor.init(colorLiteralRed: 7/255.0, green: 116/255.0, blue: 1/255.0, alpha: 1.0), for: .normal)
+                applyButton.isUserInteractionEnabled = false
+            }
+            else
+            {
+                applyButton.setTitle("Apply", for: .normal)
+                applyButton.setTitleColor(UIColor.init(colorLiteralRed: 54/255.0, green: 134/255.0, blue: 239/255.0, alpha: 1.0), for: .normal)
+                saveButton.isUserInteractionEnabled = true
+            }
+            if saved
+            {
+                saveImageView.image = UIImage(named: "SideMenuSavedJob")
+                saveButton.isUserInteractionEnabled = false
+
+            }
+            else
+            {
+                saveImageView.image = UIImage(named: "SavedUnselected")
+                applyButton.isUserInteractionEnabled = true
+
+            }
+       
+        
+        saveButton.jobId = jobId as! Int?
+        applyButton.jobId = jobId as! Int?
+        
+        //applyButton.tag = jobId as! Int
+        
+        saveButton.addTarget(self, action: #selector(saveJobButtonClicked), for: UIControlEvents.touchUpInside)
+        applyButton.addTarget(self, action: #selector(applyJobButtonClicked), for: UIControlEvents.touchUpInside)
+        
+        applyButton.layer.borderColor = UIColor(red: 77/255.0, green: 150/255.0, blue: 241/255.0, alpha: 1).cgColor
         return cell
     }
     
@@ -217,8 +394,30 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         // handle tap events
         print("You selected cell #\(indexPath.item)!")
     }
+    func checkSaveJob(dataDic:NSNotification)
+    {
+        guard let dataDictionary = dataDic.object as? [String:AnyObject] else
+        {
+            return
+        }
+        
+        let codeString = dataDictionary["code"] as! String
+        
+        if codeString == "1000"
+        {
+            
+        }
+        
+        let savedJobId = dataDictionary["jobId"] as! String
+        
+        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":savedJobId,"userId":"1"])
+        
+        saved = true
+        
+        self.collectionView.reloadData()
+    }
     
-
+    
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()

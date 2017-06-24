@@ -437,6 +437,66 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         let imageName = responseDic["ImageName"]
         
+        let savedJobListString = responseDic["savedJobList"]
+        
+        let appliedJobListString = responseDic["appliedJobList"]
+        
+        
+        if let savedJobListData = savedJobListString?.data(using: .utf8, allowLossyConversion: true)
+        {
+            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
+            
+            var savedJobListArray:[Any]!
+            do
+            {
+                savedJobListArray = try JSONSerialization.jsonObject(with: savedJobListData, options: .allowFragments) as! [Any]
+            } catch let error as NSError
+            {
+                
+            }
+            //var savedJobIdsArray = [Any]()
+            //var appliedJobIdsArray = [Any]()
+            
+            for index in 0 ..< savedJobListArray.count
+            {
+                let savedJobListDict = savedJobListArray[index] as! [String:AnyObject]
+                
+                let jobId = savedJobListDict["jobId"] as! Int
+                
+                let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
+                
+                //            savedJobIdsArray.append(jobId)
+            }
+            
+            
+        }
+        
+        if let appliedJobListData = appliedJobListString?.data(using: .utf8, allowLossyConversion: true)
+        {
+            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
+            
+            var appliedJobListArray:[Any]!
+            do
+            {
+                appliedJobListArray = try JSONSerialization.jsonObject(with: appliedJobListData, options: .allowFragments) as! [Any]
+            } catch let error as NSError
+            {
+                
+            }
+            
+            for index in 0 ..< appliedJobListArray.count
+            {
+                let appliedJobListDict = appliedJobListArray[index] as! [String:AnyObject]
+                
+                let jobId = appliedJobListDict["jobId"] as! Int
+                
+                let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
+                //appliedJobIdsArray.append(jobId)
+            }
+            
+        }
+        
+        
         CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
         
         let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["name":name! ,"username":self.emailTextField.text!,"password":self.passwordTextField.text!,"pictureUrl":imageName!])
@@ -497,6 +557,65 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         let message = responseDic["Message"]
         
         let imageName = responseDic["ImageName"]
+        
+        let savedJobListString = responseDic["savedJobList"]
+        
+        let appliedJobListString = responseDic["appliedJobList"]
+        
+        
+        if let savedJobListData = savedJobListString?.data(using: .utf8, allowLossyConversion: true)
+        {
+            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
+            
+            var savedJobListArray:[Any]!
+            do
+            {
+                savedJobListArray = try JSONSerialization.jsonObject(with: savedJobListData, options: .allowFragments) as! [Any]
+            } catch let error as NSError
+            {
+                
+            }
+            //var savedJobIdsArray = [Any]()
+            //var appliedJobIdsArray = [Any]()
+            
+            for index in 0 ..< savedJobListArray.count
+            {
+                let savedJobListDict = savedJobListArray[index] as! [String:AnyObject]
+                
+                let jobId = savedJobListDict["jobId"] as! Int
+                
+                let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
+                
+                //            savedJobIdsArray.append(jobId)
+            }
+            
+            
+        }
+        
+        if let appliedJobListData = appliedJobListString?.data(using: .utf8, allowLossyConversion: true)
+        {
+            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
+            
+            var appliedJobListArray:[Any]!
+            do
+            {
+                appliedJobListArray = try JSONSerialization.jsonObject(with: appliedJobListData, options: .allowFragments) as! [Any]
+            } catch let error as NSError
+            {
+                
+            }
+            
+            for index in 0 ..< appliedJobListArray.count
+            {
+                let appliedJobListDict = appliedJobListArray[index] as! [String:AnyObject]
+                
+                let jobId = appliedJobListDict["jobId"] as! Int
+                
+                let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
+                //appliedJobIdsArray.append(jobId)
+            }
+            
+        }
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         

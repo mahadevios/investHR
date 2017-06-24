@@ -18,6 +18,7 @@ extension Date
         self = Date(timeIntervalSince1970: TimeInterval(milliseconds / 1000))
     }
     
+    
     func getLocatDateFromMillisecods(millisecods:Double?) -> String
     {
         guard let milSeconds = millisecods
@@ -53,4 +54,9 @@ extension Data
             append(data)
         }
     }
+}
+
+class subclassedUIButton: UIButton
+{
+    var jobId: Int?
 }

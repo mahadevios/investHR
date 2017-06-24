@@ -432,7 +432,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         {
             var managedObjects:[NSManagedObject]?
             
-            managedObjects = coreDataManager.fetch(entity: "User")
+            managedObjects = coreDataManager.getAllRecords(entity: "User")
             for userObject in managedObjects as! [User]
             {
                 let firstName = userObject.name

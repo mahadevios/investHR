@@ -111,6 +111,29 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // handle tap events
         print("You selected cell #\(indexPath.item)!")
+        print("You selected cell #\(indexPath.item)!")
+        let jobDic = verticalJobListArray[indexPath.row] as! [String:AnyObject]
+        let jobId = jobDic["jobId"] as! Int
+        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+        if username != nil && password != nil
+        {
+            APIManager.getSharedAPIManager().getSavedOrAppliedJobDescription(username: username!, password: password!, linkedinId: "", jobId: String( jobId))
+        }
+        else
+            if linkedInId != nil
+            {
+                APIManager.getSharedAPIManager().getSavedOrAppliedJobDescription(username: username!, password: password!, linkedinId: "",  jobId: String( jobId))
+        }
+        
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "NewJobsViewController") as! NewJobsViewController
+        
+        vc.appliedAndSaveHidden = true
+        
+        self.present(vc, animated: true, completion: nil)
     }
 
     override func didReceiveMemoryWarning()

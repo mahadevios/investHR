@@ -396,6 +396,7 @@
 				8440DF6F1ED706CB0003F05B /* MenuViewViewController.swift */,
 				84DAD40E1ED7F5440008BB09 /* VerticalViewController.swift */,
 				84DAD4101ED822200008BB09 /* JobsViewController.swift */,
+				84F690FE1EFC11D30000B768 /* NewJobsViewController.swift */,
 				844F5F2E1EDC23A20073A7D7 /* NotificationJobsViewController.swift */,
 				844F5F301EDC2A160073A7D7 /* SavedJobsViewController.swift */,
 				844F5F321EDC34B20073A7D7 /* AppliedJobsViewController.swift */,
@@ -404,7 +405,6 @@
 				844F5F341EDC3BA10073A7D7 /* UploadResumeViewController.swift */,
 				842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */,
 				842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */,
-				84F690FE1EFC11D30000B768 /* NewJobsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";

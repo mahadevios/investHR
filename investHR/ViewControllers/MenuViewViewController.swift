@@ -336,7 +336,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         {
             var managedObjects:[NSManagedObject]?
             
-            managedObjects = coreDataManager.fetch(entity: "User")
+            managedObjects = coreDataManager.getAllRecords(entity: "User")
             for userObject in (managedObjects as? [User])!
             {
                 let firstName = userObject.name

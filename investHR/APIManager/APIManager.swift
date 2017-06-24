@@ -261,7 +261,7 @@ class APIManager: NSObject
         
     }
     
-    func getSAvedOrAppliedJobDescription(username:String, password:String, linkedinId:String, jobId:String) -> Void
+    func getSavedOrAppliedJobDescription(username:String, password:String, linkedinId:String, jobId:String) -> Void
     {
         if AppPreferences.sharedPreferences().isReachable
         {
