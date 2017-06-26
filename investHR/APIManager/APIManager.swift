@@ -280,6 +280,7 @@ class APIManager: NSObject
         }
         
     }
+    
     func getJobDescription(username:String, password:String, linkedinId:String,varticalId:String, jobId:String) -> Void
     {
         if AppPreferences.sharedPreferences().isReachable
@@ -289,6 +290,66 @@ class APIManager: NSObject
             let dic = [Constant.REQUEST_PARAMETER:params]
             
             let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.JOB_DESCRIPTION_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.JOB_DESCRIPTION_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+    
+    func getMoreVerticalJobs(username:String, password:String, linkedinId:String,varticalId:String, jobId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","varticalId=\(varticalId)","existingJobId=\(jobId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.LOAD_MORE_VERTICAL_JOB_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.LOAD_MORE_VERTICAL_JOB_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+    
+    func getMoreHorizontalJobs(username:String, password:String, linkedinId:String,horizontalId:String, jobId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","horizontalId=\(horizontalId)","existingJobId=\(jobId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.LOAD_MORE_HORIZONTAL_JOB_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.LOAD_MORE_HORIZONTAL_JOB_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+    
+    func getMoreRoleJobs(username:String, password:String, linkedinId:String,roleId:String, jobId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","roleId=\(roleId)","existingJobId=\(jobId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.LOAD_MORE_ROLE_JOB_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.LOAD_MORE_ROLE_JOB_API, withHttpMethd: Constant.POST)
             
             downloadmetadatajob.startMetaDataDownLoad()
             

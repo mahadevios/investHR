@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+//https://stackoverflow.com/questions/5137943/how-to-know-when-uitableview-did-scroll-to-bottom-in-iphone
 class JobsViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UISearchBarDelegate, UISearchResultsUpdating
 {
 
@@ -21,6 +21,10 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     @IBOutlet weak var searchBarView: UIView!
     var verticalJobListArray:[AnyObject] = []
     var verticalId:String = ""
+    var domainType:String = ""
+    var activityView:UIActivityIndicatorView = UIActivityIndicatorView()
+    var isLoading:Bool = false
+    
     @IBOutlet weak var saveJobImage: UIImageView!
     
     
@@ -62,6 +66,13 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkSaveJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVE_JOB), object: nil)
         
+         NotificationCenter.default.addObserver(self, selector: #selector(getLoadMoreData(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LOAD_MORE_VERTICAL_JOB), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(getLoadMoreData(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LOAD_MORE_HORIZONTAL_JOB), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(getLoadMoreData(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LOAD_MORE_ROLE_JOB), object: nil)
+
+    
         self.collectionView.reloadData()
 
     }
@@ -79,6 +90,71 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         self.navigationItem.rightBarButtonItem = rightBarButtonItem
     }
+    
+    func getLoadMoreData(dataDic:NSNotification)
+    {
+        
+        print("iscoming")
+        isLoading = false
+        self.collectionView.collectionViewLayout.invalidateLayout()
+        
+        guard let dataDictionary = dataDic.object as? [String:AnyObject] else
+        {
+            return
+        }
+        
+        if dataDictionary["code"] as! String == Constant.FAILURE
+        {
+            return
+        }
+        print("not coming")
+
+        var verticalJobListString = dataDictionary["verticalJobList"] as? String
+
+        if verticalJobListString == nil
+        {
+            verticalJobListString = dataDictionary["horizontalJobList"] as? String
+            
+            if verticalJobListString == nil
+            {
+                verticalJobListString = dataDictionary["rolesJobList"] as? String
+                
+            }
+
+        }
+        
+        let totalJobsString = dataDictionary["totalCount"] as! Int
+        
+        //self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
+        //self.descriptionString = dataDictionary["discription"] as! String
+        
+        
+        let verticalJobListData = verticalJobListString!.data(using: .utf8, allowLossyConversion: true)
+        
+        do
+        {
+            let loadMoreJobListArray = try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
+            
+            var indexes:[IndexPath]=[]
+            for item in verticalJobListArray.count ..< loadMoreJobListArray.count+verticalJobListArray.count
+            {
+                indexes.append(IndexPath(row: item, section: 0))
+            }
+            verticalJobListArray.append(contentsOf: loadMoreJobListArray)
+            
+            self.collectionView.insertItems(at: indexes)
+            
+            //self.collectionView.setNeedsDisplay()
+        //    self.collectionView.reloadData()
+            
+        } catch let error as NSError
+        {
+            
+        }
+
+    
+    }
+    
     func checkVerticalJobList(dataDic:NSNotification)
     {
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
@@ -244,25 +320,21 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     
 //    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView
 //    {
-//        let view = self.collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader,
-//                                                                        withReuseIdentifier:"header", for: indexPath)
+//        let view = self.collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionFooter,
+//                                                                        withReuseIdentifier:"Footer", for: indexPath)
 //        
-//        
-//
-//        //let view1 = UIView(frame: CGRect(x: 10, y: 10, width: 300, height: 200))
-//        //view1.backgroundColor = UIColor.blue
-////        self.searchController.searchBar.delegate = self
-////        self.searchController.searchBar.frame = CGRect(x: 0, y: 10, width: 300, height: 200)
-////        view.addSubview(self.searchController.searchBar)
-//        
-//        //let serachBar:UICollectionReusableView = self.searchController.searchBar as! UICollectionReusableView
 //        
 //        return view
 //    }
-    
+//    
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize
 //    {
 //        return CGSize(width: self.collectionView.frame.size.width, height: 100)
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath)
+//    {
+//        
 //    }
     func setSearchController() -> Void
     {
@@ -339,13 +411,139 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         return verticalJobListArray.count
     }
     
+    func scrollViewDidScroll(_ aScrollView: UIScrollView)
+    {
+        let offset = aScrollView.contentOffset;
+        let bounds = aScrollView.bounds;
+        let size = aScrollView.contentSize;
+        let inset = aScrollView.contentInset;
+        let y = offset.y + bounds.size.height - inset.bottom;
+        let h = size.height;
+        // NSLog(@"offset: %f", offset.y);
+        // NSLog(@"content.height: %f", size.height);
+        // NSLog(@"bounds.height: %f", bounds.size.height);
+        // NSLog(@"inset.top: %f", inset.top);
+        // NSLog(@"inset.bottom: %f", inset.bottom);
+        // NSLog(@"pos: %f of %f", y, h);
+        
+        let reload_distance = 10.0 as CGFloat
+        if y > (h + reload_distance)
+        {
+            
+            if !isLoading
+            {
+                loadMoreData()
+
+                isLoading = true
+
+                self.collectionView.collectionViewLayout.invalidateLayout()
+                
+
+
+            }
+            
+
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath)
+    {
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath)
+    {
+    }
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        
+            switch kind
+            {
+        
+                case UICollectionElementKindSectionFooter:
+                    let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Footer", for: indexPath)
+
+                    if isLoading
+                    {
+                        
+                        activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                        activityView.frame = CGRect(x: self.view.center.x, y: 10, width: 30, height: 30)
+                        //activityView.frame = footerView.center
+                        activityView.startAnimating()
+                        footerView.bringSubview(toFront: activityView)
+                        footerView.addSubview(activityView)
+                    }
+                    
+                    
+                //footerView.backgroundColor = UIColor.green;
+                return footerView
+
+            case UICollectionElementKindSectionHeader:
+                
+                let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath) 
+                
+                headerView.backgroundColor = UIColor.blue;
+                return headerView
+                
+            default:
+                
+                assert(false, "Unexpected element kind")
+            }
+            
+    }
+//
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize
+    {
+        return CGSize.zero
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize
+    {
+        if isLoading
+        {
+            return CGSize(width: self.collectionView.frame.size.width, height: 50)
+
+        }
+        else
+        {
+            return CGSize(width: 1, height: 1)
+
+        }
+
+
+    }
     // make a cell for each cell index path
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath)
+    {
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+    }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         
         // get a reference to our storyboard cell
-        let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath)
+        let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "Footer", for: indexPath)
+       
+//        if indexPath.row == verticalJobListArray.count-1
+//        {
+//            //footerView.isHidden = true
+//            loadMoreData()
+//            isLoading = true
+//            self.collectionView.collectionViewLayout.invalidateLayout()
+//        }
+//        else
+//        {
+//            //footerView.isHidden = false
+//            
+//        }
+
         
+       
         let subjectLabel = cell.viewWithTag(101) as! UILabel
         let companyWebSiteLabel = cell.viewWithTag(102) as! UILabel
         let applyButton = cell.viewWithTag(103) as! subclassedUIButton
@@ -471,6 +669,87 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
     }
     
+    func loadMoreData()
+    {
+        var existingJobIdsArray:[String] = []
+        for index in 0 ..< verticalJobListArray.count
+        {
+            let jobDic = verticalJobListArray[index] as! [String:AnyObject]
+            
+            existingJobIdsArray.append(String(jobDic["jobid"] as! Int) as String)
+            
+        }
+        
+        var existingJobIdsString = ""
+        
+        for index in 0 ..< existingJobIdsArray.count
+        {
+            
+                if index == 0
+                {
+                    existingJobIdsString.append(existingJobIdsArray[index])
+                }
+                else
+                {
+                    existingJobIdsString.append(",\(existingJobIdsArray[index])")
+                }
+            
+        }
+        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+
+        switch self.domainType
+        {
+            //let jobDic = verticalJobListArray[indexPath.row] as! [String:AnyObject]
+            
+           
+
+            case "vertical":
+            
+                            if username != nil && password != nil
+                            {
+                                APIManager.getSharedAPIManager().getMoreVerticalJobs(username: username!, password: password!, linkedinId:"", varticalId: String(verticalId), jobId: existingJobIdsString)
+                            }
+                            else
+                                if linkedInId != nil
+                                {
+                                    APIManager.getSharedAPIManager().getMoreVerticalJobs(username: username!, password: password!, linkedinId:"", varticalId: String(verticalId), jobId: existingJobIdsString)
+                            }
+                            break
+            
+            
+        case "horizontal":
+            
+                            if username != nil && password != nil
+                            {
+                                APIManager.getSharedAPIManager().getMoreHorizontalJobs(username: username!, password: password!, linkedinId:"", horizontalId: String(verticalId), jobId: existingJobIdsString)
+                            }
+                            else
+                                if linkedInId != nil
+                                {
+                                    APIManager.getSharedAPIManager().getMoreHorizontalJobs(username: username!, password: password!, linkedinId:"", horizontalId: String(verticalId), jobId: existingJobIdsString)
+                            }
+                            break
+            
+        case "roles":
+            
+                            if username != nil && password != nil
+                            {
+                                APIManager.getSharedAPIManager().getMoreRoleJobs(username: username!, password: password!, linkedinId:"", roleId: String(verticalId), jobId: existingJobIdsString)
+                            }
+                            else
+                                if linkedInId != nil
+                                {
+                                    APIManager.getSharedAPIManager().getMoreRoleJobs(username: username!, password: password!, linkedinId:"", roleId: String(verticalId), jobId: existingJobIdsString)
+                            }
+                            break
+            
+        default:
+            break
+        }
+    
+    }
     
     func saveJobButtonClicked(_ sender: subclassedUIButton)
     {

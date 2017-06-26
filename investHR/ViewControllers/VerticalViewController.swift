@@ -129,6 +129,8 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
     {
         return 1
     }
+    
+    
     // number of rows in table view
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
@@ -225,6 +227,7 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "JobsViewController") as! JobsViewController
         
             vc.verticalId = String(verticalId)
+            vc.domainType = self.domainType
             self.navigationController?.pushViewController(vc, animated: true)
         
         
