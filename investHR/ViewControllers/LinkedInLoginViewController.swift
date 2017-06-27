@@ -41,8 +41,8 @@ class LinkedInLoginViewController: UIViewController,UIWebViewDelegate
             print(accessToken ?? "")
             
             UserDefaults.standard.set(expiresIn, forKey: Constant.LINKEDIN_ACCESS_TOKEN_EXPIRES_IN)
-            UserDefaults.standard.set(accessToken, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
-
+            UserDefaults.standard.set(accessToken!, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+        
             UserDefaults.standard.synchronize()
             
             

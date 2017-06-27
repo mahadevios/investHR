@@ -111,13 +111,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             AppPreferences.sharedPreferences().firebaseInstanceId = refreshedToken
         }
         
+        self.loadAccount()
+
         NotificationCenter.default.addObserver(self, selector: #selector(tokenRefreshNotification), name:NSNotification.Name.firInstanceIDTokenRefresh, object: nil)
 
        // let obj = CoreDataManager.sharedManager
-        self.loadAccount(then: { () in
-            
-            print("cancel pressed")
-        }, or: nil)
+        
         return true
     }
     
@@ -221,10 +220,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     
-    func loadAccount(then: (() -> Void)?, or: ((String) -> Void)?)
+    func loadAccount()
     {
         
-        if let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String, let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+        if let username = UserDefaults.standard.value(forKey: Constant.USERNAME) as? String, let password = UserDefaults.standard.value(forKey: Constant.PASSWORD) as? String
         {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
@@ -235,13 +234,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         else
         {
             //let accessToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-            let accessToken = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            let accessToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
             // let accessTokenExpiresIn = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN_EXPIRES_IN) as? String
             
-            if let accessToken = accessToken
+            if accessToken != nil
             {
-                if accessToken.characters.count > 0
-                {
+                
                     //                let accessToken = LISDKAccessToken.init(serializedString: serializedToken)
                     
                     //                if (accessTokenExpiresIn)! > Date()
@@ -258,7 +256,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     
                     
                     // }
-                }
+                
                 
             }
 

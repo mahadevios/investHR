@@ -8,14 +8,20 @@
 
 import UIKit
 
-class NewJobsViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout
+class NewJobsViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIWebViewDelegate
 {
     var applied:Bool = false
     var saved:Bool = false
     var appliedAndSaveHidden:Bool = false
     var saveHidden:Bool = false
+    var webViewLoaded:Bool = false
+    var webViewAdded:Bool = false
 
     var verticalId:String = ""
+    var domainType:String = ""
+    var jobId:String = ""
+    var webViewHeight:CGFloat = 10.0
+
     var jobLocationArray = [String]()
     var jobDetailsDic:[String:Any]?
     @IBOutlet weak var collectionView: UICollectionView!
@@ -41,9 +47,32 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkSaveJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVE_JOB), object: nil)
         
-        self.collectionView.reloadData()
+        
+        getJobDetails()
     }
     
+    func getJobDetails()
+    {
+        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+        
+        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+        
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+        if username != nil && password != nil
+        {
+            APIManager.getSharedAPIManager().getJobDescription(username: username!, password: password!, linkedinId: "", varticalId: verticalId, jobId: String( jobId))
+        }
+        else
+            if linkedInId != nil
+            {
+                APIManager.getSharedAPIManager().getJobDescription(username: "", password: "", linkedinId: linkedInId!, varticalId: verticalId, jobId: String( jobId))
+        }
+
+        AppPreferences.sharedPreferences().showHudWith(title: "Loading job..", detailText: "Please wait")
+
+    
+    }
     override func viewWillDisappear(_ animated: Bool)
     {
         NotificationCenter.default.removeObserver(self)
@@ -108,6 +137,26 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         } catch let error as NSError
         {
             
+        }
+        
+        
+        
+        if self.domainType == "vertical" || self.domainType == "horizontal" || self.domainType == "roles"
+        {
+            let jobId = jobDetailsDic?["jobid"] as! Int
+            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            
+            if username != nil && password != nil
+            {
+                APIManager.getSharedAPIManager().saveInterestedJob(username: username!, password: password!, linkedinId: "", jobId: String(jobId))
+            }
+            else
+                if linkedInId != nil
+                {
+                    APIManager.getSharedAPIManager().saveInterestedJob(username: "", password: "", linkedinId: linkedInId!, jobId: String(jobId))
+            }
         }
         
         self.collectionView.reloadData()
@@ -231,6 +280,29 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         //self.collectionView.reloadData()
     }
 
+    func webViewDidFinishLoad(_ webView: UIWebView)
+    {
+        self.webViewHeight = webView.scrollView.contentSize.height
+
+        var webViewFrame = webView.frame
+        webViewFrame.size.height = 1
+        webView.frame = webViewFrame
+        let fittingSize = webView.sizeThatFits(CGSize.zero)
+        webViewFrame.size = fittingSize
+        // webViewFrame.size.width = 276; Making sure that the webView doesn't get wider than 276 px
+        webView.frame = webViewFrame;
+        
+        let webViewHeit = webView.frame.size.height
+        
+        webViewLoaded = true
+        webViewAdded = true
+        self.collectionView.reloadData()
+        
+        
+        print("webview h = \(webViewHeit)")
+
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
         return 1
@@ -245,14 +317,29 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         let companyNameLabel = cell.viewWithTag(101) as! UILabel
         //let companyWebSiteLabel = cell.viewWithTag(102) as! UILabel
-        var locationLabel = cell.viewWithTag(105) as! UILabel
+        let locationLabel = cell.viewWithTag(105) as! UILabel
 
         let dateLabel = cell.viewWithTag(107) as! UILabel
-        let descriptionWebView = cell.viewWithTag(109) as! UIWebView
+        
+        let jobDescLabel = cell.viewWithTag(108) as! UILabel
+
+        var descriptionWebView = cell.viewWithTag(109) as! UIWebView
+        
+        var descriptionWebView1 = UIWebView(frame: CGRect(x: descriptionWebView.frame.origin.x, y: descriptionWebView.frame.origin.y+50, width: descriptionWebView.frame.size.width, height: descriptionWebView.frame.size.height))
+        
+        //descriptionWebView.isHidden = true
+        descriptionWebView1.scrollView.isScrollEnabled = false
+        descriptionWebView1.delegate = self
+        descriptionWebView1.backgroundColor = UIColor.red
+        descriptionWebView.backgroundColor = UIColor.red
 
         let applyButton = cell.viewWithTag(103) as! subclassedUIButton
+        
         let saveButton = cell.viewWithTag(104) as! subclassedUIButton
+        
         let saveImageView = cell.viewWithTag(110) as! UIImageView
+
+        let lineView = cell.viewWithTag(111)
 
 
         
@@ -262,11 +349,28 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         let subject = jobDetailsDic?["subject"]
         let location = jobDetailsDic?["location"]
         
-        guard let discription = jobDetailsDic?["discription"]  as? String else
+
+        
+        if let discription = jobDetailsDic?["discription"]  as? String
         {
-            return cell
+            if !webViewLoaded
+            {
+                descriptionWebView1.loadHTMLString(discription, baseURL: nil)
+                //descriptionWebView.loadHTMLString(discription, baseURL: nil)
+
+            }
+            
+        }
+ 
+        if !webViewAdded
+        {
+            cell.addSubview(descriptionWebView1)
+
         }
 
+        
+//        descriptionWebView.frame = CGRect(x: descriptionWebView.frame.origin.x, y: descriptionWebView.frame.origin.y, width: descriptionWebView.frame.size.width, height: 300)
+        
         let dateString = Date().getLocatDateFromMillisecods(millisecods: date )
         companyNameLabel.text = subject as? String
         
@@ -291,14 +395,27 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         locationLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         locationLabel.numberOfLines = 0
        
+        locationLabel.textColor = UIColor(colorLiteralRed: 142/255.0, green: 159/255.0, blue: 168/255.0, alpha: 1.0)
         let height = heightForView(text: jobLocationString as String, font: UIFont.systemFont(ofSize: 14), width: locationLabel.frame.size.width) as CGFloat
         
         
         locationLabel.frame = CGRect(x: locationLabel.frame.origin.x, y: locationLabel.frame.origin.y, width: locationLabel.frame.size.width, height: height)
-        locationLabel.text = jobLocationString as String
+        
+        if jobLocationString == ""
+        {
+            locationLabel.text = "Location"
+            locationLabel.textColor = UIColor.clear
 
+        }
+        else
+        {
+            locationLabel.text = jobLocationString as String
+        }
+
+        
+        
        
-        descriptionWebView.loadHTMLString(discription, baseURL: nil)
+        
         
         if appliedAndSaveHidden // viewed from appliedjobs vc
         {
@@ -386,8 +503,10 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
 
         let height = heightForView(text: jobLocationString as String, font: UIFont.systemFont(ofSize: 14), width: self.view.frame.size.width*0.5) as CGFloat
 
-        return CGSize(width: self.view.frame.size.width*0.95, height: height+300)
+        return CGSize(width: self.view.frame.size.width*0.95, height: height+webViewHeight+200)
     }
+    
+   
     // MARK: - UICollectionViewDelegate protocol
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

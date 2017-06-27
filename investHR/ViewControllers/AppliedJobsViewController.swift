@@ -125,7 +125,7 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
         else
             if linkedInId != nil
             {
-                APIManager.getSharedAPIManager().getSavedOrAppliedJobDescription(username: username!, password: password!, linkedinId: "",  jobId: String( jobId))
+                APIManager.getSharedAPIManager().getSavedOrAppliedJobDescription(username: "", password: "", linkedinId: linkedInId!,  jobId: String( jobId))
         }
         
         

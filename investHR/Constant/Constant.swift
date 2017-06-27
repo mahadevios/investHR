@@ -49,6 +49,8 @@ struct Constant
     static let  LOAD_MORE_VERTICAL_JOB_API               = "login/mobileLoadMoreVerticalJob"
     static let  LOAD_MORE_HORIZONTAL_JOB_API             = "login/mobileLoadMoreHorizontalJob"
     static let  LOAD_MORE_ROLE_JOB_API                   = "login/mobileLoadMoreRoleJob"
+    static let  GET_USER_PROFILE                         = "login/mobileGetUserModelDetails"
+    static let  INTERESTED_JOB_API                       = "login/mobileSaveInterestedJob"
 
 
 
@@ -69,6 +71,8 @@ struct Constant
     static let  NOTIFICATION_LOAD_MORE_VERTICAL_JOB         = "loadMoreVerticalJob"
     static let  NOTIFICATION_LOAD_MORE_HORIZONTAL_JOB       = "loadMoreHorizontalJob"
     static let  NOTIFICATION_LOAD_MORE_ROLE_JOB             = "loadMoreRoleJob"
+    static let  NOTIFICATION_GET_USER_PROFILE               = "getUSerProfile"
+    static let  NOTIFICATION_INTERESTED_JOB_API             = "interestedJob"
 
 
 }

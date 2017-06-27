@@ -24,7 +24,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     var domainType:String = ""
     var activityView:UIActivityIndicatorView = UIActivityIndicatorView()
     var isLoading:Bool = false
-    
+    var indexePathArray:[IndexPath]=[]
+
     @IBOutlet weak var saveJobImage: UIImageView!
     
     
@@ -57,6 +58,9 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
          NotificationCenter.default.addObserver(self, selector: #selector(checkRolesJobList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_ROLE_JOB_LIST), object: nil)
         
+        getJobList()
+
+        
                // Do any additional setup after loading the view.
     }
     
@@ -75,6 +79,73 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     
         self.collectionView.reloadData()
 
+    }
+    
+    func getJobList()
+    {
+    
+        if self.domainType == "vertical"
+        {
+            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            
+            if username != nil && password != nil
+            {
+                APIManager.getSharedAPIManager().getVerticalJobs(username: username!, password: password!, varticalId: String(verticalId), linkedinId:"")
+            }
+            else
+                if linkedInId != nil
+                {
+                    APIManager.getSharedAPIManager().getVerticalJobs(username: "", password: "", varticalId: String(verticalId), linkedinId:linkedInId!)
+                    
+            }
+            
+            
+        }
+        else
+            if self.domainType == "horizontal"
+            {
+                let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+                let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+                let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+                
+                if username != nil && password != nil
+                {
+                    APIManager.getSharedAPIManager().getHorizontalJobs(username: username!, password: password!, horizontalId: String(verticalId), linkedinId:"")
+                }
+                else
+                    if linkedInId != nil
+                    {
+                        APIManager.getSharedAPIManager().getHorizontalJobs(username: "", password: "", horizontalId: String(verticalId), linkedinId:linkedInId!)
+                        
+                }
+                
+                
+            }
+            else
+                if self.domainType == "roles"
+                {
+                    let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+                    let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+                    let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+                    
+                    if username != nil && password != nil
+                    {
+                        APIManager.getSharedAPIManager().getRoleJobs(username: username!, password: password!, roleId: String(verticalId), linkedinId:"")
+                    }
+                    else
+                        if linkedInId != nil
+                        {
+                            APIManager.getSharedAPIManager().getRoleJobs(username: "", password: "", roleId: String(verticalId), linkedinId:linkedInId!)
+                            
+                    }
+                    
+                    
+        }
+        AppPreferences.sharedPreferences().showHudWith(title: "Loading jobs..", detailText: "Please wait")
+
+    
     }
     override func viewWillDisappear(_ animated: Bool)
     {
@@ -97,7 +168,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         print("iscoming")
         isLoading = false
         self.collectionView.collectionViewLayout.invalidateLayout()
-        
+        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
             return
@@ -157,6 +229,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     
     func checkVerticalJobList(dataDic:NSNotification)
     {
+        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
           return
@@ -187,6 +261,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     
     func checkHorizontalJobList(dataDic:NSNotification)
     {
+        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
             return
@@ -219,6 +295,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
 
     func checkRolesJobList(dataDic:NSNotification)
     {
+        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
             return
@@ -249,6 +327,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     
     func checkSaveJob(dataDic:NSNotification)
     {
+        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
             return
@@ -267,20 +347,26 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
 
         savedJobsIdsArray.removeAll()
         
-//        if let managedObjects = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "SavedJobs")
-//        {
-//            for savedJobObject in managedObjects as! [SavedJobs]
-//            {
-//                let jobId = savedJobObject.jobId
-//                
-//                savedJobsIdsArray.append(Int(jobId!)!)
-//            }
-//        }
-        self.collectionView.reloadData()
+        if let managedObjects = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "SavedJobs")
+        {
+            for savedJobObject in managedObjects as! [SavedJobs]
+            {
+                let jobId = savedJobObject.jobId
+                
+                savedJobsIdsArray.append(Int(jobId!)!)
+            }
+        }
+        //self.collectionView.reloadData()
+        
+        self.collectionView.reloadItems(at: indexePathArray)
+        
+        indexePathArray.removeAll()
     }
 
     func checkApplyJob(dataDic:NSNotification)
     {
+        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
             return
@@ -292,16 +378,21 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
 
         appliedJobsIdsArray.removeAll()
         
-//        if let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
-//        {
-//            for appliedJobObject in managedObjects1 as! [AppliedJobs]
-//            {
-//                let jobId = appliedJobObject.jobId
-//                
-//                appliedJobsIdsArray.append(Int(jobId!)!)
-//            }
-//        }
-        self.collectionView.reloadData()
+        if let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
+        {
+            for appliedJobObject in managedObjects1 as! [AppliedJobs]
+            {
+                let jobId = appliedJobObject.jobId
+                
+                appliedJobsIdsArray.append(Int(jobId!)!)
+            }
+        }
+        
+        self.collectionView.reloadItems(at: indexePathArray)
+
+        indexePathArray.removeAll()
+
+        //self.collectionView.reloadData()
             
         
     }
@@ -384,32 +475,6 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
 //    }
     
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
-    {
-        if let managedObjects = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "SavedJobs")
-        {
-            for savedJobObject in managedObjects as! [SavedJobs]
-            {
-                let jobId = savedJobObject.jobId
-                
-                savedJobsIdsArray.append(Int(jobId!)!)
-            }
-        }
-        
-        //let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
-        
-        if let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
-        {
-            for appliedJobObject in managedObjects1 as! [AppliedJobs]
-            {
-                let jobId = appliedJobObject.jobId
-                
-                appliedJobsIdsArray.append(Int(jobId!)!)
-            }
-        }
-
-        return verticalJobListArray.count
-    }
     
     func scrollViewDidScroll(_ aScrollView: UIScrollView)
     {
@@ -445,7 +510,36 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
 
         }
     }
-    
+    // MARK: - UICollectionViewDelegate protocol
+  
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    {
+        savedJobsIdsArray.removeAll()
+        if let managedObjects = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "SavedJobs")
+        {
+            for savedJobObject in managedObjects as! [SavedJobs]
+            {
+                let jobId = savedJobObject.jobId
+                
+                savedJobsIdsArray.append(Int(jobId!)!)
+            }
+        }
+        
+        //let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
+        appliedJobsIdsArray.removeAll()
+        if let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
+        {
+            for appliedJobObject in managedObjects1 as! [AppliedJobs]
+            {
+                let jobId = appliedJobObject.jobId
+                
+                appliedJobsIdsArray.append(Int(jobId!)!)
+            }
+        }
+        
+        return verticalJobListArray.count
+    }
+
     func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath)
     {
         
@@ -560,11 +654,15 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         let jobId = jobDic["jobid"] as! Int
         
-        let date = jobDic["date"] as! Double
+        if let date = jobDic["date"] as? Double
+        {
+            if let dateString = Date().getLocatDateFromMillisecods(millisecods: date)
+            {
+                dateLabel.text = dateString.components(separatedBy: " ")[0]
+
+            }
+        }
         
-        let dateString = Date().getLocatDateFromMillisecods(millisecods: date)
-        
-        dateLabel.text = dateString.components(separatedBy: " ")[0]
         
         //let discription = jobDic["discription"] as! String
         
@@ -591,13 +689,13 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         if savedJobsIdsArray.contains(jobId as! Int)
         {
             saveImageView.image = UIImage(named: "SideMenuSavedJob")
-            applyButton.isUserInteractionEnabled = false
+            saveButton.isUserInteractionEnabled = false
 
         }
         else
         {
             saveImageView.image = UIImage(named: "SavedUnselected")
-            applyButton.isUserInteractionEnabled = true
+            saveButton.isUserInteractionEnabled = true
 
         }
 
@@ -606,6 +704,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         applyButton.jobId = jobId
 
         //applyButton.tag = jobId as! Int
+        saveButton.indexPath = indexPath.row
+        applyButton.indexPath = indexPath.row
 
         saveButton.addTarget(self, action: #selector(saveJobButtonClicked), for: UIControlEvents.touchUpInside)
         applyButton.addTarget(self, action: #selector(applyJobButtonClicked), for: UIControlEvents.touchUpInside)
@@ -630,27 +730,28 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     {
        return CGSize(width: self.view.frame.size.width*0.95, height: 120)
     }
-    // MARK: - UICollectionViewDelegate protocol
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // handle tap events
         print("You selected cell #\(indexPath.item)!")
+        
+        
         let jobDic = verticalJobListArray[indexPath.row] as! [String:AnyObject]
         let jobId = jobDic["jobid"] as! Int
 
-        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-        
-        if username != nil && password != nil
-        {
-            APIManager.getSharedAPIManager().getJobDescription(username: username!, password: password!, linkedinId: "", varticalId: verticalId, jobId: String( jobId))
-        }
-        else
-            if linkedInId != nil
-            {
-                APIManager.getSharedAPIManager().getJobDescription(username: username!, password: password!, linkedinId: "", varticalId: verticalId, jobId: String( jobId))
-        }
+//        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+//        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+//        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+//        
+//        if username != nil && password != nil
+//        {
+//            APIManager.getSharedAPIManager().getJobDescription(username: username!, password: password!, linkedinId: "", varticalId: verticalId, jobId: String( jobId))
+//        }
+//        else
+//            if linkedInId != nil
+//            {
+//                APIManager.getSharedAPIManager().getJobDescription(username: "", password: "", linkedinId: linkedInId!, varticalId: verticalId, jobId: String( jobId))
+//        }
 
         
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "NewJobsViewController") as! NewJobsViewController
@@ -663,8 +764,12 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
             vc.applied = true
         }
         vc.verticalId = String(verticalId)
+        vc.domainType = self.domainType
+        vc.jobId = String(jobId)
         self.present(vc, animated: true, completion: nil)
         
+//        AppPreferences.sharedPreferences().showHudWith(title: "Loading job..", detailText: "Please wait")
+
         print("You tapped cell number \(indexPath.row).")
         
     }
@@ -714,7 +819,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
                             else
                                 if linkedInId != nil
                                 {
-                                    APIManager.getSharedAPIManager().getMoreVerticalJobs(username: username!, password: password!, linkedinId:"", varticalId: String(verticalId), jobId: existingJobIdsString)
+                                    APIManager.getSharedAPIManager().getMoreVerticalJobs(username: "", password: "", linkedinId:linkedInId!, varticalId: String(verticalId), jobId: existingJobIdsString)
                             }
                             break
             
@@ -728,7 +833,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
                             else
                                 if linkedInId != nil
                                 {
-                                    APIManager.getSharedAPIManager().getMoreHorizontalJobs(username: username!, password: password!, linkedinId:"", horizontalId: String(verticalId), jobId: existingJobIdsString)
+                                    APIManager.getSharedAPIManager().getMoreHorizontalJobs(username: "", password: "", linkedinId:linkedInId!, horizontalId: String(verticalId), jobId: existingJobIdsString)
                             }
                             break
             
@@ -741,7 +846,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
                             else
                                 if linkedInId != nil
                                 {
-                                    APIManager.getSharedAPIManager().getMoreRoleJobs(username: username!, password: password!, linkedinId:"", roleId: String(verticalId), jobId: existingJobIdsString)
+                                    APIManager.getSharedAPIManager().getMoreRoleJobs(username: "", password: "", linkedinId:linkedInId!, roleId: String(verticalId), jobId: existingJobIdsString)
                             }
                             break
             
@@ -753,10 +858,12 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     
     func saveJobButtonClicked(_ sender: subclassedUIButton)
     {
-        
+        AppPreferences.sharedPreferences().showHudWith(title: "Saving job..", detailText: "Please wait")
         let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
         let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+        indexePathArray.append(IndexPath.init(row: sender.indexPath, section: 0))
         
         if username != nil && password != nil
         {
@@ -771,10 +878,14 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     }
     func applyJobButtonClicked(_ sender: subclassedUIButton)
     {
+        AppPreferences.sharedPreferences().showHudWith(title: "Applying for job..", detailText: "Please wait")
+
         let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
         let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
         
+        indexePathArray.append(IndexPath.init(row: sender.indexPath, section: 0))
+
         if username != nil && password != nil
         {
             APIManager.getSharedAPIManager().applyJob(username: username!, password: password!, linkedinId: "", jobId: String(describing: sender.jobId!))

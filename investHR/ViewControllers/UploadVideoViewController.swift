@@ -9,9 +9,76 @@
 import UIKit
 import AVFoundation
 
-class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate
+class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout
 {
     var imagePicker = UIImagePickerController()
+    var videoNamesArray = [String]()
+    
+    @IBOutlet weak var collectionView: UICollectionView!
+        override func viewDidLoad()
+    {
+        super.viewDidLoad()
+        
+        self.navigationItem.hidesBackButton = true;
+        
+        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
+        
+        self.navigationItem.leftBarButtonItem = barButtonItem
+        
+        self.navigationItem.title = "Upload Video"
+        
+        //        let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 25))
+        //        numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
+        //        numberOfJobsLabel.text = "108 jobs"
+        //        numberOfJobsLabel.textAlignment = NSTextAlignment.right
+        //        let rightBarButtonItem = UIBarButtonItem(customView: numberOfJobsLabel)
+        //
+        //        self.navigationItem.rightBarButtonItem = rightBarButtonItem
+        let editProfileView = UIView(frame: CGRect(x: 70, y: 0, width: 60, height: 50))
+        //editProfileView.backgroundColor = UIColor.red
+        
+        let attachmentButton = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
+        attachmentButton.addTarget(self, action: #selector(rightBArButtonCLicked), for: UIControlEvents.touchUpInside)
+        attachmentButton.titleLabel?.textAlignment = NSTextAlignment.center
+        attachmentButton.setTitleColor(UIColor.init(colorLiteralRed: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1), for: UIControlState.normal)
+        //attachmentButton.backgroundColor = UIColor.blue
+        
+        let attachMentImageView = UIImageView(frame: CGRect(x: editProfileView.frame.size.width-16, y: 16, width: 16, height: 18))
+        attachMentImageView.image = UIImage(named: "Attachment")
+        
+        
+        //editProfileView.backgroundColor = UIColor.red
+        editProfileView.addSubview(attachmentButton)
+        editProfileView.addSubview(attachMentImageView)
+        
+        let rightBarButtonItem = UIBarButtonItem(customView: editProfileView)
+        self.navigationItem.rightBarButtonItem = rightBarButtonItem
+        
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 20, left: 2, bottom: 10, right: 2)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        collectionView!.collectionViewLayout = layout
+    
+        // Do any additional setup after loading the view.
+    }
+
+    
+    func popViewController() -> Void
+    {
+        self.revealViewController().revealToggle(animated: true)
+        
+        self.navigationController?.popViewController(animated: true)
+    }
+    func rightBArButtonCLicked() -> Void
+    {
+        let documentPickerController = UIDocumentPickerViewController(documentTypes: ["public.text","public.image","public.movie"], in: UIDocumentPickerMode.import)
+        
+        documentPickerController.delegate = self
+        
+        present(documentPickerController, animated: true, completion: nil)
+    }
+    
     @available(iOS 8.0, *)
     public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL)
     {
@@ -28,7 +95,8 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])
     {
         // create a filepath with the current date/time as the image name
-        let savePath:String = self.documentsPath()! + "/" + self.presentDateTimeString() + ".mp4"
+        let fileName = self.presentDateTimeString()
+        let savePath:String = self.documentsPath()! + "/" + fileName + ".mp4"
         
         // try to get our edited image if there is one, as well as the original image
         let mediaType = info[UIImagePickerControllerMediaType] as! String
@@ -37,21 +105,26 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         
         if mediaType == "public.movie"
         {
-           let mediaUrl = info[UIImagePickerControllerMediaURL] as! URL
+            let mediaUrl = info[UIImagePickerControllerMediaURL] as! URL
             
             do
             {
-               let imgData = try Data(contentsOf: mediaUrl)
+                let imgData = try Data(contentsOf: mediaUrl)
                 
                 do
                 {
                     try imgData.write(to: URL(fileURLWithPath: savePath))
                     
+                    videoNamesArray.append(fileName)
+                    
+                    self.collectionView.reloadData()
+                    
+                    
                 } catch let error as NSError
                 {
                     print(error.localizedDescription)
                 }
-
+                
                 
             } catch let error as NSError
             {
@@ -66,7 +139,8 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         //let originalImg:UIImage? = info[UIImagePickerControllerOriginalImage] as? UIImage
         
         // create our image data with the edited img if we have one, else use the original image
-                // dismiss the picker
+        // dismiss the picker
+        
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -105,62 +179,28 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         // picker cancelled, dismiss picker view controller
         self.dismiss(animated: true, completion: nil)
     }
-
-    override func viewDidLoad()
+    
+    func videoSnapshot(filePathLocal: NSString) -> UIImage?
     {
-        super.viewDidLoad()
         
-        self.navigationItem.hidesBackButton = true;
+        let vidURL = NSURL(fileURLWithPath:filePathLocal as String)
+        let asset = AVURLAsset(url: vidURL as URL)
+        let generator = AVAssetImageGenerator(asset: asset)
+        generator.appliesPreferredTrackTransform = true
         
-        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
+        let timestamp = CMTime(seconds: 1, preferredTimescale: 60)
         
-        self.navigationItem.leftBarButtonItem = barButtonItem
-        
-        self.navigationItem.title = "Upload Video"
-        
-        //        let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 25))
-        //        numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
-        //        numberOfJobsLabel.text = "108 jobs"
-        //        numberOfJobsLabel.textAlignment = NSTextAlignment.right
-        //        let rightBarButtonItem = UIBarButtonItem(customView: numberOfJobsLabel)
-        //
-        //        self.navigationItem.rightBarButtonItem = rightBarButtonItem
-        let editProfileView = UIView(frame: CGRect(x: 70, y: 0, width: 60, height: 50))
-        //editProfileView.backgroundColor = UIColor.red
-        
-        let attachmentButton = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
-        attachmentButton.addTarget(self, action: #selector(rightBArButtonCLicked), for: UIControlEvents.touchUpInside)
-        attachmentButton.titleLabel?.textAlignment = NSTextAlignment.center
-        attachmentButton.setTitleColor(UIColor.init(colorLiteralRed: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1), for: UIControlState.normal)
-        //attachmentButton.backgroundColor = UIColor.blue
-        
-        let attachMentImageView = UIImageView(frame: CGRect(x: editProfileView.frame.size.width-16, y: 16, width: 16, height: 18))
-        attachMentImageView.image = UIImage(named: "Attachment")
-        
-        
-        //editProfileView.backgroundColor = UIColor.red
-        editProfileView.addSubview(attachmentButton)
-        editProfileView.addSubview(attachMentImageView)
-        
-        let rightBarButtonItem = UIBarButtonItem(customView: editProfileView)
-        self.navigationItem.rightBarButtonItem = rightBarButtonItem
-        // Do any additional setup after loading the view.
+        do {
+            let imageRef = try generator.copyCGImage(at: timestamp, actualTime: nil)
+            return UIImage(cgImage: imageRef)
+        }
+        catch let error as NSError
+        {
+            print("Image generation failed with error \(error)")
+            return nil
+        }
     }
 
-    func popViewController() -> Void
-    {
-        self.revealViewController().revealToggle(animated: true)
-        
-        self.navigationController?.popViewController(animated: true)
-    }
-    func rightBArButtonCLicked() -> Void
-    {
-        let documentPickerController = UIDocumentPickerViewController(documentTypes: ["public.text","public.image","public.movie"], in: UIDocumentPickerMode.import)
-        
-        documentPickerController.delegate = self
-        
-        present(documentPickerController, animated: true, completion: nil)
-    }
     @IBAction func uploadVideoButtonClicked(_ sender: Any)
     {
         
@@ -229,6 +269,47 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
             self.present(alert, animated: true, completion: nil)
         }
     }
+    
+    // MARK: - UICollectionViewDelegate adn Datasource protocol
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    {
+        return videoNamesArray.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+    {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath)
+ 
+        let videoName = videoNamesArray[indexPath.row]
+        
+        let savePath:String = self.documentsPath()! + "/" + videoName + ".mp4"
+
+        let image = videoSnapshot(filePathLocal: savePath as NSString)
+        
+        let videoImagePreview = cell.viewWithTag(101) as! UIImageView
+        
+        videoImagePreview.image = image
+        
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
+    {
+        return CGSize(width: CGFloat((collectionView.frame.size.width / 3) - 10), height: CGFloat(80))
+    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat
+//    {
+//         return 20
+//    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat
+//    {
+//        return 20.0
+//    }
+   
+    
+    
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()

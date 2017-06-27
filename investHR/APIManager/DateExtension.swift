@@ -19,7 +19,7 @@ extension Date
     }
     
     
-    func getLocatDateFromMillisecods(millisecods:Double?) -> String
+    func getLocatDateFromMillisecods(millisecods:Double?) -> String?
     {
         guard let milSeconds = millisecods
         else
@@ -59,4 +59,6 @@ extension Data
 class subclassedUIButton: UIButton
 {
     var jobId: Int?
+    var indexPath: Int!
+    
 }

@@ -134,11 +134,105 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
       //  NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
 
         locationTextField.delegate = self
+        
+         NotificationCenter.default.addObserver(self, selector: #selector(checkGetProfileResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_GET_USER_PROFILE), object: nil)
+        
+        setUserInteractionEnabled(setEnable: false)
     }
+    
+    func setUserInteractionEnabled(setEnable:Bool)
+    {
+        nameTextField.isUserInteractionEnabled = setEnable
+        mobileNumberTextField.isUserInteractionEnabled = setEnable
+        emailTextField.isUserInteractionEnabled = setEnable
+        qualificationTextField.isUserInteractionEnabled = setEnable
+        cuurentRoleTextField.isUserInteractionEnabled = setEnable
+        currentCompanyTextField.isUserInteractionEnabled = setEnable
+        additionalPhoneTextfield.isUserInteractionEnabled = setEnable
+        locationTextField.isUserInteractionEnabled = setEnable
+        aboutYouTextView.isUserInteractionEnabled = setEnable
+
+
+    }
+    
     override func viewWillDisappear(_ animated: Bool)
     {
        NotificationCenter.default.removeObserver(self)
     }
+    
+    func checkGetProfileResponse(dataDic:Notification)
+    {
+        guard let dataDictionary = dataDic.object as? [String:AnyObject] else
+        {
+            return
+        }
+        
+        if dataDictionary["code"] as! String == Constant.FAILURE
+        {
+            return
+        }
+    
+        let userDetailsString = dataDictionary["usermodelDetails"] as! String
+        
+        let userDetailsData = userDetailsString.data(using: .utf8, allowLossyConversion: true)
+        
+        var userDetailsDict:[String:AnyObject]!
+        do {
+            userDetailsDict = try JSONSerialization.jsonObject(with: userDetailsData!, options: .allowFragments) as! [String:AnyObject]
+        } catch let error as NSError
+        {
+            
+        }
+        
+        let username = userDetailsDict["userName"] as! String
+        
+        let mobileNum = userDetailsDict["mobileNum"] as? String
+
+        let emailId = userDetailsDict["emailId"] as? String
+
+        let currentRole = userDetailsDict["currentRole"] as? String
+
+        let currentCompany = userDetailsDict["currentCompany"] as? String
+
+        let state = userDetailsDict["state"] as? String
+
+        let city = userDetailsDict["city"] as? String
+        
+        let companiesInterViewed = userDetailsDict["companiesInterviewInlastTwoYears"] as? String
+
+        nameTextField.text = username
+        
+        if mobileNum != nil
+        {
+            mobileNumberTextField.text = mobileNum
+        }
+        
+        if emailId != nil
+        {
+            emailTextField.text = emailId
+        }
+
+        if currentRole != nil
+        {
+            cuurentRoleTextField.text = currentRole
+        }
+        
+        if currentCompany != nil
+        {
+            currentCompanyTextField.text = currentCompany
+        }
+        
+        if state != nil
+        {
+            locationTextField.text = state
+        }
+        
+        if companiesInterViewed != nil
+        {
+            aboutYouTextView.text = companiesInterViewed
+        }
+    }
+    
     
     func popViewController() -> Void
     {
@@ -181,6 +275,26 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         self.navigationItem.rightBarButtonItem = rightBarButtonItem
     
     }
+    func setRightBarButtonItemSave()
+    {
+        let editProfileButton = UIButton(frame: CGRect(x: 75, y: 0, width: 50, height: 50))
+        editProfileButton.setTitle("Save", for: UIControlState.normal)
+        editProfileButton.addTarget(self, action: #selector(rightbarButtonClickedSave), for: UIControlEvents.touchUpInside)
+        editProfileButton.titleLabel?.textAlignment = NSTextAlignment.center
+        editProfileButton.setTitleColor(UIColor.init(colorLiteralRed: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1), for: UIControlState.normal)
+        
+        let lineView = UIView(frame: CGRect(x: 65, y: 2, width: 1, height: 40))
+        lineView.backgroundColor = UIColor.init(colorLiteralRed: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1)
+        
+        let editProfileView = UIView(frame: CGRect(x: 0, y: 0, width: 120, height: 50))
+        //editProfileView.backgroundColor = UIColor.red
+        editProfileView.addSubview(editProfileButton)
+        editProfileView.addSubview(lineView)
+        
+        let rightBarButtonItem = UIBarButtonItem(customView: editProfileView)
+        self.navigationItem.rightBarButtonItem = rightBarButtonItem
+        
+    }
     func setRightBarButtonItemCancel()
     {
         let editProfileButton = UIButton(frame: CGRect(x: 55, y: 0, width: 80, height: 50))
@@ -205,7 +319,18 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     
     func rightbarButtonClickedEdit()
     {
+        setUserInteractionEnabled(setEnable: true)
         
+        setRightBarButtonItemSave()
+
+        nameTextField.becomeFirstResponder()
+    }
+    func rightbarButtonClickedSave()
+    {
+        setUserInteractionEnabled(setEnable: false)
+        
+        setRightBarButtonItemEdit()
+
     }
     func rightbarButtonClickedCancel()
     {

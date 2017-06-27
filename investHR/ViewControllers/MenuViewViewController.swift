@@ -128,6 +128,21 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             //self.revealViewController().navigationController?.pushViewController(vc, animated: true)
             // let vc1 = self.revealViewController().rearViewController as! UINavigationController
+            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            
+            if username != nil && password != nil
+            {
+                APIManager.getSharedAPIManager().getUserProfile(username: username!, password: password!, linkedinId:"")
+            }
+            else
+                if linkedInId != nil
+                {
+                    APIManager.getSharedAPIManager().getUserProfile(username: "", password: "", linkedinId:linkedInId!)
+                    
+            }
+
             let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
             
             vc1.pushViewController(vc, animated: false)
@@ -300,6 +315,9 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             self.revealViewController().revealToggle(animated: true)
             
+            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
+            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
+
             self.present(vc, animated: true, completion: nil)
             
             

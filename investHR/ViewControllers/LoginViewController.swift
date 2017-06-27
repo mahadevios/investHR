@@ -631,8 +631,8 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["name":name! ,"username":self.emailTextField.text!,"password":self.passwordTextField.text!])
         
-        UserDefaults.standard.set(self.emailTextField.text!, forKey: Constant.USERNAME)
-        UserDefaults.standard.set(self.passwordTextField.text!, forKey: Constant.PASSWORD)
+        UserDefaults.standard.set(self.emailTextField.text! , forKey: Constant.USERNAME)
+        UserDefaults.standard.set(self.passwordTextField.text! , forKey: Constant.PASSWORD)
         
         if className == "LoginViewController"
         {

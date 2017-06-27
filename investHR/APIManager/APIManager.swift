@@ -360,6 +360,46 @@ class APIManager: NSObject
         }
         
     }
+    
+    func getUserProfile(username:String, password:String, linkedinId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.GET_USER_PROFILE, withRequestParameter: dic as AnyObject, withResourcePath: Constant.GET_USER_PROFILE, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+    
+    func saveInterestedJob(username:String, password:String, linkedinId:String, jobId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","jobId=\(jobId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.INTERESTED_JOB_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.INTERESTED_JOB_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
     func createRequestAndSend(dict:Any, imageData:Data?)
     {
         var request:NSURLRequest!

@@ -490,6 +490,54 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                 }
                 break
                 
+            case Constant.GET_USER_PROFILE:
+                
+                guard let dictFromJSON = response else
+                {
+                    return
+                }
+                if String(describing: dictFromJSON["code"]!) == Constant.SUCCESS
+                {
+                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_GET_USER_PROFILE), object: dictFromJSON, userInfo: nil)
+                    
+                }
+                else
+                {
+                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                }
+                break
+
+            case Constant.INTERESTED_JOB_API:
+                
+                guard let dictFromJSON = response else
+                {
+                    return
+                }
+                if String(describing: dictFromJSON["code"]!) == Constant.SUCCESS
+                {
+                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_INTERESTED_JOB_API), object: dictFromJSON, userInfo: nil)
+                    
+                }
+                else
+                {
+                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                }
+                break
+                
             default: break
                 
             }

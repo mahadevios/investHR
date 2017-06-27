@@ -73,5 +73,24 @@ class AppPreferences: NSObject,UIAlertViewDelegate
             self.isReachable = false
         }
     }
+    
+    func showHudWith(title:String, detailText:String) -> Void
+    {
+        let hud = MBProgressHUD.showAdded(to: UIApplication.shared.keyWindow!, animated: true)
+        
+        hud.tag = 789
+        
+        hud.minSize = CGSize(width: 150.0, height: 100.0)
+        
+        hud.label.text = title
+        
+        hud.detailsLabel.text = detailText
+    }
+    
+    func hideHudWithTag(tag:Int)
+    {
+        UIApplication.shared.keyWindow?.viewWithTag(tag)?.removeFromSuperview()
+
+    }
 
 }
