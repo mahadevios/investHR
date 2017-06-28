@@ -434,7 +434,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             if applied
             {
                 applyButton.setTitle("Applied", for: .normal)
-                applyButton.setTitleColor(UIColor.init(colorLiteralRed: 7/255.0, green: 116/255.0, blue: 1/255.0, alpha: 1.0), for: .normal)
+                applyButton.setTitleColor(UIColor.appliedJobGreenColor(), for: .normal)
                 applyButton.isUserInteractionEnabled = false
             }
             else

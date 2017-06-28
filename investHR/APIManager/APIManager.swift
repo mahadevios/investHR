@@ -369,7 +369,7 @@ class APIManager: NSObject
             
             let dic = [Constant.REQUEST_PARAMETER:params]
             
-            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.GET_USER_PROFILE, withRequestParameter: dic as AnyObject, withResourcePath: Constant.GET_USER_PROFILE, withHttpMethd: Constant.POST)
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.GET_USER_PROFILE_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.GET_USER_PROFILE_API, withHttpMethd: Constant.POST)
             
             downloadmetadatajob.startMetaDataDownLoad()
             
@@ -400,6 +400,87 @@ class APIManager: NSObject
         }
         
     }
+    
+    func saveVideo(username:String, password:String, linkedinId:String, fileName:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","videoName=\(fileName)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.UPLOAD_USER_VIDEO_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.UPLOAD_USER_VIDEO_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+
+    func saveResume(username:String, password:String, linkedinId:String, fileName:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","resumeName=\(fileName)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.UPLOAD_USER_RESUME_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.UPLOAD_USER_RESUME_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+    
+    func getUploadedVideoList(username:String, password:String, linkedinId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.UPLOADED_VIDEO_LIST_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.UPLOADED_VIDEO_LIST_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+    
+    func getUploadedResumeList(username:String, password:String, linkedinId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.UPLOADED_RESUME_LIST_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.UPLOADED_RESUME_LIST_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+    
     func createRequestAndSend(dict:Any, imageData:Data?)
     {
         var request:NSURLRequest!

@@ -31,6 +31,7 @@
 		8431B5C21EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8431B5C01EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld */; };
 		843425C41EE7D80500282419 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843425C31EE7D80400282419 /* UserNotifications.framework */; };
 		843425C81EE7ED5F00282419 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 843425C71EE7ED5F00282419 /* GoogleService-Info.plist */; };
+		8439DFD71F038C5400F21C79 /* PlayVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439DFD61F038C5400F21C79 /* PlayVideoViewController.swift */; };
 		8439E04E1EC5F3C000FC2A12 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */; };
 		843A6AB91EE1824C00D86591 /* linkedin-sdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843A6AB81EE1824C00D86591 /* linkedin-sdk.framework */; };
 		8440DF701ED706CB0003F05B /* MenuViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8440DF6F1ED706CB0003F05B /* MenuViewViewController.swift */; };
@@ -127,6 +128,7 @@
 		8431B5C11EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataDemo.xcdatamodel; sourceTree = "<group>"; };
 		843425C31EE7D80400282419 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		843425C71EE7ED5F00282419 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8439DFD61F038C5400F21C79 /* PlayVideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayVideoViewController.swift; sourceTree = "<group>"; };
 		8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		843A6AB81EE1824C00D86591 /* linkedin-sdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = "linkedin-sdk.framework"; sourceTree = "<group>"; };
 		8440DF6F1ED706CB0003F05B /* MenuViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewViewController.swift; sourceTree = "<group>"; };
@@ -405,6 +407,7 @@
 				844F5F341EDC3BA10073A7D7 /* UploadResumeViewController.swift */,
 				842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */,
 				842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */,
+				8439DFD61F038C5400F21C79 /* PlayVideoViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -794,6 +797,7 @@
 				841492681EF005D6007133D0 /* State+CoreDataClass.swift in Sources */,
 				8449B6091EE578EB0072A8DD /* CoreDataManager.swift in Sources */,
 				84EB8F431EDFEB8600014DA4 /* Constant.swift in Sources */,
+				8439DFD71F038C5400F21C79 /* PlayVideoViewController.swift in Sources */,
 				844E5B2A1EEED4CF00E69646 /* LinkedInLoginViewController.swift in Sources */,
 				8414925D1EF004CA007133D0 /* City+CoreDataProperties.swift in Sources */,
 				842BAFC81EF2A27C005327B0 /* HorizontalDomains+CoreDataClass.swift in Sources */,

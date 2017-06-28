@@ -76,8 +76,9 @@ class AppPreferences: NSObject,UIAlertViewDelegate
     
     func showHudWith(title:String, detailText:String) -> Void
     {
+        //let hud = MBProgressHUD.init(window: UIApplication.shared.keyWindow!)
         let hud = MBProgressHUD.showAdded(to: UIApplication.shared.keyWindow!, animated: true)
-        
+        //UIApplication.shared.keyWindow?.addSubview(hud)
         hud.tag = 789
         
         hud.minSize = CGSize(width: 150.0, height: 100.0)

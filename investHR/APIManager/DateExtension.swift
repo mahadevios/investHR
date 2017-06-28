@@ -56,6 +56,24 @@ extension Data
     }
 }
 
+extension UIColor
+{
+    
+    class func appliedJobGreenColor() -> UIColor
+    {
+        // create color from string
+        // ... some code
+        return UIColor(colorLiteralRed: 7/255.0, green: 116/255.0, blue: 1/255.0, alpha: 1.0)
+    }
+    class func appBlueColor() -> UIColor
+    {
+        // create color from string
+        // ... some code
+        return UIColor(colorLiteralRed: 29/255.0, green: 123/255.0, blue:231/255.0, alpha: 1.0)
+    }
+   
+}
+
 class subclassedUIButton: UIButton
 {
     var jobId: Int?
