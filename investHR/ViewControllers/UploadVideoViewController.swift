@@ -95,6 +95,10 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         
         let code = responseDic["code"]
         
+
+        //DispatchQueue.main.async {
+            AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+        //}
         if let videoName = responseDic["videoName"]
         {
             
@@ -215,24 +219,24 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
             }
            
         }
-        var uniqueImageName = String(Date().millisecondsSince1970)
+        let uniqueImageName = String(Date().millisecondsSince1970) + ".mp4"
 
-        let userId = UserDefaults.standard.value(forKey: Constant.USERNAME)
-        
-        if userId != nil
-        {
-            uniqueImageName = uniqueImageName.appending(userId as! String)
-        }
-        else
-        {
-            let userId = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN)
-            
-            if userId != nil
-            {
-                uniqueImageName =  uniqueImageName.appending(userId as! String)
-            }
-        }
-        var savePath:String = folderpath + "/" + uniqueImageName + ".mp4"
+//        let userId = UserDefaults.standard.value(forKey: Constant.USERNAME)
+//        
+//        if userId != nil
+//        {
+//            uniqueImageName = uniqueImageName.appending(userId as! String)
+//        }
+//        else
+//        {
+//            let userId = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+//            
+//            if userId != nil
+//            {
+//                uniqueImageName =  uniqueImageName.appending(userId as! String)
+//            }
+//        }
+        var savePath:String = folderpath + "/" + uniqueImageName
         
         // try to get our edited image if there is one, as well as the original image
         let mediaType = info[UIImagePickerControllerMediaType] as! String
@@ -426,7 +430,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
  
         let videoName = recordedVideoNamesArray[indexPath.row]
         
-        let savePath:String = self.UserVideosFolderPath() + "/" + videoName + ".mp4"
+        let savePath:String = self.UserVideosFolderPath() + "/" + videoName
 
         let videoImagePreview = cell.viewWithTag(101) as! UIImageView
 
@@ -479,13 +483,20 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
 //        })
         
         //self.startUploading(sender: sender)
-        DispatchQueue.main.async(execute: {
-            self.perform(#selector(self.showHud), on: .main, with: nil, waitUntilDone: true)
-            self.perform(#selector(self.startUploading(sender:)), on: .main, with: sender, waitUntilDone: false)
+        //DispatchQueue.main.async(execute: {
+            //self.perform(#selector(self.showHud), on: .main, with: nil, waitUntilDone: true)
+        //DispatchQueue.global(qos: .background).async {
+            
+            self.startUploading(sender: sender)
+//            DispatchQueue.main.async {
+//                print("This is run on the main queue, after the previous code in outer block")
+//            }
+//        }
+            //self.perform(#selector(self.startUploading(sender:)), on: .main, with: sender, waitUntilDone: false)
 
             //self.startUploading(sender: sender)
 
-        })
+        //})
         //DispatchQueue.global().async {
 //
             
@@ -502,13 +513,13 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
     
     func startUploading( sender: subclassedUIButton)
     {
-        //        if uploadedVideoNamesArray.count <= 2
-        //        {
+    if uploadedVideoNamesArray.count <= 2
+    {
         let videoName = recordedVideoNamesArray[sender.indexPath]
         
         self.uploadingRow = sender.indexPath
         
-        let savePath:String = self.UserVideosFolderPath() + "/" + videoName + ".mp4"
+        let savePath:String = self.UserVideosFolderPath() + "/" + videoName
         
         let videoURL = URL(fileURLWithPath: savePath)
         
@@ -523,9 +534,9 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         
         
         
-//            let alertController = UIAlertController(title: "Upload File", message: "Are you sure to upload this file?", preferredStyle: UIAlertControllerStyle.alert)
-//
-//            let okAction = UIAlertAction(title: "Upload", style: UIAlertActionStyle.default, handler: { act -> Void in
+            let alertController = UIAlertController(title: "Upload File", message: "Are you sure to upload this file?", preferredStyle: UIAlertControllerStyle.alert)
+
+            let okAction = UIAlertAction(title: "Upload", style: UIAlertActionStyle.default, handler: { act -> Void in
         
                 
                 //AppPreferences.sharedPreferences().showHudWith(title: "Uploading Video..", detailText: "Please wait")
@@ -535,51 +546,94 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
                 
                     
                     let ftp = FTPImageUpload(baseUrl: Constant.FTP_HOST_NAME, userName: Constant.FTP_USERNAME, password: Constant.FTP_PASSWORD, directoryPath: Constant.FTP_DIRECTORY_PATH)
+        
+        AppPreferences.sharedPreferences().showHudWith(title: "Uploading Video..", detailText: "Please wait")
+
+        DispatchQueue.global(qos: .background).async {
+            
+            //DispatchQueue.main.async {
+//                AppPreferences.sharedPreferences().showHudWith(title: "Uploading Video..", detailText: "Please wait")
+            //}
+            let result = ftp.send(data: videoData, with: videoName)
+
+            DispatchQueue.main.async {
+                
+                if result
+                {
+                    // AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
                     
-                    let result = ftp.send(data: videoData, with: videoName)
-                    if result
+                    
+                    let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+                    let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+                    let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+                    
+                    if username != nil && password != nil
                     {
-                       // AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
-                        
-                        
-                        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-                        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-                        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-                        
-                        if username != nil && password != nil
-                        {
-                            APIManager.getSharedAPIManager().saveVideo(username: username!, password: password!, linkedinId: "", fileName: videoName)
-                        }
-                        else
-                            if linkedInId != nil
-                            {
-                                APIManager.getSharedAPIManager().saveVideo(username: "", password: "", linkedinId: linkedInId!, fileName: videoName)
-                                
-                        }
-                        
+                        APIManager.getSharedAPIManager().saveVideo(username: username!, password: password!, linkedinId: "", fileName: videoName)
                     }
                     else
-                    {
-                        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
-                        
+                        if linkedInId != nil
+                        {
+                            APIManager.getSharedAPIManager().saveVideo(username: "", password: "", linkedinId: linkedInId!, fileName: videoName)
+                            
                     }
-                    print(result)
                     
-//                })
-//                
+                }
+                else
+                {
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                    
+                }
+                print(result)
+
+                print("This is run on the main queue, after the previous code in outer block")
+            }
+        }
+                    //let result = ftp.send(data: videoData, with: videoName)
+//                    if result
+//                    {
+//                       // AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+//                        
+//                        
+//                        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+//                        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+//                        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+//                        
+//                        if username != nil && password != nil
+//                        {
+//                            APIManager.getSharedAPIManager().saveVideo(username: username!, password: password!, linkedinId: "", fileName: videoName)
+//                        }
+//                        else
+//                            if linkedInId != nil
+//                            {
+//                                APIManager.getSharedAPIManager().saveVideo(username: "", password: "", linkedinId: linkedInId!, fileName: videoName)
+//                                
+//                        }
+//                        
+//                    }
+//                    else
+//                    {
+//                        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+//                        
+//                    }
+//                    print(result)
+        
+                })
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: {act -> Void in
+            
+            alertController.dismiss(animated: true, completion: nil)
+            
+        })
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true, completion: nil)
+
 //
-//                
+//
+//
 //        
 //            
-//            let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: {act -> Void in
-//                
-//                alertController.dismiss(animated: true, completion: nil)
-//                
-//            })
-//            alertController.addAction(okAction)
-//            alertController.addAction(cancelAction)
-//            self.present(alertController, animated: true, completion: nil)
-    
+                
 //        DispatchQueue.global().async
 //            {
 //                
@@ -588,13 +642,13 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
 //        }
         
         
+//        
+                }
         
-        //        }
-        //
-        //        else
-        //        {
-        //            AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Maximum 3 videos can be upload, please delete exsting videos", withCancelText: "ok")
-        //        }
+                else
+                {
+                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Maximum 3 videos can be upload, please delete exsting videos", withCancelText: "ok")
+                }
   
     }
     

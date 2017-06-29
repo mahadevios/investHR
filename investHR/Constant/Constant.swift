@@ -61,6 +61,7 @@ struct Constant
     static let  UPLOAD_USER_RESUME_API                   = "login/mobileUploadResume"
     static let  UPLOADED_RESUME_LIST_API                 = "login/mobileResumeList"
     static let  UPLOADED_VIDEO_LIST_API                  = "login/MobileVideoList"
+    static let  SAVE_EDITED_PROFILE_API                  = "login/mobileEditProfile"
 
 
 
@@ -87,7 +88,8 @@ struct Constant
     static let  NOTIFICATION_UPLOAD_USER_RESUME             = "uploadResume"
     static let  NOTIFICATION_UPLOADED_VIDEO_LIST            = "uploadedVideoList"
     static let  NOTIFICATION_UPLOADED_RESUME_LIST           = "uploadedResumeList"
-
+    static let  NOTIFICATION_SAVE_EDITED_PROFILE            = "saveEditedProfile"
+    static let  NOTIFICATION_FTP_UPLOAD                     = "ftpUpload"
 }
 
 enum MyAlertType

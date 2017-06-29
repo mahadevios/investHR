@@ -316,11 +316,11 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
     }
     @IBAction func submitButtonPressed(_ sender: Any)
     {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-
-        let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
-
-        let className = String(describing: type(of: currentRootVC))
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//
+//        let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
+//
+//        let className = String(describing: type(of: currentRootVC))
         
         currentRoleTextField.resignFirstResponder()
         currentCompanyTextField.resignFirstResponder()

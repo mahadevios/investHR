@@ -62,14 +62,85 @@ extension FTPImageUpload
 
 // MARK: FTP Write
 
-extension FTPImageUpload
-{
-    func send(data: Data, with fileName: String) -> Bool
-    {
-        
-      if AppPreferences.sharedPreferences().isReachable
-      {
-        
+//extension FTPImageUpload
+//{
+//    func send(data: Data, with fileName: String) -> Bool
+//    {
+//        
+//      if AppPreferences.sharedPreferences().isReachable
+//      {
+//        
+//        guard let ftpWriteStream = ftpWriteStream(forFileName: fileName) else { return false }
+//        
+//        if CFWriteStreamOpen(ftpWriteStream) == false {
+//            print("Could not open stream")
+//            return false
+//        }
+//        
+//        defer { CFWriteStreamClose(ftpWriteStream) }
+//        
+//        let fileSize = data.count
+//        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: fileSize)
+//        data.copyBytes(to: buffer, count: fileSize)
+//        
+//        var offset = 0
+//        var dataToSendSize = fileSize
+//        //DispatchQueue.main.async(execute: {
+//
+//        
+//        
+//            //DispatchQueue.main.async(execute: {
+//
+//                
+//                //DispatchQueue.global().async {
+//        
+//                    repeat {
+//                        
+//                            let bytesWritten = CFWriteStreamWrite(ftpWriteStream, &buffer[offset], dataToSendSize)
+//                        
+//                        
+//                            if bytesWritten > 0 {
+//                                offset += bytesWritten.littleEndian
+//                                dataToSendSize -= bytesWritten
+//                                continue
+//                            } else if bytesWritten < 0 {
+//                                // ERROR
+//                                print("ERROR ERROR ERROR")
+//                                break
+//                            } else if bytesWritten == 0 {
+//                                // SUCCESS
+//                                print("Completed!!")
+//                                break
+//                            }
+//                        
+//                        
+//                    } while CFWriteStreamCanAcceptBytes(ftpWriteStream)
+//                    
+//        
+//                //}
+//           // })
+//        
+//        
+//        
+//        
+//        //})
+//        
+//        
+//        return true
+//    
+//        }
+//        
+//        else
+//        {
+//            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+//            
+//            return false
+//        }
+//    }
+//}
+
+extension FTPImageUpload {
+    func send(data: Data, with fileName: String) -> Bool {
         guard let ftpWriteStream = ftpWriteStream(forFileName: fileName) else { return false }
         
         if CFWriteStreamOpen(ftpWriteStream) == false {
@@ -82,59 +153,85 @@ extension FTPImageUpload
         let fileSize = data.count
         let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: fileSize)
         data.copyBytes(to: buffer, count: fileSize)
-        
         var offset = 0
         var dataToSendSize = fileSize
-        //DispatchQueue.main.async(execute: {
-
         
-        
-            //DispatchQueue.main.async(execute: {
-
-                
-                //DispatchQueue.global().async {
-        
-                    repeat {
-                        
-                            let bytesWritten = CFWriteStreamWrite(ftpWriteStream, &buffer[offset], dataToSendSize)
-                        
-                        
-                            if bytesWritten > 0 {
-                                offset += bytesWritten.littleEndian
-                                dataToSendSize -= bytesWritten
-                                continue
-                            } else if bytesWritten < 0 {
-                                // ERROR
-                                print("ERROR ERROR ERROR")
-                                break
-                            } else if bytesWritten == 0 {
-                                // SUCCESS
-                                print("Completed!!")
-                                break
-                            }
-                        
-                        
-                    } while CFWriteStreamCanAcceptBytes(ftpWriteStream)
-                    
-        
-                //}
-           // })
-        
-        
-        
-        
-        //})
-        
+        var bytesWritten = 0
+        repeat {
+            bytesWritten = CFWriteStreamWrite(ftpWriteStream, &buffer[offset], dataToSendSize)
+            if bytesWritten > 0 {
+                offset += bytesWritten.littleEndian
+                dataToSendSize -= bytesWritten
+                print(bytesWritten)
+                continue
+            } else if bytesWritten < 0 {
+                // ERROR
+                print("ERROR ERROR ERROR")
+                break
+            } else if bytesWritten == 0 {
+                // SUCCESS
+                print("Completed!!")
+                break
+            }
+            
+        } while (bytesWritten>0)
+//        repeat {
+//            let bytesWritten = CFWriteStreamWrite(ftpWriteStream, &buffer[offset], dataToSendSize)
+//            if bytesWritten > 0 {
+//                offset += bytesWritten.littleEndian
+//                dataToSendSize -= bytesWritten
+//                print(bytesWritten)
+//                continue
+//            } else if bytesWritten < 0 {
+//                // ERROR
+//                print("ERROR ERROR ERROR")
+//                break
+//            } else if bytesWritten == 0 {
+//                // SUCCESS
+//                print("Completed!!")
+//                break
+//            }
+//            
+//        } while CFWriteStreamCanAcceptBytes(ftpWriteStream)
+//       var bytesWritten = 0
+//        while (bytesWritten > 0) {
+//            bytesWritten = CFWriteStreamWrite(ftpWriteStream, &buffer[offset], dataToSendSize)
+//            if bytesWritten > 0 {
+//                offset += bytesWritten.littleEndian
+//                dataToSendSize -= bytesWritten
+//                print(bytesWritten)
+//                continue
+//            } else if bytesWritten < 0 {
+//                // ERROR
+//                print("ERROR ERROR ERROR")
+//                return false
+//                break
+//            } else if bytesWritten == 0 {
+//                // SUCCESS
+//                print("Completed!!")
+//                break
+//            }
+//            
+//        }
         
         return true
-    
-        }
-        
-        else
-        {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
-            
-            return false
-        }
     }
+    
+//    func callback(ftpWriteStream:CFWriteStream,buffer:UnsafeMutablePointer<UInt8>, dataToSendSize:Int)
+//    {
+//        let bytesWritten = CFWriteStreamWrite(ftpWriteStream, &buffer[offset], dataToSendSize)
+//        if bytesWritten > 0 {
+//            offset += bytesWritten.littleEndian
+//            dataToSendSize -= bytesWritten
+//            print(bytesWritten)
+//        } else if bytesWritten < 0 {
+//            // ERROR
+//            print("ERROR ERROR ERROR")
+//        } else if bytesWritten == 0 {
+//            // SUCCESS
+//            print("Completed!!")
+//        }
+//
+//    }
 }
+

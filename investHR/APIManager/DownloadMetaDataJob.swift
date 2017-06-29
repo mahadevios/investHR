@@ -548,13 +548,14 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                 }
                 if String(describing: dictFromJSON["code"]!) == Constant.SUCCESS
                 {
-                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    //UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
                     
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_UPLOAD_USER_VIDEO), object: dictFromJSON, userInfo: nil)
+
                     AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Video uploaded successfully", withCancelText: "Ok")
 
                     //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
                     
-                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_UPLOAD_USER_VIDEO), object: dictFromJSON, userInfo: nil)
                     
                 }
                 else
@@ -576,11 +577,12 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                 }
                 if String(describing: dictFromJSON["code"]!) == Constant.SUCCESS
                 {
-                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
-                    
-                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+//                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
                     
                     NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_UPLOAD_USER_RESUME), object: dictFromJSON, userInfo: nil)
+
+                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Resume uploaded successfully", withCancelText: "Ok")
+                    
                     
                 }
                 else
@@ -639,7 +641,30 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                 }
                 break
 
+            case Constant.SAVE_EDITED_PROFILE_API:
                 
+                guard let dictFromJSON = response else
+                {
+                    return
+                }
+                if String(describing: dictFromJSON["code"]!) == Constant.SUCCESS
+                {
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_SAVE_EDITED_PROFILE), object: dictFromJSON, userInfo: nil)
+                    
+                }
+                else
+                {
+                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                }
+                break
+   
             default: break
                 
             }

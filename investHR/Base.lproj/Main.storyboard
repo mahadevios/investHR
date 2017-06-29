@@ -1979,7 +1979,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7dm-3W-Nd2">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="1000"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="1800"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xSF-8F-6Qr">
                                                 <rect key="frame" x="87" y="35" width="147" height="147"/>
@@ -2009,7 +2009,7 @@
                                                 </connections>
                                             </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="21d-eW-ITX">
-                                                <rect key="frame" x="33" y="202" width="256" height="480"/>
+                                                <rect key="frame" x="33" y="202" width="256" height="1155"/>
                                                 <subviews>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lZO-SO-Icb" customClass="TextField" customModule="investHR" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="256" height="35"/>
@@ -2047,14 +2047,15 @@
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Qualification" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jhQ-Dm-bH6" customClass="TextField" customModule="investHR" customModuleProvider="target">
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Hg9-cV-gm3" customClass="TextField" customModule="investHR" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="150" width="256" height="30"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits"/>
+                                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                                         <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.CornerRadius">
-                                                                <integer key="value" value="4"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                <integer key="value" value="3"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
@@ -2080,7 +2081,7 @@
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Additional phone no." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gWC-oe-Qep" customClass="TextField" customModule="investHR" customModuleProvider="target">
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="State" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ggA-Dw-O5n" customClass="SearchTextField" customModule="investHR" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="285" width="256" height="30"/>
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -2091,23 +2092,157 @@
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Location" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ggA-Dw-O5n" customClass="TextField" customModule="investHR" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="330" width="256" height="30"/>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="City" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Z4M-Jl-LgT" customClass="SearchTextField" customModule="investHR" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="330" width="256" height="35"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="35" id="wJ7-pV-92v"/>
+                                                        </constraints>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                <integer key="value" value="3"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textField>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Visa Status" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EJ6-VN-JES" customClass="TextField" customModule="investHR" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="380" width="256" height="35"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="35" id="c8h-gf-FQK"/>
+                                                        </constraints>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                <integer key="value" value="3"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textField>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Candidate Function" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Cc6-xg-BGC">
+                                                        <rect key="frame" x="0.0" y="430" width="256" height="35"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="35" id="29Z-gB-l6D"/>
+                                                        </constraints>
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.CornerRadius">
-                                                                <integer key="value" value="4"/>
+                                                                <integer key="value" value="3"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
-                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Companies interviewed in past 1 year" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="pzk-Ty-6o1">
-                                                        <rect key="frame" x="0.0" y="375" width="256" height="105"/>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Services" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aQD-BD-d2Z">
+                                                        <rect key="frame" x="0.0" y="480" width="256" height="30"/>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.CornerRadius">
+                                                                <integer key="value" value="3"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textField>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="LinkedInProfile URL" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="DkU-50-naH">
+                                                        <rect key="frame" x="0.0" y="525" width="256" height="30"/>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.CornerRadius">
+                                                                <integer key="value" value="3"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textField>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Verticals or Indusrty sold service to" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="R1h-FD-QhQ">
+                                                        <rect key="frame" x="0.0" y="570" width="256" height="30"/>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.CornerRadius">
+                                                                <integer key="value" value="3"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textField>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Revenue Quota" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Dcq-fJ-VQ5">
+                                                        <rect key="frame" x="0.0" y="615" width="256" height="30"/>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.CornerRadius">
+                                                                <integer key="value" value="3"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textField>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="P&amp;L" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="g21-hj-Nj9">
+                                                        <rect key="frame" x="0.0" y="660" width="256" height="30"/>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.CornerRadius">
+                                                                <integer key="value" value="3"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textField>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Experience in Offshore Engagements" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vcj-57-0Hd">
+                                                        <rect key="frame" x="0.0" y="705" width="256" height="30"/>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.CornerRadius">
+                                                                <integer key="value" value="3"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textField>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Expected Comp" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="djB-yC-uFR">
+                                                        <rect key="frame" x="0.0" y="750" width="256" height="30"/>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.CornerRadius">
+                                                                <integer key="value" value="3"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textField>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Relocation(yes or no)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OdD-VN-c9H">
+                                                        <rect key="frame" x="0.0" y="795" width="256" height="30"/>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.CornerRadius">
+                                                                <integer key="value" value="3"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textField>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Joining time required" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MVc-QL-Amk">
+                                                        <rect key="frame" x="0.0" y="840" width="256" height="30"/>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.CornerRadius">
+                                                                <integer key="value" value="3"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textField>
+                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="0zW-IA-x1h">
+                                                        <rect key="frame" x="0.0" y="885" width="256" height="60"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="105" id="cuG-g5-8jd"/>
+                                                            <constraint firstAttribute="height" constant="60" id="22O-sg-OzC"/>
                                                         </constraints>
+                                                        <string key="text">Companies interviewed in past 1 year
+</string>
                                                         <color key="textColor" red="0.74117647060000003" green="0.74117647060000003" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -2115,25 +2250,60 @@
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
                                                                 <real key="value" value="0.29999999999999999"/>
                                                             </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.CornerRadius">
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                 <integer key="value" value="4"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textView>
+                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Any non-compete that will prevent you from managing a specific client OR Not join any specific organization" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Ac0-vH-DD1">
+                                                        <rect key="frame" x="0.0" y="960" width="256" height="120"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="120" id="d3h-z6-lmg"/>
+                                                        </constraints>
+                                                        <color key="textColor" red="0.74117647060000003" green="0.74117647060000003" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                <integer key="value" value="4"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                                <real key="value" value="0.29999999999999999"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textView>
+                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="rFL-yd-tBf">
+                                                        <rect key="frame" x="0.0" y="1095" width="256" height="60"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="60" id="6x0-gF-EMZ"/>
+                                                        </constraints>
+                                                        <string key="text">Benefits in current organization(401k/insurance coverage etc)
+</string>
+                                                        <color key="textColor" red="0.74117647060000003" green="0.74117647060000003" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                <integer key="value" value="4"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                                <real key="value" value="0.29999999999999999"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </textView>
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstItem="OOr-cC-q4C" firstAttribute="height" secondItem="CGJ-sp-Vww" secondAttribute="height" id="Dx8-VK-GQn"/>
-                                                    <constraint firstItem="ggA-Dw-O5n" firstAttribute="height" secondItem="gWC-oe-Qep" secondAttribute="height" id="HVt-9N-JBR"/>
                                                     <constraint firstItem="z6H-TT-veh" firstAttribute="height" secondItem="34Y-a2-VKf" secondAttribute="height" id="qDY-z1-NI3"/>
-                                                    <constraint firstItem="CGJ-sp-Vww" firstAttribute="height" secondItem="jhQ-Dm-bH6" secondAttribute="height" id="rT5-jO-fRV"/>
                                                     <constraint firstItem="34Y-a2-VKf" firstAttribute="height" secondItem="lZO-SO-Icb" secondAttribute="height" id="s3J-9V-KCI"/>
-                                                    <constraint firstItem="gWC-oe-Qep" firstAttribute="height" secondItem="OOr-cC-q4C" secondAttribute="height" id="vHA-MW-i86"/>
                                                 </constraints>
                                             </stackView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="1000" id="3qE-DG-NiH"/>
+                                            <constraint firstAttribute="height" constant="1800" id="3qE-DG-NiH"/>
                                             <constraint firstItem="smp-4a-nV3" firstAttribute="baseline" secondItem="xSF-8F-6Qr" secondAttribute="baseline" constant="-20" id="Cey-NL-RL1"/>
                                             <constraint firstItem="WI6-AY-J9o" firstAttribute="centerY" secondItem="xSF-8F-6Qr" secondAttribute="centerY" id="J4P-uK-ags"/>
                                             <constraint firstItem="xSF-8F-6Qr" firstAttribute="centerX" secondItem="7dm-3W-Nd2" secondAttribute="centerX" id="Ji8-nh-iyu"/>
@@ -2169,18 +2339,31 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="aboutYouTextView" destination="pzk-Ty-6o1" id="1fH-bp-VlV"/>
-                        <outlet property="additionalPhoneTextfield" destination="gWC-oe-Qep" id="ZPC-wC-Z2g"/>
+                        <outlet property="PLTextFiled" destination="g21-hj-Nj9" id="Waa-TB-Gaj"/>
+                        <outlet property="benefitsTextView" destination="rFL-yd-tBf" id="aD1-m1-IIX"/>
+                        <outlet property="candidateFunctionTextField" destination="Cc6-xg-BGC" id="7ti-Xb-abb"/>
                         <outlet property="circleImageView" destination="WI6-AY-J9o" id="cjJ-cj-8RG"/>
-                        <outlet property="currentCompanyTextField" destination="OOr-cC-q4C" id="CNq-jr-GX5"/>
+                        <outlet property="cityTextField" destination="Z4M-Jl-LgT" id="uhu-8n-0vY"/>
+                        <outlet property="companiesInterviewedTextView" destination="0zW-IA-x1h" id="cE7-b1-taT"/>
+                        <outlet property="currentCompanyTextField" destination="OOr-cC-q4C" id="yi9-rE-AfU"/>
                         <outlet property="cuurentRoleTextField" destination="CGJ-sp-Vww" id="wiv-MT-lOl"/>
                         <outlet property="editProfileButton" destination="rBx-A1-Gqz" id="pGr-0N-QdF"/>
                         <outlet property="emailTextField" destination="z6H-TT-veh" id="Eb9-yR-nF7"/>
-                        <outlet property="locationTextField" destination="ggA-Dw-O5n" id="JER-np-b7K"/>
+                        <outlet property="expectedCompanyTextField" destination="djB-yC-uFR" id="8Qg-OK-XGL"/>
+                        <outlet property="experienceTextField" destination="Vcj-57-0Hd" id="pte-FR-A6J"/>
+                        <outlet property="joiningTimeTextFIeld" destination="MVc-QL-Amk" id="NzZ-L4-hDO"/>
+                        <outlet property="linkedInProfileUrlTextField" destination="DkU-50-naH" id="jgJ-Xs-e7d"/>
                         <outlet property="mobileNumberTextField" destination="34Y-a2-VKf" id="SGg-ex-tul"/>
                         <outlet property="nameTextField" destination="lZO-SO-Icb" id="5JJ-gr-0uc"/>
+                        <outlet property="nonCompeteTextView" destination="Ac0-vH-DD1" id="XYK-1d-wJE"/>
                         <outlet property="outSideCircleView" destination="xSF-8F-6Qr" id="mMd-nk-GKf"/>
-                        <outlet property="qualificationTextField" destination="jhQ-Dm-bH6" id="JgS-C7-tDK"/>
+                        <outlet property="passwordTextField" destination="Hg9-cV-gm3" id="Hlg-W5-yvZ"/>
+                        <outlet property="relocationTextFIeld" destination="OdD-VN-c9H" id="uK1-5A-hrt"/>
+                        <outlet property="revenueQuotaTextFiled" destination="Dcq-fJ-VQ5" id="f1T-M3-McC"/>
+                        <outlet property="servicesTextField" destination="aQD-BD-d2Z" id="Xk6-2M-A1Q"/>
+                        <outlet property="stateTextField" destination="ggA-Dw-O5n" id="WiS-Tl-W5e"/>
+                        <outlet property="verticalsTextFiled" destination="R1h-FD-QhQ" id="kOt-Wu-uAd"/>
+                        <outlet property="visaStatusTextField" destination="EJ6-VN-JES" id="2U3-iB-Hda"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vRA-uh-m3Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2668,18 +2851,49 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" tag="101" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jrp-7I-0hw">
-                                <rect key="frame" x="96" y="154" width="240" height="128"/>
-                            </imageView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Ugg-MB-6dR">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="2De-JB-xnn">
+                                        <rect key="frame" x="0.0" y="28" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2De-JB-xnn" id="oKW-bC-Tkx">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oAo-Wc-LNp">
+                                                    <rect key="frame" x="18" y="11.5" width="224" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="oAo-Wc-LNp" firstAttribute="width" secondItem="oKW-bC-Tkx" secondAttribute="width" multiplier="0.7" id="5rx-aD-5Gc"/>
+                                                <constraint firstItem="oAo-Wc-LNp" firstAttribute="leading" secondItem="oKW-bC-Tkx" secondAttribute="leadingMargin" constant="10" id="QNS-vV-rjs"/>
+                                                <constraint firstItem="oAo-Wc-LNp" firstAttribute="centerY" secondItem="oKW-bC-Tkx" secondAttribute="centerY" id="svx-io-Jc5"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="Kvw-9K-CD0" id="C0M-z9-Gh8"/>
+                                    <outlet property="delegate" destination="Kvw-9K-CD0" id="H2i-30-bRH"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="Jrp-7I-0hw" firstAttribute="height" secondItem="4bs-Tp-riE" secondAttribute="height" multiplier="0.2" id="Azw-kV-hnx"/>
-                            <constraint firstItem="Jrp-7I-0hw" firstAttribute="centerY" secondItem="4bs-Tp-riE" secondAttribute="centerY" id="BCT-oo-mov"/>
-                            <constraint firstItem="Jrp-7I-0hw" firstAttribute="centerX" secondItem="4bs-Tp-riE" secondAttribute="centerX" id="Gb3-ST-HKS"/>
-                            <constraint firstItem="Jrp-7I-0hw" firstAttribute="width" secondItem="4bs-Tp-riE" secondAttribute="width" multiplier="0.5" id="sBW-dN-8Bv"/>
+                            <constraint firstItem="Ugg-MB-6dR" firstAttribute="height" secondItem="4bs-Tp-riE" secondAttribute="height" id="M18-XW-mbh"/>
+                            <constraint firstItem="Ugg-MB-6dR" firstAttribute="centerX" secondItem="4bs-Tp-riE" secondAttribute="centerX" id="e8u-CA-xZY"/>
+                            <constraint firstItem="Ugg-MB-6dR" firstAttribute="centerY" secondItem="4bs-Tp-riE" secondAttribute="centerY" id="hJv-ru-Vjf"/>
+                            <constraint firstItem="Ugg-MB-6dR" firstAttribute="width" secondItem="4bs-Tp-riE" secondAttribute="width" id="znP-do-KCG"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="Ugg-MB-6dR" id="ku2-NA-eff"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qpw-nl-zPr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2829,7 +3043,7 @@
                                                     <color key="textColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" tag="110" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="862D90BC-7163-4795-8AC7-2FE62EE73C04" translatesAutoresizingMaskIntoConstraints="NO" id="p0G-Ct-fBW">
+                                                <imageView userInteractionEnabled="NO" tag="110" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="45BDF1C3-6853-4788-B984-8BC82D1C427F" translatesAutoresizingMaskIntoConstraints="NO" id="p0G-Ct-fBW">
                                                     <rect key="frame" x="184" y="61" width="21" height="19"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="19" id="dZg-s2-dDx"/>
@@ -2948,7 +3162,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="862D90BC-7163-4795-8AC7-2FE62EE73C04" width="21" height="19">
+        <image name="45BDF1C3-6853-4788-B984-8BC82D1C427F" width="21" height="19">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

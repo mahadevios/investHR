@@ -481,6 +481,26 @@ class APIManager: NSObject
         
     }
     
+    func uodateUserProfile(userDict:Any) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["registrationDict=\(userDict)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.SAVE_EDITED_PROFILE_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.SAVE_EDITED_PROFILE_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+    
     func createRequestAndSend(dict:Any, imageData:Data?)
     {
         var request:NSURLRequest!

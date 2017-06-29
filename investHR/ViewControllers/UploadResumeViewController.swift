@@ -8,10 +8,11 @@
 
 import UIKit
 
-class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate
+class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UITableViewDataSource,UITableViewDelegate
 {
     var uploadedResumeNamesArray = [String]()
     
+    @IBOutlet weak var tableView: UITableView!
     var uploadingRow: Int!
     
     @available(iOS 8.0, *)
@@ -19,23 +20,23 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate
     {
         let resumeData = NSData(contentsOf: url)
         
-        var uniqueImageName = String(Date().millisecondsSince1970)
+        let uniqueImageName = String(Date().millisecondsSince1970) + "." + url.pathExtension
 
-        let userId = UserDefaults.standard.value(forKey: Constant.USERNAME)
-        
-        if userId != nil
-        {
-            uniqueImageName = uniqueImageName.appending(userId as! String)
-        }
-        else
-        {
-            let userId = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN)
-            
-            if userId != nil
-            {
-                uniqueImageName =  uniqueImageName.appending(userId as! String)
-            }
-        }
+//        let userId = UserDefaults.standard.value(forKey: Constant.USERNAME)
+//        
+//        if userId != nil
+//        {
+//            uniqueImageName = uniqueImageName.appending(userId as! String)
+//        }
+//        else
+//        {
+//            let userId = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+//            
+//            if userId != nil
+//            {
+//                uniqueImageName =  uniqueImageName.appending(userId as! String)
+//            }
+//        }
 
         print(url.pathExtension)
         
@@ -43,34 +44,46 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate
         
         let okAction = UIAlertAction(title: "Upload", style: UIAlertActionStyle.default, handler: { act -> Void in
             
-            AppPreferences.sharedPreferences().showHudWith(title: "Uploading Video..", detailText: "Please wait")
+            AppPreferences.sharedPreferences().showHudWith(title: "Uploading Resume..", detailText: "Please wait")
 
             let ftp = FTPImageUpload(baseUrl: Constant.FTP_HOST_NAME, userName: Constant.FTP_USERNAME, password: Constant.FTP_PASSWORD, directoryPath: Constant.FTP_DIRECTORY_PATH)
             
-            let result = ftp.send(data: resumeData! as Data, with: uniqueImageName)
-            
-            if result
-            {
-                let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-                let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-                let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+
+            DispatchQueue.global(qos: .background).async {
+
+                let result = ftp.send(data: resumeData! as Data, with: uniqueImageName)
+
                 
-                if username != nil && password != nil
+                DispatchQueue.main.async {
+                    
+                    
+                if result
                 {
-                    APIManager.getSharedAPIManager().saveResume(username: username!, password: password!, linkedinId: "", fileName: uniqueImageName)
+                    let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+                    let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+                    let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+                    
+                    if username != nil && password != nil
+                    {
+                        APIManager.getSharedAPIManager().saveResume(username: username!, password: password!, linkedinId: "", fileName: uniqueImageName)
+                    }
+                    else
+                        if linkedInId != nil
+                        {
+                            APIManager.getSharedAPIManager().saveResume(username: "", password: "", linkedinId: linkedInId!, fileName: uniqueImageName)
+                            
+                    }
                 }
                 else
-                    if linkedInId != nil
-                    {
-                        APIManager.getSharedAPIManager().saveResume(username: "", password: "", linkedinId: linkedInId!, fileName: uniqueImageName)
-                        
+                {
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                    
                 }
             }
-            else
-            {
-                AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
-            }
+        }
+            
+
             //alertController.dismiss(animated: true, completion: nil)
         }
         )
@@ -128,10 +141,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate
         
         let rightBarButtonItem = UIBarButtonItem(customView: editProfileView)
         self.navigationItem.rightBarButtonItem = rightBarButtonItem
-        // Do any additional setup after loading the view.
-    }
-    override func viewWillAppear(_ animated: Bool)
-    {
+        
         let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
         let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
@@ -149,10 +159,31 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate
         NotificationCenter.default.addObserver(self, selector: #selector(checkUploadVideoResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_UPLOAD_USER_RESUME), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkUploadedResumeListResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_UPLOADED_RESUME_LIST), object: nil)
+        // Do any additional setup after loading the view.
+    }
+    override func viewWillAppear(_ animated: Bool)
+    {
+        
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return uploadedResumeNamesArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
+        
+        let resumeNameLabel = cell?.viewWithTag(101) as! UILabel
+        
+        resumeNameLabel.text = uploadedResumeNamesArray[indexPath.row]
+        
+        return cell!
+    }
     func checkUploadVideoResponse(dataDic:Notification)
     {
+        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
         guard let responseDic = dataDic.object as? [String:String] else
         {
             return
@@ -160,7 +191,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate
         
         let code = responseDic["code"]
         
-        if let videoName = responseDic["videoName"]
+        if let videoName = responseDic["ResumeName"]
         {
             
             uploadedResumeNamesArray.append(videoName)
@@ -171,7 +202,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate
             
         }
         
-        
+        tableView.reloadData()
         
     }
 
@@ -184,19 +215,24 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate
         
         let code = responseDic["code"]
         
-        if let videoName = responseDic["videoName"]
+        if let videoName = responseDic["ResumeName"]
         {
             let resumeNamesArray = videoName.components(separatedBy: "#@")
             
             for index in 0 ..< resumeNamesArray.count
             {
-                uploadedResumeNamesArray.append(resumeNamesArray[index])
+                if resumeNamesArray[index] != ""
+                {
+                    uploadedResumeNamesArray.append(resumeNamesArray[index])
+                    
+                    
+                }
                 
             }
             
             //self.collectionView.reloadItems(at: [IndexPath.init(row: uploadingRow, section: 0)])
             
-            
+            self.tableView.reloadData()
             
         }
 
