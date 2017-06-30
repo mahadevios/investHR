@@ -8,7 +8,9 @@
 
 import UIKit
 import CoreData
+import Photos
 
+import AssetsLibrary
 class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource,UITextViewDelegate,UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,URLSessionDelegate
 {
     @IBOutlet weak var circleImageView: UIImageView!
@@ -17,13 +19,11 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var mobileNumberTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
-  //  @IBOutlet weak var qualificationTextField: UITextField!
     @IBOutlet weak var cuurentRoleTextField: UITextField!
     @IBOutlet weak var currentCompanyTextField: UITextField!
-   // @IBOutlet weak var additionalPhoneTextfield: UITextField!
     @IBOutlet weak var stateTextField: SearchTextField!
-   // @IBOutlet weak var aboutYouTextView: UITextView!
     var coutryCodesArray:[String] = []
+    var imagedata:Any!
 
     @IBOutlet weak var visaStatusTextField: TextField!
     @IBOutlet weak var cityTextField: SearchTextField!
@@ -63,7 +63,6 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
         coutryCodesArray = ["+90","+91","+92","+93","+94","+95","+96"]
 
-        
         setNavigationItem()
         
         setProfileView()
@@ -111,7 +110,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         stateTextField.delegate = self
         cityTextField.delegate = self
 
-        NotificationCenter.default.addObserver(self, selector: #selector(checkUpdateProfileResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVED_APPLIED_JOB_DESCRIPTION), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(checkUpdateProfileResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVE_EDITED_PROFILE), object: nil)
 
         //uploadFIleUsingFTP()
         // Do any additional setup after loading the view.
@@ -127,6 +126,21 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         guard let code = responseDic["code"] else {
             
             return
+        }
+
+        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+        if username != nil && password != nil
+        {
+            APIManager.getSharedAPIManager().getUserProfile(username: username!, password: password!, linkedinId:"")
+        }
+        else
+            if linkedInId != nil
+            {
+                APIManager.getSharedAPIManager().getUserProfile(username: "", password: "", linkedinId:linkedInId!)
+                
         }
 
     
@@ -238,6 +252,21 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         currentCompanyTextField.isUserInteractionEnabled = setEnable
        // additionalPhoneTextfield.isUserInteractionEnabled = setEnable
         stateTextField.isUserInteractionEnabled = setEnable
+        cityTextField.isUserInteractionEnabled = setEnable
+        visaStatusTextField.isUserInteractionEnabled = setEnable
+        candidateFunctionTextField.isUserInteractionEnabled = setEnable
+        servicesTextField.isUserInteractionEnabled = setEnable
+        linkedInProfileUrlTextField.isUserInteractionEnabled = setEnable
+        revenueQuotaTextFiled.isUserInteractionEnabled = setEnable
+        PLTextFiled.isUserInteractionEnabled = setEnable
+        experienceTextField.isUserInteractionEnabled = setEnable
+        expectedCompanyTextField.isUserInteractionEnabled = setEnable
+        relocationTextFIeld.isUserInteractionEnabled = setEnable
+        joiningTimeTextFIeld.isUserInteractionEnabled = setEnable
+        companiesInterviewedTextView.isUserInteractionEnabled = setEnable
+        nonCompeteTextView.isUserInteractionEnabled = setEnable
+        benefitsTextView.isUserInteractionEnabled = setEnable
+
         //aboutYouTextView.isUserInteractionEnabled = setEnable
 
 
@@ -288,6 +317,104 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
         let companiesInterViewed = userDetailsDict["companiesInterviewInlastTwoYears"] as? String
 
+        if companiesInterViewed != nil
+        {
+            companiesInterviewedTextView.text = companiesInterViewed
+        }
+        let visaStatus = userDetailsDict["visaStatus"] as? String
+        
+        if visaStatus != nil
+        {
+            visaStatusTextField.text = visaStatus
+        }
+
+        
+        let expectedComp = userDetailsDict["expectedComp"] as? String
+        
+        if expectedComp != nil
+        {
+            expectedCompanyTextField.text = expectedComp
+        }
+
+        let candidateFunction = userDetailsDict["candidateFunction"] as? String
+        
+        if candidateFunction != nil
+        {
+            candidateFunctionTextField.text = candidateFunction
+        }
+        
+        let verticals = userDetailsDict["verticals"] as? String
+        
+        if verticals != nil
+        {
+            verticalsTextFiled.text = verticals
+        }
+
+        let verticalsOrIndustory = userDetailsDict["verticalsOrIndustory"] as? String
+        
+//        if verticalsOrIndustory != nil
+//        {
+//            vert.text = verticals
+//        }
+
+        let pandL = userDetailsDict["pandL"] as? String
+        
+        if pandL != nil
+        {
+            PLTextFiled.text = pandL
+        }
+        
+        let linkedInUrl = userDetailsDict["linkedInUrl"] as? String
+        
+        if pandL != nil
+        {
+            linkedInProfileUrlTextField.text = linkedInUrl
+        }
+        
+        let benefitsInCurrentOrg = userDetailsDict["benefitsInCurrentOrg"] as? String
+        
+        if benefitsInCurrentOrg != nil
+        {
+            benefitsTextView.text = benefitsInCurrentOrg
+        }
+
+        let relocation = userDetailsDict["relocation"] as? String
+        
+        if relocation != nil
+        {
+            relocationTextFIeld.text = relocation
+        }
+
+        let anyNonComplete = userDetailsDict["anyNonComplete"] as? String
+        
+        if anyNonComplete != nil
+        {
+            nonCompeteTextView.text = anyNonComplete
+        }
+        
+        let experienceInOffshore = userDetailsDict["experienceInOffshore"] as? String
+        
+        if experienceInOffshore != nil
+        {
+            experienceTextField.text = experienceInOffshore
+        }
+
+        let imageName = userDetailsDict["imageName"] as? String
+
+        let revenueQuota = userDetailsDict["revenueQuota"] as? String
+        
+        if revenueQuota != nil
+        {
+            revenueQuotaTextFiled.text = revenueQuota
+        }
+
+        let joiningTimeRequired = userDetailsDict["joiningTimeRequired"] as? String
+        
+        if joiningTimeRequired != nil
+        {
+            joiningTimeTextFIeld.text = joiningTimeRequired
+        }
+
         nameTextField.text = username
         
         if mobileNum != nil
@@ -315,10 +442,70 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             stateTextField.text = state
         }
         
-//        if companiesInterViewed != nil
-//        {
-//            aboutYouTextView.text = companiesInterViewed
-//        }
+        guard let pictureUrlString = imageName else
+        {
+            return
+         }
+        
+        CoreDataManager.getSharedCoreDataManager().updateUser(pictureUrl: imageName!)
+
+        do
+        {
+        
+        DispatchQueue.global(qos: .background).async
+            {
+                print("This is run on the background queue")
+                //                        if let pictureUrlString = Constant.USER_PROFILE_IMAGE_PATH + pictureUrlString!
+                //                        {
+                let pictureUrl = URL(string: Constant.USER_PROFILE_IMAGE_PATH + pictureUrlString)
+                
+                if let pictureUrl = pictureUrl
+                {
+                    
+                      do
+                      {
+                        
+                                let imageData = try Data(contentsOf: pictureUrl as URL)
+                        
+                                let userImage = UIImage(data: imageData)
+                        
+                        DispatchQueue.main.async
+                            {
+                                self.circleImageView.image = userImage
+                                
+                                print("got in main queue")
+                                
+
+                            }
+                        NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
+
+
+                        }
+                      catch let error as NSError
+                      {
+                        print(error.localizedDescription)
+                        }
+                    
+                    
+                }
+                else
+                {
+                    DispatchQueue.main.async
+                        {
+                            self.circleImageView.image = UIImage(named:"InsideDefaultCircle")
+                        }
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
+                }
+                //}
+        }
+
+        }
+        catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+
+
     }
     
     
@@ -563,15 +750,43 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         var username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         var password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
         var linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-        var editedPasswordByConsideringLinkedIn = ""
+
+        var editedEmail1:String!
+        var editedPassword1:String!
 
         if username != nil && password != nil
         {
             linkedInId = ""
-            editedPasswordByConsideringLinkedIn = editedPassword
+            if editedEmail == ""
+            {
+                editedEmail1 = username
+            }
+            else
+            {
+                editedEmail1 = editedEmail
+            }
+            if editedPassword == ""
+            {
+                editedPassword1 = password
+            }
+            else
+            {
+                editedPassword1 = editedPassword
+            }
             //APIManager.getSharedAPIManager().getVerticalJobs(username: username!, password: password!, varticalId: String(verticalId), linkedinId:"")
         }
         else
+        {
+            if editedEmail == ""
+            {
+                editedEmail1 = username
+            }
+            else
+            {
+                editedEmail1 = editedEmail
+            }
+            editedPassword1 = ""
+            
             if linkedInId != nil
             {
                 username = ""
@@ -579,10 +794,10 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
                 password = ""
                 //APIManager.getSharedAPIManager().getVerticalJobs(username: "", password: "", varticalId: String(verticalId), linkedinId:linkedInId!)
                 
+            }
         }
         
-        
-        let dict = ["name":name,"email":username!,"password":password!,"linkedinId":linkedInId!,"editedEmail":editedEmail,"editedPassword":editedPasswordByConsideringLinkedIn,"mobile":mobile,"currentRole":cuurentRole,"currentCompany":currentCompany,"stateId":state,"cityId":city,"visaStatus":visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed,"benifits":benefits,"notJoinSpecificOrg":nonCompete,"image":"","expInOffshoreEng":expOffshore,"relocation":relocation,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":""] as [String : String]
+        let dict = ["name":name,"email":username!,"password":password!,"linkedinId":linkedInId!,"editedEmail":editedEmail1,"editedPassword":editedPassword1,"mobile":mobile,"currentRole":cuurentRole,"currentCompany":currentCompany,"stateId":state,"cityId":city,"visaStatus":visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed,"benifits":benefits,"notJoinSpecificOrg":nonCompete,"image":"","expInOffshoreEng":expOffshore,"relocation":relocation,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":linkedInId!] as [String : String]
         
         
         do {
@@ -595,7 +810,8 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             
             // APIManager.getSharedAPIManager().registerUser(dict: decoded)
             //            do {
-            APIManager.getSharedAPIManager().uodateUserProfile(userDict: decoded)
+            //APIManager.getSharedAPIManager().uodateUserProfile(userDict: decoded)
+            APIManager.getSharedAPIManager().createUpdateProfileRequestAndSend(dict: decoded, imageData: imagedata as! Data?)
             //            } catch let error as NSError
             //            {
             //
@@ -679,7 +895,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             }
         }
         
-        hideBarButtonItems(hide: false)
+        hideBarButtonItems(hide: "Edit")
 
        // picker.removeFromParentViewController()
     }
@@ -697,7 +913,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         nameTextField.addSubview(imageView)
         
         let leftView = UIView(frame: CGRect(x: 0, y: 5, width: 65, height: 40))
-        let imageView1 = UIImageView(frame: CGRect(x: 15, y: 7, width: 18, height: 17))
+        let imageView1 = UIImageView(frame: CGRect(x: 15, y: 10, width: 18, height: 17))
         let image1 = UIImage(named: "Mobile")
         imageView1.image = image1
         leftView.addSubview(imageView1)
@@ -711,15 +927,15 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
         
         
-        let imageView2 = UIImageView(frame: CGRect(x: 15, y: 5, width: 16, height: 12))
+        let imageView2 = UIImageView(frame: CGRect(x: 15, y: 8, width: 16, height: 12))
         let image2 = UIImage(named: "Email")
         imageView2.image = image2
         emailTextField.addSubview(imageView2)
         
-//        let imageView3 = UIImageView(frame: CGRect(x: 15, y: 5, width: 20, height: 15))
-//        let image3 = UIImage(named: "Qualification")
-//        imageView3.image = image3
-//        qualificationTextField.addSubview(imageView3)
+        let imageView3 = UIImageView(frame: CGRect(x: 15, y: 5, width: 18, height: 15))
+        let image3 = UIImage(named: "Password")
+        imageView3.image = image3
+        passwordTextField.addSubview(imageView3)
         
         let imageView4 = UIImageView(frame: CGRect(x: 15, y: 5, width: 10, height: 20))
         let image4 = UIImage(named: "Role")
@@ -729,13 +945,14 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         let imageView5 = UIImageView(frame: CGRect(x: 15, y: 5, width: 20, height: 20))
         let image5 = UIImage(named: "Company")
         imageView5.image = image5
-        
         currentCompanyTextField.addSubview(imageView5)
         
-//        let imageView6 = UIImageView(frame: CGRect(x: 15, y: 5, width: 18, height: 17))
-//        let image6 = UIImage(named: "Mobile")
-//        imageView6.image = image6
-//        additionalPhoneTextfield.addSubview(imageView6)
+        
+        
+        let imageView6 = UIImageView(frame: CGRect(x: 15, y: 5, width: 18, height: 17))
+        let image6 = UIImage(named: "Visa")
+        imageView6.image = image6
+        visaStatusTextField.addSubview(imageView6)
         
 //        let imageView7 = UIImageView(frame: CGRect(x: 15, y: 5, width: 14, height: 17))
 //        let image7 = UIImage(named: "Location")
@@ -747,17 +964,24 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     
     
     
-    func hideBarButtonItems( hide:Bool)
+    func hideBarButtonItems( hide:String)
     {
-        if hide
+        if hide == "Cancel"
         {
             self.navigationItem.leftBarButtonItem = nil
             setRightBarButtonItemCancel()
         }
         else
+            if hide == "Edit"
         {
            setLeftBarButtonItem()
            setRightBarButtonItemEdit()
+        }
+            else
+                if hide == "Save"
+                {
+                    setLeftBarButtonItem()
+                    setRightBarButtonItemSave()
         }
         
         //self.navigationItem.leftBarButtonItem.hide
@@ -774,9 +998,9 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
         circleImageView.clipsToBounds = true;
         
-        circleImageView.image = UIImage(named:"InsideDefaultCircle")
+        //circleImageView.image = UIImage(named:"InsideDefaultCircle")
         
-        showData()
+        //showData()
         
     }
     
@@ -801,25 +1025,41 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
         self.view.addSubview(imagePickerController.view)
         
-        hideBarButtonItems(hide: true)
+        hideBarButtonItems(hide: "Cancel")
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         let chosenImage = info[UIImagePickerControllerOriginalImage]
         
+        let chosenImageName = info[UIImagePickerControllerOriginalImage]
+        
+        
         let refURL = info[UIImagePickerControllerReferenceURL]
         
-        let v = info[UIImagePickerControllerOriginalImage] as? UIImage
+        let userImage = info[UIImagePickerControllerOriginalImage] as? UIImage
         
-        circleImageView.image = v
+        imagedata    = UIImagePNGRepresentation(userImage!) as Data!
+        
+        var imageName:String!
+        if let imageURL = info[UIImagePickerControllerReferenceURL] as? URL {
+            let result = PHAsset.fetchAssets(withALAssetURLs: [imageURL], options: nil)
+            let asset = result.firstObject
+            imageName = asset?.value(forKey: "filename") as! String!
+            print(asset?.value(forKey: "filename") ?? "nil")
+            
+        }
+        circleImageView.image = userImage
         
         picker.view!.removeFromSuperview()
         
         picker.removeFromParentViewController()
         
-        hideBarButtonItems(hide: false)
+        let uniqueImageName = String(Date().millisecondsSince1970)
+        
+        print(uniqueImageName)
 
+        hideBarButtonItems(hide: "Save")
         
     }
 

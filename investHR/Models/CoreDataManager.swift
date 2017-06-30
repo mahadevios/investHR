@@ -285,5 +285,35 @@ class CoreDataManager: NSObject
         
         return true
     }
+    
+    func updateUser(pictureUrl: String)
+    {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        var context: NSManagedObjectContext = appDelegate.managedObjectContext
+        
+        var fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+        
+        do
+        {
+            if let fetchResults = try appDelegate.managedObjectContext.fetch(fetchRequest) as? [NSManagedObject] {
+                if fetchResults.count != 0{
+                    
+                    var managedObject = fetchResults[0]
+                    managedObject.setValue(pictureUrl, forKey: "pictureUrl")
+                    
+                    try appDelegate.managedObjectContext.save()
+                        
+                    
+                }
+            }
+ 
+            
+        }
+        catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        
+    }
 
 }

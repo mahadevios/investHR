@@ -47,8 +47,10 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkSaveJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVE_JOB), object: nil)
         
-        
-        getJobDetails()
+        if self.domainType == "vertical" || self.domainType == "horizontal" || self.domainType == "roles"
+        {
+            getJobDetails()
+        }
     }
     
     func getJobDetails()

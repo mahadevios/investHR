@@ -28,14 +28,19 @@ struct Constant
     static let  FTP_DIRECTORY_PATH                       = "TEST"
 
     static let  BASE_URL_PATH                            = "http://192.168.3.75:9091/coreflex/investhr/"
-    //static let  USER_IMAGE_PATH                          = " http://192.168.3.75:9091/coreflex/resources/UserImages/"
+    static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.75:9091/coreflex/resources/UserImages/"
+    //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.67:7070/coreflex/resources/UserImages/"
 
    
     //static let  BASE_URL_PATH                            = "http://192.168.3.80:8080/InvestHr/investhr/"
 
-    //static let  BASE_URL_PATH                            = "http://192.168.3.67:8080/coreflex/investhr/"
+  //  static let  BASE_URL_PATH                            = "http://192.168.3.67:7070/coreflex/investhr/"
 
-   // static let  BASE_URL_PATH                            = "http://192.168.3.74:9090/coreflex/investhr/"
+    //static let  BASE_URL_PATH                            = "http://192.168.3.74:9090/coreflex/investhr/"
+    //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.2.9:9090/coreflex/resources/UserImages/"
+
+    //static let  BASE_URL_PATH                            = "http://192.168.2.9:9090/coreflex/investhr/"
+
     static let  LINKEDIN_LOGOUT_API                      = "https://api.linkedin.com/uas/oauth/invalidateToken"
     static let  LINKEDIN_ACCESS_TOKEN                    = "linkedInAccessToken"
     static let  LINKEDIN_ACCESS_TOKEN_EXPIRES_IN         = "linkedInAccessTokenExpiresIn"
@@ -62,6 +67,7 @@ struct Constant
     static let  UPLOADED_RESUME_LIST_API                 = "login/mobileResumeList"
     static let  UPLOADED_VIDEO_LIST_API                  = "login/MobileVideoList"
     static let  SAVE_EDITED_PROFILE_API                  = "login/mobileEditProfile"
+    static let  LOGOUT_API                               = "login/logout"
 
 
 

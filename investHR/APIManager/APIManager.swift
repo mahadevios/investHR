@@ -501,12 +501,31 @@ class APIManager: NSObject
         
     }
     
-    func createRequestAndSend(dict:Any, imageData:Data?)
+    func logout(username:String, password:String, linkedinId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.LOGOUT_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.LOGOUT_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+    func createRegistrationRequestAndSend(dict:Any, imageData:Data?)
     {
         var request:NSURLRequest!
         do
         {
-           request  = try createRequest(dict: dict, imageData: imageData) as NSURLRequest!
+           request  = try createRegistrationRequest(dict: dict, imageData: imageData) as NSURLRequest!
 
         } catch let error as NSError
         {
@@ -517,7 +536,7 @@ class APIManager: NSObject
         downloadmetadatajob.makeMultipartRequest(request: request as URLRequest)
     }
     
-    func createRequest(dict:Any, imageData: Data?) throws -> URLRequest
+    private func createRegistrationRequest(dict:Any, imageData: Data?) throws -> URLRequest
     {
         let parameters = [
             "registrationDict"  : dict
@@ -536,6 +555,41 @@ class APIManager: NSObject
         return request
     }
     
+    func createUpdateProfileRequestAndSend(dict:Any, imageData:Data?)
+    {
+        var request:NSURLRequest!
+        do
+        {
+            request  = try createUpdateProfileRequest(dict: dict, imageData: imageData) as NSURLRequest!
+            
+        } catch let error as NSError
+        {
+            
+        }
+        let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.SAVE_EDITED_PROFILE_API, withRequestParameter: "" as AnyObject, withResourcePath: Constant.SAVE_EDITED_PROFILE_API, withHttpMethd: Constant.POST)
+        
+        downloadmetadatajob.makeMultipartRequest(request: request as URLRequest)
+    }
+    
+    private func createUpdateProfileRequest(dict:Any, imageData: Data?) throws -> URLRequest
+    {
+        let parameters = [
+            "registrationDict"  : dict
+        ]  // build your dictionary however appropriate
+        
+        let boundary = generateBoundaryString()
+        
+        let url = URL(string: "\(Constant.BASE_URL_PATH)\("login/mobileEditProfile")")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        let path1 = "userImage"
+        request.httpBody = try createBody(with: parameters, filePathKey: "file", paths: [path1], boundary: boundary, imageData: imageData)
+        
+        return request
+    }
+
     /// Create body of the multipart/form-data request
     ///
     /// - parameter parameters:   The optional dictionary containing keys and values to be passed to web service
@@ -560,7 +614,7 @@ class APIManager: NSObject
         for path in paths {
             let url = URL(fileURLWithPath: path)
             //let filename = url.lastPathComponent
-            let filename = "userImage"
+            let filename = "userImage.png"
 
 //            let data = try Data(contentsOf: url)
             

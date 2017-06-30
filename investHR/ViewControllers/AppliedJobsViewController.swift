@@ -42,7 +42,40 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
     {
         let appliedJobsDict = dataDic.object as! [String:AnyObject]
         
-        let appliedJobsNumber = appliedJobsDict["appliedJobSize"]
+        let appliedJobsNumber = appliedJobsDict["appliedJobSize"] as? Int
+        
+        if appliedJobsNumber != nil
+        {
+            if appliedJobsNumber == 0
+            {
+                
+            }
+            else
+                if appliedJobsNumber == 1
+
+            {
+                
+                let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 25))
+                numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
+                numberOfJobsLabel.text = "\(appliedJobsNumber!) job"
+                numberOfJobsLabel.textAlignment = NSTextAlignment.right
+                let rightBarButtonItem = UIBarButtonItem(customView: numberOfJobsLabel)
+                
+                self.navigationItem.rightBarButtonItem = rightBarButtonItem
+            }
+            else
+                {
+                    let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 25))
+                    numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
+                    numberOfJobsLabel.text = "\(appliedJobsNumber!) jobs"
+                    numberOfJobsLabel.textAlignment = NSTextAlignment.right
+                    let rightBarButtonItem = UIBarButtonItem(customView: numberOfJobsLabel)
+                    
+                    self.navigationItem.rightBarButtonItem = rightBarButtonItem
+            }
+            
+
+        }
         
         let appliedJobsListString = appliedJobsDict["appliedJobList"] as! String
 
@@ -58,6 +91,12 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
         }
         
     }
+    
+    func setNumberOfJobs()
+    {
+        
+    }
+    
     func popViewController() -> Void
     {
         self.revealViewController().revealToggle(animated: true)
@@ -120,12 +159,12 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
         
         if username != nil && password != nil
         {
-            APIManager.getSharedAPIManager().getSavedOrAppliedJobDescription(username: username!, password: password!, linkedinId: "", jobId: String( jobId))
+            APIManager.getSharedAPIManager().getSavedOrAppliedJobDescription(username: username!, password: password!, linkedinId: "", jobId: String(jobId))
         }
         else
             if linkedInId != nil
             {
-                APIManager.getSharedAPIManager().getSavedOrAppliedJobDescription(username: "", password: "", linkedinId: linkedInId!,  jobId: String( jobId))
+                APIManager.getSharedAPIManager().getSavedOrAppliedJobDescription(username: "", password: "", linkedinId: linkedInId!,  jobId: String(jobId))
         }
         
         

@@ -660,7 +660,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
-        var savePath:String = self.UserVideosFolderPath() + "/" + recordedVideoNamesArray[indexPath.row] + ".mp4"
+        var savePath:String = self.UserVideosFolderPath() + "/" + recordedVideoNamesArray[indexPath.row]
         //savePath = savePath.addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
         let videoURL = URL(fileURLWithPath: savePath)
         

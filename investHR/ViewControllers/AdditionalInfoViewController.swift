@@ -221,6 +221,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
             
             return
         }
+        
         guard let benefits = benefitsTextView.text else {
             
             return
@@ -284,9 +285,36 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
             return
         }
         
-    
+        var companiesInterViewed1:String!
+        if companiesInterViewed == "Companies interviewed in past 1 year"
+        {
+            companiesInterViewed1 = ""
+        }
+        else
+        {
+         companiesInterViewed1 = companiesInterViewedTextView.text
+        }
         
-       let dict = ["name":self.name,"email":self.email,"password":self.password,"mobile":self.mobile,"currentRole":self.currentRole,"currentCompany":self.currentCompany,"stateId":self.state!,"cityId":self.city!,"visaStatus":self.visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed,"benifits":benefits,"notJoinSpecificOrg":nonCompete,"image":"","expInOffshoreEng":expOffshore,"relocation":relocation,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":""] as [String : String]
+        var benefit1:String!
+        if benefits == "Benefits in current organization(401k/insurance coverage etc)\n"
+        {
+            benefit1 = ""
+        }
+        else
+        {
+            benefit1 = benefitsTextView.text
+        }
+        var nonCompete1:String!
+        if nonCompete == "Any non-compete that will prevent you from managing a specific client OR Not join any specific organization"
+        {
+            nonCompete1 = ""
+        }
+        else
+        {
+          nonCompete1 = nonCompeteTextView.text
+        }
+        
+       let dict = ["name":self.name,"email":self.email,"password":self.password,"mobile":self.mobile,"currentRole":self.currentRole,"currentCompany":self.currentCompany,"stateId":self.state!,"cityId":self.city!,"visaStatus":self.visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed1,"benifits":benefit1,"notJoinSpecificOrg":nonCompete1,"image":"","expInOffshoreEng":expOffshore,"relocation":relocation,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":""] as [String : String]
         
         
         do {
@@ -300,7 +328,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
                // APIManager.getSharedAPIManager().registerUser(dict: decoded)
             let data = imageData as? Data
 //            do {
-                 APIManager.getSharedAPIManager().createRequestAndSend(dict: decoded, imageData: data)
+                 APIManager.getSharedAPIManager().createRegistrationRequestAndSend(dict: decoded, imageData: data)
 //            } catch let error as NSError
 //            {
 //                

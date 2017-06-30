@@ -35,7 +35,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         
         menuImageNamesArray = ["SideMenuProfile","SideMenuNoti","SideMenuSavedJob","SideMenuAppliedJob","SideMenuSearchJob","SideMenuUploadResume","SideMenuUploadVideo","SideMenuReferFriend","SideMenuSetting","SideMenuLogout"]
         
-        //NotificationCenter.default.addObserver(self, selector: #selector(upadateUserData), name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(upadateUserData), name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil)
         // Do any additional setup after loading the view.
     }
     
@@ -46,6 +46,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(true)
+        
         self.menuTableView.reloadData()
         
     }
@@ -62,29 +63,8 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         circleImageView.clipsToBounds = true;
         
         circleImageView.image = UIImage(named:"InsideDefaultCircle")
-        
-//        let urls = FileManager().urls(for: .documentDirectory, in: .userDomainMask)
-//        
-//        if let documentDirectory:NSURL = urls.first as NSURL?
-//        {
-//            let userImageUrl = documentDirectory.appendingPathComponent("DefaultUser.png")
-//            
-//            do
-//            {
-//                let imageData = try Data(contentsOf: userImageUrl! as URL)
-//                
-//                let userImage = UIImage(data: imageData)
-//                
-//                circleImageView.image = userImage
-//
-//            }
-//            catch let error as NSError
-//            {
-//              print(error.localizedDescription)
-//            }
-//        }
-        
-       // showData()
+                
+        showData()
     }
     func numberOfSections(in tableView: UITableView) -> Int
     {
@@ -302,6 +282,20 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             //vc1.pushViewController(vc, animated: true)
             
             //self.revealViewController().pushFrontViewController(vc, animated: true)
+            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            
+            if username != nil && password != nil
+            {
+                APIManager.getSharedAPIManager().logout(username: username!, password: password!,linkedinId:"")
+            }
+            else
+                if linkedInId != nil
+                {
+                    APIManager.getSharedAPIManager().logout(username:"", password:"",linkedinId:linkedInId!)
+                    
+            }
             LISDKSessionManager.clearSession()
             
             let cookieStorage =  HTTPCookieStorage.shared
@@ -315,6 +309,8 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             self.revealViewController().revealToggle(animated: true)
             
+            
+            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
             CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
             CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
 
@@ -358,8 +354,13 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             for userObject in (managedObjects as? [User])!
             {
                 let firstName = userObject.name
-                let pictureUrlString = userObject.pictureUrl
+                //let pictureUrlString1 = Constant.USER_PROFILE_IMAGE_PATH + userObject.pictureUrl
                 
+                
+                let pictureUrlString = userObject.pictureUrl
+
+                
+
                 if let firstName = firstName
                 {
                     userNameLabel.text = firstName
@@ -370,14 +371,16 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
                     print("This is run on the background queue")
                         if let pictureUrlString = pictureUrlString
                         {
-                            let pictureUrl = URL(string: pictureUrlString)
+                            let pictureUrl = URL(string: Constant.USER_PROFILE_IMAGE_PATH + pictureUrlString)
                             
-                            if let pictureUrl = pictureUrl
-                            {
+                            
+                            
+                            
+                            //
                                 do
                                 {
                                     
-                                    let imageData = try Data(contentsOf: pictureUrl as URL)
+                                    let imageData = try Data(contentsOf: pictureUrl! as URL)
                                     
                                     let userImage = UIImage(data: imageData)
                                     
@@ -389,6 +392,10 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
                                 }
                                 catch let error as NSError
                                 {
+                                    DispatchQueue.main.async
+                                        {
+                                            self.circleImageView.image = UIImage(named:"InsideDefaultCircle")
+                                    }
                                     print(error.localizedDescription)
                                 }
                             }
@@ -400,7 +407,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
                                     }
                                 
                             }
-                        }
+                        //}
                     }
                 
                 

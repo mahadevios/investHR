@@ -395,7 +395,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             //            if AppPreferences.sharedPreferences().isReachable
             //            {
             let data = imageData as? Data
-            APIManager.getSharedAPIManager().createRequestAndSend(dict: decoded, imageData: data)
+            APIManager.getSharedAPIManager().createRegistrationRequestAndSend(dict: decoded, imageData: data)
            // APIManager.getSharedAPIManager().registerUser(dict: decoded)
             
             let hud = MBProgressHUD.showAdded(to: UIApplication.shared.keyWindow!, animated: true)

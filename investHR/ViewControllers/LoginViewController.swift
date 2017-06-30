@@ -914,7 +914,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
             //            if AppPreferences.sharedPreferences().isReachable
             //            {
 
-            APIManager.getSharedAPIManager().createRequestAndSend(dict: decoded, imageData: imageData)
+            APIManager.getSharedAPIManager().createRegistrationRequestAndSend(dict: decoded, imageData: imageData)
 
            // APIManager.getSharedAPIManager().registerUser(dict: decoded)
             
