@@ -665,4 +665,84 @@ class APIManager: NSObject
     }    
     
 
+//    func downloadFileFromFTP(fileName:String, sender:Any)
+//    {
+//        let username = Constant.FTP_USERNAME.replacingOccurrences(of: "@", with: "%40")
+//        
+//        let password = Constant.FTP_PASSWORD.replacingOccurrences(of: "@", with: "%40")
+//        
+//        let hostName = Constant.FTP_HOST_NAME
+//        
+//        let directoryPath = Constant.FTP_DIRECTORY_PATH
+//        
+//        let downloadFileName = fileName.replacingOccurrences(of: " ", with: "%20")
+//        
+//       // NSString* urlString=[NSString stringWithFormat:@"ftp://%@:%@%@%@%@",username,password,FTPHostName,FTPFilesFolderName,downloadableAttachmentName];
+//
+//        let fullyQualifiedPath = "ftp://\(username):\(password)\("@")\(hostName)/\(directoryPath)/\(downloadFileName)"
+//        
+//        let downloadUrl = URL(string: fullyQualifiedPath)
+//        
+//        let sessionConf = URLSessionConfiguration.default
+//        
+//        let downloadSession = URLSession(configuration: sessionConf, delegate: self, delegateQueue: nil)
+//        
+//        if downloadUrl != nil
+//        {
+//            let downloadTask = downloadSession.downloadTask(with: downloadUrl!)
+//            
+//            downloadTask.resume()
+//        }
+//        
+//        
+//    }
+//    
+//    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?)
+//    {
+//        print(error?.localizedDescription)
+//    }
+//    
+//    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL)
+//    {
+//        do
+//        {
+//            let data = try Data.init(contentsOf: location)
+//
+//        } catch let error as Error
+//        {
+//            
+//        }
+//        print(location)
+//    }
+//    
+//    func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64)
+//    {
+//        print(totalBytesSent)
+//    }
+//    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64)
+//    {
+//        print(bytesWritten)
+//    }
+
+//    func documentsPath() ->String?
+//    {
+//        // fetch our paths
+//        let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
+//        
+//        if paths.count > 0
+//        {
+//            // return our docs directory path if we have one
+//            let docsDir = paths[0]
+//            return docsDir
+//        }
+//        return nil
+//    }
+//    
+//    func UserVideosFolderPath() -> String
+//    {
+//        let folderpath = self.documentsPath()! + "/"  + Constant.USER_VIDEOS_FOLDER_NAME
+//        
+//        return folderpath
+//    }
+
 }

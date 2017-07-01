@@ -139,7 +139,8 @@ extension FTPImageUpload
 //    }
 //}
 
-extension FTPImageUpload {
+extension FTPImageUpload
+{
     func send(data: Data, with fileName: String) -> Bool {
         guard let ftpWriteStream = ftpWriteStream(forFileName: fileName) else { return false }
         
@@ -217,6 +218,56 @@ extension FTPImageUpload {
         return true
     }
     
+  
+    class func deleteFileFromFTP(fileName:String)
+    {
+    
+        let username = Constant.FTP_USERNAME.replacingOccurrences(of: "@", with: "%40")
+        
+        let password = Constant.FTP_PASSWORD.replacingOccurrences(of: "@", with: "%40")
+        
+        let hostName = Constant.FTP_HOST_NAME
+        
+        let directoryPath = Constant.FTP_DIRECTORY_PATH + "jk"
+        
+        let downloadFileName = fileName.replacingOccurrences(of: " ", with: "%20")
+        
+        // NSString* urlString=[NSString stringWithFormat:@"ftp://%@:%@%@%@%@",username,password,FTPHostName,FTPFilesFolderName,downloadableAttachmentName];
+        
+        let fullyQualifiedPath = "ftp://\(username):\(password)\("@")\(hostName)/\(directoryPath)/\(downloadFileName)"
+        
+        let downloadUrl = URL(string: fullyQualifiedPath)
+        
+        let legIntPtr = UnsafeMutablePointer<UInt8>.allocate(capacity: 255)
+
+        //let legIntPtr: UnsafeMutablePointer<UInt8>
+        
+        let  P_MAX = 255
+        //char path[P_MAX];
+        
+        let path = [P_MAX]
+        
+        // get C-String from CFStringRef
+        let ret = CFURLGetFileSystemRepresentation(downloadUrl! as CFURL!, true, legIntPtr, P_MAX)
+        
+        print(ret)
+        if (!CFURLGetFileSystemRepresentation(downloadUrl! as CFURL!, true, legIntPtr, P_MAX))
+        {
+            // error
+            print("error occured")
+        }
+        else
+        {
+          print("seccuess")
+        }
+        let leg = UnsafeMutablePointer<Int32>.allocate(capacity: 255)
+
+        //CFURLGetFileSystemRepresentation(<#T##url: CFURL!##CFURL!#>, <#T##resolveAgainstBase: Bool##Bool#>, <#T##buffer: UnsafeMutablePointer<UInt8>!##UnsafeMutablePointer<UInt8>!#>, <#T##maxBufLen: CFIndex##CFIndex#>)
+//        _ = CFURLDestroyResource(downloadUrl as CFURL!, leg)
+//    
+//        removefile(3)
+    }
+
 //    func callback(ftpWriteStream:CFWriteStream,buffer:UnsafeMutablePointer<UInt8>, dataToSendSize:Int)
 //    {
 //        let bytesWritten = CFWriteStreamWrite(ftpWriteStream, &buffer[offset], dataToSendSize)
