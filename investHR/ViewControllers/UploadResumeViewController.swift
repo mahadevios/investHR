@@ -8,14 +8,15 @@
 
 import UIKit
 
-class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UITableViewDataSource,UITableViewDelegate,URLSessionDelegate,URLSessionDownloadDelegate
+class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UITableViewDataSource,UITableViewDelegate,URLSessionDelegate,URLSessionDownloadDelegate,UIDocumentInteractionControllerDelegate
 {
     var uploadedResumeNamesArray = [String]()
     
     @IBOutlet weak var tableView: UITableView!
     var uploadingOrDownloadingRow: Int!
     var downloadingFileName: String!
-    
+    var interactionController: UIDocumentInteractionController?
+
     @available(iOS 8.0, *)
     public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL)
     {
@@ -155,6 +156,8 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         
         self.navigationItem.title = "Upload Resume"
         
+        //interactionController!.delegate = self
+
 //        let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 25))
 //        numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
 //        numberOfJobsLabel.text = "108 jobs"
@@ -470,10 +473,35 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
 
     func viewButtonCLicked(sender: subclassedUIButton)
     {
+        let indexpath = self.tableView.indexPath(for: sender.cell)
         
+        let videoName = self.uploadedResumeNamesArray[indexpath!.row]
         
-    }
+        self.uploadingOrDownloadingRow = indexpath!.row
+        
+        var savePath:String = self.UserResumeFolderPath() + "/" + videoName
+        
+        //let videoURL = URL(fileURLWithPath: savePath)
 
+
+        
+        let url = URL(fileURLWithPath: savePath)
+        interactionController = UIDocumentInteractionController(url: url)
+        interactionController!.delegate = self
+
+        interactionController!.presentPreview(animated: true)
+    }
+    func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
+        return self
+    }
+    
+    func documentInteractionControllerViewForPreview(_ controller: UIDocumentInteractionController) -> UIView? {
+        return self.view
+    }
+    
+    func documentInteractionControllerRectForPreview(_ controller: UIDocumentInteractionController) -> CGRect {
+        return self.view.frame
+    }
     func downloadButtonCLicked(sender: subclassedUIButton)
     {
         let indexpath = self.tableView.indexPath(for: sender.cell)
