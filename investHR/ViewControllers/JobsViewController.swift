@@ -639,7 +639,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
        
         let subjectLabel = cell.viewWithTag(101) as! UILabel
-        let companyWebSiteLabel = cell.viewWithTag(102) as! UILabel
+        //let companyWebSiteLabel = cell.viewWithTag(102) as! UILabel
         let applyButton = cell.viewWithTag(103) as! subclassedUIButton
         let saveButton = cell.viewWithTag(104) as! subclassedUIButton
         let saveImageView = cell.viewWithTag(105) as! UIImageView
@@ -668,9 +668,9 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         //descriptionWebView.loadHTMLString(discription, baseURL: nil)
         
-        let location = jobDic["location"] as! String
+        //let location = jobDic["location"] as! String
         
-        companyWebSiteLabel.text = location
+        //companyWebSiteLabel.text = location
         
         saveButton.accessibilityHint = String(indexPath.row)
         

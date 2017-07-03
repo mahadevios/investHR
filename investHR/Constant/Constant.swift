@@ -22,24 +22,26 @@ struct Constant
     static let  USERNAME                                 = "username"
     static let  PASSWORD                                 = "password"
     static let  USER_VIDEOS_FOLDER_NAME                  = "UserVideosFolder"
+    static let  USER_RESUME_FOLDER_NAME                  = "UserResumeFolder"
+
     static let  FTP_HOST_NAME                            = "ftp.mtcommunicator.com"
     static let  FTP_USERNAME                             = "mt@mtcommunicator.com"
     static let  FTP_PASSWORD                             = "mtone@123"
     static let  FTP_DIRECTORY_PATH                       = "TEST"
 
-    static let  BASE_URL_PATH                            = "http://192.168.3.75:9091/coreflex/investhr/"
+    static let  BASE_URL_PATH                            = "http://192.168.3.75:9091/coreflex/investhr/"              // local server
     static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.75:9091/coreflex/resources/UserImages/"
+    
+    //static let  BASE_URL_PATH                            = "http://192.168.3.67:7070/coreflex/investhr/"              // sable sarkar
     //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.67:7070/coreflex/resources/UserImages/"
 
    
-    //static let  BASE_URL_PATH                            = "http://192.168.3.80:8080/InvestHr/investhr/"
+   // static let  BASE_URL_PATH                            = "http://192.168.2.9:8080/InvestHr/investhr/"               // for testing
+   // static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.2.9:8080/InvestHr/resources/UserImages/"
 
-  //  static let  BASE_URL_PATH                            = "http://192.168.3.67:7070/coreflex/investhr/"
 
     //static let  BASE_URL_PATH                            = "http://192.168.3.74:9090/coreflex/investhr/"
-    //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.2.9:9090/coreflex/resources/UserImages/"
 
-    //static let  BASE_URL_PATH                            = "http://192.168.2.9:9090/coreflex/investhr/"
 
     static let  LINKEDIN_LOGOUT_API                      = "https://api.linkedin.com/uas/oauth/invalidateToken"
     static let  LINKEDIN_ACCESS_TOKEN                    = "linkedInAccessToken"
@@ -67,8 +69,9 @@ struct Constant
     static let  UPLOADED_RESUME_LIST_API                 = "login/mobileResumeList"
     static let  UPLOADED_VIDEO_LIST_API                  = "login/MobileVideoList"
     static let  SAVE_EDITED_PROFILE_API                  = "login/mobileEditProfile"
+    static let  DELETE_VIDEO_API                         = "login/mobileDeleteVideo"
+    static let  DELETE_RESUME_API                        = "login/mobileDeleteResume"
     static let  LOGOUT_API                               = "login/logout"
-
 
 
     
@@ -96,6 +99,9 @@ struct Constant
     static let  NOTIFICATION_UPLOADED_RESUME_LIST           = "uploadedResumeList"
     static let  NOTIFICATION_SAVE_EDITED_PROFILE            = "saveEditedProfile"
     static let  NOTIFICATION_FTP_UPLOAD                     = "ftpUpload"
+    static let  NOTIFICATION_DELETE_VIDEO                   = "deleteVideo"
+    static let  NOTIFICATION_DELETE_RESUME                  = "deleteResume"
+
 }
 
 enum MyAlertType

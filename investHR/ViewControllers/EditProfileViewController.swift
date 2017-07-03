@@ -143,6 +143,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
                 
         }
 
+        self.setUserInteractionEnabled(setEnable: false)
     
     }
     

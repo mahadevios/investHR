@@ -525,8 +525,8 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         }
         else
         {
-            self.dismiss(animated: true, completion: nil)
             NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
+            self.dismiss(animated: true, completion: nil)
             
         }
         
@@ -629,7 +629,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
         
-        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["name":name! ,"username":self.emailTextField.text!,"password":self.passwordTextField.text!])
+        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["name":name! ,"username":self.emailTextField.text!,"password":self.passwordTextField.text!,"pictureUrl":imageName!])
         
         UserDefaults.standard.set(self.emailTextField.text! , forKey: Constant.USERNAME)
         UserDefaults.standard.set(self.passwordTextField.text! , forKey: Constant.PASSWORD)
@@ -645,8 +645,9 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         }
         else
         {
-            self.dismiss(animated: true, completion: nil)
             NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
+
+            self.dismiss(animated: true, completion: nil)
             
         }
         

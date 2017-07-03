@@ -520,6 +520,50 @@ class APIManager: NSObject
         }
         
     }
+    
+    func deleteVideo(username:String, password:String, linkedinId:String, fileName:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            AppPreferences.sharedPreferences().showHudWith(title: "Removing Video..", detailText: "Please wait")
+
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","videoName=\(fileName)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.DELETE_VIDEO_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.DELETE_VIDEO_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+    
+    func deleteResume(username:String, password:String, linkedinId:String, fileName:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            AppPreferences.sharedPreferences().showHudWith(title: "Removing Resume..", detailText: "Please wait")
+
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","resumeName=\(fileName)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.DELETE_RESUME_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.DELETE_RESUME_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
     func createRegistrationRequestAndSend(dict:Any, imageData:Data?)
     {
         var request:NSURLRequest!

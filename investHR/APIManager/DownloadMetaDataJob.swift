@@ -664,7 +664,56 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                     
                 }
                 break
+                
+            case Constant.DELETE_VIDEO_API:
+                
+                guard let dictFromJSON = response else
+                {
+                    return
+                }
+                if String(describing: dictFromJSON["code"]!) == Constant.SUCCESS
+                {
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_DELETE_VIDEO), object: dictFromJSON, userInfo: nil)
+                    
+                }
+                else
+                {
+                    //UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                }
+                break
    
+            case Constant.DELETE_RESUME_API:
+                
+                guard let dictFromJSON = response else
+                {
+                    return
+                }
+                if String(describing: dictFromJSON["code"]!) == Constant.SUCCESS
+                {
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_DELETE_RESUME), object: dictFromJSON, userInfo: nil)
+                    
+                }
+                else
+                {
+//                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                }
+                break
             default: break
                 
             }
@@ -674,7 +723,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         {
             UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
             print("in catch block" + error.localizedDescription)
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Something went wrong!, please try again", withCancelText: "Ok")
+           // AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Something went wrong!, please try again", withCancelText: "Ok")
 
         }
         
@@ -734,7 +783,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         if self.downLoadEntityJobName == Constant.NEW_USER_LOGIN_API
         {
            
-            UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+            AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
            // NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_LOGGED_IN), object: nil, userInfo: nil)
 
             AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage:showErrorFromErro(error: error as NSError) , withCancelText: "Ok")
@@ -744,7 +793,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
 
         if self.downLoadEntityJobName == Constant.LINKEDIN_ACCESS_TOKEN_ENDPOINT_API
         {
-            UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+            AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
             AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage:showErrorFromErro(error: error as NSError) , withCancelText: "Ok")
             //NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: nil, userInfo: nil)
@@ -753,7 +802,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         else
         if self.downLoadEntityJobName == Constant.NEW_USER_REGISTRATION_API
         {
-            UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+            AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
             AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage:showErrorFromErro(error: error as NSError) , withCancelText: "Ok")
 
@@ -763,9 +812,14 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         else
         if self.downLoadEntityJobName == Constant.NEW_USER_REGISTRATION_API
         {
-            UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+            AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
             
             AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage:showErrorFromErro(error: error as NSError) , withCancelText: "Ok")
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
         }
     }
     

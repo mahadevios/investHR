@@ -360,7 +360,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
                 let pictureUrlString = userObject.pictureUrl
 
                 
-
+               // print(pictureUrlString!)
                 if let firstName = firstName
                 {
                     userNameLabel.text = firstName

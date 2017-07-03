@@ -78,5 +78,8 @@ class subclassedUIButton: UIButton
 {
     var jobId: Int?
     var indexPath: Int!
-    
+    var tempIndexPath: IndexPath!
+    var cell:UITableViewCell!
+    var cell1:UICollectionViewCell!
+
 }
