@@ -121,15 +121,38 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
             {
                 if videoNamesArray[index] != ""
                 {
-                    uploadedVideoNamesArray.append(videoNamesArray[index])
-                    recordedVideoNamesArray.append(videoNamesArray[index])
+                    self.uploadedVideoNamesArray.append(videoNamesArray[index])
+                    //recordedVideoNamesArray.append(videoNamesArray[index])
                     
                 }
             }
             
-            self.collectionView.reloadData()
             
         }
+        
+        let fileManager = FileManager.default
+        
+        let videoPath = self.UserVideosFolderPath()
+        
+        let url = URL.init(string: videoPath)
+        
+        do
+        {
+            let storedVideosArray = try fileManager.contentsOfDirectory(atPath: videoPath)
+            for videoName in storedVideosArray
+            {
+                if !self.uploadedVideoNamesArray.contains(videoName)
+                {
+                    recordedVideoNamesArray.append(videoName)
+                }
+            }
+        }
+        catch let error as NSError
+        {
+            
+        }
+        self.collectionView.reloadData()
+
         
     }
 
@@ -144,12 +167,40 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         
         AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
+        
         if let videoName = responseDic["videoName"]
         {
             
-            uploadedVideoNamesArray.append(videoName)
+            if let index = recordedVideoNamesArray.index(of: videoName)
+            {
+                recordedVideoNamesArray.remove(at: index)
                 
-            self.collectionView.reloadItems(at: [IndexPath.init(row: uploadingOrDownloadingRow, section: 0)])
+                if self.uploadedVideoNamesArray.count == 0
+                {
+                    
+                }
+                else
+                {
+                    self.collectionView.deleteItems(at: [IndexPath.init(row: uploadingOrDownloadingRow, section: 1)])
+
+                }
+                
+                self.uploadedVideoNamesArray.append(videoName)
+
+                if self.uploadedVideoNamesArray.count == 1
+                {
+                    self.collectionView.reloadData()
+                }
+                else
+                {
+                    self.collectionView.insertItems(at: [IndexPath.init(row: self.uploadedVideoNamesArray.count-1, section: 0)])
+
+                }
+
+                
+            }
+            //recordedVideoNamesArray.remove
+            //self.collectionView.reloadItems(at: [IndexPath.init(row: uploadingOrDownloadingRow, section: 0)])
 
         }
         
@@ -168,12 +219,40 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         
         if let videoName = responseDic["videoName"]
         {
+            let savePath:String = self.UserVideosFolderPath() + "/" + videoName
+            
+            let videoURL = URL(fileURLWithPath: savePath)
+            
+            let fileManager = FileManager.default
+            
+            if fileManager.fileExists(atPath: savePath)
+            {
+                do
+                {
+                    try fileManager.removeItem(atPath: savePath)
+                    
+                }
+                catch let error as NSError
+                {
+                    
+                }
+                
+            }
+            
+            print("count = " + "\(self.uploadedVideoNamesArray.count)")
+            print("deleting row =" + "\(self.uploadingOrDownloadingRow)")
+            self.uploadedVideoNamesArray.remove(at: self.uploadingOrDownloadingRow!)
 
-            uploadedVideoNamesArray.remove(at: uploadingOrDownloadingRow)
+            //recordedVideoNamesArray.remove(at: uploadingOrDownloadingRow)
+            if self.uploadedVideoNamesArray.count == 0
+            {
+                self.collectionView.reloadData()
+            }
+            else
+            {
+                self.collectionView.deleteItems(at: [IndexPath.init(row: uploadingOrDownloadingRow, section: 0)])
 
-            recordedVideoNamesArray.remove(at: uploadingOrDownloadingRow)
-
-            self.collectionView.deleteItems(at: [IndexPath.init(row: uploadingOrDownloadingRow, section: 0)])
+            }
 
                         
         }
@@ -186,6 +265,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
     func popViewController() -> Void
     {
         //deleteAllFiles()
+        NotificationCenter.default.removeObserver(self)
         
         self.revealViewController().revealToggle(animated: true)
         
@@ -427,16 +507,49 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
     
     // MARK: - UICollectionViewDelegate adn Datasource protocol
 
+    func numberOfSections(in collectionView: UICollectionView) -> Int
+    {
+        if self.uploadedVideoNamesArray.count > 0
+        {
+            return 2
+
+        }
+        else
+        {
+            return 1
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
-        return recordedVideoNamesArray.count
+        if section == 0 && self.uploadedVideoNamesArray.count > 0
+        {
+            return self.uploadedVideoNamesArray.count
+
+
+        }
+        else
+        {
+            return self.recordedVideoNamesArray.count
+
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath)
- 
-        let videoName = recordedVideoNamesArray[indexPath.row]
+        
+        var videoName:String!
+        if indexPath.section == 0 && self.uploadedVideoNamesArray.count > 0
+        {
+            videoName = self.uploadedVideoNamesArray[indexPath.row]
+        }
+        else
+        {
+            videoName = self.recordedVideoNamesArray[indexPath.row]
+
+        }
+        
         
         let savePath:String = self.UserVideosFolderPath() + "/" + videoName
 
@@ -470,18 +583,6 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         
         let uploadButton = cell.viewWithTag(103) as! subclassedUIButton
         
-        if uploadedVideoNamesArray.contains(videoName)
-        {
-            uploadButton.setTitle("Uploaded", for: .normal)
-            uploadButton.setTitleColor(UIColor.appliedJobGreenColor(), for: .normal)
-            uploadButton.isUserInteractionEnabled = false
-        }
-        else
-        {
-            uploadButton.setTitle("Upload", for: .normal)
-            uploadButton.setTitleColor(UIColor.appBlueColor(), for: .normal)
-            uploadButton.isUserInteractionEnabled = true
-        }
         
         uploadButton.cell1 = cell
 
@@ -490,14 +591,30 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         uploadButton.addTarget(self, action: #selector(uploadButtonCLicked(sender:)), for: .touchUpInside)
         
         
-        let deleteButton = cell.viewWithTag(105) as! subclassedUIButton
-
-        //deleteButton.indexPath = indexPath.row
         
-        deleteButton.cell1 = cell
         
 
-        deleteButton.addTarget(self, action: #selector(deleteButtonCLicked(sender:)), for: .touchUpInside)
+
+        if self.uploadedVideoNamesArray.contains(videoName)
+        {
+            uploadButton.setTitle("Uploaded", for: .normal)
+            uploadButton.setTitleColor(UIColor.appliedJobGreenColor(), for: .normal)
+            uploadButton.isUserInteractionEnabled = false
+            let deleteButton = cell.viewWithTag(105) as! subclassedUIButton
+            deleteButton.cell1 = cell
+            deleteButton.addTarget(self, action: #selector(deleteButtonCLicked(sender:)), for: .touchUpInside)
+
+        }
+        else
+        {
+            uploadButton.setTitle("Upload", for: .normal)
+            uploadButton.setTitleColor(UIColor.appBlueColor(), for: .normal)
+            uploadButton.isUserInteractionEnabled = true
+            let deleteButton = cell.viewWithTag(105) as! subclassedUIButton
+            deleteButton.cell1 = cell
+            deleteButton.addTarget(self, action: #selector(deleteButtonCLicked(sender:)), for: .touchUpInside)
+
+        }
 
         //self.downloadFileFromFTP(fileName: videoName, sender: self)
         //APIManager.getSharedAPIManager().downloadFileFromFTP(fileName: videoName, sender: self)
@@ -516,7 +633,18 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
-        var savePath:String = self.UserVideosFolderPath() + "/" + recordedVideoNamesArray[indexPath.row]
+        var videoName:String!
+        
+        if indexPath.section == 0 && self.uploadedVideoNamesArray.count > 0
+        {
+            videoName = self.uploadedVideoNamesArray[indexPath.row]
+        }
+        else
+        {
+            videoName = self.recordedVideoNamesArray[indexPath.row]
+            
+        }
+        var savePath:String = self.UserVideosFolderPath() + "/" + videoName
 
         let videoURL = URL(fileURLWithPath: savePath)
         
@@ -578,27 +706,44 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
             
             //self.uploadingOrDownloadingRow = sender.indexPath
             
+            
             let indexpath = self.collectionView.indexPath(for: sender.cell1)
             
-            let videoName = self.uploadedVideoNamesArray[indexpath!.row]
-            
-            self.uploadingOrDownloadingRow = indexpath!.row
-            
-            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-            
-            
-            if username != nil && password != nil
+            if indexpath!.section == 0 && self.uploadedVideoNamesArray.count > 0
             {
-                APIManager.getSharedAPIManager().deleteVideo(username: username!, password: password!, linkedinId: "", fileName: videoName)
+                let videoName = self.uploadedVideoNamesArray[indexpath!.row]
+                
+                self.uploadingOrDownloadingRow = indexpath!.row
+                
+                let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+                let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+                let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+                
+                
+                if username != nil && password != nil
+                {
+                    APIManager.getSharedAPIManager().deleteVideo(username: username!, password: password!, linkedinId: "", fileName: videoName)
+                }
+                else
+                    if linkedInId != nil
+                    {
+                        APIManager.getSharedAPIManager().deleteVideo(username: "", password: "", linkedinId: linkedInId!, fileName: videoName)
+                        
+                }
+
             }
             else
-                if linkedInId != nil
-                {
-                    APIManager.getSharedAPIManager().deleteVideo(username: "", password: "", linkedinId: linkedInId!, fileName: videoName)
-                    
+            if indexpath!.section == 0 && self.uploadedVideoNamesArray.count == 0
+            {
+               self.deleteButtonCLickedForLocalFiles(sender: sender)
             }
+            else
+            {
+                self.deleteButtonCLickedForLocalFiles(sender: sender)
+
+            }
+            
+            
         })
           
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: {act -> Void in
@@ -613,9 +758,68 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
             
     }
     
+    func deleteButtonCLickedForLocalFiles( sender: subclassedUIButton)
+    {
+//        let alertController = UIAlertController(title: "Remove File", message: "Are you sure to remove this file?", preferredStyle: UIAlertControllerStyle.alert)
+//        
+//        let okAction = UIAlertAction(title: "Remove", style: UIAlertActionStyle.destructive, handler: { act -> Void in
+        
+            
+            // let videoName = self.recordedVideoNamesArray[sender.indexPath]
+            
+            //self.uploadingOrDownloadingRow = sender.indexPath
+            
+            let indexpath = self.collectionView.indexPath(for: sender.cell1)
+            
+            let videoName = self.recordedVideoNamesArray[indexpath!.row]
+            
+            self.uploadingOrDownloadingRow = indexpath!.row
+            
+            
+            let savePath:String = self.UserVideosFolderPath() + "/" + videoName
+            
+            let videoURL = URL(fileURLWithPath: savePath)
+            
+            let fileManager = FileManager.default
+            
+            if fileManager.fileExists(atPath: savePath)
+            {
+                do
+                {
+                    try fileManager.removeItem(atPath: savePath)
+                    
+                    if let index = recordedVideoNamesArray.index(of: videoName)
+                    {
+                        recordedVideoNamesArray.remove(at: index)
+                    }
+                    
+                    self.collectionView.deleteItems(at: [indexpath!])
+
+                }
+                catch let error as NSError
+                {
+                
+                }
+                
+            }
+            
+            
+//        })
+//        
+//        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: {act -> Void in
+//            
+//            alertController.dismiss(animated: true, completion: nil)
+//            
+//        })
+//        
+//        alertController.addAction(okAction)
+//        alertController.addAction(cancelAction)
+//        self.present(alertController, animated: true, completion: nil)
+        
+    }
     func startUploading( sender: subclassedUIButton)
     {
-        if uploadedVideoNamesArray.count <= 2
+        if self.uploadedVideoNamesArray.count <= 2
         {
 //            let videoName = recordedVideoNamesArray[sender.indexPath]
 //            

@@ -604,6 +604,8 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
     
     func popViewController() -> Void
     {
+        NotificationCenter.default.removeObserver(self)
+        
         self.revealViewController().revealToggle(animated: true)
         
         self.navigationController?.popViewController(animated: true)

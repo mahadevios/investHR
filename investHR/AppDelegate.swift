@@ -41,10 +41,12 @@ import Auth0
 
 // auth 0 https://auth0.com/docs/quickstart/native/ios-objc/00-login#hybrid-objective-c-swift
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate
+{
 
     var window: UIWindow?
-
+    var notifView: UIView?
+    var jobID:String!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
@@ -149,6 +151,158 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     {
         // Print notification payload data
         print("Push notification received: \(data)")
+        let notificationString = data["notification"] as! String
+        
+        let data = notificationString.data(using: .utf8)
+        
+        do
+        {
+            let object = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String:Any]
+            
+            let jobIDInt = object["JobId"] as! Int
+            
+            jobID = String(jobIDInt)
+            
+            print(jobID)
+            
+            
+            
+            
+            
+        } catch let error as NSError
+        {
+            
+        }
+        
+       // let obj = object["JobId"]
+        //let alert = (data["aps"] as! [String:AnyObject])["alert"] as! [String:AnyObject]
+        
+        //let jobId1 = (alert["body"] as! [String:String])["JobId"]
+        
+        //let title = alert["title"]
+
+        if UIApplication.shared.applicationState == UIApplicationState.active
+        {
+            notifView?.removeFromSuperview() //If already existing
+            notifView = UIView(frame: CGRect(x: 0, y: -70, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 80))
+            notifView?.backgroundColor = UIColor.appBlueColor()
+            let imageView = UIImageView(frame: CGRect(x: 10, y: 15, width: 30, height: 30))
+            imageView.image = #imageLiteral(resourceName: "Logo")
+            let label = UILabel(frame: CGRect(x: 60, y: 15, width: (UIApplication.shared.keyWindow?.frame.size.width)! - 100, height: 30))
+            label.font = UIFont.systemFont(ofSize: 12)
+            label.text = "New job"
+            
+            label.textColor = UIColor.white
+            label.numberOfLines = 0
+            
+            notifView?.alpha = 0.95
+            
+            notifView?.addSubview(imageView)
+            
+            notifView?.addSubview(label)
+            
+            UIApplication.shared.keyWindow?.addSubview(notifView!)
+
+            let tapToDismissNotif = UITapGestureRecognizer(target: self, action: #selector(notificationTapped))
+
+            let swipeRecogniser = UISwipeGestureRecognizer(target: self, action: #selector(dismissNotifFromScreen1))
+            
+            swipeRecogniser.direction = UISwipeGestureRecognizerDirection.right
+            
+            swipeRecogniser.direction = UISwipeGestureRecognizerDirection.left
+
+            //tapToDismissNotif.
+//            
+//            UITapGestureRecognizer *tapToDismissNotif = [[UITapGestureRecognizer alloc] initWithTarget:self
+//                action:@selector(dismissNotifFromScreen1)];
+//            tapToDismissNotif.numberOfTapsRequired = 1;
+//            tapToDismissNotif.numberOfTouchesRequired = 1;
+            
+            notifView?.addGestureRecognizer(tapToDismissNotif)
+            notifView?.addGestureRecognizer(swipeRecogniser)
+
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.3, options: .curveEaseIn, animations: {
+                
+                self.notifView?.frame = CGRect(x: 0, y: 0, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 60)
+                
+            }) { (bo) in
+                
+                
+                
+            }
+            self.perform(#selector(dismissNotifFromScreen1), with: nil, afterDelay: 4.0)
+
+        }
+        else
+        {
+            
+            self.notificationTapped()
+        }
+        
+        
+    }
+    
+    func notificationTapped()
+    {
+        
+//        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1, options: .curveEaseIn, animations: {
+        print(UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.classForCoder)
+        
+        print(investHR.NewJobsViewController.classForCoder())
+        if let vc1 = UIApplication.shared.keyWindow?.rootViewController?.presentedViewController
+        {
+            if vc1.classForCoder == NewJobsViewController.classForCoder()
+            {
+                UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
+                print("presented = " + "\(vc1.classForCoder)")
+                
+            }
+            
+
+        }
+        
+            self.notifView?.frame = CGRect(x: 0, y: -70, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 60)
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "NewJobsViewController") as! NewJobsViewController
+            
+            vc.verticalId = String(0)
+            vc.domainType = "horizontal"
+            vc.jobId = self.jobID
+            
+            UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
+            
+//        }) { (bo) in
+//            
+//        }
+        
+    }
+    
+    func dismissNotifFromScreen1()
+    {
+       
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1, options: .curveEaseIn, animations: {
+            
+            self.notifView?.frame = CGRect(x: 0, y: -70, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 60)
+            
+            
+        }) { (bo) in
+            
+        }
+        
+    }
+    func notificationSwiped()
+    {
+        
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1, options: .curveEaseIn, animations: {
+            
+            self.notifView?.frame = CGRect(x: -(UIApplication.shared.keyWindow?.frame.size.width)!-10, y: 0, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 60)
+            
+            
+        }) { (bo) in
+            
+        }
+        
     }
     // Called when APNs failed to register the device for push notifications
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
@@ -157,6 +311,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool
     {
+        
         
 //                return GIDSignIn.sharedInstance().handle(url,
 //                                                                    sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String,

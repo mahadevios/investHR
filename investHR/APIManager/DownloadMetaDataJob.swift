@@ -714,6 +714,32 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                     
                 }
                 break
+                
+            case Constant.LOGOUT_API:
+                
+                guard let dictFromJSON = response else
+                {
+                    return
+                }
+                if String(describing: dictFromJSON["code"]!) == Constant.SUCCESS
+                {
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                   // NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_DELETE_RESUME), object: dictFromJSON, userInfo: nil)
+                    
+                }
+                else
+                {
+                    //                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                }
+                break
+
             default: break
                 
             }

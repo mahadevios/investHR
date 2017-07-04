@@ -63,12 +63,12 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         if username != nil && password != nil
         {
-            APIManager.getSharedAPIManager().getJobDescription(username: username!, password: password!, linkedinId: "", varticalId: verticalId, jobId: String( jobId))
+            APIManager.getSharedAPIManager().getJobDescription(username: username!, password: password!, linkedinId: "", varticalId: verticalId, jobId: String(jobId))
         }
         else
             if linkedInId != nil
             {
-                APIManager.getSharedAPIManager().getJobDescription(username: "", password: "", linkedinId: linkedInId!, varticalId: verticalId, jobId: String( jobId))
+                APIManager.getSharedAPIManager().getJobDescription(username: "", password: "", linkedinId: linkedInId!, varticalId: verticalId, jobId: String(jobId))
         }
 
         AppPreferences.sharedPreferences().showHudWith(title: "Loading job..", detailText: "Please wait")
