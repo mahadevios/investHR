@@ -34,6 +34,9 @@
 		8439DFD71F038C5400F21C79 /* PlayVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439DFD61F038C5400F21C79 /* PlayVideoViewController.swift */; };
 		8439E04E1EC5F3C000FC2A12 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */; };
 		843A6AB91EE1824C00D86591 /* linkedin-sdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843A6AB81EE1824C00D86591 /* linkedin-sdk.framework */; };
+		8440D99A1F0CAEF6002EF023 /* CommonNotification+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8440D9981F0CAEF6002EF023 /* CommonNotification+CoreDataClass.swift */; };
+		8440D99B1F0CAEF6002EF023 /* CommonNotification+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8440D9991F0CAEF6002EF023 /* CommonNotification+CoreDataProperties.swift */; };
+		8440D99D1F0CE1E1002EF023 /* CustomNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8440D99C1F0CE1E1002EF023 /* CustomNotificationViewController.swift */; };
 		8440DF701ED706CB0003F05B /* MenuViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8440DF6F1ED706CB0003F05B /* MenuViewViewController.swift */; };
 		844387B61ED41FF0002E71D6 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844387B51ED41FF0002E71D6 /* RegistrationViewController.swift */; };
 		844387B81ED46D2D002E71D6 /* Registration1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844387B71ED46D2D002E71D6 /* Registration1ViewController.swift */; };
@@ -131,6 +134,9 @@
 		8439DFD61F038C5400F21C79 /* PlayVideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayVideoViewController.swift; sourceTree = "<group>"; };
 		8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		843A6AB81EE1824C00D86591 /* linkedin-sdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = "linkedin-sdk.framework"; sourceTree = "<group>"; };
+		8440D9981F0CAEF6002EF023 /* CommonNotification+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommonNotification+CoreDataClass.swift"; sourceTree = "<group>"; };
+		8440D9991F0CAEF6002EF023 /* CommonNotification+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommonNotification+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		8440D99C1F0CE1E1002EF023 /* CustomNotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNotificationViewController.swift; sourceTree = "<group>"; };
 		8440DF6F1ED706CB0003F05B /* MenuViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewViewController.swift; sourceTree = "<group>"; };
 		844387B51ED41FF0002E71D6 /* RegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		844387B71ED46D2D002E71D6 /* Registration1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registration1ViewController.swift; sourceTree = "<group>"; };
@@ -291,6 +297,8 @@
 		8449B6041EE578EB0072A8DD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				8440D9981F0CAEF6002EF023 /* CommonNotification+CoreDataClass.swift */,
+				8440D9991F0CAEF6002EF023 /* CommonNotification+CoreDataProperties.swift */,
 				84F690F81EFBE45D0000B768 /* SavedJobs+CoreDataClass.swift */,
 				84F690F91EFBE45D0000B768 /* SavedJobs+CoreDataProperties.swift */,
 				84F690F41EFBE4220000B768 /* AppliedJobs+CoreDataClass.swift */,
@@ -398,8 +406,8 @@
 				8440DF6F1ED706CB0003F05B /* MenuViewViewController.swift */,
 				84DAD40E1ED7F5440008BB09 /* VerticalViewController.swift */,
 				84DAD4101ED822200008BB09 /* JobsViewController.swift */,
-				84F690FE1EFC11D30000B768 /* NewJobsViewController.swift */,
 				844F5F2E1EDC23A20073A7D7 /* NotificationJobsViewController.swift */,
+				84F690FE1EFC11D30000B768 /* NewJobsViewController.swift */,
 				844F5F301EDC2A160073A7D7 /* SavedJobsViewController.swift */,
 				844F5F321EDC34B20073A7D7 /* AppliedJobsViewController.swift */,
 				844F5F361EDC48640073A7D7 /* LocationViewController.swift */,
@@ -408,6 +416,7 @@
 				842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */,
 				842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */,
 				8439DFD61F038C5400F21C79 /* PlayVideoViewController.swift */,
+				8440D99C1F0CE1E1002EF023 /* CustomNotificationViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -763,6 +772,7 @@
 				842BAFCD1EF2A368005327B0 /* Roles+CoreDataProperties.swift in Sources */,
 				84F690FB1EFBE45D0000B768 /* SavedJobs+CoreDataProperties.swift in Sources */,
 				841492691EF005D6007133D0 /* State+CoreDataProperties.swift in Sources */,
+				8440D99D1F0CE1E1002EF023 /* CustomNotificationViewController.swift in Sources */,
 				8424ECDF1EF0FEED00E68B3D /* MBProgressHUD.m in Sources */,
 				841492711EF00639007133D0 /* VertcalDomains+CoreDataProperties.swift in Sources */,
 				8493B8311EC4678200D8F7F9 /* AppDelegate.swift in Sources */,
@@ -790,12 +800,14 @@
 				84F690FA1EFBE45D0000B768 /* SavedJobs+CoreDataClass.swift in Sources */,
 				842BAFCC1EF2A368005327B0 /* Roles+CoreDataClass.swift in Sources */,
 				844F5F2F1EDC23A20073A7D7 /* NotificationJobsViewController.swift in Sources */,
+				8440D99A1F0CAEF6002EF023 /* CommonNotification+CoreDataClass.swift in Sources */,
 				84F690FF1EFC11D30000B768 /* NewJobsViewController.swift in Sources */,
 				844387B81ED46D2D002E71D6 /* Registration1ViewController.swift in Sources */,
 				8439E04E1EC5F3C000FC2A12 /* LoginViewController.swift in Sources */,
 				84AD18391EF000140049675A /* investHR.xcdatamodeld in Sources */,
 				841492681EF005D6007133D0 /* State+CoreDataClass.swift in Sources */,
 				8449B6091EE578EB0072A8DD /* CoreDataManager.swift in Sources */,
+				8440D99B1F0CAEF6002EF023 /* CommonNotification+CoreDataProperties.swift in Sources */,
 				84EB8F431EDFEB8600014DA4 /* Constant.swift in Sources */,
 				8439DFD71F038C5400F21C79 /* PlayVideoViewController.swift in Sources */,
 				844E5B2A1EEED4CF00E69646 /* LinkedInLoginViewController.swift in Sources */,

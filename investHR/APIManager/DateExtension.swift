@@ -10,7 +10,8 @@ import Foundation
 
 extension Date
 {
-    var millisecondsSince1970:Int {
+    var millisecondsSince1970:Int
+    {
         return Int(Int64((self.timeIntervalSince1970 * 1000.0).rounded()))
     }
     
@@ -76,7 +77,7 @@ extension UIColor
 
 class subclassedUIButton: UIButton
 {
-    var jobId: Int?
+    var jobId: Int64?
     var indexPath: Int!
     var tempIndexPath: IndexPath!
     var cell:UITableViewCell!

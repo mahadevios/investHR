@@ -194,7 +194,7 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
         }
         applyButton.layer.borderColor = UIColor(red: 77/255.0, green: 150/255.0, blue: 241/255.0, alpha: 1).cgColor
         
-        applyButton.jobId = jobId
+        applyButton.jobId = Int64(jobId)
 
         applyButton.addTarget(self, action: #selector(applyJobButtonClicked), for: UIControlEvents.touchUpInside)
 

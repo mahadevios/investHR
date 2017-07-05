@@ -17,11 +17,15 @@ class AppPreferences: NSObject,UIAlertViewDelegate
     
     var firebaseInstanceId:String
     
+    var customMessagesArray:[Any]
+    
     private override init()
     {
         isReachable = false
 
         firebaseInstanceId = ""
+        
+        customMessagesArray = [Any]()
         
         super.init()
     }

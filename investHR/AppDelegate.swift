@@ -153,20 +153,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         print("Push notification received: \(data)")
         let notificationString = data["notification"] as! String
         
-        let data = notificationString.data(using: .utf8)
+        let notificatioData = notificationString.data(using: .utf8)
+        
+        
+        let apsDic = data["aps"] as! [String:Any]
+        
+        let alertObject = apsDic["alert"] as! [String:String]
+        
+        //let alertData = alertString.data(using: .utf8)
         
         do
         {
-            let object = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [String:Any]
+            let notificationObject = try JSONSerialization.jsonObject(with: notificatioData!, options: .allowFragments) as! [String:Any]
             
-            let jobIDInt = object["JobId"] as! Int
+            let jobIDInt = notificationObject["JobId"] as! Int
             
             jobID = String(jobIDInt)
             
             print(jobID)
             
+            //let alertObject = try JSONSerialization.jsonObject(with: alertData!, options: .allowFragments) as! [String:Any]
             
+            let body = alertObject["body"]
             
+            let title = alertObject["title"]
+
+            let jobIdExist = CoreDataManager.getSharedCoreDataManager().idExists(aToken: String(jobIDInt), entityName: "CommonNotification")
+            
+            if !jobIdExist
+            {
+                CoreDataManager.getSharedCoreDataManager().save(entity: "CommonNotification", ["jobId":jobIDInt,"subject":body,"notificationDate":Date()])
+            }
+            else
+            {
+            
+            }
             
             
         } catch let error as NSError

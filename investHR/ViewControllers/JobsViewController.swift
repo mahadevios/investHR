@@ -461,7 +461,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
       let predicate = NSPredicate(format: "SELF CONTAINS [cd] %@", self.searchController.searchBar.text!)
         
-       let resultArray = jobsArray.filter { predicate.evaluate(with: $0) };
+       let resultArray = verticalJobListArray.filter { predicate.evaluate(with: $0) };
 
         //jobsArray.filter(predicate)
         print(resultArray)
@@ -674,7 +674,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         saveButton.accessibilityHint = String(indexPath.row)
         
-        if appliedJobsIdsArray.contains(jobId as! Int)
+        if appliedJobsIdsArray.contains(jobId)
         {
             applyButton.setTitle("Applied", for: .normal)
             applyButton.setTitleColor(UIColor.appliedJobGreenColor(), for: .normal)
@@ -686,7 +686,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
             applyButton.setTitleColor(UIColor.init(colorLiteralRed: 54/255.0, green: 134/255.0, blue: 239/255.0, alpha: 1.0), for: .normal)
             applyButton.isUserInteractionEnabled = true
         }
-        if savedJobsIdsArray.contains(jobId as! Int)
+        if savedJobsIdsArray.contains(jobId)
         {
             saveImageView.image = UIImage(named: "SideMenuSavedJob")
             saveButton.isUserInteractionEnabled = false
@@ -700,8 +700,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         }
 
 
-        saveButton.jobId = jobId
-        applyButton.jobId = jobId
+        saveButton.jobId = Int64(jobId)
+        applyButton.jobId = Int64(jobId)
 
         //applyButton.tag = jobId as! Int
         saveButton.indexPath = indexPath.row
@@ -738,20 +738,6 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         let jobDic = verticalJobListArray[indexPath.row] as! [String:AnyObject]
         let jobId = jobDic["jobid"] as! Int
-
-//        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-//        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-//        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-//        
-//        if username != nil && password != nil
-//        {
-//            APIManager.getSharedAPIManager().getJobDescription(username: username!, password: password!, linkedinId: "", varticalId: verticalId, jobId: String( jobId))
-//        }
-//        else
-//            if linkedInId != nil
-//            {
-//                APIManager.getSharedAPIManager().getJobDescription(username: "", password: "", linkedinId: linkedInId!, varticalId: verticalId, jobId: String( jobId))
-//        }
 
         
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "NewJobsViewController") as! NewJobsViewController

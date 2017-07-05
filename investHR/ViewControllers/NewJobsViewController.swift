@@ -459,8 +459,8 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             }
        
         
-        saveButton.jobId = jobId as! Int?
-        applyButton.jobId = jobId as! Int?
+        saveButton.jobId = jobId as! Int64?
+        applyButton.jobId = jobId as! Int64?
         
         //applyButton.tag = jobId as! Int
         

@@ -10,6 +10,12 @@
         <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="stateId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
+    <entity name="CommonNotification" representedClassName="CommonNotification" syncable="YES">
+        <attribute name="jobId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="notificationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="notificationId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="HorizontalDomains" representedClassName="HorizontalDomains" syncable="YES">
         <attribute name="horizontalId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="horizontalName" optional="YES" attributeType="String" syncable="YES"/>
@@ -42,13 +48,14 @@
         <attribute name="verticalName" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
+        <element name="AppliedJobs" positionX="-27" positionY="54" width="128" height="90"/>
         <element name="City" positionX="-36" positionY="45" width="128" height="90"/>
         <element name="HorizontalDomains" positionX="-27" positionY="45" width="128" height="75"/>
         <element name="Roles" positionX="-36" positionY="36" width="128" height="75"/>
+        <element name="SavedJobs" positionX="-36" positionY="45" width="128" height="90"/>
         <element name="State" positionX="-18" positionY="63" width="128" height="75"/>
         <element name="User" positionX="-63" positionY="-18" width="128" height="165"/>
         <element name="VertcalDomains" positionX="-54" positionY="36" width="128" height="75"/>
-        <element name="SavedJobs" positionX="-36" positionY="45" width="128" height="90"/>
-        <element name="AppliedJobs" positionX="-27" positionY="54" width="128" height="90"/>
+        <element name="CommonNotification" positionX="-36" positionY="45" width="128" height="105"/>
     </elements>
 </model>

@@ -44,6 +44,8 @@ class HomeViewController: UIViewController
             print("ok pressed")
 
         }
+        
+       // AppPreferences.sharedPreferences().customMessagesArray.append("firstOne")
         //self.present(alert2, animated: true, completion: nil)
         
         
@@ -193,6 +195,16 @@ class HomeViewController: UIViewController
     
     @IBAction func notificationButtonClicked(_ sender: Any)
     {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "CustomNotificationViewController") as! CustomNotificationViewController
+        vc.view.frame = CGRect(x: vc.view.frame.width*0.2, y: vc.view.frame.height*0.2, width: vc.view.frame.width*0.6, height: vc.view.frame.height*0.6)
+        
+        vc.modalPresentationStyle = .overCurrentContext        
+        
+        vc.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+        
+        self.present(vc, animated: true, completion: nil)
+        
+        
     }
     
     //-(void)createSWRevealView

@@ -29,7 +29,6 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
         self.navigationItem.hidesBackButton = true;
 
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-
         
         let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
         

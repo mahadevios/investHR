@@ -79,22 +79,32 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         NotificationCenter.default.addObserver(self, selector: #selector(checkDeletedVideoListResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_DELETE_VIDEO), object: nil)
 
         
-        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-        
-        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-        
-        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-        
-        if username != nil && password != nil
+        if AppPreferences.sharedPreferences().isReachable
         {
-            APIManager.getSharedAPIManager().getUploadedVideoList(username: username!, password: password!, linkedinId: "")
+            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+            
+            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+            
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            
+            if username != nil && password != nil
+            {
+                APIManager.getSharedAPIManager().getUploadedVideoList(username: username!, password: password!, linkedinId: "")
+            }
+            else
+                if linkedInId != nil
+                {
+                    APIManager.getSharedAPIManager().getUploadedVideoList(username: "", password: "", linkedinId: linkedInId!)
+                    
+                }
         }
         else
-            if linkedInId != nil
-            {
-                APIManager.getSharedAPIManager().getUploadedVideoList(username: "", password: "", linkedinId: linkedInId!)
-                
-            }
+        {
+            self.getStoredVideoList() // if internet connection not avaialbel show the stored video list
+            
+            self.collectionView.reloadData()
+        }
+        
         // Do any additional setup after loading the view.
     }
 
@@ -130,6 +140,15 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
             
         }
         
+        self.getStoredVideoList()
+        
+        self.collectionView.reloadData()
+
+        
+    }
+
+    func getStoredVideoList()
+    {
         let fileManager = FileManager.default
         
         let videoPath = self.UserVideosFolderPath()
@@ -151,11 +170,8 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         {
             
         }
-        self.collectionView.reloadData()
 
-        
     }
-
     func checkUploadVideoResponse(dataDic:Notification)
     {
         guard let responseDic = dataDic.object as? [String:String] else
@@ -670,7 +686,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
             //        }
         else
         {
-            self.downloadFileFromFTP(fileName: recordedVideoNamesArray[indexPath.row], sender: self)
+            self.downloadFileFromFTP(fileName: uploadedVideoNamesArray[indexPath.row], sender: self)
             
             //FTPImageUpload.deleteFileFromFTP(fileName: recordedVideoNamesArray[indexPath.row])
             AppPreferences.sharedPreferences().showHudWith(title: "Downloading video", detailText: "Please wait")

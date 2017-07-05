@@ -184,7 +184,16 @@ class CoreDataManager: NSObject
 
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         
-        let predicate = NSPredicate(format: "userId == %@", argumentArray: [aToken])
+        var predicate:NSPredicate!
+        if entityName == "CommonNotification"
+        {
+            predicate = NSPredicate(format: "jobId == %d", argumentArray: [Int(aToken)!])
+
+        }
+        else
+        {
+            predicate = NSPredicate(format: "userId == %@", argumentArray: [aToken])
+        }
         
         request.predicate = predicate
         
