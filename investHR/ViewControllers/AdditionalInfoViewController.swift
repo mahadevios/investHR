@@ -43,9 +43,10 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
     var roleNameAndIdDic = [String:Int16]()
 
     var candidateFunctionArray : [String] = []
-    let servicesArray : [String] = ["Services","Service 2","Service 3","Service 4","Service 5"]
+//    let servicesArray : [String] = ["Services","Service 2","Service 3","Service 4","Service 5"]
     let relocationArray = ["Not available","Yes","No","May be"]
-    
+    let relocationDic = ["Not available":"1","Yes":"2","No":"3","May be":"4"]
+
     func scrollViewDidScroll(_ scrollView: UIScrollView)
     {
       removePickerToolBar()
@@ -314,7 +315,17 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
           nonCompete1 = nonCompeteTextView.text
         }
         
-       let dict = ["name":self.name,"email":self.email,"password":self.password,"mobile":self.mobile,"currentRole":self.currentRole,"currentCompany":self.currentCompany,"stateId":self.state!,"cityId":self.city!,"visaStatus":self.visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed1,"benifits":benefit1,"notJoinSpecificOrg":nonCompete1,"image":"","expInOffshoreEng":expOffshore,"relocation":relocation,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":""] as [String : String]
+        var relocationId:String!
+        if relocation != ""
+        {
+          relocationId = relocationDic[relocation]
+        }
+        else
+        {
+         relocationId = "0"
+        }
+        
+       let dict = ["name":self.name,"email":self.email,"password":self.password,"mobile":self.mobile,"currentRole":self.currentRole,"currentCompany":self.currentCompany,"stateId":self.state!,"cityId":self.city!,"visaStatus":self.visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed1,"benifits":benefit1,"notJoinSpecificOrg":nonCompete1,"image":"","expInOffshoreEng":expOffshore,"relocation":relocationId,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":""] as [String : String]
         
         
         do {

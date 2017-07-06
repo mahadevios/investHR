@@ -33,6 +33,8 @@ class CustomNotificationViewController: UIViewController,UITableViewDelegate,UIT
         self.view.addGestureRecognizer(tapToDismissNotif)
         
         tapToDismissNotif.delegate = self
+        
+        self.tableView.layer.cornerRadius = 4.0
         // Do any additional setup after loading the view.
     }
 
@@ -59,13 +61,19 @@ class CustomNotificationViewController: UIViewController,UITableViewDelegate,UIT
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        return 3
+        return AppPreferences.sharedPreferences().customMessagesArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
+        
+        let messageLabel = cell?.viewWithTag(101) as! UILabel
+        
+        let idMessageDic = AppPreferences.sharedPreferences().customMessagesArray[indexPath.row] as! [String:Any]
+        
+        messageLabel.text = idMessageDic["message"] as! String?
         
         return cell!
     }

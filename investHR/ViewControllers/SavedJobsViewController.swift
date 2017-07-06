@@ -134,9 +134,12 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
 
     func popViewController() -> Void
     {
+        NotificationCenter.default.removeObserver(self)
+        
         self.revealViewController().revealToggle(animated: true)
         
         self.navigationController?.popViewController(animated: true)
+        
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {

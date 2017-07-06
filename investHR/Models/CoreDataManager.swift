@@ -324,5 +324,38 @@ class CoreDataManager: NSObject
         }
         
     }
+    
+    func updateNotificationJob(entityName:String, jobId:Int, subject:String, notificationDate:Date)
+    {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        var context: NSManagedObjectContext = appDelegate.managedObjectContext
+        var predicate:NSPredicate!
+
+        var fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        predicate = NSPredicate(format: "jobId == %d", argumentArray: [Int(jobId)])
+        fetchRequest.predicate = predicate
+        do
+        {
+            if let fetchResults = try appDelegate.managedObjectContext.fetch(fetchRequest) as? [NSManagedObject] {
+                if fetchResults.count != 0{
+                    
+                    var managedObject = fetchResults[0]
+                    managedObject.setValue(subject, forKey: "subject")
+                    managedObject.setValue(notificationDate, forKey: "notificationDate")
+
+                    try appDelegate.managedObjectContext.save()
+                    
+                    
+                }
+            }
+            
+            
+        }
+        catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+
+    }
 
 }

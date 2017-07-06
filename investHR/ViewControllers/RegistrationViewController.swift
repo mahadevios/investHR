@@ -23,7 +23,8 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     @IBOutlet weak var passwordTextField: TextField!
     var movedUpBy:String = ""
     var imagedata:Any!
-    
+    var countryCodeButton:UIButton!
+
     var coutryCodesArray:[String] = []
     override func viewDidLoad()
     {
@@ -46,10 +47,16 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         imageView1.image = image1
         leftView.addSubview(imageView1)
         
-        let countryCodePickerView = UIPickerView(frame: CGRect(x: 35, y: 1, width: 40, height: 40))
-        countryCodePickerView.dataSource = self
-        countryCodePickerView.delegate = self
-        leftView.addSubview(countryCodePickerView)
+//        let countryCodePickerView = UIPickerView(frame: CGRect(x: 35, y: 1, width: 40, height: 40))
+//        countryCodePickerView.dataSource = self
+//        countryCodePickerView.delegate = self
+        countryCodeButton = UIButton(frame: CGRect(x: 35, y: 1, width: 40, height: 40))
+        countryCodeButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        countryCodeButton.setTitleColor(UIColor.black, for: .normal)
+        countryCodeButton.setTitle("\(coutryCodesArray[0])", for: .normal)
+        countryCodeButton.addTarget(self, action: #selector(countryCodeButtonClicekd), for: .touchUpInside)
+        leftView.addSubview(countryCodeButton)
+       // leftView.addSubview(countryCodePickerView)
         mobileNumberTextField.leftView = leftView
         mobileNumberTextField.leftViewMode = UITextFieldViewMode.always
         
@@ -71,7 +78,21 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         //self.addView()
         // Do any additional setup after loading the view.
     }
+    func countryCodeButtonClicekd(sender:UIButton)
+    {
+        resignAllResponders()
+        self.addPickerToolBarForCountryCodes()
+        
+    }
     
+    func resignAllResponders()
+    {
+        nameTextField.resignFirstResponder()
+        mobileNumberTextField.resignFirstResponder()
+        emailTextField.resignFirstResponder()
+        passwordTextField.resignFirstResponder()
+        
+    }
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(true)
@@ -92,36 +113,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     {
        NotificationCenter.default.removeObserver(self)
     }
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int
-    {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int
-    {
-        return coutryCodesArray.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?
-    {
-        return coutryCodesArray[row]
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView{
-        
-        var label = view as! UILabel!
-        if label == nil
-        {
-            label = UILabel()
-        }
-        
-        label?.font = UIFont.systemFont(ofSize: 12)
-        label?.text =  coutryCodesArray[row] as? String
-        label?.textAlignment = .center
-        return label!
-        
-    }
+  
     @IBAction func backButtonPressed(_ sender: Any)
     {
         
@@ -152,7 +144,9 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         
                     viewController.name = nameTextField.text
         
-                    viewController.mobile = mobileNumberTextField.text
+                    let countryCode = countryCodeButton.titleLabel?.text
+                    
+                    viewController.mobile = countryCode! + mobileNumberTextField.text!
         
                     viewController.password = passwordTextField.text
                     
@@ -386,6 +380,128 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         textField.resignFirstResponder()
         return true
     }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int
+    {
+        return 1
+    }
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int
+    {
+       
+            return coutryCodesArray.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?
+    {
+        
+                return coutryCodesArray[row]
+                
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView{
+        
+        var label = view as! UILabel!
+        if label == nil {
+            label = UILabel()
+        }
+        //
+        //        if pickerView.tag == 1
+        //        {
+        //            label?.font = UIFont.systemFont(ofSize: 12)
+        //            label?.text =  candidateFunctionArray[row] as? String
+        //            label?.textAlignment = .left
+        //        }
+        //        else
+        //        {
+        label?.font = UIFont.systemFont(ofSize: 14)
+        label?.text =  coutryCodesArray[row] as String
+        
+        label?.textAlignment = .center
+        // label?.textAlignment = .left
+        //}
+        
+        return label!
+        
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int)
+    {
+        
+                let selectedCountryCode = coutryCodesArray[row]
+                
+                countryCodeButton.setTitle(selectedCountryCode, for: .normal)
+                // relocationTextFIeld.text = selectedRole
+        
+    }
+    
+    func addPickerToolBarForCountryCodes()
+    {
+        if self.view.viewWithTag(10000) == nil
+        {
+            
+            let picker = UIPickerView()
+            
+            picker.tag = 10001;
+            
+            picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
+            
+            picker.delegate = self
+            
+            picker.dataSource = self
+            
+            picker.showsSelectionIndicator = true
+            
+            self.view.addSubview(picker)
+            
+            picker.isUserInteractionEnabled = true
+            
+            picker.backgroundColor = UIColor.lightGray
+            
+            //        UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneBtnPressToGetValue:)];
+            let btn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(pickerDoneButtonPressed))
+            
+            //        UIToolbar *toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, picker.frame.origin.y - 40.0f, self.view.frame.size.width, 40.0f)];
+            let toolBar = UIToolbar(frame: CGRect(x: 0, y: picker.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0))
+            
+            toolBar.tag = 10000
+            
+            toolBar.setItems([btn], animated: true)
+            
+            self.view.addSubview(toolBar)
+            //     OperatorTextField.inputAccessoryView=toolBar;
+        }
+    }
+    
+    
+    func pickerDoneButtonPressed()
+    {
+        removePickerToolBar()
+    }
+    
+    func removePickerToolBar()
+    {
+        if let picker = self.view.viewWithTag(10000)
+        {
+            picker.removeFromSuperview()
+            
+        }
+        
+        
+       
+        
+       
+        
+        if let toolbar1 = self.view.viewWithTag(10001)
+        {
+            toolbar1.removeFromSuperview()
+            
+        }
+     
+        
+        // [DescriptionTextView becomeFirstResponder];
+        
+    }
+
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()

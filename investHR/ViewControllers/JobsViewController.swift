@@ -192,6 +192,10 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
                 verticalJobListString = dataDictionary["rolesJobList"] as? String
                 
             }
+            if verticalJobListString == nil
+            {
+              return
+            }
 
         }
         
@@ -400,7 +404,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     func popViewController() -> Void
     {
         //self.revealViewController().revealToggle(animated: true)
-        
+        NotificationCenter.default.removeObserver(self)
         self.navigationController?.popViewController(animated: true)
     }
 

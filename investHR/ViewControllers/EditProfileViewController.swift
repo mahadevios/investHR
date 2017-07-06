@@ -24,7 +24,11 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     @IBOutlet weak var stateTextField: SearchTextField!
     var coutryCodesArray:[String] = []
     var imagedata:Any!
-
+    var candidateFunctionArray : [String] = []
+    //    let servicesArray : [String] = ["Services","Service 2","Service 3","Service 4","Service 5"]
+    let relocationArray = ["Not available","Yes","No","May be"]
+    var roleNameAndIdDic = [String:Int16]()
+    var countryCodeButton:UIButton!
     @IBOutlet weak var visaStatusTextField: TextField!
     @IBOutlet weak var cityTextField: SearchTextField!
     
@@ -53,16 +57,13 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     var stateNameAndIdDic = [String:Int16]()
     var cityNameAndIdDic = [String:Int64]()
     
-    @IBAction func editProfileButtonClicked(_ sender: Any)
-    {
-        showImagePickerController()
-    }
+    
         override func viewDidLoad()
     {
         super.viewDidLoad()
         
         coutryCodesArray = ["+90","+91","+92","+93","+94","+95","+96"]
-
+//
         setNavigationItem()
         
         setProfileView()
@@ -87,46 +88,47 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         cityTextField.theme.bgColor = UIColor (red: 1, green: 1, blue: 1, alpha: 0.8)
         cityTextField.theme.cellHeight = 35
         
-        stateTextField.itemSelectionHandler = { filteredResults, itemPosition in
-            // Just in case you need the item position
-            let item = filteredResults[itemPosition]
-            
-            DispatchQueue.main.async
-                {
-                    self.stateTextField.text = item.title
-                    
-                    self.cityArray.removeAll()
-                    
-                    self.getCitiesFromState(stateName: item.title)
-                    
-                    self.cityTextField.filterStrings(self.cityArray)
-                    
-            }
-        }
-        
         getState()
+        getCandidateRoles()
+//        stateTextField.itemSelectionHandler = { filteredResults, itemPosition in
+//            // Just in case you need the item position
+//            let item = filteredResults[itemPosition]
+//            
+//            DispatchQueue.main.async
+//                {
+//                    self.stateTextField.text = item.title
+//                    
+//                    self.cityArray.removeAll()
+//                    
+//                    self.getCitiesFromState(stateName: item.title)
+//                    
+//                    self.cityTextField.filterStrings(self.cityArray)
+//                    
+//            }
+//        }
         
-        stateTextField.filterStrings(statesArray)
+ //       stateTextField.filterStrings(statesArray)
+        
         stateTextField.delegate = self
         cityTextField.delegate = self
+        candidateFunctionTextField.delegate = self
+        relocationTextFIeld.delegate = self
+        stateTextField.delegate = self
+        benefitsTextView.delegate = self
+        nonCompeteTextView.delegate = self
+        companiesInterviewedTextView.delegate = self
+        benefitsTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        
+        nonCompeteTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+
+        companiesInterviewedTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        
 
         NotificationCenter.default.addObserver(self, selector: #selector(checkUpdateProfileResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVE_EDITED_PROFILE), object: nil)
-
-        //uploadFIleUsingFTP()
-        // Do any additional setup after loading the view.
-    }
-    
-    func checkUpdateProfileResponse(dataDic:Notification)
-    {
-        guard let responseDic = dataDic.object as? [String:String] else
-        {
-            return
-        }
         
-        guard let code = responseDic["code"] else {
-            
-            return
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(checkGetProfileResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_GET_USER_PROFILE), object: nil)
+        
+        setUserInteractionEnabled(setEnable: false)
 
         let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
@@ -142,93 +144,14 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
                 APIManager.getSharedAPIManager().getUserProfile(username: "", password: "", linkedinId:linkedInId!)
                 
         }
-
-        self.setUserInteractionEnabled(setEnable: false)
-    
-    }
-    
-//    func uploadFIleUsingFTP()
-//    {
-//        
-//            //                let dataDictionary = try JSONSerialization.jsonObject(with: responseData as Data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String:AnyObject]
-//            
-//            
-//            UserDefaults.standard.synchronize()
-//            
-//            
-//            // Specify the URL string that we'll get the profile info from.
-//            //let targetURLString = "https://api.linkedin.com/v1/people/~:(public-profile-url,id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json"
-//            
-//            let targetURLString = "ftp://\(Constant.FTP_USERNAME):\(Constant.FTP_PASSWORD)\(Constant.FTP_HOST_NAME)\(Constant.FTP_FILES_FOLDER_NAME)\("abc")"
-//            
-//            let request = NSMutableURLRequest(url: NSURL(string: targetURLString)! as URL)
-//            
-//            // Indicate that this is a GET request.
-//            request.httpMethod = "POST"
-//            
-//            let data = UIImagePNGRepresentation(UIImage(named:"Cross")!) as NSData?
-//            
-//            request.httpBody = data! as Data
-//            // Add the access token as an HTTP header field.
-//            //request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-//            
-//            //let session = URLSession(configuration: URLSessionConfiguration.default)
-//            
-//            // Make the request.
-//            let sessionConfiguration = URLSessionConfiguration.default
-//            //sessionConfiguration.URLCredentialStorage = cred_storage;
-//            sessionConfiguration.allowsCellularAccess = true
-//            
-//            
-//            let session = URLSession(configuration: sessionConfiguration)
-//        
-//        
-//            let uploadTask = session.uploadTask(with: request as URLRequest, from: data as! Data)
-//            uploadTask.resume()
-////            let task: URLSessionDataTask = session.dataTask(with: request as URLRequest) { (data, response, error) -> Void in
-////                
-////                let statusCode = (response as! HTTPURLResponse).statusCode
-////                
-////                if statusCode == 200
-////                {
-////                    // Convert the received JSON data into a dictionary.
-////                    
-////                }
-////                else
-////                {
-////                    
-////                }
-////                
-////                
-////            }
-////            
-////            task.resume()
-//            
-//        
-//        
-//    }
-    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
-        print("hi")
-
-    }
-    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         
-        print(data)
-        print("hi")
 
+        //uploadFIleUsingFTP()
+        // Do any additional setup after loading the view.
     }
     
-    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        if error != nil {
-            print("Failed to download data")
-        }else {
-            print("Data downloaded")
-        }
-    }
-    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
-        
-        print(error?.localizedDescription)
-    }
+    
+    
     override func viewWillAppear(_ animated: Bool)
     {
     //    super.viewWillAppear(true)
@@ -236,47 +159,149 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
       //  NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
       //  NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
 
-        stateTextField.delegate = self
         
-         NotificationCenter.default.addObserver(self, selector: #selector(checkGetProfileResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_GET_USER_PROFILE), object: nil)
         
-        setUserInteractionEnabled(setEnable: false)
+        
     }
-    
-    func setUserInteractionEnabled(setEnable:Bool)
-    {
-        nameTextField.isUserInteractionEnabled = setEnable
-        mobileNumberTextField.isUserInteractionEnabled = setEnable
-        emailTextField.isUserInteractionEnabled = setEnable
-        //qualificationTextField.isUserInteractionEnabled = setEnable
-        cuurentRoleTextField.isUserInteractionEnabled = setEnable
-        currentCompanyTextField.isUserInteractionEnabled = setEnable
-       // additionalPhoneTextfield.isUserInteractionEnabled = setEnable
-        stateTextField.isUserInteractionEnabled = setEnable
-        cityTextField.isUserInteractionEnabled = setEnable
-        visaStatusTextField.isUserInteractionEnabled = setEnable
-        candidateFunctionTextField.isUserInteractionEnabled = setEnable
-        servicesTextField.isUserInteractionEnabled = setEnable
-        linkedInProfileUrlTextField.isUserInteractionEnabled = setEnable
-        revenueQuotaTextFiled.isUserInteractionEnabled = setEnable
-        PLTextFiled.isUserInteractionEnabled = setEnable
-        experienceTextField.isUserInteractionEnabled = setEnable
-        expectedCompanyTextField.isUserInteractionEnabled = setEnable
-        relocationTextFIeld.isUserInteractionEnabled = setEnable
-        joiningTimeTextFIeld.isUserInteractionEnabled = setEnable
-        companiesInterviewedTextView.isUserInteractionEnabled = setEnable
-        nonCompeteTextView.isUserInteractionEnabled = setEnable
-        benefitsTextView.isUserInteractionEnabled = setEnable
-
-        //aboutYouTextView.isUserInteractionEnabled = setEnable
-
-
-    }
-    
+  
     override func viewWillDisappear(_ animated: Bool)
     {
-       NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
+
+    func setProfileView()
+    {
+        self.perform(#selector(addView), with: nil, afterDelay: 0.2)
+        
+        //aboutYouTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        
+        //aboutYouTextView.delegate = self
+        
+        let imageView = UIImageView(frame: CGRect(x: 15, y: 5, width: 15, height: 20))
+        let image = UIImage(named: "Username")
+        imageView.image = image
+        nameTextField.addSubview(imageView)
+        
+        let leftView = UIView(frame: CGRect(x: 0, y: 5, width: 65, height: 40))
+        let imageView1 = UIImageView(frame: CGRect(x: 15, y: 10, width: 18, height: 17))
+        let image1 = UIImage(named: "Mobile")
+        imageView1.image = image1
+        leftView.addSubview(imageView1)
+        
+//        let countryCodePickerView = UIPickerView(frame: CGRect(x: 35, y: 1, width: 40, height: 40))
+//        countryCodePickerView.dataSource = self
+//        countryCodePickerView.delegate = self
+//        countryCodePickerView.tag = 10002
+        //leftView.addSubview(countryCodePickerView)
+        
+        countryCodeButton = UIButton(frame: CGRect(x: 35, y: 1, width: 40, height: 40))
+        countryCodeButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        countryCodeButton.setTitleColor(UIColor.black, for: .normal)
+        countryCodeButton.setTitle("\(coutryCodesArray[0])", for: .normal)
+        countryCodeButton.addTarget(self, action: #selector(countryCodeButtonClicekd), for: .touchUpInside)
+        leftView.addSubview(countryCodeButton)
+        
+        mobileNumberTextField.leftView = leftView
+        mobileNumberTextField.leftViewMode = UITextFieldViewMode.always
+        
+        
+        
+        let imageView2 = UIImageView(frame: CGRect(x: 15, y: 8, width: 16, height: 12))
+        let image2 = UIImage(named: "Email")
+        imageView2.image = image2
+        emailTextField.addSubview(imageView2)
+        
+        let imageView3 = UIImageView(frame: CGRect(x: 15, y: 5, width: 18, height: 15))
+        let image3 = UIImage(named: "Password")
+        imageView3.image = image3
+        passwordTextField.addSubview(imageView3)
+        
+        let imageView4 = UIImageView(frame: CGRect(x: 15, y: 5, width: 10, height: 20))
+        let image4 = UIImage(named: "Role")
+        imageView4.image = image4
+        cuurentRoleTextField.addSubview(imageView4)
+        
+        let imageView5 = UIImageView(frame: CGRect(x: 15, y: 5, width: 20, height: 20))
+        let image5 = UIImage(named: "Company")
+        imageView5.image = image5
+        currentCompanyTextField.addSubview(imageView5)
+        
+        
+        
+        let imageView6 = UIImageView(frame: CGRect(x: 15, y: 5, width: 18, height: 17))
+        let image6 = UIImage(named: "Visa")
+        imageView6.image = image6
+        visaStatusTextField.addSubview(imageView6)
+        
+        //        let imageView7 = UIImageView(frame: CGRect(x: 15, y: 5, width: 14, height: 17))
+        //        let image7 = UIImage(named: "Location")
+        //        imageView7.image = image7
+        //        stateTextField.addSubview(imageView7)
+        
+        
+    }
+    
+    func countryCodeButtonClicekd(sender:UIButton)
+    {
+        self.resignAllResponsders()
+        
+        self.addPickerToolBarForCountryCodes()
+
+    }
+    
+    func addView() -> Void
+    {
+        outSideCircleView.layer.cornerRadius = outSideCircleView.frame.size.width/2.0
+        
+        circleImageView.layer.cornerRadius = circleImageView.frame.size.width/2.0
+        
+        outSideCircleView.clipsToBounds = true;
+        
+        outSideCircleView.image = UIImage(named:"OutsideCircle")
+        
+        circleImageView.clipsToBounds = true;
+        
+        //circleImageView.image = UIImage(named:"InsideDefaultCircle")
+        
+        //showData()
+        
+    }
+
+
+// MARK: Notification response methods
+    
+    func checkUpdateProfileResponse(dataDic:Notification)
+    {
+        guard let responseDic = dataDic.object as? [String:String] else
+        {
+            return
+        }
+        
+        guard let code = responseDic["code"] else {
+            
+            return
+        }
+        
+        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+        if username != nil && password != nil
+        {
+            APIManager.getSharedAPIManager().getUserProfile(username: username!, password: password!, linkedinId:"")
+        }
+        else
+            if linkedInId != nil
+            {
+                APIManager.getSharedAPIManager().getUserProfile(username: "", password: "", linkedinId:linkedInId!)
+                
+        }
+        
+        self.setUserInteractionEnabled(setEnable: false)
+        
+    }
+    
+    
     
     func checkGetProfileResponse(dataDic:Notification)
     {
@@ -312,19 +337,19 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
 
         let currentCompany = userDetailsDict["currentCompany"] as? String
 
-        let state = userDetailsDict["state"] as? String
+        let stateDic = userDetailsDict["state"] as? [String:Any]
 
-        let city = userDetailsDict["city"] as? String
+        let city = userDetailsDict["city"] as? [String:Any]
         
         let companiesInterViewed = userDetailsDict["companiesInterviewInlastTwoYears"] as? String
 
-        if companiesInterViewed != nil
+        if companiesInterViewed != nil && companiesInterViewed != ""
         {
             companiesInterviewedTextView.text = companiesInterViewed
         }
         let visaStatus = userDetailsDict["visaStatus"] as? String
         
-        if visaStatus != nil
+        if visaStatus != nil && visaStatus != ""
         {
             visaStatusTextField.text = visaStatus
         }
@@ -332,21 +357,22 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
         let expectedComp = userDetailsDict["expectedComp"] as? String
         
-        if expectedComp != nil
+        if expectedComp != nil && expectedComp != ""
         {
             expectedCompanyTextField.text = expectedComp
         }
 
-        let candidateFunction = userDetailsDict["candidateFunction"] as? String
+        let candidateFunctionDic = userDetailsDict["candidateFunction"] as? [String:Any]
         
-        if candidateFunction != nil
+        if candidateFunctionDic != nil
         {
+            let candidateFunction = candidateFunctionDic?["role_name"] as! String
             candidateFunctionTextField.text = candidateFunction
         }
         
         let verticals = userDetailsDict["verticals"] as? String
         
-        if verticals != nil
+        if verticals != nil && verticals != ""
         {
             verticalsTextFiled.text = verticals
         }
@@ -360,42 +386,42 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
 
         let pandL = userDetailsDict["pandL"] as? String
         
-        if pandL != nil
+        if pandL != nil && pandL != ""
         {
             PLTextFiled.text = pandL
         }
         
         let linkedInUrl = userDetailsDict["linkedInUrl"] as? String
         
-        if pandL != nil
+        if pandL != nil && pandL != ""
         {
             linkedInProfileUrlTextField.text = linkedInUrl
         }
         
         let benefitsInCurrentOrg = userDetailsDict["benefitsInCurrentOrg"] as? String
         
-        if benefitsInCurrentOrg != nil
+        if benefitsInCurrentOrg != nil && benefitsInCurrentOrg != ""
         {
             benefitsTextView.text = benefitsInCurrentOrg
         }
 
         let relocation = userDetailsDict["relocation"] as? String
         
-        if relocation != nil
+        if relocation != nil && relocation != ""
         {
             relocationTextFIeld.text = relocation
         }
 
         let anyNonComplete = userDetailsDict["anyNonComplete"] as? String
         
-        if anyNonComplete != nil
+        if anyNonComplete != nil && anyNonComplete != ""
         {
             nonCompeteTextView.text = anyNonComplete
         }
         
         let experienceInOffshore = userDetailsDict["experienceInOffshore"] as? String
         
-        if experienceInOffshore != nil
+        if experienceInOffshore != nil && experienceInOffshore != ""
         {
             experienceTextField.text = experienceInOffshore
         }
@@ -404,45 +430,68 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
 
         let revenueQuota = userDetailsDict["revenueQuota"] as? String
         
-        if revenueQuota != nil
+        if revenueQuota != nil && revenueQuota != ""
         {
             revenueQuotaTextFiled.text = revenueQuota
         }
 
         let joiningTimeRequired = userDetailsDict["joiningTimeRequired"] as? String
         
-        if joiningTimeRequired != nil
+        if joiningTimeRequired != nil && joiningTimeRequired != ""
         {
             joiningTimeTextFIeld.text = joiningTimeRequired
         }
 
         nameTextField.text = username
         
-        if mobileNum != nil
+        if mobileNum != nil && mobileNum != ""
         {
-            mobileNumberTextField.text = mobileNum
+            let str = mobileNum
+            
+            let code = str?[0 ..< 3]
+            
+            let mob = str?.substring(from: 3) // returns "def"
+
+//            let index = str?.index((str?.startIndex)!, offsetBy: 4)
+//            str?[index!] // returns Character 'o'
+//            
+//            let endIndex = str.index(str.endIndex, offsetBy:-2)
+//            str[Range(index ..< endIndex)] // returns String "o, worl"
+//            
+//            str.substring(from: index) // returns String "o, world!"
+//            str.substring(to: index) // returns String "Hell"
+            countryCodeButton.titleLabel?.text = code!
+            mobileNumberTextField.text = mob!
         }
         
-        if emailId != nil
+        if emailId != nil && emailId != ""
         {
             emailTextField.text = emailId
         }
 
-        if currentRole != nil
+        if currentRole != nil && currentRole != ""
         {
             cuurentRoleTextField.text = currentRole
         }
         
-        if currentCompany != nil
+        if currentCompany != nil && currentCompany != ""
         {
             currentCompanyTextField.text = currentCompany
         }
         
-        if state != nil
+        if stateDic != nil
         {
-            stateTextField.text = state
+            let stateName = stateDic?["state_Name"] as? String
+            stateTextField.text = stateName
+            
+            self.getCitiesFromState(stateName: stateName!)
+
         }
-        
+        if city != nil
+        {
+            let cityName = city?["city_Name"]
+            cityTextField.text = cityName as! String?
+        }
         guard let pictureUrlString = imageName else
         {
             return
@@ -508,13 +557,23 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
 
 
     }
+   
     
+// MARK: Navigation bar methods
     
     func popViewController() -> Void
     {
+        NotificationCenter.default.removeObserver(self)
+        
         self.revealViewController().revealToggle(animated: true)
         
+        //self.revealViewController().frontViewController.navigationController?.popToRootViewController(animated: true)
+        self.stateTextField = nil
+        self.stateTextField = nil
         self.navigationController?.popViewController(animated: true)
+        //self.navigationController?.popToRootViewController(animated: true)
+        //self.revealViewController().frontViewController.popoverPresentationController
+        //self.revealViewController().popoverPresentationController
     }
     
     func setNavigationItem()
@@ -524,6 +583,12 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         setRightBarButtonItemEdit()
         
     }
+    
+    @IBAction func editProfileButtonClicked(_ sender: Any)
+    {
+        showImagePickerController()
+    }
+    
     func setLeftBarButtonItem()
     {
         self.navigationItem.hidesBackButton = true;
@@ -600,6 +665,25 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         setRightBarButtonItemSave()
 
         nameTextField.becomeFirstResponder()
+        
+                stateTextField.itemSelectionHandler = { filteredResults, itemPosition in
+                    // Just in case you need the item position
+                    let item = filteredResults[itemPosition]
+        
+                    DispatchQueue.main.async
+                        {
+                            self.stateTextField.text = item.title
+        
+                            self.cityArray.removeAll()
+        
+                            self.getCitiesFromState(stateName: item.title)
+        
+                            self.cityTextField.filterStrings(self.cityArray)
+        
+                    }
+                }
+        
+               stateTextField.filterStrings(statesArray)
     }
     func rightbarButtonClickedSave()
     {
@@ -676,7 +760,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         {
             cityId = String(describing: cityNameAndIdDic[city]!)
         }
-
+        
         guard let companiesInterViewed = companiesInterviewedTextView.text else {
             
             return
@@ -728,7 +812,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         }
         else
         {
-            roleId = String(describing: stateNameAndIdDic[candidateFunction]!)
+            roleId = String(describing: roleNameAndIdDic[candidateFunction]!)
         }
         
         guard let service = servicesTextField.text else {
@@ -748,13 +832,18 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             return
         }
         
+        var mobileNumberWithCountryCode:String = ""
+        if !(mobile == "")
+        {
+          mobileNumberWithCountryCode = (countryCodeButton.titleLabel?.text!)! + mobile
+        }
         var username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         var password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
         var linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-
+        
         var editedEmail1:String!
         var editedPassword1:String!
-
+        
         if username != nil && password != nil
         {
             linkedInId = ""
@@ -798,7 +887,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             }
         }
         
-        let dict = ["name":name,"email":username!,"password":password!,"linkedinId":linkedInId!,"editedEmail":editedEmail1,"editedPassword":editedPassword1,"mobile":mobile,"currentRole":cuurentRole,"currentCompany":currentCompany,"stateId":state,"cityId":city,"visaStatus":visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed,"benifits":benefits,"notJoinSpecificOrg":nonCompete,"image":"","expInOffshoreEng":expOffshore,"relocation":relocation,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":linkedInId!] as [String : String]
+        let dict = ["name":name,"email":username!,"password":password!,"linkedinId":linkedInId!,"editedEmail":editedEmail1,"editedPassword":editedPassword1,"mobile":mobileNumberWithCountryCode,"currentRole":cuurentRole,"currentCompany":currentCompany,"stateId":state,"cityId":city,"visaStatus":visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed,"benifits":benefits,"notJoinSpecificOrg":nonCompete,"image":"","expInOffshoreEng":expOffshore,"relocation":relocation,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":linkedInId!] as [String : String]
         
         
         do {
@@ -830,7 +919,202 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         }
         //        APIManager.getSharedAPIManager().registerUser(dict: dict)
     }
+
+    func rightbarButtonClickedCancel()
+    {
+        self.view.viewWithTag(1000)?.removeFromSuperview()
+        
+        let vcArray = self.childViewControllers
+        
+        for vc in vcArray
+        {
+            if vc.isKind(of: UIImagePickerController.classForCoder())
+            {
+                vc.removeFromParentViewController()
+            }
+        }
+        
+        hideBarButtonItems(hide: "Edit")
+        
+        // picker.removeFromParentViewController()
+    }
+
+    func setUserInteractionEnabled(setEnable:Bool)
+    {
+        nameTextField.isUserInteractionEnabled = setEnable
+        mobileNumberTextField.isUserInteractionEnabled = setEnable
+        emailTextField.isUserInteractionEnabled = setEnable
+        //qualificationTextField.isUserInteractionEnabled = setEnable
+        cuurentRoleTextField.isUserInteractionEnabled = setEnable
+        currentCompanyTextField.isUserInteractionEnabled = setEnable
+        // additionalPhoneTextfield.isUserInteractionEnabled = setEnable
+        stateTextField.isUserInteractionEnabled = setEnable
+        cityTextField.isUserInteractionEnabled = setEnable
+        visaStatusTextField.isUserInteractionEnabled = setEnable
+        candidateFunctionTextField.isUserInteractionEnabled = setEnable
+        servicesTextField.isUserInteractionEnabled = setEnable
+        linkedInProfileUrlTextField.isUserInteractionEnabled = setEnable
+        revenueQuotaTextFiled.isUserInteractionEnabled = setEnable
+        PLTextFiled.isUserInteractionEnabled = setEnable
+        experienceTextField.isUserInteractionEnabled = setEnable
+        expectedCompanyTextField.isUserInteractionEnabled = setEnable
+        relocationTextFIeld.isUserInteractionEnabled = setEnable
+        joiningTimeTextFIeld.isUserInteractionEnabled = setEnable
+        companiesInterviewedTextView.isUserInteractionEnabled = setEnable
+        nonCompeteTextView.isUserInteractionEnabled = setEnable
+        benefitsTextView.isUserInteractionEnabled = setEnable
+        
+        //aboutYouTextView.isUserInteractionEnabled = setEnable
+        
+        
+    }
     
+    func resignAllResponsders()
+    {
+        nameTextField.resignFirstResponder()
+        mobileNumberTextField.resignFirstResponder()
+        emailTextField.resignFirstResponder()
+        //qualificationTextField.isUserInteractionEnabled = setEnable
+        cuurentRoleTextField.resignFirstResponder()
+        currentCompanyTextField.resignFirstResponder()
+        // additionalPhoneTextfield.isUserInteractionEnabled = setEnable
+        stateTextField.resignFirstResponder()
+        cityTextField.resignFirstResponder()
+        visaStatusTextField.resignFirstResponder()
+        candidateFunctionTextField.resignFirstResponder()
+        servicesTextField.resignFirstResponder()
+        linkedInProfileUrlTextField.resignFirstResponder()
+        revenueQuotaTextFiled.resignFirstResponder()
+        PLTextFiled.resignFirstResponder()
+        experienceTextField.resignFirstResponder()
+        expectedCompanyTextField.resignFirstResponder()
+        relocationTextFIeld.resignFirstResponder()
+        joiningTimeTextFIeld.resignFirstResponder()
+        companiesInterviewedTextView.resignFirstResponder()
+        nonCompeteTextView.resignFirstResponder()
+        benefitsTextView.resignFirstResponder()
+        
+        //aboutYouTextView.isUserInteractionEnabled = setEnable
+        
+        
+    }
+    
+// MARK: Textview delegate methods
+    
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool
+    {
+        if textView == companiesInterviewedTextView
+        {
+            companiesInterviewedTextView.text = "";
+            companiesInterviewedTextView.textColor = UIColor.black
+        }
+        else
+            if textView == benefitsTextView
+            {
+                benefitsTextView.text = "";
+                benefitsTextView.textColor = UIColor.black
+            }
+            else
+                if textView == nonCompeteTextView
+                {
+                    nonCompeteTextView.text = "";
+                    nonCompeteTextView.textColor = UIColor.black
+        }
+        
+        return true;
+    }
+    
+    
+    func textViewDidChange(_ textView: UITextView)
+    {
+        if textView == companiesInterviewedTextView
+        {
+            if companiesInterviewedTextView.text!.characters.count == 0
+            {
+                companiesInterviewedTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
+                companiesInterviewedTextView.text = "Companies interviewed in past 1 year";
+            }
+        }
+        else
+            if textView == benefitsTextView
+            {
+                if benefitsTextView.text!.characters.count == 0
+                {
+                    benefitsTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
+                    benefitsTextView.text = "Benefits in current organization(401k/insurance coverage etc)";
+                }
+            }
+            else
+                if textView == nonCompeteTextView
+                {
+                    if nonCompeteTextView.text!.characters.count == 0
+                    {
+                        nonCompeteTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
+                        nonCompeteTextView.text = "Any non-compete that will prevent you from managing a specific client OR Not join any specific organization";
+                    }
+        }
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+        if textField == candidateFunctionTextField
+        {
+            DispatchQueue.main.async {
+                self.candidateFunctionTextField.resignFirstResponder()
+                
+                self.addPickerToolBar()
+                
+                if self.candidateFunctionTextField.text == ""
+                {
+                    self.candidateFunctionTextField.text = self.candidateFunctionArray[0]
+                }
+            }
+            
+        }
+        else
+            if textField == relocationTextFIeld
+            {
+                DispatchQueue.main.async {
+                    self.relocationTextFIeld.resignFirstResponder()
+                    
+                    self.addPickerToolBarForRelocation()
+                    
+                    if self.relocationTextFIeld.text == ""
+                    {
+                        self.relocationTextFIeld.text = self.relocationArray[0]
+                    }
+                }
+                
+        }
+    }
+ 
+// MARK: Data support methods
+    
+    func getCandidateRoles()
+    {
+        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
+        
+        
+        do
+        {
+            var managedObjects:[NSManagedObject]?
+            
+            managedObjects = coreDataManager.getAllRecords(entity: "Roles")
+            for userObject in managedObjects as! [Roles]
+            {
+                candidateFunctionArray.append(userObject.roleName!)
+                roleNameAndIdDic[userObject.roleName!] = userObject.roleId
+                
+            }
+            
+        } catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        
+        
+    }
+
     func getState()
     {
         let coreDataManager = CoreDataManager.getSharedCoreDataManager()
@@ -882,87 +1166,8 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
     }
 
-    func rightbarButtonClickedCancel()
-    {
-        self.view.viewWithTag(1000)?.removeFromSuperview()
-        
-        let vcArray = self.childViewControllers
-        
-        for vc in vcArray
-        {
-            if vc.isKind(of: UIImagePickerController.classForCoder())
-            {
-                vc.removeFromParentViewController()
-            }
-        }
-        
-        hideBarButtonItems(hide: "Edit")
-
-       // picker.removeFromParentViewController()
-    }
-    func setProfileView()
-    {
-        self.perform(#selector(addView), with: nil, afterDelay: 0.2)
-        
-        //aboutYouTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
-        
-        //aboutYouTextView.delegate = self
-        
-        let imageView = UIImageView(frame: CGRect(x: 15, y: 5, width: 15, height: 20))
-        let image = UIImage(named: "Username")
-        imageView.image = image
-        nameTextField.addSubview(imageView)
-        
-        let leftView = UIView(frame: CGRect(x: 0, y: 5, width: 65, height: 40))
-        let imageView1 = UIImageView(frame: CGRect(x: 15, y: 10, width: 18, height: 17))
-        let image1 = UIImage(named: "Mobile")
-        imageView1.image = image1
-        leftView.addSubview(imageView1)
-        
-        let countryCodePickerView = UIPickerView(frame: CGRect(x: 35, y: 1, width: 40, height: 40))
-        countryCodePickerView.dataSource = self
-        countryCodePickerView.delegate = self
-        leftView.addSubview(countryCodePickerView)
-        mobileNumberTextField.leftView = leftView
-        mobileNumberTextField.leftViewMode = UITextFieldViewMode.always
-        
-        
-        
-        let imageView2 = UIImageView(frame: CGRect(x: 15, y: 8, width: 16, height: 12))
-        let image2 = UIImage(named: "Email")
-        imageView2.image = image2
-        emailTextField.addSubview(imageView2)
-        
-        let imageView3 = UIImageView(frame: CGRect(x: 15, y: 5, width: 18, height: 15))
-        let image3 = UIImage(named: "Password")
-        imageView3.image = image3
-        passwordTextField.addSubview(imageView3)
-        
-        let imageView4 = UIImageView(frame: CGRect(x: 15, y: 5, width: 10, height: 20))
-        let image4 = UIImage(named: "Role")
-        imageView4.image = image4
-        cuurentRoleTextField.addSubview(imageView4)
-        
-        let imageView5 = UIImageView(frame: CGRect(x: 15, y: 5, width: 20, height: 20))
-        let image5 = UIImage(named: "Company")
-        imageView5.image = image5
-        currentCompanyTextField.addSubview(imageView5)
-        
-        
-        
-        let imageView6 = UIImageView(frame: CGRect(x: 15, y: 5, width: 18, height: 17))
-        let image6 = UIImage(named: "Visa")
-        imageView6.image = image6
-        visaStatusTextField.addSubview(imageView6)
-        
-//        let imageView7 = UIImageView(frame: CGRect(x: 15, y: 5, width: 14, height: 17))
-//        let image7 = UIImage(named: "Location")
-//        imageView7.image = image7
-//        stateTextField.addSubview(imageView7)
-
     
-    }
-    
+   
     
     
     func hideBarButtonItems( hide:String)
@@ -987,25 +1192,9 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
         //self.navigationItem.leftBarButtonItem.hide
     }
-    func addView() -> Void
-    {
-        outSideCircleView.layer.cornerRadius = outSideCircleView.frame.size.width/2.0
-        
-        circleImageView.layer.cornerRadius = circleImageView.frame.size.width/2.0
-        
-        outSideCircleView.clipsToBounds = true;
-        
-        outSideCircleView.image = UIImage(named:"OutsideCircle")
-        
-        circleImageView.clipsToBounds = true;
-        
-        //circleImageView.image = UIImage(named:"InsideDefaultCircle")
-        
-        //showData()
-        
-    }
     
     
+ // MARK: Image picker controller delegate
     
     func showImagePickerController()
     {
@@ -1087,122 +1276,373 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
 //        
 //    }
 
+   
     
+    
+  // MARK: picker toolbar methode and delegates
+    
+    
+    func addPickerToolBar()
+    {
+        if self.view.viewWithTag(10000) == nil
+        {
+            
+            let picker = UIPickerView()
+            
+            picker.tag = 10001;
+            
+            picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
+            
+            picker.delegate = self
+            
+            picker.dataSource = self
+            
+            picker.showsSelectionIndicator = true
+            
+            self.view.addSubview(picker)
+            
+            picker.isUserInteractionEnabled = true
+            
+            picker.backgroundColor = UIColor.lightGray
+            
+            //        UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneBtnPressToGetValue:)];
+            let btn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(pickerDoneButtonPressed))
+            
+            //        UIToolbar *toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, picker.frame.origin.y - 40.0f, self.view.frame.size.width, 40.0f)];
+            let toolBar = UIToolbar(frame: CGRect(x: 0, y: picker.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0))
+            
+            toolBar.tag = 10000
+            
+            toolBar.setItems([btn], animated: true)
+            
+            self.view.addSubview(toolBar)
+            //     OperatorTextField.inputAccessoryView=toolBar;
+        }
+    }
+    
+    
+    func addPickerToolBarForRelocation()
+    {
+        if self.view.viewWithTag(20000) == nil
+        {
+            
+            let picker = UIPickerView()
+            
+            picker.tag = 20001;
+            
+            picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
+            
+            picker.delegate = self
+            
+            picker.dataSource = self
+            
+            picker.showsSelectionIndicator = true
+            
+            self.view.addSubview(picker)
+            
+            picker.isUserInteractionEnabled = true
+            
+            picker.backgroundColor = UIColor.lightGray
+            
+            //        UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneBtnPressToGetValue:)];
+            let btn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(pickerDoneButtonPressed))
+            
+            //        UIToolbar *toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, picker.frame.origin.y - 40.0f, self.view.frame.size.width, 40.0f)];
+            let toolBar = UIToolbar(frame: CGRect(x: 0, y: picker.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0))
+            
+            toolBar.tag = 20000
+            
+            toolBar.setItems([btn], animated: true)
+            
+            self.view.addSubview(toolBar)
+            //     OperatorTextField.inputAccessoryView=toolBar;
+        }
+    }
+    
+    func addPickerToolBarForCountryCodes()
+    {
+        if self.view.viewWithTag(30000) == nil
+        {
+            
+            let picker = UIPickerView()
+            
+            picker.tag = 30001;
+            
+            picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
+            
+            picker.delegate = self
+            
+            picker.dataSource = self
+            
+            picker.showsSelectionIndicator = true
+            
+            self.view.addSubview(picker)
+            
+            picker.isUserInteractionEnabled = true
+            
+            picker.backgroundColor = UIColor.lightGray
+            
+            //        UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneBtnPressToGetValue:)];
+            let btn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(pickerDoneButtonPressed))
+            
+            //        UIToolbar *toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, picker.frame.origin.y - 40.0f, self.view.frame.size.width, 40.0f)];
+            let toolBar = UIToolbar(frame: CGRect(x: 0, y: picker.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0))
+            
+            toolBar.tag = 30000
+            
+            toolBar.setItems([btn], animated: true)
+            
+            self.view.addSubview(toolBar)
+            //     OperatorTextField.inputAccessoryView=toolBar;
+        }
+    }
+
+    
+    func pickerDoneButtonPressed()
+    {
+        removePickerToolBar()
+    }
+    
+    func removePickerToolBar()
+    {
+        if let picker = self.view.viewWithTag(10001)
+        {
+            picker.removeFromSuperview()
+            
+        }
+        
+        
+        if let toolbar = self.view.viewWithTag(10000)
+        {
+            toolbar.removeFromSuperview()
+            
+        }
+        
+        
+        if let picker1 = self.view.viewWithTag(20001)
+        {
+            picker1.removeFromSuperview()
+            
+        }
+        
+        
+        if let toolbar1 = self.view.viewWithTag(20000)
+        {
+            toolbar1.removeFromSuperview()
+            
+        }
+        
+        if let picker1 = self.view.viewWithTag(30001)
+        {
+            picker1.removeFromSuperview()
+            
+        }
+        
+        
+        if let toolbar1 = self.view.viewWithTag(30000)
+        {
+            toolbar1.removeFromSuperview()
+            
+        }
+        
+        
+        // [DescriptionTextView becomeFirstResponder];
+        
+    }
+
     func numberOfComponents(in pickerView: UIPickerView) -> Int
     {
         return 1
     }
-    
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int
     {
-        return coutryCodesArray.count
+        if pickerView.tag == 10001
+        {
+            return candidateFunctionArray.count
+            
+        }
+        if pickerView.tag == 20001
+        {
+            return relocationArray.count
+        }
+        else
+        {
+            return coutryCodesArray.count
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?
     {
-        return coutryCodesArray[row]
+        if pickerView.tag == 10001
+        {
+            return candidateFunctionArray[row]
+            
+        }
+        else
+        if pickerView.tag == 20001
+
+        {
+            return relocationArray[row]
+        }
+        else
+        {
+            return coutryCodesArray[row]
+
+        }
     }
     
-    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView
-    {
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView{
         
         var label = view as! UILabel!
-        if label == nil
-        {
+        if label == nil {
             label = UILabel()
         }
+        //
+        //        if pickerView.tag == 1
+        //        {
+        //            label?.font = UIFont.systemFont(ofSize: 12)
+        //            label?.text =  candidateFunctionArray[row] as? String
+        //            label?.textAlignment = .left
+        //        }
+        //        else
+        //        {
+        label?.font = UIFont.systemFont(ofSize: 14)
+        if pickerView.tag == 10001
+        {
+            label?.text =  candidateFunctionArray[row] as String
+            
+        }
+        else
+        if pickerView.tag == 20001
+        {
+            label?.text =  relocationArray[row] as String
+            
+        }
+        else
+        {
+            label?.text =  coutryCodesArray[row] as String
+        }
         
-        label?.font = UIFont.systemFont(ofSize: 12)
-        label?.text =  coutryCodesArray[row] as? String
         label?.textAlignment = .center
+        // label?.textAlignment = .left
+        //}
+        
         return label!
         
     }
     
-    func Edit() -> Void
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int)
     {
-        
-    }
-    func showData() -> Void
-    {
-        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
-        
-        
-        do
+        if pickerView.tag == 10001
         {
-            var managedObjects:[NSManagedObject]?
+            let selectedRole = candidateFunctionArray[row]
             
-            managedObjects = coreDataManager.getAllRecords(entity: "User")
-            for userObject in managedObjects as! [User]
-            {
-                let firstName = userObject.name
-                let pictureUrlString = userObject.pictureUrl
-                
-                guard firstName != nil else
-                {
-                    break
-                }
-                nameTextField.text = "\(firstName!)"
+            candidateFunctionTextField.text = selectedRole
+        }
+        else
+        if pickerView.tag == 20001
 
-                guard userObject.emailAddress != nil else
-                {
-                    break
-                }
-                emailTextField.text = userObject.emailAddress
-                
-                guard userObject.occupation != nil else
-                {
-                    break
-                }
-                cuurentRoleTextField.text = userObject.occupation
-                
-                DispatchQueue.global(qos: .background).async
-                    {
-                    
-                        if let pictureUrlString = pictureUrlString
-                        {
-                            let pictureUrl = URL(string: pictureUrlString)
-                            
-                            guard pictureUrl != nil else
-                            {
-                                return
-                            }
-                            //                    if let pictureUrl = pictureUrl
-                            //                    {
-                            do
-                            {
-                                let imageData = try Data(contentsOf: pictureUrl! as URL)
-                                
-                                let userImage = UIImage(data: imageData)
-                                
-                                DispatchQueue.main.async
-                                    {
-                                        self.circleImageView.image = userImage
-
-                                    }
-
-                                
-                            }
-                            catch let error as NSError
-                            {
-                                print(error.localizedDescription)
-                            }
-                            // }
-                        }
-
-                    
-                }
-                
-                
-            }
-            
-        } catch let error as NSError
         {
-            print(error.localizedDescription)
+            let selectedRole = relocationArray[row]
+            
+            relocationTextFIeld.text = selectedRole
+        }
+        else
+        {
+            let selectedCountryCode = coutryCodesArray[row]
+            
+            countryCodeButton.setTitle(selectedCountryCode, for: .normal)
+           // relocationTextFIeld.text = selectedRole
         }
         
     }
-
+    
+    
+//    func showData() -> Void
+//    {
+//        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
+//        
+//        
+//        do
+//        {
+//            var managedObjects:[NSManagedObject]?
+//            
+//            managedObjects = coreDataManager.getAllRecords(entity: "User")
+//            for userObject in managedObjects as! [User]
+//            {
+//                let firstName = userObject.name
+//                let pictureUrlString = userObject.pictureUrl
+//                
+//                guard firstName != nil else
+//                {
+//                    break
+//                }
+//                nameTextField.text = "\(firstName!)"
+//                
+//                guard userObject.emailAddress != nil else
+//                {
+//                    break
+//                }
+//                emailTextField.text = userObject.emailAddress
+//                
+//                guard userObject.occupation != nil else
+//                {
+//                    break
+//                }
+//                cuurentRoleTextField.text = userObject.occupation
+//                
+//                DispatchQueue.global(qos: .background).async
+//                    {
+//                        
+//                        if let pictureUrlString = pictureUrlString
+//                        {
+//                            let pictureUrl = URL(string: pictureUrlString)
+//                            
+//                            guard pictureUrl != nil else
+//                            {
+//                                return
+//                            }
+//                            //                    if let pictureUrl = pictureUrl
+//                            //                    {
+//                            do
+//                            {
+//                                let imageData = try Data(contentsOf: pictureUrl! as URL)
+//                                
+//                                let userImage = UIImage(data: imageData)
+//                                
+//                                DispatchQueue.main.async
+//                                    {
+//                                        self.circleImageView.image = userImage
+//                                        
+//                                }
+//                                
+//                                
+//                            }
+//                            catch let error as NSError
+//                            {
+//                                print(error.localizedDescription)
+//                            }
+//                            // }
+//                        }
+//                        
+//                        
+//                }
+//                
+//                
+//            }
+//            
+//        } catch let error as NSError
+//        {
+//            print(error.localizedDescription)
+//        }
+//        
+//    }
+//
+//    
+//    func Edit() -> Void
+//    {
+//        
+//    }
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()

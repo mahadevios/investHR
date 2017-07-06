@@ -39,7 +39,7 @@ struct Constant
 //    static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.2.9:8080/InvestHr/resources/UserImages/"
 
    // static let  BASE_URL_PATH                            = "http://192.168.2.9:9090/coreflex/investhr/"               // for testing
-    //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.2.9:9090/coreflex/resources/UserImages/"
+   // static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.2.9:9090/coreflex/resources/UserImages/"
 
     //static let  BASE_URL_PATH                            = "http://192.168.3.74:9090/coreflex/investhr/"
 
@@ -72,7 +72,7 @@ struct Constant
     static let  SAVE_EDITED_PROFILE_API                  = "login/mobileEditProfile"
     static let  DELETE_VIDEO_API                         = "login/mobileDeleteVideo"
     static let  DELETE_RESUME_API                        = "login/mobileDeleteResume"
-    static let  CUSTOM_MESSAGES_API                      = "login/customeMessages"
+    static let  CUSTOM_MESSAGES_API                      = "login/mobileGetNotificationMessageDetails"
 
     static let  LOGOUT_API                               = "login/logout"
 

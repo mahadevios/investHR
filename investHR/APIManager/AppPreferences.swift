@@ -15,6 +15,8 @@ class AppPreferences: NSObject,UIAlertViewDelegate
     
     var isReachable:Bool
     
+    var gotMessages:Bool
+
     var firebaseInstanceId:String
     
     var customMessagesArray:[Any]
@@ -22,7 +24,9 @@ class AppPreferences: NSObject,UIAlertViewDelegate
     private override init()
     {
         isReachable = false
-
+        
+        gotMessages = false
+        
         firebaseInstanceId = ""
         
         customMessagesArray = [Any]()

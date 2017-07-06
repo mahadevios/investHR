@@ -158,6 +158,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         
         let apsDic = data["aps"] as! [String:Any]
         
+        
+       // let bodyString = data["body"] as! String
+        
+       // let bodyData = bodyString.data(using: .utf8)
+        
+        
+        
         let alertObject = apsDic["alert"] as! [String:String]
         
         //let alertData = alertString.data(using: .utf8)
@@ -166,6 +173,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         {
             let notificationObject = try JSONSerialization.jsonObject(with: notificatioData!, options: .allowFragments) as! [String:Any]
             
+            // let bodyObct = try JSONSerialization.jsonObject(with: bodyData!, options: .allowFragments) as! String
+            
+            //print(bodyObct)
             let jobIDInt = notificationObject["JobId"] as! Int
             
             jobID = String(jobIDInt)
@@ -186,13 +196,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             }
             else
             {
-            
+            CoreDataManager.getSharedCoreDataManager().updateNotificationJob(entityName: "CommonNotification", jobId: jobIDInt, subject: body!, notificationDate: Date())
             }
             
             
         } catch let error as NSError
         {
-            
+            print(error.localizedDescription)
         }
         
        // let obj = object["JobId"]
@@ -257,7 +267,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         else
         {
             
-            self.notificationTapped()
+            //self.notificationTapped()
         }
         
         

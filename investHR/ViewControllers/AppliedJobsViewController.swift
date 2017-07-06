@@ -99,6 +99,8 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
     
     func popViewController() -> Void
     {
+        NotificationCenter.default.removeObserver(self)
+
         self.revealViewController().revealToggle(animated: true)
         
         self.navigationController?.popViewController(animated: true)

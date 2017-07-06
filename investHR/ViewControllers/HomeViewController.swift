@@ -37,14 +37,34 @@ class HomeViewController: UIViewController
         
 
         
-        let alert2 = MyAlert.showAlert(ofType: MyAlertType.invalidLogin, handler: { (UIAlertAction) in
-            
-            print("cancel pressed")
-        }) { (UIAlertAction) in
-            print("ok pressed")
-
-        }
+//        let alert2 = MyAlert.showAlert(ofType: MyAlertType.invalidLogin, handler: { (UIAlertAction) in
+//            
+//            print("cancel pressed")
+//        }) { (UIAlertAction) in
+//            print("ok pressed")
+//
+//        }
         
+      if !AppPreferences.sharedPreferences().gotMessages
+      {
+        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+        if username != nil && password != nil
+        {
+            APIManager.getSharedAPIManager().getCustomMessages(username: username!, password: password!, linkedinId: "")
+        }
+        else
+            if linkedInId != nil
+            {
+                APIManager.getSharedAPIManager().getCustomMessages(username: "", password: "", linkedinId: linkedInId!)
+                
+        }
+      }
+
+        NotificationCenter.default.addObserver(self, selector: #selector(checkCustomMessagesList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_CUSTOM_MESSAGES), object: nil)
+
        // AppPreferences.sharedPreferences().customMessagesArray.append("firstOne")
         //self.present(alert2, animated: true, completion: nil)
         
@@ -58,20 +78,81 @@ class HomeViewController: UIViewController
         
     }
     
+    func checkCustomMessagesList(dataDic:Notification)
+    {
+        guard let notiObj = dataDic.object as? [String:Any] else
+        {
+            return
+        }
+        
+        let messagesString = notiObj["NotificationMessage"] as! String
+        
+        let messageData = messagesString.data(using: .utf8)
+        
+        do
+        {
+            AppPreferences.sharedPreferences().gotMessages = true
+            
+           let messagesArray = try JSONSerialization.jsonObject(with: messageData!, options: .allowFragments) as! [Any]
+            
+            print(messagesArray)
+            
+
+            for index in messagesArray
+            {
+                var idMessageDic = [String:Any]()
+
+                let messageDic = index as! [String:Any]
+
+                guard let id = messageDic["id"] as? Int else
+                {
+                  break
+                }
+                idMessageDic["id"]  = id
+                
+                guard let message = messageDic["message"] as? String else
+                {
+                  break
+                }
+                idMessageDic["message"]  = message
+
+                
+
+                
+                AppPreferences.sharedPreferences().customMessagesArray.append(idMessageDic)
+                
+            }
+            
+
+        } catch let error as NSError
+        {
+            
+        }
+        
+        
+    }
     
     override func viewWillAppear(_ animated: Bool)
     {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         
-        if AppPreferences.sharedPreferences().isReachable
-        {
-            print("reachable")
-        }
+//        if AppPreferences.sharedPreferences().isReachable
+//        {
+//            print("reachable")
+//        }
        
+//        DispatchQueue.global().async
+//        {
+        
+       // }
        // CoreDataManager.getSharedCoreDataManager().getMaxUserId(entityName: "User")
     //uploadFtp()
     }
 
+    override func viewWillDisappear(_ animated: Bool)
+    {
+        NotificationCenter.default.removeObserver(self)
+    }
     func uploadFtp()
     {
         let data1    = UIImagePNGRepresentation(UIImage(named:"Cross")!) as NSData!

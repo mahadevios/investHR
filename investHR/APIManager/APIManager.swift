@@ -565,11 +565,11 @@ class APIManager: NSObject
         
     }
     
-    func getCustomMessages(username:String, password:String, linkedinId:String,roleId:String, jobId:String) -> Void
+    func getCustomMessages(username:String, password:String, linkedinId:String) -> Void
     {
         if AppPreferences.sharedPreferences().isReachable
         {
-            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","roleId=\(roleId)","existingJobId=\(jobId)"]
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)"]
             
             let dic = [Constant.REQUEST_PARAMETER:params]
             
