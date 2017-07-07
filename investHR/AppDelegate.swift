@@ -47,6 +47,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     var window: UIWindow?
     var notifView: UIView?
     var jobID:String!
+    var messageString:String!
+
+    var ismessageNotification:Bool!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
@@ -127,6 +130,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         if let refreshedToken = FIRInstanceID.instanceID().token()
         {
             AppPreferences.sharedPreferences().firebaseInstanceId = refreshedToken
+            
+            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            
+            if username != nil && password != nil
+            {
+                APIManager.getSharedAPIManager().updateDeviceToken(username: username!, password: password!,linkedinId:"", deviceToken: AppPreferences.sharedPreferences().firebaseInstanceId)
+            }
+            else
+                if linkedInId != nil
+                {
+                    APIManager.getSharedAPIManager().updateDeviceToken(username: "", password: "",linkedinId:linkedInId!, deviceToken: AppPreferences.sharedPreferences().firebaseInstanceId)
+                    
+            }
+
         }
 
     }
@@ -178,9 +197,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             //print(bodyObct)
             let jobIDInt = notificationObject["JobId"] as! Int
             
-            jobID = String(jobIDInt)
+            let message = notificationObject["Message"] as? String
             
-            print(jobID)
+            if message != nil
+            {
+                ismessageNotification = true
+                
+                self.messageString = message!
+                
+                var idMessageDic = [String:Any]()
+                
+                idMessageDic["id"]  = jobIDInt
+                
+                idMessageDic["message"]  = message
+                
+                AppPreferences.sharedPreferences().customMessagesArray.append(idMessageDic)
+
+            }
+            else
+            {
+                self.ismessageNotification = false
+
+                
+            }
+
+            self.jobID = String(jobIDInt)
+            
+            print(self.jobID)
             
             //let alertObject = try JSONSerialization.jsonObject(with: alertData!, options: .allowFragments) as! [String:Any]
             
@@ -267,7 +310,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         else
         {
             
-            //self.notificationTapped()
+            self.notificationTapped()
         }
         
         
@@ -277,32 +320,66 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     {
         
 //        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1, options: .curveEaseIn, animations: {
-        print(UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.classForCoder)
+       // print(UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.classForCoder)
         
-        print(investHR.NewJobsViewController.classForCoder())
-        if let vc1 = UIApplication.shared.keyWindow?.rootViewController?.presentedViewController
+       // print(investHR.NewJobsViewController.classForCoder())
+        
+        if ismessageNotification == true
         {
-            if vc1.classForCoder == NewJobsViewController.classForCoder()
+            if let vc1 = UIApplication.shared.keyWindow?.rootViewController?.presentedViewController
             {
-                UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
-                print("presented = " + "\(vc1.classForCoder)")
+                if vc1.classForCoder == PopUpMessageViewController.classForCoder()
+                {
+                    UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
+                    print("presented = " + "\(vc1.classForCoder)")
+                    
+                }
+                
                 
             }
             
-
-        }
-        
             self.notifView?.frame = CGRect(x: 0, y: -70, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 60)
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "NewJobsViewController") as! NewJobsViewController
+            let vc = storyboard.instantiateViewController(withIdentifier: "PopUpMessageViewController") as! PopUpMessageViewController
             
-            vc.verticalId = String(0)
-            vc.domainType = "horizontal"
+            //vc.verticalId = String(0)
+            //vc.domainType = "horizontal"
+            vc.messageString = self.messageString
             vc.jobId = self.jobID
+            vc.modalPresentationStyle = .overCurrentContext
+            
+            vc.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
             
             UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
+ 
+        }
+        else
+        {
+            if let vc1 = UIApplication.shared.keyWindow?.rootViewController?.presentedViewController
+            {
+                if vc1.classForCoder == NewJobsViewController.classForCoder()
+                {
+                    UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
+                    print("presented = " + "\(vc1.classForCoder)")
+                
+                }
             
+
+            }
+        
+                self.notifView?.frame = CGRect(x: 0, y: -70, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 60)
+            
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyboard.instantiateViewController(withIdentifier: "NewJobsViewController") as! NewJobsViewController
+            
+                vc.verticalId = String(0)
+                vc.domainType = "horizontal"
+                vc.jobId = self.jobID
+            
+                UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
+            
+        }
 //        }) { (bo) in
 //            
 //        }

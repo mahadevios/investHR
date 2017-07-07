@@ -27,19 +27,19 @@ struct Constant
     static let  FTP_PASSWORD                             = "mtone@123"
     static let  FTP_DIRECTORY_PATH                       = "TEST"
 
-    static let  BASE_URL_PATH                            = "http://192.168.3.75:8080/coreflex/investhr/"              // local server
-    static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.75:8080/coreflex/resources/UserImages/"
+   // static let  BASE_URL_PATH                            = "http://192.168.3.75:8080/coreflex/investhr/"              // local server
+    //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.75:8080/coreflex/resources/UserImages/"
     // static let  BASE_URL_PATH                            = "http://192.168.3.74:9090/coreflex/investhr/"              // local server
      //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.74:9090/coreflex/resources/UserImages/"
-    //static let  BASE_URL_PATH                            = "http://192.168.3.67:7070/coreflex/investhr/"              // sable sarkar
-    //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.67:7070/coreflex/resources/UserImages/"
+    static let  BASE_URL_PATH                            = "http://192.168.3.67:7070/coreflex/investhr/"              // sable sarkar
+    static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.67:7070/coreflex/resources/UserImages/"
 
    
 //    static let  BASE_URL_PATH                            = "http://192.168.2.9:8080/InvestHr/investhr/"               // for testing
 //    static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.2.9:8080/InvestHr/resources/UserImages/"
 
-   // static let  BASE_URL_PATH                            = "http://192.168.2.9:9090/coreflex/investhr/"               // for testing
-   // static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.2.9:9090/coreflex/resources/UserImages/"
+    //static let  BASE_URL_PATH                            = "http://192.168.2.9:9090/coreflex/investhr/"               // for testing
+    //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.2.9:9090/coreflex/resources/UserImages/"
 
     //static let  BASE_URL_PATH                            = "http://192.168.3.74:9090/coreflex/investhr/"
 
@@ -73,6 +73,7 @@ struct Constant
     static let  DELETE_VIDEO_API                         = "login/mobileDeleteVideo"
     static let  DELETE_RESUME_API                        = "login/mobileDeleteResume"
     static let  CUSTOM_MESSAGES_API                      = "login/mobileGetNotificationMessageDetails"
+    static let  UPDATE_DEVICE_TOKEN_API                  = "login/updateDeviceToken"
 
     static let  LOGOUT_API                               = "login/logout"
 

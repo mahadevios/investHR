@@ -77,6 +77,24 @@ class CustomNotificationViewController: UIViewController,UITableViewDelegate,UIT
         
         return cell!
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        
+        let idMessageDic = AppPreferences.sharedPreferences().customMessagesArray[indexPath.row] as! [String:Any]
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "PopUpMessageViewController") as! PopUpMessageViewController
+        
+        vc.messageString = (idMessageDic["message"] as! String?)!
+        
+        vc.jobId = String(describing: idMessageDic["jobId"] as! Int)
+        
+        vc.modalPresentationStyle = .overCurrentContext
+        
+        vc.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+        
+        self.present(vc, animated: true, completion: nil)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

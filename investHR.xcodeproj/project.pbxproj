@@ -64,6 +64,7 @@
 		8493B8541EC4678300D8F7F9 /* investHRUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8493B8531EC4678300D8F7F9 /* investHRUITests.swift */; };
 		84AD18391EF000140049675A /* investHR.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84AD18371EF000140049675A /* investHR.xcdatamodeld */; };
 		84AD183A1EF000DE0049675A /* investHR.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = 84AD18371EF000140049675A /* investHR.xcdatamodeld */; };
+		84B54A011F0F5BAD00340541 /* PopUpMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B54A001F0F5BAD00340541 /* PopUpMessageViewController.swift */; };
 		84DAD40F1ED7F5440008BB09 /* VerticalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DAD40E1ED7F5440008BB09 /* VerticalViewController.swift */; };
 		84DAD4111ED822200008BB09 /* JobsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DAD4101ED822200008BB09 /* JobsViewController.swift */; };
 		84EB8F3D1EDFE90B00014DA4 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB8F3B1EDFE90B00014DA4 /* APIManager.swift */; };
@@ -170,6 +171,7 @@
 		8493B8531EC4678300D8F7F9 /* investHRUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = investHRUITests.swift; sourceTree = "<group>"; };
 		8493B8551EC4678300D8F7F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84AD18381EF000140049675A /* investHR.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = investHR.xcdatamodel; sourceTree = "<group>"; };
+		84B54A001F0F5BAD00340541 /* PopUpMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopUpMessageViewController.swift; sourceTree = "<group>"; };
 		84DAD40E1ED7F5440008BB09 /* VerticalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalViewController.swift; sourceTree = "<group>"; };
 		84DAD4101ED822200008BB09 /* JobsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JobsViewController.swift; sourceTree = "<group>"; };
 		84EB8F3B1EDFE90B00014DA4 /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
@@ -417,6 +419,7 @@
 				842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */,
 				8439DFD61F038C5400F21C79 /* PlayVideoViewController.swift */,
 				8440D99C1F0CE1E1002EF023 /* CustomNotificationViewController.swift */,
+				84B54A001F0F5BAD00340541 /* PopUpMessageViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -770,6 +773,7 @@
 				844F5F2D1EDBF0B20073A7D7 /* EditProfileViewController.swift in Sources */,
 				84EB8F451EDFFCC900014DA4 /* AppPreferences.swift in Sources */,
 				84EB8F3D1EDFE90B00014DA4 /* APIManager.swift in Sources */,
+				84B54A011F0F5BAD00340541 /* PopUpMessageViewController.swift in Sources */,
 				84EB8F3E1EDFE90B00014DA4 /* DownloadMetaDataJob.swift in Sources */,
 				84EB8F481EE03D6600014DA4 /* Reachability.swift in Sources */,
 				842BAFCD1EF2A368005327B0 /* Roles+CoreDataProperties.swift in Sources */,

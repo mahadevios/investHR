@@ -104,11 +104,11 @@ class HomeViewController: UIViewController
 
                 let messageDic = index as! [String:Any]
 
-                guard let id = messageDic["id"] as? Int else
+                guard let id = messageDic["jobId"] as? Int else
                 {
                   break
                 }
-                idMessageDic["id"]  = id
+                idMessageDic["jobId"]  = id
                 
                 guard let message = messageDic["message"] as? String else
                 {

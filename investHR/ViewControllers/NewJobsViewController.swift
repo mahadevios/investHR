@@ -124,13 +124,23 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             
             for index in 0 ..< cityStateArray!.count
             {
-                let cityStateDic = cityStateArray![index] as? [String:String]
+                let cityStateDic = cityStateArray![index] as? [String:AnyObject]
                 
-                let state = cityStateDic?["state"]
+                let state = cityStateDic?["state"] as! String
                 
-                let city = cityStateDic?["city"]
+                let optionalCity = cityStateDic?["city"]
                 
-                jobLocationArray.append("\(state!)\(" ")\(city!)")
+                var city = ""
+                
+                if optionalCity is NSNull
+                {
+                    city = ""
+                }
+                else
+                {
+                 city = optionalCity! as! String
+                }
+                jobLocationArray.append("\(state)\(" ")\(city)")
 
             }
             

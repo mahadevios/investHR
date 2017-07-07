@@ -50,7 +50,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     @IBOutlet weak var joiningTimeTextFIeld: UITextField!
     @IBOutlet weak var relocationTextFIeld: UITextField!
     
-    @IBOutlet weak var passwordTextField: TextField!
+    //@IBOutlet weak var passwordTextField: TextField!
     
     var statesArray:[String] = []
     var cityArray:[String] = []
@@ -211,10 +211,10 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         imageView2.image = image2
         emailTextField.addSubview(imageView2)
         
-        let imageView3 = UIImageView(frame: CGRect(x: 15, y: 5, width: 18, height: 15))
-        let image3 = UIImage(named: "Password")
-        imageView3.image = image3
-        passwordTextField.addSubview(imageView3)
+//        let imageView3 = UIImageView(frame: CGRect(x: 15, y: 5, width: 18, height: 15))
+//        let image3 = UIImage(named: "Password")
+//        imageView3.image = image3
+//        passwordTextField.addSubview(imageView3)
         
         let imageView4 = UIImageView(frame: CGRect(x: 15, y: 5, width: 10, height: 20))
         let image4 = UIImage(named: "Role")
@@ -282,7 +282,24 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             return
         }
         
+        let emailId = responseDic["emailId"]
+        
+        let linkId = responseDic["linkId"]
+
+        
         let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+        
+        if emailId == username
+        {
+            
+        }
+        else
+            if linkId == "" && emailId != ""
+        {
+            UserDefaults.standard.set(self.emailTextField.text! , forKey: Constant.USERNAME)
+
+        }
+        
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
         let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
         
@@ -517,10 +534,14 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
                         
                                 let imageData = try Data(contentsOf: pictureUrl as URL)
                         
-                                let userImage = UIImage(data: imageData)
+                                let userImage1 = UIImage(data: imageData)
                         
+                        let userImage = self.fixOrientation(img: userImage1!)
+                        
+                        //let userImage = UIImage(cgImage: (userImage1?.cgImage)!, scale: (userImage1?.scale)!, orientation: .up)
                         DispatchQueue.main.async
                             {
+                                
                                 self.circleImageView.image = userImage
                                 
                                 print("got in main queue")
@@ -558,7 +579,21 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
 
     }
    
-    
+    func fixOrientation(img:UIImage) -> UIImage {
+        
+        if (img.imageOrientation == UIImageOrientation.up) {
+            return img;
+        }
+        
+        UIGraphicsBeginImageContextWithOptions(img.size, false, img.scale);
+        let rect = CGRect(x: 0, y: 0, width: img.size.width, height: img.size.height)
+        img.draw(in: rect)
+        
+        let normalizedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext();
+        return normalizedImage;
+        
+    }
 // MARK: Navigation bar methods
     
     func popViewController() -> Void
@@ -705,10 +740,16 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             
             return
         }
-        guard let editedPassword = passwordTextField.text else {
+        if emailTextField.text == "" || !(emailTextField.text?.contains("@"))!
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Please enter a valid email address", withCancelText: "Ok")
             
             return
         }
+//        guard let editedPassword = passwordTextField.text else {
+//            
+//            return
+//        }
         guard let joinigTime = joiningTimeTextFIeld.text else {
             
             return
@@ -855,14 +896,14 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             {
                 editedEmail1 = editedEmail
             }
-            if editedPassword == ""
-            {
+//            if editedPassword == ""
+//            {
                 editedPassword1 = password
-            }
-            else
-            {
-                editedPassword1 = editedPassword
-            }
+//            }
+//            else
+//            {
+//                editedPassword1 = editedPassword
+//            }
             //APIManager.getSharedAPIManager().getVerticalJobs(username: username!, password: password!, varticalId: String(verticalId), linkedinId:"")
         }
         else
@@ -887,7 +928,8 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             }
         }
         
-        let dict = ["name":name,"email":username!,"password":password!,"linkedinId":linkedInId!,"editedEmail":editedEmail1,"editedPassword":editedPassword1,"mobile":mobileNumberWithCountryCode,"currentRole":cuurentRole,"currentCompany":currentCompany,"stateId":state,"cityId":city,"visaStatus":visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed,"benifits":benefits,"notJoinSpecificOrg":nonCompete,"image":"","expInOffshoreEng":expOffshore,"relocation":relocation,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":linkedInId!] as [String : String]
+        
+        let dict = ["name":name,"email":username!,"password":password!,"linkedinId":linkedInId!,"editedEmail":editedEmail1,"editedPassword":editedPassword1,"mobile":mobileNumberWithCountryCode,"currentRole":cuurentRole,"currentCompany":currentCompany,"stateId":stateId!,"cityId":cityId,"visaStatus":visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed,"benifits":benefits,"notJoinSpecificOrg":nonCompete,"image":"","expInOffshoreEng":expOffshore,"relocation":relocation,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":linkedInId!] as [String : String]
         
         
         do {
@@ -1229,6 +1271,13 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
         let userImage = info[UIImagePickerControllerOriginalImage] as? UIImage
         
+//        UIImage *imageToDisplay =
+//            [UIImage imageWithCGImage:[originalImage CGImage]
+//                scale:[originalImage scale]
+//                orientation: UIImageOrientationUp];
+        
+        //let userImage = UIImage(cgImage: (imageToDisplay?.cgImage)!, scale: (imageToDisplay?.scale)!, orientation: .up)
+
         imagedata    = UIImagePNGRepresentation(userImage!) as Data!
         
         var imageName:String!

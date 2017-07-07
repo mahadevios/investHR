@@ -552,7 +552,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                     
                     NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_UPLOAD_USER_VIDEO), object: dictFromJSON, userInfo: nil)
 
-                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Video uploaded successfully", withCancelText: "Ok")
+                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Upload success", withMessage: "Video uploaded successfully", withCancelText: "Ok")
 
                     //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
                     

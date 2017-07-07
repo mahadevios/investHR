@@ -585,6 +585,25 @@ class APIManager: NSObject
         
     }
     
+    func updateDeviceToken(username:String, password:String, linkedinId:String, deviceToken:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","deviceToken=\(deviceToken)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.UPDATE_DEVICE_TOKEN_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.UPDATE_DEVICE_TOKEN_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
     func createRegistrationRequestAndSend(dict:Any, imageData:Data?)
     {
         var request:NSURLRequest!

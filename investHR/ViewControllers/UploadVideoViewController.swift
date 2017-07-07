@@ -512,6 +512,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
             imagePicker.allowsEditing = true
             imagePicker.mediaTypes = ["public.movie"]
             imagePicker.videoMaximumDuration = 10
+            
             self.present(imagePicker, animated: true, completion: nil)
         }
         else
@@ -862,7 +863,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
                 
             }
             
-            let alertController = UIAlertController(title: "Upload File", message: "Are you sure to upload this file?", preferredStyle: UIAlertControllerStyle.alert)
+            let alertController = UIAlertController(title: "Upload File", message: "Are you sure to upload this video?", preferredStyle: UIAlertControllerStyle.alert)
             
             let okAction = UIAlertAction(title: "Upload", style: UIAlertActionStyle.default, handler:
                 
