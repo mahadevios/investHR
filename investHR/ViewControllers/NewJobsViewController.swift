@@ -47,7 +47,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkSaveJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVE_JOB), object: nil)
         
-        if self.domainType == "vertical" || self.domainType == "horizontal" || self.domainType == "roles"
+        if self.domainType == "vertical" || self.domainType == "horizontal" || self.domainType == "roles" || self.domainType == "location"
         {
             getJobDetails()
         }
@@ -218,15 +218,26 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             
             for index in 0 ..< cityStateArray!.count
             {
-                let cityStateDic = cityStateArray![index] as? [String:String]
+                let cityStateDic = cityStateArray![index] as? [String:AnyObject]
                 
-                let state = cityStateDic?["state"]
+                let state = cityStateDic?["state"] as! String
                 
-                let city = cityStateDic?["city"]
+                let optionalCity = cityStateDic?["city"]
                 
-                jobLocationArray.append("\(state!)\(" ")\(city!)")
+                var city = ""
+                
+                if optionalCity is NSNull
+                {
+                    city = ""
+                }
+                else
+                {
+                    city = optionalCity! as! String
+                }
+                jobLocationArray.append("\(state)\(" ")\(city)")
                 
             }
+
             
             
             
@@ -337,13 +348,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
 
         var descriptionWebView = cell.viewWithTag(109) as! UIWebView
         
-        var descriptionWebView1 = UIWebView(frame: CGRect(x: descriptionWebView.frame.origin.x, y: descriptionWebView.frame.origin.y+50, width: descriptionWebView.frame.size.width, height: descriptionWebView.frame.size.height))
         
-        //descriptionWebView.isHidden = true
-        descriptionWebView1.scrollView.isScrollEnabled = false
-        descriptionWebView1.delegate = self
-        descriptionWebView1.backgroundColor = UIColor.red
-        descriptionWebView.backgroundColor = UIColor.red
 
         let applyButton = cell.viewWithTag(103) as! subclassedUIButton
         
@@ -358,10 +363,27 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         let jobId = jobDetailsDic?["jobid"]
         let relocation = jobDetailsDic?["relocation"]
         let date = jobDetailsDic?["date"] as? Double
-        let subject = jobDetailsDic?["subject"]
         let location = jobDetailsDic?["location"]
         
+        var descriptionWebView1 = UIWebView(frame: CGRect(x: descriptionWebView.frame.origin.x, y: descriptionWebView.frame.origin.y+50, width: descriptionWebView.frame.size.width, height: descriptionWebView.frame.size.height))
 
+        if let subject = jobDetailsDic?["subject"]
+        {
+            companyNameLabel.text = subject as? String
+            companyNameLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
+            companyNameLabel.numberOfLines = 0
+            let height1 = heightForView(text: subject as! String, font: UIFont.systemFont(ofSize: 14), width: locationLabel.frame.size.width) as CGFloat
+            companyNameLabel.frame = CGRect(x: companyNameLabel.frame.origin.x, y: companyNameLabel.frame.origin.y, width: companyNameLabel.frame.size.width, height: height1)
+            descriptionWebView1 = UIWebView(frame: CGRect(x: descriptionWebView.frame.origin.x, y: descriptionWebView.frame.origin.y+20+height1, width: descriptionWebView.frame.size.width, height: descriptionWebView.frame.size.height))
+            print("subject = " + "\(subject)")
+        }
+
+        
+        //descriptionWebView.isHidden = true
+        descriptionWebView1.scrollView.isScrollEnabled = false
+        descriptionWebView1.delegate = self
+        descriptionWebView1.backgroundColor = UIColor.red
+        descriptionWebView.backgroundColor = UIColor.red
         
         if let discription = jobDetailsDic?["discription"]  as? String
         {
@@ -384,7 +406,6 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
 //        descriptionWebView.frame = CGRect(x: descriptionWebView.frame.origin.x, y: descriptionWebView.frame.origin.y, width: descriptionWebView.frame.size.width, height: 300)
         
         let dateString = Date().getLocatDateFromMillisecods(millisecods: date )
-        companyNameLabel.text = subject as? String
         
         var jobLocationString:NSMutableString = ""
         
@@ -404,9 +425,9 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         }
         
         
+        
         locationLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         locationLabel.numberOfLines = 0
-       
         locationLabel.textColor = UIColor(colorLiteralRed: 142/255.0, green: 159/255.0, blue: 168/255.0, alpha: 1.0)
         let height = heightForView(text: jobLocationString as String, font: UIFont.systemFont(ofSize: 14), width: locationLabel.frame.size.width) as CGFloat
         
@@ -513,9 +534,22 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             }
         }
 
+
         let height = heightForView(text: jobLocationString as String, font: UIFont.systemFont(ofSize: 14), width: self.view.frame.size.width*0.5) as CGFloat
 
-        return CGSize(width: self.view.frame.size.width*0.95, height: height+webViewHeight+200)
+        var height1:CGFloat = 10.0
+        
+        if let subject = jobDetailsDic?["subject"]
+        {
+          let height2 = heightForView(text: subject as! String, font: UIFont.systemFont(ofSize: 14), width: self.view.frame.size.width*0.5) as CGFloat
+            
+            height1 = height2
+        }
+        
+        print("location height = " + "\(height)")
+        print("subject height = " + "\(height1)")
+
+        return CGSize(width: self.view.frame.size.width*0.95, height: height+height1+webViewHeight+200)
     }
     
    

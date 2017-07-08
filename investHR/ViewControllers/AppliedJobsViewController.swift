@@ -25,7 +25,6 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
         
         self.navigationItem.leftBarButtonItem = barButtonItem
         
-        self.navigationItem.title = "Applied Jobs"
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkRolesJobList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_APPLIED_JOB_LIST), object: nil)
 //        let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 25))
@@ -38,6 +37,11 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
         // Do any additional setup after loading the view.
     }
     
+    override func viewWillAppear(_ animated: Bool)
+    {
+        self.navigationItem.title = "Applied Jobs"
+
+    }
     func checkRolesJobList(dataDic:NSNotification)
     {
         let appliedJobsDict = dataDic.object as! [String:AnyObject]
@@ -55,7 +59,7 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
 
             {
                 
-                let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 25))
+                let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 90, height: 25))
                 numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
                 numberOfJobsLabel.text = "\(appliedJobsNumber!) job"
                 numberOfJobsLabel.textAlignment = NSTextAlignment.right
@@ -65,7 +69,7 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
             }
             else
                 {
-                    let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 25))
+                    let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 90, height: 25))
                     numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
                     numberOfJobsLabel.text = "\(appliedJobsNumber!) jobs"
                     numberOfJobsLabel.textAlignment = NSTextAlignment.right

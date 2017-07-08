@@ -12,6 +12,7 @@ import CoreData
 
 class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPickerViewDelegate,UITextViewDelegate,UITextFieldDelegate,UIScrollViewDelegate {
 
+    @IBOutlet weak var insideView: UIView!
     @IBOutlet weak var candidateFunctionTextField: UITextField!
     @IBOutlet weak var serviceTextField: UITextField!
 
@@ -82,6 +83,37 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         relocationTextField.delegate = self
         getCandidateRoles()
         NotificationCenter.default.addObserver(self, selector: #selector(checkRegistrationResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_REGISTERED), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+
+        let scrollableSize = CGSize(width: self.view.frame.size.width, height: self.insideView.frame.size.height)
+
+        self.scrollView.contentSize = scrollableSize
+        
+        serviceTextField.delegate = self
+        
+        linkedInURLTextField.delegate = self
+
+        verticalTextField.delegate = self
+
+        revenueQuotaTextField.delegate = self
+
+        PLTexField.delegate = self
+
+        currentCompanyTextFIeld.delegate = self
+        
+        expectedCompanyTextField.delegate = self
+        
+        relocationTextField.delegate = self
+        
+        joiningTimeTextfield.delegate = self
+        
+        companiesInterViewedTextView.delegate = self
+        
+        benefitsTextView.delegate = self
+
+        nonCompeteTextView.delegate = self
+
+        
         // Do any additional setup after loading the view.
     }
 
@@ -207,7 +239,22 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
 
         
     }
-    
+    func deviceRotated() -> Void
+    {
+        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+        {
+            let scrollableSize = CGSize(width: self.view.frame.size.width-50, height: self.insideView.frame.size.height)
+            
+            self.scrollView.contentSize = scrollableSize
+        }
+        
+        if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+        {
+            let scrollableSize = CGSize(width: self.view.frame.size.width-50, height: self.insideView.frame.size.height)
+            
+            self.scrollView.contentSize = scrollableSize
+        }
+    }
     override func viewWillDisappear(_ animated: Bool)
     {
         NotificationCenter.default.removeObserver(self)
@@ -393,6 +440,57 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         } catch let error as NSError
         {
             print(error.localizedDescription)
+        }
+        
+        
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool
+    {
+        
+        switch textField
+        {
+        case serviceTextField:
+            linkedInURLTextField.becomeFirstResponder()
+            return true
+            
+        case linkedInURLTextField:
+            verticalTextField.becomeFirstResponder()
+            return true
+            
+        case verticalTextField:
+            revenueQuotaTextField.becomeFirstResponder()
+            return true
+            
+        case revenueQuotaTextField:
+            PLTexField.becomeFirstResponder()
+            return true
+            
+        case PLTexField:
+            expOffshoreTextField.becomeFirstResponder()
+            return true
+            
+        case expOffshoreTextField:
+            currentCompanyTextFIeld.becomeFirstResponder()
+            return true
+            
+        case currentCompanyTextFIeld:
+            expectedCompanyTextField.becomeFirstResponder()
+            return true
+            
+        case expectedCompanyTextField:
+            //PLTexField.becomeFirstResponder()
+            expectedCompanyTextField.resignFirstResponder()
+            
+            self.addPickerToolBar()
+            return true
+            
+        case joiningTimeTextfield:
+            companiesInterViewedTextView.becomeFirstResponder()
+            return true
+            
+        default:
+            return true
         }
         
         

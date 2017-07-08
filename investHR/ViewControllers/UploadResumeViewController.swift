@@ -20,6 +20,8 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
     @available(iOS 8.0, *)
     public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL)
     {
+      if uploadedResumeNamesArray.count > 2
+      {
         let resumeData = NSData(contentsOf: url)
         
         let uniqueImageName = String(Date().millisecondsSince1970) + "." + url.pathExtension
@@ -101,7 +103,13 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         alertController.addAction(cancelAction)
         self.present(alertController, animated: true, completion: nil)
 
-        
+    }
+    
+    else
+    {
+        AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Maximum 3 resume can be upload, please delete exsting resume", withCancelText: "ok")
+    }
+   
         //let imageView = self.view.viewWithTag(101) as! UIImageView
         
         //imageView.image = UIImage(data: data as! Data)

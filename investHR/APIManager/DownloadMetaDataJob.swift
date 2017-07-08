@@ -269,6 +269,30 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                 }
                 break
                 
+            case Constant.LOCATION_WISE_JOB_API:
+                
+                guard let dictFromJSON = response else
+                {
+                    return
+                }
+                if String(describing: dictFromJSON["code"]!) == Constant.SUCCESS
+                {
+                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_LOCATION_WISE_JOB), object: dictFromJSON, userInfo: nil)
+                    
+                }
+                else
+                {
+                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                }
+                break
+                
             case Constant.SAVED_JOBS_API:
                 
                 guard let dictFromJSON = response else
@@ -461,6 +485,8 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                 {
                     UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
                     
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_LOAD_MORE_HORIZONTAL_JOB), object: dictFromJSON, userInfo: nil)
+
                     //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
                     
                 }
@@ -485,6 +511,34 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                 {
                     UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
                     
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_LOAD_MORE_ROLE_JOB), object: dictFromJSON, userInfo: nil)
+
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                }
+                break
+             
+            case Constant.LOAD_MORE_LOCATION_JOB_API:
+                
+                guard let dictFromJSON = response else
+                {
+                    return
+                }
+                if String(describing: dictFromJSON["code"]!) == Constant.SUCCESS
+                {
+                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_LOAD_MORE_LOCATION_JOB), object: dictFromJSON, userInfo: nil)
+                    
+                }
+                else
+                {
+                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_LOAD_MORE_LOCATION_JOB), object: dictFromJSON, userInfo: nil)
+
                     //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
                     
                 }

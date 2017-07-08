@@ -14,10 +14,11 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var tableView: UITableView!
     
+   
     var locationsArray:[String] = []
     var locationAreaArray:[String] = []
     var selectedCollectionCell = 0
-    var selectedTableViewCell:Int = 0
+    var selectedTableViewCell:Int?
     
     var statesArray:[String] = []
     var cityArray:[String] = []
@@ -160,6 +161,8 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
         
         selectedCollectionCell = indexPath.row
         
+        selectedTableViewCell = nil
+        
         self.collectionView.reloadData()
         
         self.tableView.reloadData()
@@ -270,6 +273,27 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
         
     }
 
+    @IBAction func viewJobButtonClicked(_ sender: Any)
+    {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "JobsViewController") as! JobsViewController
+        
+        vc.stateId = String(selectedCollectionCell + 1)
+        
+        if selectedTableViewCell != nil
+        {
+            vc.cityId = String(selectedTableViewCell! + 1)
+
+        }
+        else
+        {
+            vc.cityId = ""
+        }
+
+        vc.domainType = "location"
+        
+        self.navigationController?.pushViewController(vc, animated: true)
+        
+    }
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()

@@ -38,13 +38,13 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         
         
 
-        let imageView = UIImageView(frame: CGRect(x: 15, y: 5, width: 10, height: 20))
+        let imageView = UIImageView(frame: CGRect(x: 15, y: 6, width: 10, height: 20))
         let image = UIImage(named: "Role")
         imageView.image = image
         
         currentRoleTextField.addSubview(imageView)
         
-        let imageView1 = UIImageView(frame: CGRect(x: 15, y: 10, width: 20, height: 20))
+        let imageView1 = UIImageView(frame: CGRect(x: 15, y: 9, width: 20, height: 20))
         let image1 = UIImage(named: "Company")
         imageView1.image = image1
         
@@ -102,7 +102,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         
         locationTextField.filterStrings(statesArray)
         
-        let imageView4 = UIImageView(frame: CGRect(x: 15, y: 10, width: 18, height: 6))
+        let imageView4 = UIImageView(frame: CGRect(x: 13, y: 11, width: 18, height: 6))
         let image4 = UIImage(named: "Visa")
         imageView4.image = image4
         

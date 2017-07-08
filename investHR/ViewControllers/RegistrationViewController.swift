@@ -42,7 +42,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         nameTextField.addSubview(imageView)
         
         let leftView = UIView(frame: CGRect(x: 0, y: 5, width: 65, height: 40))
-        let imageView1 = UIImageView(frame: CGRect(x: 15, y: 7, width: 18, height: 17))
+        let imageView1 = UIImageView(frame: CGRect(x: 15, y: 10, width: 18, height: 17))
         let image1 = UIImage(named: "Mobile")
         imageView1.image = image1
         leftView.addSubview(imageView1)
@@ -63,7 +63,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         
         
         
-        let imageView2 = UIImageView(frame: CGRect(x: 15, y: 5, width: 16, height: 12))
+        let imageView2 = UIImageView(frame: CGRect(x: 15, y: 9, width: 16, height: 12))
         let image2 = UIImage(named: "Email")
         imageView2.image = image2
         
@@ -233,19 +233,27 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     
     func deviceRotated() -> Void
     {
-//        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
-//        {
-//            //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
-//            addView()
-//            print("Landscape")
-//        }
-//        
-//        if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
-//        {
-//            //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
-//            addView()
-//            print("Portrait")
-//        }
+        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+        {
+            //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
+           // addView()
+           // print("Landscape")
+            outSideCircleView.layer.cornerRadius = outSideCircleView.frame.size.width/2.0
+
+            circleImageView.layer.cornerRadius = circleImageView.frame.size.width/2.0
+
+        }
+        
+        if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+        {
+            //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
+           // addView()
+           // print("Portrait")
+            outSideCircleView.layer.cornerRadius = outSideCircleView.frame.size.width/2.0
+
+            circleImageView.layer.cornerRadius = circleImageView.frame.size.width/2.0
+
+        }
     }
     
     func keyboardWillShow()

@@ -63,6 +63,8 @@ struct Constant
     static let  LOAD_MORE_VERTICAL_JOB_API               = "login/mobileLoadMoreVerticalJob"
     static let  LOAD_MORE_HORIZONTAL_JOB_API             = "login/mobileLoadMoreHorizontalJob"
     static let  LOAD_MORE_ROLE_JOB_API                   = "login/mobileLoadMoreRoleJob"
+    static let  LOAD_MORE_LOCATION_JOB_API               = "login/mobileLoadMoreLocationWiseJob"
+
     static let  GET_USER_PROFILE_API                     = "login/mobileGetUserModelDetails"
     static let  INTERESTED_JOB_API                       = "login/mobileSaveInterestedJob"
     static let  UPLOAD_USER_VIDEO_API                    = "login/mobileUploadVideo"
@@ -73,7 +75,9 @@ struct Constant
     static let  DELETE_VIDEO_API                         = "login/mobileDeleteVideo"
     static let  DELETE_RESUME_API                        = "login/mobileDeleteResume"
     static let  CUSTOM_MESSAGES_API                      = "login/mobileGetNotificationMessageDetails"
-    static let  UPDATE_DEVICE_TOKEN_API                  = "login/updateDeviceToken"
+    static let  UPDATE_DEVICE_TOKEN_API                  = "login/UpdateDeviceToken"
+    static let  LOCATION_WISE_JOB_API                    = "login/mobileLocationWiseJob"
+
 
     static let  LOGOUT_API                               = "login/logout"
 
@@ -95,6 +99,7 @@ struct Constant
     static let  NOTIFICATION_LOAD_MORE_VERTICAL_JOB         = "loadMoreVerticalJob"
     static let  NOTIFICATION_LOAD_MORE_HORIZONTAL_JOB       = "loadMoreHorizontalJob"
     static let  NOTIFICATION_LOAD_MORE_ROLE_JOB             = "loadMoreRoleJob"
+    static let  NOTIFICATION_LOAD_MORE_LOCATION_JOB         = "loadMoreLocationJob"
     static let  NOTIFICATION_GET_USER_PROFILE               = "getUSerProfile"
     static let  NOTIFICATION_INTERESTED_JOB                 = "interestedJob"
     static let  NOTIFICATION_UPLOAD_USER_VIDEO              = "uploadVideo"
@@ -106,6 +111,7 @@ struct Constant
     static let  NOTIFICATION_DELETE_VIDEO                   = "deleteVideo"
     static let  NOTIFICATION_DELETE_RESUME                  = "deleteResume"
     static let  NOTIFICATION_CUSTOM_MESSAGES                = "customMessage"
+    static let  NOTIFICATION_LOCATION_WISE_JOB              = "locationJobs"
 
 
 }

@@ -165,65 +165,6 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
         let verticalId = domainNameAndIdDic[itemName]! 
         
         
-//        if self.domainType == "vertical"
-//        {
-//            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-//            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-//            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-//
-//            if username != nil && password != nil
-//            {
-//               APIManager.getSharedAPIManager().getVerticalJobs(username: username!, password: password!, varticalId: String(verticalId), linkedinId:"")
-//            }
-//            else
-//                if linkedInId != nil
-//                {
-//                    APIManager.getSharedAPIManager().getVerticalJobs(username: "", password: "", varticalId: String(verticalId), linkedinId:linkedInId!)
-//
-//                }
-//            
-//            
-//        }
-//        else
-//            if self.domainType == "horizontal"
-//            {
-//                let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-//                let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-//                let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-//                
-//                if username != nil && password != nil
-//                {
-//                    APIManager.getSharedAPIManager().getHorizontalJobs(username: username!, password: password!, horizontalId: String(verticalId), linkedinId:"")
-//                }
-//                else
-//                    if linkedInId != nil
-//                    {
-//                        APIManager.getSharedAPIManager().getHorizontalJobs(username: "", password: "", horizontalId: String(verticalId), linkedinId:linkedInId!)
-//                        
-//                    }
-//                
-//                
-//            }
-//            else
-//                if self.domainType == "roles"
-//                {
-//                    let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-//                    let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-//                    let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-//                    
-//                    if username != nil && password != nil
-//                    {
-//                        APIManager.getSharedAPIManager().getRoleJobs(username: username!, password: password!, roleId: String(verticalId), linkedinId:"")
-//                    }
-//                    else
-//                        if linkedInId != nil
-//                        {
-//                            APIManager.getSharedAPIManager().getRoleJobs(username: "", password: "", roleId: String(verticalId), linkedinId:linkedInId!)
-//                            
-//                        }
-//                    
-//                    
-//            }
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "JobsViewController") as! JobsViewController
         
             vc.verticalId = String(verticalId)

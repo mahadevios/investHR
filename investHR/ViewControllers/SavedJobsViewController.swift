@@ -27,7 +27,9 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
         
         self.navigationItem.leftBarButtonItem = barButtonItem
         
-        self.navigationItem.title = "Jobs"
+        
+        
+        self.navigationItem.title = "Saved Jobs"
         
 //        let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 25))
 //        numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
@@ -69,7 +71,7 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
                     
                 {
                     
-                    let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 25))
+                    let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 90, height: 25))
                     numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
                     numberOfJobsLabel.text = "\(appliedJobsNumber!) job"
                     numberOfJobsLabel.textAlignment = NSTextAlignment.right
@@ -79,7 +81,7 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
                 }
                 else
                 {
-                    let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 25))
+                    let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 90, height: 25))
                     numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
                     numberOfJobsLabel.text = "\(appliedJobsNumber!) jobs"
                     numberOfJobsLabel.textAlignment = NSTextAlignment.right

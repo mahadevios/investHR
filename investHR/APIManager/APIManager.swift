@@ -180,7 +180,25 @@ class APIManager: NSObject
         
     }
     
-    
+    func getLocationJobs(username:String, password:String, linkedinId:String, stateId:String, cityId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","stateId=\(stateId)","cityId=\(cityId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.LOCATION_WISE_JOB_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.LOCATION_WISE_JOB_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
     func getSavedJobs(username:String, password:String, linkedinId:String) -> Void
     {
         if AppPreferences.sharedPreferences().isReachable
@@ -361,6 +379,25 @@ class APIManager: NSObject
         
     }
     
+    func getMoreLocationJobs(username:String, password:String, linkedinId:String, jobId:String,stateId:String,cityId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","existingJobId=\(jobId)","stateId=\(stateId)","cityId=\(cityId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.LOAD_MORE_LOCATION_JOB_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.LOAD_MORE_LOCATION_JOB_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
     func getUserProfile(username:String, password:String, linkedinId:String) -> Void
     {
         if AppPreferences.sharedPreferences().isReachable

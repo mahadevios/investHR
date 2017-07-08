@@ -22,6 +22,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     var verticalJobListArray:[AnyObject] = []
     var verticalId:String = ""
     var domainType:String = ""
+    var stateId:String = ""
+    var cityId:String = ""
     var activityView:UIActivityIndicatorView = UIActivityIndicatorView()
     var isLoading:Bool = false
     var indexePathArray:[IndexPath]=[]
@@ -58,6 +60,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
          NotificationCenter.default.addObserver(self, selector: #selector(checkRolesJobList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_ROLE_JOB_LIST), object: nil)
         
+         NotificationCenter.default.addObserver(self, selector: #selector(checkLocationJobList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LOCATION_WISE_JOB), object: nil)
+        
         getJobList()
 
         
@@ -76,7 +80,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         NotificationCenter.default.addObserver(self, selector: #selector(getLoadMoreData(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LOAD_MORE_ROLE_JOB), object: nil)
 
-    
+        NotificationCenter.default.addObserver(self, selector: #selector(getLoadMoreData(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LOAD_MORE_LOCATION_JOB), object: nil)
+        
         self.collectionView.reloadData()
 
     }
@@ -142,6 +147,36 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
                     }
                     
                     
+                }
+                else
+                    if self.domainType == "location"
+                    {
+                        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+                        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+                        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+                        var optionalCityId = ""
+                        
+                        if self.cityId == ""
+                        {
+                            optionalCityId = "0"
+                        }
+                        else
+                        {
+                            optionalCityId = self.cityId
+
+                        }
+                        if username != nil && password != nil
+                        {
+                            APIManager.getSharedAPIManager().getLocationJobs(username: username!, password: password!, linkedinId:"", stateId: self.stateId, cityId: optionalCityId)
+                        }
+                        else
+                            if linkedInId != nil
+                            {
+                                APIManager.getSharedAPIManager().getLocationJobs(username: "", password: "", linkedinId:linkedInId!, stateId: self.stateId, cityId: optionalCityId)
+                                
+                        }
+                        
+                        
         }
         AppPreferences.sharedPreferences().showHudWith(title: "Loading jobs..", detailText: "Please wait")
 
@@ -151,8 +186,10 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     {
         NotificationCenter.default.removeObserver(self)
     }
-    func setRightBarButtonItem(totalJobs:String)
+    func setRightBarButtonItem(totalJobs:String!)
     {
+      if totalJobs != nil
+      {
         let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 25))
         numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
         numberOfJobsLabel.text = totalJobs
@@ -160,12 +197,13 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         let rightBarButtonItem = UIBarButtonItem(customView: numberOfJobsLabel)
         
         self.navigationItem.rightBarButtonItem = rightBarButtonItem
+      }
     }
     
     func getLoadMoreData(dataDic:NSNotification)
     {
         
-        print("iscoming")
+        //print("iscoming")
         isLoading = false
         self.collectionView.collectionViewLayout.invalidateLayout()
         AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
@@ -199,7 +237,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
 
         }
         
-        let totalJobsString = dataDictionary["totalCount"] as! Int
+       // let totalJobsString = dataDictionary["totalCount"] as? Int
         
         //self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
         //self.descriptionString = dataDictionary["discription"] as! String
@@ -242,9 +280,11 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
 
          let verticalJobListString = dataDictionary["verticalJobList"] as! String
         
-        let totalJobsString = dataDictionary["totalCount"] as! Int
-
-        self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
+        if let totalJobsString = dataDictionary["totalCount"] as? Int
+        {
+            self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
+            
+        }
         //self.descriptionString = dataDictionary["discription"] as! String
 
         
@@ -274,9 +314,11 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         let verticalJobListString = dataDictionary["verticalJobList"] as! String
         
-        let totalJobsString = dataDictionary["totalCount"] as! Int
-        
-        self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
+        if let totalJobsString = dataDictionary["totalCount"] as? Int
+        {
+            self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
+            
+        }
         //self.descriptionString = dataDictionary["discription"] as! String
         
         
@@ -308,9 +350,45 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         let verticalJobListString = dataDictionary["verticalJobList"] as! String
         
-        let totalJobsString = dataDictionary["totalCount"] as! Int
+        if let totalJobsString = dataDictionary["totalCount"] as? Int
+        {
+            self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
+            
+        }
+        //self.descriptionString = dataDictionary["discription"] as! String
         
-        self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
+        
+        let verticalJobListData = verticalJobListString.data(using: .utf8, allowLossyConversion: true)
+        
+        do
+        {
+            verticalJobListArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
+            
+            self.collectionView.reloadData()
+            
+        } catch let error as NSError
+        {
+            
+        }
+        
+    }
+    
+    func checkLocationJobList(dataDic:NSNotification)
+    {
+        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+        
+        guard let dataDictionary = dataDic.object as? [String:AnyObject] else
+        {
+            return
+        }
+        
+        let verticalJobListString = dataDictionary["JobList"] as! String
+        
+        if let totalJobsString = dataDictionary["totalCount"] as? Int
+        {
+            self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
+
+        }
         //self.descriptionString = dataDictionary["discription"] as! String
         
         
@@ -840,8 +918,31 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
                             }
                             break
             
-        default:
-            break
+        case "location":
+                            var optionalCityId = ""
+
+                            if self.cityId == ""
+                            {
+                                optionalCityId = "0"
+                            }
+                            else
+                            {
+                                optionalCityId = self.cityId
+                
+                            }
+                            if username != nil && password != nil
+                            {
+                                APIManager.getSharedAPIManager().getMoreLocationJobs(username: username!, password: password!, linkedinId: "", jobId: existingJobIdsString, stateId: self.stateId, cityId: optionalCityId)
+                            }
+                            else
+                                if linkedInId != nil
+                                {
+                                    APIManager.getSharedAPIManager().getMoreLocationJobs(username: "", password: "", linkedinId: linkedInId!, jobId: existingJobIdsString, stateId: self.stateId, cityId: optionalCityId)
+                                }
+                            break
+            
+                            default:
+                            break
         }
     
     }
