@@ -178,7 +178,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkLoginResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_LOGGED_IN), object: nil)
 
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(checkForgotPasswordResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_FORGOT_PASSWORD), object: nil)
     }
  
 // MARK: storyboard action methods
@@ -186,8 +186,46 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
     @IBAction func forgotPasswordButtonClicked(_ sender: Any)
     {
         
+            let titlePrompt = UIAlertController(title: "Forgot password?",
+                                                message: "Enter the email you registered with:",
+                                                preferredStyle: .alert)
+            
+            var titleTextField: UITextField?
+            titlePrompt.addTextField { (textField) -> Void in
+                titleTextField = textField
+                textField.placeholder = "Email"
+            }
+            
+            let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+            
+            titlePrompt.addAction(cancelAction)
+            
+            titlePrompt.addAction(UIAlertAction(title: "Submit", style: .default, handler: { (action) -> Void in
+                if let textField = titleTextField {
+                    
+                    //self.resetPassword(email: textField.text!)
+                }
+            }))
+            
+            self.present(titlePrompt, animated: true, completion: nil)
+        
+        
+        
     }
     
+    func resetPassword(email : String)
+    {
+
+        // convert the email string to lower case
+        let emailToLowerCase = email.lowercased()
+        // remove any whitespaces before and after the email address
+        let emailClean = emailToLowerCase.trimmingCharacters(in: NSCharacterSet.whitespaces)
+        
+        AppPreferences.sharedPreferences().showHudWith(title: "Checking info..", detailText: "Please wait")
+        APIManager.getSharedAPIManager().forgotPassword(emailId: emailClean)
+
+    }
+
     @IBAction func fbLoginButtonClicked(_ sender: Any)
     {
         // self.fbLoginButtonClicked()
@@ -219,7 +257,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         // self.dismiss(animated: true, completion: nil)
         if emailTextField.text == "" || passwordTextField.text == ""
         {
-            let alertController = UIAlertController(title: "Login Error", message: "Please enter valid credentials", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "Login Failed!", message: "Please enter valid credentials", preferredStyle: .alert)
             let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alertController.addAction(okayAction)
             self.present(alertController, animated: true, completion: nil)
@@ -417,6 +455,23 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
     
 // MARK: notification response methods
 
+    func checkForgotPasswordResponse(dataDic:NSNotification)
+    {
+        guard let responseDic = dataDic.object as? [String:String] else
+        {
+            return
+        }
+        
+        guard let code = responseDic["code"] else {
+            
+            return
+        }
+    
+        
+    }
+    
+    
+    
     func checkRegistrationResponse(dataDic:NSNotification)
     {
         

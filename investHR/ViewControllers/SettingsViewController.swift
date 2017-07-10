@@ -17,12 +17,15 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        settingsItemsArray = ["Notifications","Delete Account","Help/Support(Email ID)"]
+        settingsItemsArray = ["Delete Account","Reset Password","Help/Support(Email ID)"]
         
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
         
         self.navigationItem.leftBarButtonItem = barButtonItem
+        
+        self.navigationItem.title = "Settings"
+        
         // Do any additional setup after loading the view.
     }
 
@@ -53,20 +56,20 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
         
         settingItemLabel.text = settingsItemsArray[indexPath.row]
         
-        if let notiSwitch = cell.viewWithTag(201)
-        {
-            notiSwitch.removeFromSuperview()
-        }
-        if indexPath.row == 0
-        {
-            let notificationSwitch = UISwitch(frame: CGRect(x: cell.frame.size.width-100, y: settingItemLabel.frame.origin.y-5, width: 25, height: settingItemLabel.frame.size.height))
-            
-            notificationSwitch.addTarget(self, action: #selector(switchValueChanged), for: UIControlEvents.valueChanged)
-
-            notificationSwitch.tag = 200
-            
-            cell.addSubview(notificationSwitch)
-        }
+//        if let notiSwitch = cell.viewWithTag(201)
+//        {
+//            notiSwitch.removeFromSuperview()
+//        }
+//        if indexPath.row == 0
+//        {
+//            let notificationSwitch = UISwitch(frame: CGRect(x: cell.frame.size.width-100, y: settingItemLabel.frame.origin.y-5, width: 25, height: settingItemLabel.frame.size.height))
+//            
+//            notificationSwitch.addTarget(self, action: #selector(switchValueChanged), for: UIControlEvents.valueChanged)
+//
+//            notificationSwitch.tag = 200
+//            
+//            cell.addSubview(notificationSwitch)
+//        }
         
         return cell
     }
@@ -76,7 +79,53 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
     {
         //let cell = tableView.cellForRow(at: indexPath)
         
+        let titlePrompt = UIAlertController(title: "Forgot password?",
+                                            message: "Enter the email you registered with:",
+                                            preferredStyle: .alert)
         
+        var oldPasswordTextField: UITextField?
+        var newPasswordTextField: UITextField?
+        var confirmNewPasswordTextField: UITextField?
+
+        titlePrompt.addTextField { (textField) -> Void in
+            oldPasswordTextField = textField
+            textField.placeholder = "Old Password"
+        }
+        titlePrompt.addTextField { (textField) -> Void in
+            newPasswordTextField = textField
+            textField.placeholder = "New Password"
+        }
+        titlePrompt.addTextField { (textField) -> Void in
+            confirmNewPasswordTextField = textField
+            textField.placeholder = "Confirm New Password"
+        }
+        
+        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        
+        titlePrompt.addAction(cancelAction)
+        
+        titlePrompt.addAction(UIAlertAction(title: "Submit", style: .default, handler: { (action) -> Void in
+            if oldPasswordTextField?.text == "" || newPasswordTextField?.text == "" || confirmNewPasswordTextField?.text == ""
+            {
+                    // please fill up all the fields
+            }
+            else
+            if oldPasswordTextField?.text != password
+            {
+                    // wrong password
+            }
+            else
+            if newPasswordTextField?.text != confirmNewPasswordTextField?.text
+            {
+                    // please confirm password
+            }
+            
+            
+        }))
+        
+        self.present(titlePrompt, animated: true, completion: nil)
     }
 
     func switchValueChanged(sender: UISwitch)

@@ -64,6 +64,10 @@ class CoreDataManager: NSObject
         }
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
         
+        if entity == "CommonNotification"
+        {
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "notificationDate", ascending: false)]
+        }
         do {
             let manageObjects = try appDelegate.managedObjectContext.fetch(fetchRequest)
 

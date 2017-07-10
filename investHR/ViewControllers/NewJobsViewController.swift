@@ -122,28 +122,83 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         {
             cityStateArray = try JSONSerialization.jsonObject(with: cityStateListData!, options: .allowFragments) as? [Any]
             
+            var uniqueStateArray = [String]()
+            
             for index in 0 ..< cityStateArray!.count
             {
                 let cityStateDic = cityStateArray![index] as? [String:AnyObject]
                 
                 let state = cityStateDic?["state"] as! String
                 
-                let optionalCity = cityStateDic?["city"]
-                
-                var city = ""
-                
-                if optionalCity is NSNull
+                if !uniqueStateArray.contains(state)
                 {
-                    city = ""
+                    uniqueStateArray.append(state)
                 }
-                else
-                {
-                 city = optionalCity! as! String
-                }
-                jobLocationArray.append("\(state)\(" ")\(city)")
+//                let optionalCity = cityStateDic?["city"]
+//                
+//                var city = ""
+//                
+//                if optionalCity is NSNull
+//                {
+//                    city = ""
+//                }
+//                else
+//                {
+//                 city = optionalCity! as! String
+//                }
+//                jobLocationArray.append("\(state)\(" ")\(city)")
 
             }
-            
+            for index0 in 0 ..< uniqueStateArray.count
+            {
+                var stateAdded = false
+
+                for index in 0 ..< cityStateArray!.count
+                {
+                    let cityStateDic = cityStateArray![index] as? [String:AnyObject]
+                
+                    let state = cityStateDic?["state"] as! String
+                
+                    
+                    if state == uniqueStateArray[index0]
+                    {
+                        let optionalCity = cityStateDic?["city"]
+                        
+                        var city = ""
+                        
+                        if optionalCity is NSNull
+                        {
+                            city = ""
+                            if !stateAdded
+                            {
+//                                jobLocationArray.append("\(state)\(":")\(city)")
+                                jobLocationArray.append("\(state)")
+
+                                stateAdded = true
+                            }
+                            else
+                            {
+                                //jobLocationArray.append("\(",")\(city)")
+                            }
+                        }
+                        else
+                        {
+                            city = optionalCity! as! String
+                            
+                            if !stateAdded
+                            {
+                                jobLocationArray.append("\(state)\(":")\(city)")
+                                stateAdded = true
+                            }
+                            else
+                            {
+                                jobLocationArray.append("\(",")\(city)")
+                            }
+                        }
+                      }
+                    }
+                jobLocationArray.append("\n")
+            }
 
 
         } catch let error as NSError
@@ -342,11 +397,11 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         //let companyWebSiteLabel = cell.viewWithTag(102) as! UILabel
         let locationLabel = cell.viewWithTag(105) as! UILabel
 
-        let dateLabel = cell.viewWithTag(107) as! UILabel
+       /// let dateLabel = cell.viewWithTag(107) as! UILabel
         
         let jobDescLabel = cell.viewWithTag(108) as! UILabel
 
-        var descriptionWebView = cell.viewWithTag(109) as! UIWebView
+        let descriptionWebView = cell.viewWithTag(109) as! UIWebView
         
         
 
@@ -361,11 +416,13 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
 
         
         let jobId = jobDetailsDic?["jobid"]
-        let relocation = jobDetailsDic?["relocation"]
+       // let relocation = jobDetailsDic?["relocation"]
         let date = jobDetailsDic?["date"] as? Double
-        let location = jobDetailsDic?["location"]
+        //let location = jobDetailsDic?["location"]
         
         var descriptionWebView1 = UIWebView(frame: CGRect(x: descriptionWebView.frame.origin.x, y: descriptionWebView.frame.origin.y+50, width: descriptionWebView.frame.size.width, height: descriptionWebView.frame.size.height))
+
+        
 
         if let subject = jobDetailsDic?["subject"]
         {
@@ -374,7 +431,57 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             companyNameLabel.numberOfLines = 0
             let height1 = heightForView(text: subject as! String, font: UIFont.systemFont(ofSize: 14), width: locationLabel.frame.size.width) as CGFloat
             companyNameLabel.frame = CGRect(x: companyNameLabel.frame.origin.x, y: companyNameLabel.frame.origin.y, width: companyNameLabel.frame.size.width, height: height1)
-            descriptionWebView1 = UIWebView(frame: CGRect(x: descriptionWebView.frame.origin.x, y: descriptionWebView.frame.origin.y+20+height1, width: descriptionWebView.frame.size.width, height: descriptionWebView.frame.size.height))
+            
+            //
+            
+            
+            let dateString = Date().getLocatDateFromMillisecods(millisecods: date )
+            
+            var jobLocationString:NSMutableString = ""
+            
+            for index in 0 ..< jobLocationArray.count
+            {
+//                if index == 0
+//                {
+                    jobLocationString.append(jobLocationArray[index])
+//                }
+//                else
+//                {
+//                    jobLocationString.append(",")
+//                    
+//                    jobLocationString.append(jobLocationArray[index])
+//                    
+//                }
+            }
+            
+            
+            
+            locationLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
+            locationLabel.numberOfLines = 0
+            locationLabel.textColor = UIColor(colorLiteralRed: 142/255.0, green: 159/255.0, blue: 168/255.0, alpha: 1.0)
+            let height = heightForView(text: jobLocationString as String, font: UIFont.systemFont(ofSize: 14), width: locationLabel.frame.size.width) as CGFloat
+            
+            
+            locationLabel.frame = CGRect(x: locationLabel.frame.origin.x, y: locationLabel.frame.origin.y, width: locationLabel.frame.size.width, height: height)
+            
+            if jobLocationString == ""
+            {
+                locationLabel.text = "Location"
+                locationLabel.textColor = UIColor.clear
+                
+            }
+            else
+            {
+                locationLabel.text = jobLocationString as String
+            }
+            
+
+            
+            
+            
+            //
+            
+            descriptionWebView1 = UIWebView(frame: CGRect(x: descriptionWebView.frame.origin.x, y: companyNameLabel.frame.origin.y+20+height1+20+height+jobDescLabel.frame.size.height+30, width: descriptionWebView.frame.size.width, height: descriptionWebView.frame.size.height))
             print("subject = " + "\(subject)")
         }
 
@@ -404,47 +511,6 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
 
         
 //        descriptionWebView.frame = CGRect(x: descriptionWebView.frame.origin.x, y: descriptionWebView.frame.origin.y, width: descriptionWebView.frame.size.width, height: 300)
-        
-        let dateString = Date().getLocatDateFromMillisecods(millisecods: date )
-        
-        var jobLocationString:NSMutableString = ""
-        
-        for index in 0 ..< jobLocationArray.count
-        {
-            if index == 0
-            {
-                jobLocationString.append(jobLocationArray[index])
-            }
-            else
-            {
-                jobLocationString.append(",")
-
-                jobLocationString.append(jobLocationArray[index])
-
-            }
-        }
-        
-        
-        
-        locationLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
-        locationLabel.numberOfLines = 0
-        locationLabel.textColor = UIColor(colorLiteralRed: 142/255.0, green: 159/255.0, blue: 168/255.0, alpha: 1.0)
-        let height = heightForView(text: jobLocationString as String, font: UIFont.systemFont(ofSize: 14), width: locationLabel.frame.size.width) as CGFloat
-        
-        
-        locationLabel.frame = CGRect(x: locationLabel.frame.origin.x, y: locationLabel.frame.origin.y, width: locationLabel.frame.size.width, height: height)
-        
-        if jobLocationString == ""
-        {
-            locationLabel.text = "Location"
-            locationLabel.textColor = UIColor.clear
-
-        }
-        else
-        {
-            locationLabel.text = jobLocationString as String
-        }
-
         
         
        
@@ -521,17 +587,17 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         for index in 0 ..< jobLocationArray.count
         {
-            if index == 0
-            {
+//            if index == 0
+//            {
                 jobLocationString.append(jobLocationArray[index])
-            }
-            else
-            {
-                jobLocationString.append(",")
-                
-                jobLocationString.append(jobLocationArray[index])
-                
-            }
+//            }
+//            else
+//            {
+//                jobLocationString.append(",")
+//                
+//                jobLocationString.append(jobLocationArray[index])
+//                
+//            }
         }
 
 

@@ -615,7 +615,9 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         if self.uploadedVideoNamesArray.contains(videoName)
         {
             uploadButton.setTitle("Uploaded", for: .normal)
-            uploadButton.setTitleColor(UIColor.appliedJobGreenColor(), for: .normal)
+            uploadButton.setTitleColor(UIColor.white, for: .normal)
+            uploadButton.titleLabel?.baselineAdjustment = .alignCenters
+            uploadButton.backgroundColor = UIColor.appliedJobGreenColor()
             uploadButton.isUserInteractionEnabled = false
             let deleteButton = cell.viewWithTag(105) as! subclassedUIButton
             deleteButton.cell1 = cell
@@ -625,7 +627,8 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         else
         {
             uploadButton.setTitle("Upload", for: .normal)
-            uploadButton.setTitleColor(UIColor.appBlueColor(), for: .normal)
+            uploadButton.setTitleColor(UIColor.white, for: .normal)
+            uploadButton.backgroundColor = UIColor.appBlueColor()
             uploadButton.isUserInteractionEnabled = true
             let deleteButton = cell.viewWithTag(105) as! subclassedUIButton
             deleteButton.cell1 = cell
@@ -645,7 +648,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
     {
-        return CGSize(width: CGFloat((collectionView.frame.size.width / 3) - 10), height: CGFloat(100))
+        return CGSize(width: CGFloat((collectionView.frame.size.width / 3) - 10), height: CGFloat(130))
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
@@ -927,7 +930,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
             
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Maximum 3 videos can be upload, please delete exsting videos", withCancelText: "ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "Upload Video Limit", withMessage: "Maximum 3 videos can be upload, please delete exsting videos", withCancelText: "ok")
         }
         
     }

@@ -641,6 +641,27 @@ class APIManager: NSObject
         }
         
     }
+    
+    func forgotPassword(emailId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+//            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","emailId=\(emailId)"]
+            let params = ["emailId=\(emailId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.FORGOT_PASSWORD_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.FORGOT_PASSWORD_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
     func createRegistrationRequestAndSend(dict:Any, imageData:Data?)
     {
         var request:NSURLRequest!

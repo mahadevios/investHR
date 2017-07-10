@@ -606,7 +606,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                     
                     NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_UPLOAD_USER_VIDEO), object: dictFromJSON, userInfo: nil)
 
-                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Upload success", withMessage: "Video uploaded successfully", withCancelText: "Ok")
+                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Upload Success", withMessage: "Video uploaded successfully", withCancelText: "Ok")
 
                     //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
                     
@@ -808,6 +808,31 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                     //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
                     
                    // NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_DELETE_RESUME), object: dictFromJSON, userInfo: nil)
+                    
+                }
+                else
+                {
+                    //                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                }
+                break
+                
+            case Constant.FORGOT_PASSWORD_API:
+                
+                guard let dictFromJSON = response else
+                {
+                    return
+                }
+                if String(describing: dictFromJSON["code"]!) == Constant.SUCCESS
+                {
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                     NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_FORGOT_PASSWORD), object: dictFromJSON, userInfo: nil)
                     
                 }
                 else

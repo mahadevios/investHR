@@ -27,15 +27,15 @@ struct Constant
     static let  FTP_PASSWORD                             = "mtone@123"
     static let  FTP_DIRECTORY_PATH                       = "TEST"
 
-   // static let  BASE_URL_PATH                            = "http://192.168.3.75:8080/coreflex/investhr/"              // local server
-    //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.75:8080/coreflex/resources/UserImages/"
+    static let  BASE_URL_PATH                            = "http://192.168.3.75:8080/coreflex/investhr/"              // local server
+    static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.75:8080/coreflex/resources/UserImages/"
     // static let  BASE_URL_PATH                            = "http://192.168.3.74:9090/coreflex/investhr/"              // local server
      //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.74:9090/coreflex/resources/UserImages/"
-    static let  BASE_URL_PATH                            = "http://192.168.3.67:7070/coreflex/investhr/"              // sable sarkar
-    static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.67:7070/coreflex/resources/UserImages/"
+   // static let  BASE_URL_PATH                            = "http://192.168.3.67:7070/coreflex/investhr/"              // sable sarkar
+   // static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.67:7070/coreflex/resources/UserImages/"
 
    
-//    static let  BASE_URL_PATH                            = "http://192.168.2.9:8080/InvestHr/investhr/"               // for testing
+  //  static let  BASE_URL_PATH                            = "http://192.168.2.9:8080/InvestHr/investhr/"               // for testing
 //    static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.2.9:8080/InvestHr/resources/UserImages/"
 
     //static let  BASE_URL_PATH                            = "http://192.168.2.9:9090/coreflex/investhr/"               // for testing
@@ -78,7 +78,7 @@ struct Constant
     static let  UPDATE_DEVICE_TOKEN_API                  = "login/UpdateDeviceToken"
     static let  LOCATION_WISE_JOB_API                    = "login/mobileLocationWiseJob"
 
-
+    static let  FORGOT_PASSWORD_API                      = "login/mobileForgotPassword"
     static let  LOGOUT_API                               = "login/logout"
 
 
@@ -112,6 +112,8 @@ struct Constant
     static let  NOTIFICATION_DELETE_RESUME                  = "deleteResume"
     static let  NOTIFICATION_CUSTOM_MESSAGES                = "customMessage"
     static let  NOTIFICATION_LOCATION_WISE_JOB              = "locationJobs"
+    static let  NOTIFICATION_FORGOT_PASSWORD                = "forgotPassord"
+
 
 
 }

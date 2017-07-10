@@ -27,6 +27,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     var candidateFunctionArray : [String] = []
     //    let servicesArray : [String] = ["Services","Service 2","Service 3","Service 4","Service 5"]
     let relocationArray = ["Not available","Yes","No","May be"]
+    let relocationDic = ["Yes":"1","No":"2","May be":"3","Not available":"4"]
     var roleNameAndIdDic = [String:Int16]()
     var countryCodeButton:UIButton!
     @IBOutlet weak var visaStatusTextField: TextField!
@@ -303,6 +304,8 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
         let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
         
+        AppPreferences.sharedPreferences().showAlertViewWith(title: "Profile Update", withMessage: "Profile updated successfully", withCancelText: "Ok")
+
         if username != nil && password != nil
         {
             APIManager.getSharedAPIManager().getUserProfile(username: username!, password: password!, linkedinId:"")
@@ -363,6 +366,9 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         if companiesInterViewed != nil && companiesInterViewed != ""
         {
             companiesInterviewedTextView.text = companiesInterViewed
+            
+            companiesInterviewedTextView.textColor = UIColor.black
+        
         }
         let visaStatus = userDetailsDict["visaStatus"] as? String
         
@@ -420,13 +426,15 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         if benefitsInCurrentOrg != nil && benefitsInCurrentOrg != ""
         {
             benefitsTextView.text = benefitsInCurrentOrg
+            
+            benefitsTextView.textColor = UIColor.black
         }
 
-        let relocation = userDetailsDict["relocation"] as? String
+        let relocation = userDetailsDict["relocation"] as? [String:Any]
         
-        if relocation != nil && relocation != ""
+        if relocation != nil
         {
-            relocationTextFIeld.text = relocation
+            relocationTextFIeld.text = relocation?["relocationStatus"] as? String
         }
 
         let anyNonComplete = userDetailsDict["anyNonComplete"] as? String
@@ -434,6 +442,8 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         if anyNonComplete != nil && anyNonComplete != ""
         {
             nonCompeteTextView.text = anyNonComplete
+            
+            nonCompeteTextView.textColor = UIColor.black
         }
         
         let experienceInOffshore = userDetailsDict["experienceInOffshore"] as? String
@@ -928,8 +938,17 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             }
         }
         
+        var relocationId:String!
+        if relocation != ""
+        {
+            relocationId = relocationDic[relocation]
+        }
+        else
+        {
+            relocationId = "1"
+        }
         
-        let dict = ["name":name,"email":username!,"password":password!,"linkedinId":linkedInId!,"editedEmail":editedEmail1,"editedPassword":editedPassword1,"mobile":mobileNumberWithCountryCode,"currentRole":cuurentRole,"currentCompany":currentCompany,"stateId":stateId!,"cityId":cityId,"visaStatus":visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed,"benifits":benefits,"notJoinSpecificOrg":nonCompete,"image":"","expInOffshoreEng":expOffshore,"relocation":relocation,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":linkedInId!] as [String : String]
+        let dict = ["name":name,"email":username!,"password":password!,"linkedinId":linkedInId!,"editedEmail":editedEmail1,"editedPassword":editedPassword1,"mobile":mobileNumberWithCountryCode,"currentRole":cuurentRole,"currentCompany":currentCompany,"stateId":stateId!,"cityId":cityId,"visaStatus":visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed,"benifits":benefits,"notJoinSpecificOrg":nonCompete,"image":"","expInOffshoreEng":expOffshore,"relocation":relocationId,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":linkedInId!] as [String : String]
         
         
         do {
@@ -1073,8 +1092,8 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         {
             if companiesInterviewedTextView.text!.characters.count == 0
             {
-                companiesInterviewedTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
-                companiesInterviewedTextView.text = "Companies interviewed in past 1 year";
+                //companiesInterviewedTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
+                //companiesInterviewedTextView.text = "Companies interviewed in past 1 year";
             }
         }
         else
@@ -1082,8 +1101,8 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             {
                 if benefitsTextView.text!.characters.count == 0
                 {
-                    benefitsTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
-                    benefitsTextView.text = "Benefits in current organization(401k/insurance coverage etc)";
+                   // benefitsTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
+                    //benefitsTextView.text = "Benefits in current organization(401k/insurance coverage etc)";
                 }
             }
             else
@@ -1091,8 +1110,8 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
                 {
                     if nonCompeteTextView.text!.characters.count == 0
                     {
-                        nonCompeteTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
-                        nonCompeteTextView.text = "Any non-compete that will prevent you from managing a specific client OR Not join any specific organization";
+                        //nonCompeteTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
+                        //nonCompeteTextView.text = "Any non-compete that will prevent you from managing a specific client OR Not join any specific organization";
                     }
         }
     }
@@ -1130,6 +1149,36 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         }
     }
  
+    func textViewDidEndEditing(_ textView: UITextView)
+    {
+        if textView == companiesInterviewedTextView
+        {
+            if companiesInterviewedTextView.text!.characters.count == 0
+            {
+                companiesInterviewedTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
+                companiesInterviewedTextView.text = "Companies interviewed in past 1 year";
+            }
+        }
+        else
+            if textView == benefitsTextView
+            {
+                if benefitsTextView.text!.characters.count == 0
+                {
+                     benefitsTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
+                    benefitsTextView.text = "Benefits in current organization(401k/insurance coverage etc)";
+                }
+            }
+            else
+                if textView == nonCompeteTextView
+                {
+                    if nonCompeteTextView.text!.characters.count == 0
+                    {
+                        nonCompeteTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
+                        nonCompeteTextView.text = "Any non-compete that will prevent you from managing a specific client OR Not join any specific organization";
+                    }
+        }
+
+    }
 // MARK: Data support methods
     
     func getCandidateRoles()

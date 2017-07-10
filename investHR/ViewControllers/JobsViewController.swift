@@ -20,6 +20,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     var searchController:UISearchController = UISearchController()
     @IBOutlet weak var searchBarView: UIView!
     var verticalJobListArray:[AnyObject] = []
+    var verticalJobListCopyForPredicateArray:[AnyObject] = []
+
     var verticalId:String = ""
     var domainType:String = ""
     var stateId:String = ""
@@ -68,6 +70,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
                // Do any additional setup after loading the view.
     }
     
+
     override func viewWillAppear(_ animated: Bool)
     {
         NotificationCenter.default.addObserver(self, selector: #selector(checkApplyJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_APPLY_JOB), object: nil)
@@ -85,7 +88,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         self.collectionView.reloadData()
 
     }
-    
+
     func getJobList()
     {
     
@@ -227,13 +230,14 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
             
             if verticalJobListString == nil
             {
-                verticalJobListString = dataDictionary["rolesJobList"] as? String
+                verticalJobListString = dataDictionary["roleJobList"] as? String
                 
+                if verticalJobListString == nil
+                {
+                    return
+                }
             }
-            if verticalJobListString == nil
-            {
-              return
-            }
+            
 
         }
         
@@ -293,6 +297,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         do
         {
             verticalJobListArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
+            
+            verticalJobListCopyForPredicateArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
             
             self.collectionView.reloadData()
 
@@ -512,7 +518,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     func setSearchController() -> Void
     {
         self.searchController = UISearchController(searchResultsController: nil)
-        self.searchController.searchResultsUpdater = self;
+        //self.searchController.searchResultsUpdater = self;
         self.searchController = UISearchController();
         self.searchController.searchResultsUpdater = self;
         self.searchController.searchBar.delegate = self;
@@ -540,15 +546,42 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
     {
 //        let predicate1 = [NSPredicate predicateWithFormat:"soNumber CONTAINS [cd] %@", self.searchController.searchBar.text];
-        
-      let predicate = NSPredicate(format: "SELF CONTAINS [cd] %@", self.searchController.searchBar.text!)
-        
-       let resultArray = verticalJobListArray.filter { predicate.evaluate(with: $0) };
+        if self.searchController.searchBar.text == ""
+        {
+            verticalJobListArray.removeAll()
 
-        //jobsArray.filter(predicate)
-        print(resultArray)
-        
+            verticalJobListArray.append(contentsOf: verticalJobListCopyForPredicateArray)
+
+            self.collectionView.reloadData()
         }
+        else
+        {
+            let predicate = NSPredicate(format: "subject CONTAINS [cd] %@", self.searchController.searchBar.text!)
+        
+            let resultArray = verticalJobListCopyForPredicateArray.filter { predicate.evaluate(with: $0) };
+
+            //jobsArray.filter(predicate)
+            verticalJobListArray.removeAll()
+        
+            verticalJobListArray.append(contentsOf: resultArray)
+        
+            self.collectionView.reloadData()
+        
+            print("resultArray = " + "\(resultArray)")
+        }
+
+        
+        
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar)
+    {
+        verticalJobListArray.removeAll()
+        
+        verticalJobListArray.append(contentsOf: verticalJobListCopyForPredicateArray)
+        
+        self.collectionView.reloadData()
+    }
     
 //    - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 //    {

@@ -369,7 +369,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         }
         else
         {
-         relocationId = "0"
+         relocationId = "1"
         }
         
        let dict = ["name":self.name,"email":self.email,"password":self.password,"mobile":self.mobile,"currentRole":self.currentRole,"currentCompany":self.currentCompany,"stateId":self.state!,"cityId":self.city!,"visaStatus":self.visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed1,"benifits":benefit1,"notJoinSpecificOrg":nonCompete1,"image":"","expInOffshoreEng":expOffshore,"relocation":relocationId,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":""] as [String : String]

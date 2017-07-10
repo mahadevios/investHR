@@ -31,7 +31,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         
         self.perform(#selector(addView), with: nil, afterDelay: 0.2)
         
-        menuItemsArray = ["Profile","Notification","Saved Jobs","Applied Jobs","Search Job","Upload Resume","Upload Video","Refer a Friend","Setting","Log Out"]
+        menuItemsArray = ["Profile","Notification","Saved Jobs","Applied Jobs","Upload Resume","Upload Video","Refer a Friend","Settings","Log Out"]
         
         menuImageNamesArray = ["SideMenuProfile","SideMenuNoti","SideMenuSavedJob","SideMenuAppliedJob","SideMenuSearchJob","SideMenuUploadResume","SideMenuUploadVideo","SideMenuReferFriend","SideMenuSetting","SideMenuLogout"]
         
@@ -199,7 +199,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             
             
-        case 5:
+        case 4:
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "UploadResumeViewController") as! UploadResumeViewController
             
             
@@ -214,7 +214,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             break
             
-        case 6:
+        case 5:
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "UploadVideoViewController") as! UploadVideoViewController
             
             
@@ -228,7 +228,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             break
             
-        case 7:
+        case 6:
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "ReferFriendViewController") as! ReferFriendViewController
             
             
@@ -241,7 +241,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             self.revealViewController().revealToggle(animated: true)
             
             break
-        case 8:
+        case 7:
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
             
             
@@ -255,7 +255,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             break
             
-        case 9:
+        case 8:
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
             
             

@@ -20,7 +20,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
     @available(iOS 8.0, *)
     public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL)
     {
-      if uploadedResumeNamesArray.count > 2
+      if uploadedResumeNamesArray.count <= 2
       {
         let resumeData = NSData(contentsOf: url)
         
@@ -107,7 +107,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
     
     else
     {
-        AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Maximum 3 resume can be upload, please delete exsting resume", withCancelText: "ok")
+        AppPreferences.sharedPreferences().showAlertViewWith(title: "Upload Resume Limit", withMessage: "Maximum 3 resume can be upload, please delete exsting resume", withCancelText: "ok")
     }
    
         //let imageView = self.view.viewWithTag(101) as! UIImageView
@@ -173,10 +173,10 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
 //        let rightBarButtonItem = UIBarButtonItem(customView: numberOfJobsLabel)
 //        
 //        self.navigationItem.rightBarButtonItem = rightBarButtonItem
-        let editProfileView = UIView(frame: CGRect(x: 70, y: 0, width: 60, height: 50))
+        let editProfileView = UIView(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
         //editProfileView.backgroundColor = UIColor.red
         
-        let attachmentButton = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
+        let attachmentButton = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
         attachmentButton.addTarget(self, action: #selector(rightBArButtonCLicked), for: UIControlEvents.touchUpInside)
         attachmentButton.titleLabel?.textAlignment = NSTextAlignment.center
         attachmentButton.setTitleColor(UIColor.init(colorLiteralRed: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1), for: UIControlState.normal)
