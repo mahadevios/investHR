@@ -259,6 +259,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         let discription = jobDetailsDic?["discription"]
         
         
+        
         guard let cityStateListString = responseDic["cityStateList"] else {
             
             return
@@ -271,29 +272,83 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         {
             cityStateArray = try JSONSerialization.jsonObject(with: cityStateListData!, options: .allowFragments) as? [Any]
             
+            var uniqueStateArray = [String]()
+            
             for index in 0 ..< cityStateArray!.count
             {
                 let cityStateDic = cityStateArray![index] as? [String:AnyObject]
                 
                 let state = cityStateDic?["state"] as! String
                 
-                let optionalCity = cityStateDic?["city"]
-                
-                var city = ""
-                
-                if optionalCity is NSNull
+                if !uniqueStateArray.contains(state)
                 {
-                    city = ""
+                    uniqueStateArray.append(state)
                 }
-                else
-                {
-                    city = optionalCity! as! String
-                }
-                jobLocationArray.append("\(state)\(" ")\(city)")
+                //                let optionalCity = cityStateDic?["city"]
+                //
+                //                var city = ""
+                //
+                //                if optionalCity is NSNull
+                //                {
+                //                    city = ""
+                //                }
+                //                else
+                //                {
+                //                 city = optionalCity! as! String
+                //                }
+                //                jobLocationArray.append("\(state)\(" ")\(city)")
                 
             }
-
-            
+            for index0 in 0 ..< uniqueStateArray.count
+            {
+                var stateAdded = false
+                
+                for index in 0 ..< cityStateArray!.count
+                {
+                    let cityStateDic = cityStateArray![index] as? [String:AnyObject]
+                    
+                    let state = cityStateDic?["state"] as! String
+                    
+                    
+                    if state == uniqueStateArray[index0]
+                    {
+                        let optionalCity = cityStateDic?["city"]
+                        
+                        var city = ""
+                        
+                        if optionalCity is NSNull
+                        {
+                            city = ""
+                            if !stateAdded
+                            {
+                                //                                jobLocationArray.append("\(state)\(":")\(city)")
+                                jobLocationArray.append("\(state)")
+                                
+                                stateAdded = true
+                            }
+                            else
+                            {
+                                //jobLocationArray.append("\(",")\(city)")
+                            }
+                        }
+                        else
+                        {
+                            city = optionalCity! as! String
+                            
+                            if !stateAdded
+                            {
+                                jobLocationArray.append("\(state)\(":")\(city)")
+                                stateAdded = true
+                            }
+                            else
+                            {
+                                jobLocationArray.append("\(",")\(city)")
+                            }
+                        }
+                    }
+                }
+                jobLocationArray.append("\n")
+            }
             
             
         } catch let error as NSError

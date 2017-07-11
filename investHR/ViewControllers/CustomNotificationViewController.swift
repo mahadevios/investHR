@@ -95,7 +95,8 @@ class CustomNotificationViewController: UIViewController,UITableViewDelegate,UIT
         
         self.present(vc, animated: true, completion: nil)
     }
-    override func didReceiveMemoryWarning() {
+    override func didReceiveMemoryWarning()
+    {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }

@@ -68,6 +68,13 @@ class CoreDataManager: NSObject
         {
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: "notificationDate", ascending: false)]
         }
+        else
+        if entity == "User"
+        {
+            let userId = UserDefaults.standard.object(forKey: Constant.USERID) as! String
+            fetchRequest.predicate = NSPredicate(format: "userId == %@", userId)
+
+        }
         do {
             let manageObjects = try appDelegate.managedObjectContext.fetch(fetchRequest)
 
@@ -252,12 +259,71 @@ class CoreDataManager: NSObject
         return "0"
     }
     
+    func getUserId(email:String?, linkledInId:String?) -> Int
+    {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        var predicate:NSPredicate!
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+
+        if let emailId = email, let linkedIn = linkledInId
+        {
+            predicate = NSPredicate(format: "emailAddress == %@ AND linkedInId == %@", argumentArray: [emailId,linkedIn])
+            fetchRequest.predicate = predicate
+        }
+        else
+            if let emailId = email
+            {
+                predicate = NSPredicate(format: "email == %@", argumentArray: [emailId])
+                fetchRequest.predicate = predicate
+
+                //            predicate = NSPredicate(format: "email == %@ OR linkedInId == %@", argumentArray: [email,linkledInId])
+            }
+            else
+                if let linkledInId = linkledInId
+                {
+                    predicate = NSPredicate(format: "linkledInId == %@", argumentArray: [linkledInId])
+                    fetchRequest.predicate = predicate
+
+                    //            predicate = NSPredicate(format: "email == %@ OR linkedInId == %@", argumentArray: [email,linkledInId])
+        }
+
+        
+        
+        //fetchRequest.fetchLimit = 1
+        
+        //let predicate = NSPredicate(format: "userId == %@", argumentArray: [aToken])
+        
+        
+        do
+        {
+            let user = try appDelegate.managedObjectContext.fetch(fetchRequest) as! [User]
+            
+            let manageObjects = try appDelegate.managedObjectContext.fetch(fetchRequest)
+            
+            if manageObjects.count > 0
+            {
+               // return (manageObjects as? [NSManagedObject])!
+                let user = manageObjects[0] as! User
+                
+                return Int(user.userId!)!
+            }
+            
+            
+        }
+        catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        return 0
+    }
+    
     func checkUserAlreadyExistWithEmail(email:String?, linkledInId:String?) -> Bool
     {
         var predicate:NSPredicate!
         if let emailId = email, let linkedIn = linkledInId
         {
-            predicate = NSPredicate(format: "emailAddress == %@ OR linkedInId == %@", argumentArray: [emailId,linkedIn])
+            predicate = NSPredicate(format: "emailAddress == %@ AND linkedInId == %@", argumentArray: [emailId,linkedIn])
         }
         else
         if let emailId = email
@@ -329,6 +395,45 @@ class CoreDataManager: NSObject
         
     }
     
+    func deleteUserVideos(entity:String, videoName:String)
+    {
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        
+        fetchRequest.entity = NSEntityDescription.entity(forEntityName: entity, in: appDelegate.managedObjectContext)
+
+        let predicate = NSPredicate(format: "videoName == %@", argumentArray: [videoName])
+        
+        fetchRequest.predicate = predicate
+
+        do
+        {
+            let results = try appDelegate.managedObjectContext.fetch(fetchRequest) as? [NSManagedObject]
+            
+            for result in results!
+            {
+                appDelegate.managedObjectContext.delete(result)
+            }
+            
+        }
+        catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        
+        do
+        {
+            try appDelegate.managedObjectContext.save()
+            
+        } catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        
+        
+    }
     func updateNotificationJob(entityName:String, jobId:Int, subject:String, notificationDate:Date)
     {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -360,6 +465,42 @@ class CoreDataManager: NSObject
             print(error.localizedDescription)
         }
 
+    }
+
+    
+    func getRecordedVideoNames(entity: String, userId: String) -> [NSManagedObject]?
+    {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            
+            
+            return nil
+        }
+        var predicate:NSPredicate!
+        
+        var fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        predicate = NSPredicate(format: "userId == %@", argumentArray: [userId])
+        fetchRequest.predicate = predicate
+
+        
+        do {
+            let manageObjects = try appDelegate.managedObjectContext.fetch(fetchRequest)
+            
+            if manageObjects.count > 0
+            {
+                return manageObjects as? [NSManagedObject]
+            }
+        } catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        //        if let entities = managedObjectContext.fetch(request) as? [NSManagedObject]
+        //        {
+        //            if entities.count > 0
+        //            {
+        //                return entities
+        //            }
+        //        }
+        return nil
     }
 
 }

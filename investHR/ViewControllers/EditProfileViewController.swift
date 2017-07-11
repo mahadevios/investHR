@@ -26,8 +26,10 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     var imagedata:Any!
     var candidateFunctionArray : [String] = []
     //    let servicesArray : [String] = ["Services","Service 2","Service 3","Service 4","Service 5"]
-    let relocationArray = ["Not available","Yes","No","May be"]
-    let relocationDic = ["Yes":"1","No":"2","May be":"3","Not available":"4"]
+    let relocationArray = ["Not Available","Yes","No","May be"]
+    let relocationDic = ["Yes":"1","No":"2","May be":"3","Not Available":"4"]
+    let visaTypesArray = ["US Citizen","Green Card Holder","UK Tier 1 Visa","Uk Tier 2 Visa","UK Citizen","UK – PR"," Canadian Citizen","TN Visa","Euro Zone Citizen","EAD card Holder","L2 EAD","H1 Visa","L1 Visa","H4 Visa","L2 Visa"]
+    let visaTypesAndIdArray = ["US Citizen":"1","Green Card Holder":"2","UK Tier 1 Visa":"3","Uk Tier 2 Visa":"4","UK Citizen":"5","UK – PR":"6"," Canadian Citizen":"7","TN Visa":"8","Euro Zone Citizen":"9","EAD card Holder":"10","L2 EAD":"11","H1 Visa":"12","L1 Visa":"13","H4 Visa":"14","L2 Visa":"15"]
     var roleNameAndIdDic = [String:Int16]()
     var countryCodeButton:UIButton!
     @IBOutlet weak var visaStatusTextField: TextField!
@@ -118,6 +120,8 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         benefitsTextView.delegate = self
         nonCompeteTextView.delegate = self
         companiesInterviewedTextView.delegate = self
+        servicesTextField.delegate = self
+        visaStatusTextField.delegate = self
         benefitsTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
         nonCompeteTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
@@ -268,7 +272,36 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
     }
 
+    func setTextFieldsTextColor(color: UIColor)
+    {
+        nameTextField.textColor = color
+        mobileNumberTextField.textColor = color
+        emailTextField.textColor = color
+        cuurentRoleTextField.textColor = color
+        currentCompanyTextField.textColor = color
+        stateTextField.textColor = color
+        visaStatusTextField.textColor = color
+        cityTextField.textColor = color
+        
+        verticalsTextFiled.textColor = color
+        
+        PLTextFiled.textColor = color
+        revenueQuotaTextFiled.textColor = color
+        linkedInProfileUrlTextField.textColor = color
+        servicesTextField.textColor = color
+        candidateFunctionTextField.textColor = color
+        experienceTextField.textColor = color
+        
+        expectedCompanyTextField.textColor = color
+        
+        benefitsTextView.textColor = color
+        nonCompeteTextView.textColor = color
+        companiesInterviewedTextView.textColor = color
+        joiningTimeTextFIeld.textColor = color
+        relocationTextFIeld.textColor = color
 
+    
+    }
 // MARK: Notification response methods
     
     func checkUpdateProfileResponse(dataDic:Notification)
@@ -319,12 +352,16 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
         self.setUserInteractionEnabled(setEnable: false)
         
+        self.setTextFieldsTextColor(color: UIColor.gray)
+
     }
     
     
     
     func checkGetProfileResponse(dataDic:Notification)
     {
+        self.setTextFieldsTextColor(color: UIColor.gray)
+
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
             return
@@ -367,7 +404,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         {
             companiesInterviewedTextView.text = companiesInterViewed
             
-            companiesInterviewedTextView.textColor = UIColor.black
+            //companiesInterviewedTextView.textColor = UIColor.black
         
         }
         let visaStatus = userDetailsDict["visaStatus"] as? String
@@ -414,6 +451,13 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             PLTextFiled.text = pandL
         }
         
+        let servives = userDetailsDict["services"] as? String
+        
+        if servives != nil && servives != ""
+        {
+            servicesTextField.text = servives
+        }
+
         let linkedInUrl = userDetailsDict["linkedInUrl"] as? String
         
         if pandL != nil && pandL != ""
@@ -427,7 +471,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         {
             benefitsTextView.text = benefitsInCurrentOrg
             
-            benefitsTextView.textColor = UIColor.black
+           // benefitsTextView.textColor = UIColor.black
         }
 
         let relocation = userDetailsDict["relocation"] as? [String:Any]
@@ -443,7 +487,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         {
             nonCompeteTextView.text = anyNonComplete
             
-            nonCompeteTextView.textColor = UIColor.black
+           // nonCompeteTextView.textColor = UIColor.black
         }
         
         let experienceInOffshore = userDetailsDict["experienceInOffshore"] as? String
@@ -706,10 +750,11 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     func rightbarButtonClickedEdit()
     {
         setUserInteractionEnabled(setEnable: true)
-        
+        self.setTextFieldsTextColor(color: UIColor.black)
+
         setRightBarButtonItemSave()
 
-        nameTextField.becomeFirstResponder()
+        //nameTextField.becomeFirstResponder()
         
                 stateTextField.itemSelectionHandler = { filteredResults, itemPosition in
                     // Just in case you need the item position
@@ -1121,7 +1166,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         if textField == candidateFunctionTextField
         {
             DispatchQueue.main.async {
-                self.candidateFunctionTextField.resignFirstResponder()
+                self.resignAllResponsders()
                 
                 self.addPickerToolBar()
                 
@@ -1136,7 +1181,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             if textField == relocationTextFIeld
             {
                 DispatchQueue.main.async {
-                    self.relocationTextFIeld.resignFirstResponder()
+                    self.resignAllResponsders()
                     
                     self.addPickerToolBarForRelocation()
                     
@@ -1147,6 +1192,23 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
                 }
                 
         }
+        
+            else
+                if textField == visaStatusTextField
+                {
+                    DispatchQueue.main.async {
+                       // self.visaStatusTextField.resignFirstResponder()
+                        self.resignAllResponsders()
+                        self.addPickerToolBarForVisaTypes()
+                        
+                        if self.visaStatusTextField.text == ""
+                        {
+                            self.visaStatusTextField.text = self.visaTypesArray[0]
+                        }
+                    }
+                    
+        }
+
     }
  
     func textViewDidEndEditing(_ textView: UITextView)
@@ -1494,6 +1556,45 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             //     OperatorTextField.inputAccessoryView=toolBar;
         }
     }
+    
+    func addPickerToolBarForVisaTypes()
+    {
+        if self.view.viewWithTag(40000) == nil
+        {
+            
+            let picker = UIPickerView()
+            
+            picker.tag = 40001;
+            
+            picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
+            
+            picker.delegate = self
+            
+            picker.dataSource = self
+            
+            picker.showsSelectionIndicator = true
+            
+            self.view.addSubview(picker)
+            
+            picker.isUserInteractionEnabled = true
+            
+            picker.backgroundColor = UIColor.lightGray
+            
+            //        UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneBtnPressToGetValue:)];
+            let btn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(pickerDoneButtonPressed))
+            
+            //        UIToolbar *toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, picker.frame.origin.y - 40.0f, self.view.frame.size.width, 40.0f)];
+            let toolBar = UIToolbar(frame: CGRect(x: 0, y: picker.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0))
+            
+            toolBar.tag = 40000
+            
+            toolBar.setItems([btn], animated: true)
+            
+            self.view.addSubview(toolBar)
+            //     OperatorTextField.inputAccessoryView=toolBar;
+        }
+    }
+
 
     
     func pickerDoneButtonPressed()
@@ -1543,6 +1644,18 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             
         }
         
+        if let picker1 = self.view.viewWithTag(40001)
+        {
+            picker1.removeFromSuperview()
+            
+        }
+        
+        
+        if let toolbar1 = self.view.viewWithTag(40000)
+        {
+            toolbar1.removeFromSuperview()
+            
+        }
         
         // [DescriptionTextView becomeFirstResponder];
         
@@ -1559,13 +1672,20 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             return candidateFunctionArray.count
             
         }
+        else
         if pickerView.tag == 20001
         {
             return relocationArray.count
         }
         else
+        if pickerView.tag == 30001
         {
             return coutryCodesArray.count
+        }
+        else
+        {
+            return visaTypesArray.count
+
         }
     }
     
@@ -1583,8 +1703,14 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             return relocationArray[row]
         }
         else
+        if pickerView.tag == 30001
         {
             return coutryCodesArray[row]
+
+        }
+        else
+        {
+            return visaTypesArray[row]
 
         }
     }
@@ -1617,8 +1743,14 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             
         }
         else
+        if pickerView.tag == 30001
         {
             label?.text =  coutryCodesArray[row] as String
+        }
+        else
+        {
+            label?.text =  visaTypesArray[row] as String
+
         }
         
         label?.textAlignment = .center
@@ -1646,11 +1778,19 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             relocationTextFIeld.text = selectedRole
         }
         else
+        if pickerView.tag == 30001
         {
             let selectedCountryCode = coutryCodesArray[row]
             
             countryCodeButton.setTitle(selectedCountryCode, for: .normal)
            // relocationTextFIeld.text = selectedRole
+        }
+        else
+        {
+            let selectedVisaStatus = visaTypesArray[row]
+            
+            visaStatusTextField.text = selectedVisaStatus
+         
         }
         
     }

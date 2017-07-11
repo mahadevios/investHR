@@ -292,7 +292,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             self.revealViewController().revealToggle(animated: true)
             
             
-            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+            //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
             CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
             CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
 

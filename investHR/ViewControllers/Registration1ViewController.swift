@@ -28,7 +28,8 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
     var cityArray:[String] = []
     var stateNameAndIdDic = [String:Int16]()
     var cityNameAndIdDic = [String:Int64]()
-
+    let visaTypesArray = ["US Citizen","Green Card Holder","UK Tier 1 Visa","Uk Tier 2 Visa","UK Citizen","UK – PR","Canadian Citizen","TN Visa","Euro Zone Citizen","EAD card Holder","L2 EAD","H1 Visa","L1 Visa","H4 Visa","L2 Visa"]
+    let visaTypesAndIdArray = ["US Citizen":"1","Green Card Holder":"2","UK Tier 1 Visa":"3","Uk Tier 2 Visa":"4","UK Citizen":"5","UK – PR":"6","Canadian Citizen":"7","TN Visa":"8","Euro Zone Citizen":"9","EAD card Holder":"10","L2 EAD":"11","H1 Visa":"12","L1 Visa":"13","H4 Visa":"14","L2 Visa":"15"]
 
     override func viewDidLoad()
     {
@@ -134,19 +135,78 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         NotificationCenter.default.removeObserver(self)
     }
     
+//    func checkRegistrationResponse(dataDic:NSNotification)
+//    {
+//        //        self.view.viewWithTag(789)?.removeFromSuperview()
+//        
+//        guard let responseDic = dataDic.object as? [String:String] else
+//        {
+//            //AppPreferences.sharedPreferences().showAlertViewWith(title: "Something went wrong!", withMessage: "Please try again", withCancelText: "Ok")
+//            // hide hud
+//            return
+//        }
+//        
+//        guard let code = responseDic["code"] else {
+//            // hide hud
+//            
+//            return
+//        }
+//        //let code = responseDic["code"]
+//        
+//        let name = responseDic["name"]
+//        
+//        let message = responseDic["Message"]
+//        
+//        let imageName = responseDic["ImageName"]
+//        
+//        CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+//        
+//        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["name":name! ,"username":self.email,"password":self.password,"pictureUrl":imageName!])
+//        
+//        UserDefaults.standard.set(self.email!, forKey: Constant.USERNAME)
+//        UserDefaults.standard.set(self.password!, forKey: Constant.PASSWORD)
+//        
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//        
+//        let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
+//        
+//        print(currentRootVC)
+//        
+//        let className = String(describing: type(of: currentRootVC))
+//        
+//        self.view.viewWithTag(789)?.removeFromSuperview() // remove hud
+//        
+//        if className == "LoginViewController"
+//        {
+//            let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+//            let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+//            appDelegate.window?.rootViewController = rootViewController
+//            
+//        }
+//        else
+//        {
+//            self.dismiss(animated: true, completion: nil)
+//            self.presentingViewController?.dismiss(animated: true, completion: nil)
+//            self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+//            
+//            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
+//            
+//        }
+//        
+//        
+//    }
+
+    
     func checkRegistrationResponse(dataDic:NSNotification)
     {
         //        self.view.viewWithTag(789)?.removeFromSuperview()
         
         guard let responseDic = dataDic.object as? [String:String] else
         {
-            //AppPreferences.sharedPreferences().showAlertViewWith(title: "Something went wrong!", withMessage: "Please try again", withCancelText: "Ok")
-            // hide hud
             return
         }
         
         guard let code = responseDic["code"] else {
-            // hide hud
             
             return
         }
@@ -158,13 +218,45 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         
         let imageName = responseDic["ImageName"]
         
-        CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+        var emailId = responseDic["emailId"]
         
-        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["name":name! ,"username":self.email,"password":self.password,"pictureUrl":imageName!])
+        var linkedInId = responseDic["linkId"]
+        
+        var userId = 0
+        if emailId == ""
+        {
+            emailId = "nil"
+        }
+        if linkedInId == ""
+        {
+            linkedInId = "nil"
+        }
+        let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithEmail(email: emailId, linkledInId: linkedInId)
+        
+        if !available
+        {
+           
+            //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+            let userIdString = CoreDataManager.getSharedCoreDataManager().getMaxUserId(entityName: "User")
+            
+            userId = Int(userIdString)!
+            
+            userId = userId + 1
+            //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+            
+            let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["userId":"\(userId)", "name":name! ,"username":emailId,"password":self.password!,"pictureUrl":imageName!,"emailAddress":emailId,"linkedInId":linkedInId])
+        }
+        else
+        {
+            userId = CoreDataManager.getSharedCoreDataManager().getUserId(email: emailId, linkledInId: linkedInId)
+        
+        }
         
         UserDefaults.standard.set(self.email!, forKey: Constant.USERNAME)
         UserDefaults.standard.set(self.password!, forKey: Constant.PASSWORD)
-        
+        //UserDefaults.standard.set(imageName!, forKey: Constant.IMAGENAME)
+        UserDefaults.standard.set("\(userId)", forKey: Constant.USERID)
+
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
@@ -175,6 +267,8 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         
         self.view.viewWithTag(789)?.removeFromSuperview() // remove hud
         
+        NotificationCenter.default.removeObserver(self)
+
         if className == "LoginViewController"
         {
             let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
@@ -252,28 +346,28 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
     }
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int
     {
-        if pickerView.tag == 1
-        {
-            return statesArray.count
-
-        }
-        else
-        {
-          return cityArray.count
-        }
+//        if pickerView.tag == 1
+//        {
+//            return statesArray.count
+//
+//        }
+//        else
+//        {
+          return visaTypesArray.count
+        //}
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?
     {
-        if pickerView.tag == 1
-        {
-            return statesArray[row]
-            
-        }
-        else
-        {
-            return cityArray[row]
-        }
+//        if pickerView.tag == 1
+//        {
+//            return statesArray[row]
+//            
+//        }
+//        else
+//        {
+            return visaTypesArray[row]
+        //}
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView{
@@ -283,18 +377,18 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             label = UILabel()
         }
         
-        if pickerView.tag == 1
-        {
-            label?.font = UIFont.systemFont(ofSize: 12)
-            label?.text =  statesArray[row] as? String
+//        if pickerView.tag == 1
+//        {
+//            label?.font = UIFont.systemFont(ofSize: 12)
+//            label?.text =  statesArray[row] as? String
+//            label?.textAlignment = .center
+//        }
+//        else
+//        {
+            label?.font = UIFont.systemFont(ofSize: 14)
+            label?.text =  visaTypesArray[row] as? String
             label?.textAlignment = .center
-        }
-        else
-        {
-            label?.font = UIFont.systemFont(ofSize: 12)
-            label?.text =  cityArray[row] as? String
-            label?.textAlignment = .center
-        }
+        //}
        
         return label!
         
@@ -304,8 +398,10 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
     {
         // use the row to get the selected row from the picker view
         // using the row extract the value from your datasource (array[row])
+        let selectedVisaStatus = visaTypesArray[row]
         
-        print(pickerView.selectedRow(inComponent: component))
+        visaStatusTextField.text = selectedVisaStatus
+        //print(pickerView.selectedRow(inComponent: component))
     }
 
     @IBAction func backButtonPressed(_ sender: Any)
@@ -603,6 +699,20 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         //        {
         //            setViewMovedUp(movedUp: true, offset: 100)
         //        }
+        
+        if textField == visaStatusTextField
+        {
+            visaStatusTextField.resignFirstResponder()
+            currentRoleTextField.resignFirstResponder()
+            currentCompanyTextField.resignFirstResponder()
+            
+            self.addPickerToolBarForRelocation()
+            
+            if self.visaStatusTextField.text == ""
+            {
+                self.visaStatusTextField.text = self.visaTypesArray[0]
+            }
+        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
@@ -624,6 +734,70 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         //        }
         textField.resignFirstResponder()
         return true
+    }
+    
+    func addPickerToolBarForRelocation()
+    {
+        if self.view.viewWithTag(20000) == nil
+        {
+            
+            let picker = UIPickerView()
+            
+            picker.tag = 20001;
+            
+            picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
+            
+            picker.delegate = self
+            
+            picker.dataSource = self
+            
+            picker.showsSelectionIndicator = true
+            
+            self.view.addSubview(picker)
+            
+            picker.isUserInteractionEnabled = true
+            
+            picker.backgroundColor = UIColor.lightGray
+            
+            //        UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneBtnPressToGetValue:)];
+            let btn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(pickerDoneButtonPressed))
+            
+            //        UIToolbar *toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, picker.frame.origin.y - 40.0f, self.view.frame.size.width, 40.0f)];
+            let toolBar = UIToolbar(frame: CGRect(x: 0, y: picker.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0))
+            
+            toolBar.tag = 20000
+            
+            toolBar.setItems([btn], animated: true)
+            
+            self.view.addSubview(toolBar)
+            //     OperatorTextField.inputAccessoryView=toolBar;
+        }
+    }
+    
+    func pickerDoneButtonPressed()
+    {
+        removePickerToolBar()
+    }
+    
+    func removePickerToolBar()
+    {
+        
+        
+        if let picker1 = self.view.viewWithTag(20001)
+        {
+            picker1.removeFromSuperview()
+            
+        }
+        
+        
+        if let toolbar1 = self.view.viewWithTag(20000)
+        {
+            toolbar1.removeFromSuperview()
+            
+        }
+        
+        // [DescriptionTextView becomeFirstResponder];
+        
     }
 
     override func didReceiveMemoryWarning() {

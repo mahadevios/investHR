@@ -406,19 +406,21 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         linkedInLoginView.tag = 1000
         
-        let cancelLinkedInViewButton = UIButton(frame: CGRect(x:linkedInLoginView.frame.origin.x+10 , y: linkedInLoginView.frame.origin.y+15, width: 20, height: 20))
-        
+        let cancelLinkedInViewImageView = UIImageView(frame: CGRect(x:linkedInLoginView.frame.origin.x+10 , y: linkedInLoginView.frame.origin.y+15, width: 20, height: 20))
+        let cancelLinkedInViewButton = UIButton(frame: CGRect(x:linkedInLoginView.frame.origin.x , y: linkedInLoginView.frame.origin.y, width: 70, height: 70))
         cancelLinkedInViewButton.addTarget(self, action: #selector(cancelLinkedInViewButtonClicked), for: .touchUpInside)
         
         cancelLinkedInViewButton.tag = 999
         //cancelLinkedInViewButton.setTitleColor(UIColor.red, for: UIControlState.normal)
         //cancelLinkedInViewButton.setTitle("Cancel", for: .normal)
-        cancelLinkedInViewButton.setBackgroundImage(UIImage(named:"Cross"), for: .normal)
-        
+        //cancelLinkedInViewButton.setBackgroundImage(UIImage(named:"Cross"), for: .normal)
+        cancelLinkedInViewImageView.image = UIImage(named: "Cross")
         self.webView = UIWebView(frame: CGRect(x:linkedInLoginView.frame.origin.x , y: linkedInLoginView.frame.origin.y+40, width: linkedInLoginView.frame.size.width, height: linkedInLoginView.frame.size.height-40))
         
         webView.tag = 998
         
+        linkedInLoginView.addSubview(cancelLinkedInViewImageView)
+
         linkedInLoginView.addSubview(cancelLinkedInViewButton)
         linkedInLoginView.addSubview(webView)
         
@@ -472,6 +474,233 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
     
     
     
+//    func checkRegistrationResponse(dataDic:NSNotification)
+//    {
+//        
+//        guard let responseDic = dataDic.object as? [String:String] else
+//        {
+//            return
+//        }
+//        
+//        guard let code = responseDic["code"] else {
+//            
+//            return
+//        }
+//        
+//        let name = responseDic["name"]
+//        
+//        let imageName = responseDic["ImageName"]
+//        
+//        let savedJobListString = responseDic["savedJobList"]
+//        
+//        let appliedJobListString = responseDic["appliedJobList"]
+//        
+//        
+//        if let savedJobListData = savedJobListString?.data(using: .utf8, allowLossyConversion: true)
+//        {
+//            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
+//            
+//            var savedJobListArray:[Any]!
+//            do
+//            {
+//                savedJobListArray = try JSONSerialization.jsonObject(with: savedJobListData, options: .allowFragments) as! [Any]
+//            } catch let error as NSError
+//            {
+//                
+//            }
+//            
+//            for index in 0 ..< savedJobListArray.count
+//            {
+//                let savedJobListDict = savedJobListArray[index] as! [String:AnyObject]
+//                
+//                let jobId = savedJobListDict["jobId"] as! Int
+//                
+//                let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
+//                
+//            }
+//            
+//            
+//        }
+//        
+//        if let appliedJobListData = appliedJobListString?.data(using: .utf8, allowLossyConversion: true)
+//        {
+//            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
+//            
+//            var appliedJobListArray:[Any]!
+//            do
+//            {
+//                appliedJobListArray = try JSONSerialization.jsonObject(with: appliedJobListData, options: .allowFragments) as! [Any]
+//            } catch let error as NSError
+//            {
+//                
+//            }
+//            
+//            for index in 0 ..< appliedJobListArray.count
+//            {
+//                let appliedJobListDict = appliedJobListArray[index] as! [String:AnyObject]
+//                
+//                let jobId = appliedJobListDict["jobId"] as! Int
+//                
+//                let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
+//            }
+//            
+//        }
+//        
+//        
+//        CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+//        
+//        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["name":name! ,"username":self.emailTextField.text!,"password":self.passwordTextField.text!,"pictureUrl":imageName!])
+//
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//        
+//        let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
+//        
+//        print(currentRootVC)
+//        
+//        let className = String(describing: type(of: currentRootVC))
+//        
+//        self.view.viewWithTag(789)?.removeFromSuperview() // remove hud
+//        
+//        if className == "LoginViewController"
+//        {
+//            let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+//            let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+//            appDelegate.window?.rootViewController = rootViewController
+//            self.dismiss(animated: true, completion: nil)
+//
+//            
+//        }
+//        else
+//        {
+//            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
+//            self.dismiss(animated: true, completion: nil)
+//            
+//        }
+//        
+//        
+//    }
+//
+//    
+//    func checkLoginResponse(dataDic:NSNotification)
+//    {
+//        guard let responseDic = dataDic.object as? [String:String] else
+//        {
+//            //AppPreferences.sharedPreferences().showAlertViewWith(title: "Something went wrong!", withMessage: "Please try again", withCancelText: "Ok")
+//            // hide hud
+//          
+//              //  UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+//                
+//            return
+//        }
+//        
+//        guard let code = responseDic["code"] else {
+//            // hide hud
+//            
+//            return
+//        }
+//        
+//        let name = responseDic["name"]
+//        
+//        let message = responseDic["Message"]
+//        
+//        let imageName = responseDic["ImageName"]
+//        
+//        let savedJobListString = responseDic["savedJobList"]
+//        
+//        let appliedJobListString = responseDic["appliedJobList"]
+//        
+//        
+//        if let savedJobListData = savedJobListString?.data(using: .utf8, allowLossyConversion: true)
+//        {
+//            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
+//            
+//            var savedJobListArray:[Any]!
+//            do
+//            {
+//                savedJobListArray = try JSONSerialization.jsonObject(with: savedJobListData, options: .allowFragments) as! [Any]
+//            } catch let error as NSError
+//            {
+//                
+//            }
+//            //var savedJobIdsArray = [Any]()
+//            //var appliedJobIdsArray = [Any]()
+//            
+//            for index in 0 ..< savedJobListArray.count
+//            {
+//                let savedJobListDict = savedJobListArray[index] as! [String:AnyObject]
+//                
+//                let jobId = savedJobListDict["jobId"] as! Int
+//                
+//                let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
+//                
+//                //            savedJobIdsArray.append(jobId)
+//            }
+//            
+//            
+//        }
+//        
+//        if let appliedJobListData = appliedJobListString?.data(using: .utf8, allowLossyConversion: true)
+//        {
+//            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
+//            
+//            var appliedJobListArray:[Any]!
+//            do
+//            {
+//                appliedJobListArray = try JSONSerialization.jsonObject(with: appliedJobListData, options: .allowFragments) as! [Any]
+//            } catch let error as NSError
+//            {
+//                
+//            }
+//            
+//            for index in 0 ..< appliedJobListArray.count
+//            {
+//                let appliedJobListDict = appliedJobListArray[index] as! [String:AnyObject]
+//                
+//                let jobId = appliedJobListDict["jobId"] as! Int
+//                
+//                let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
+//                //appliedJobIdsArray.append(jobId)
+//            }
+//            
+//        }
+//        
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//        
+//        let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
+//        
+//        print(currentRootVC)
+//        
+//        let className = String(describing: type(of: currentRootVC))
+//        
+//        self.view.viewWithTag(789)?.removeFromSuperview() // remove hud
+//        
+//        CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+//        
+//        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["name":name! ,"username":self.emailTextField.text!,"password":self.passwordTextField.text!,"pictureUrl":imageName!])
+//        
+//        UserDefaults.standard.set(self.emailTextField.text! , forKey: Constant.USERNAME)
+//        UserDefaults.standard.set(self.passwordTextField.text! , forKey: Constant.PASSWORD)
+//        
+//        if className == "LoginViewController"
+//        {
+//            let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+//            let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+//            appDelegate.window?.rootViewController = rootViewController
+//            self.dismiss(animated: true, completion: nil)
+//            
+//            
+//        }
+//        else
+//        {
+//            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
+//
+//            self.dismiss(animated: true, completion: nil)
+//            
+//        }
+//        
+//
+//    }
+    
     func checkRegistrationResponse(dataDic:NSNotification)
     {
         
@@ -492,73 +721,109 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         let imageName = responseDic["ImageName"]
         
-        let savedJobListString = responseDic["savedJobList"]
+        var emailId = responseDic["emailId"]
         
-        let appliedJobListString = responseDic["appliedJobList"]
+        var linkedInId = responseDic["linkId"]
+        
+                let savedJobListString = responseDic["savedJobList"]
+        
+                let appliedJobListString = responseDic["appliedJobList"]
         
         
-        if let savedJobListData = savedJobListString?.data(using: .utf8, allowLossyConversion: true)
+                if let savedJobListData = savedJobListString?.data(using: .utf8, allowLossyConversion: true)
+                {
+                    CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
+        
+                    var savedJobListArray:[Any]!
+                    do
+                    {
+                        savedJobListArray = try JSONSerialization.jsonObject(with: savedJobListData, options: .allowFragments) as! [Any]
+                    } catch let error as NSError
+                    {
+        
+                    }
+        
+                    for index in 0 ..< savedJobListArray.count
+                    {
+                        let savedJobListDict = savedJobListArray[index] as! [String:AnyObject]
+        
+                        let jobId = savedJobListDict["jobId"] as! Int
+        
+                        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
+        
+                    }
+        
+        
+                }
+        
+                if let appliedJobListData = appliedJobListString?.data(using: .utf8, allowLossyConversion: true)
+                {
+                    CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
+        
+                    var appliedJobListArray:[Any]!
+                    do
+                    {
+                        appliedJobListArray = try JSONSerialization.jsonObject(with: appliedJobListData, options: .allowFragments) as! [Any]
+                    } catch let error as NSError
+                    {
+        
+                    }
+        
+                    for index in 0 ..< appliedJobListArray.count
+                    {
+                        let appliedJobListDict = appliedJobListArray[index] as! [String:AnyObject]
+                        
+                        let jobId = appliedJobListDict["jobId"] as! Int
+                        
+                        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
+                    }
+                    
+                }
+
+        
+        if emailId == ""
         {
-            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
-            
-            var savedJobListArray:[Any]!
-            do
+            emailId = "nil"
+        }
+        if linkedInId == ""
+        {
+            linkedInId = "nil"
+        }
+        var userId = 0
+
+        let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithEmail(email: emailId, linkledInId: linkedInId)
+        
+        if !available
+        {
+            if emailId == ""
             {
-                savedJobListArray = try JSONSerialization.jsonObject(with: savedJobListData, options: .allowFragments) as! [Any]
-            } catch let error as NSError
-            {
-                
+                emailId = "nil"
             }
-            //var savedJobIdsArray = [Any]()
-            //var appliedJobIdsArray = [Any]()
-            
-            for index in 0 ..< savedJobListArray.count
+            if linkedInId == ""
             {
-                let savedJobListDict = savedJobListArray[index] as! [String:AnyObject]
-                
-                let jobId = savedJobListDict["jobId"] as! Int
-                
-                let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
-                
-                //            savedJobIdsArray.append(jobId)
+                linkedInId = "nil"
             }
+            //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+            let userIdString = CoreDataManager.getSharedCoreDataManager().getMaxUserId(entityName: "User")
             
+            userId = Int(userIdString)!
+            
+            userId = userId + 1
+            //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+            
+            let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["userId":"\(userId)", "name":name! ,"username":self.emailTextField.text!,"password":self.passwordTextField.text!,"pictureUrl":imageName!,"emailAddress":emailId,"linkedInId":linkedInId])
+        }
+        
+        else
+        {
+            userId = CoreDataManager.getSharedCoreDataManager().getUserId(email: emailId, linkledInId: linkedInId)
             
         }
         
-        if let appliedJobListData = appliedJobListString?.data(using: .utf8, allowLossyConversion: true)
-        {
-            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
-            
-            var appliedJobListArray:[Any]!
-            do
-            {
-                appliedJobListArray = try JSONSerialization.jsonObject(with: appliedJobListData, options: .allowFragments) as! [Any]
-            } catch let error as NSError
-            {
-                
-            }
-            
-            for index in 0 ..< appliedJobListArray.count
-            {
-                let appliedJobListDict = appliedJobListArray[index] as! [String:AnyObject]
-                
-                let jobId = appliedJobListDict["jobId"] as! Int
-                
-                let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
-                //appliedJobIdsArray.append(jobId)
-            }
-            
-        }
-        
-        
-        CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
-        
-        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["name":name! ,"username":self.emailTextField.text!,"password":self.passwordTextField.text!,"pictureUrl":imageName!])
-
-        //UserDefaults.standard.set(self.emailTextField.text!, forKey: Constant.USERNAME)
-       // UserDefaults.standard.set(self.passwordTextField.text!, forKey: Constant.PASSWORD)
-
+        //UserDefaults.standard.set(self.email!, forKey: Constant.USERNAME)
+        //UserDefaults.standard.set(self.password!, forKey: Constant.PASSWORD)
+        //UserDefaults.standard.set(imageName!, forKey: Constant.IMAGENAME)
+        UserDefaults.standard.set("\(userId)", forKey: Constant.USERID)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
@@ -575,37 +840,33 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
             let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
             appDelegate.window?.rootViewController = rootViewController
             self.dismiss(animated: true, completion: nil)
-
+            
             
         }
         else
         {
             NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
+
             self.dismiss(animated: true, completion: nil)
             
         }
         
         
     }
-
+    
     
     func checkLoginResponse(dataDic:NSNotification)
     {
         guard let responseDic = dataDic.object as? [String:String] else
         {
-            //AppPreferences.sharedPreferences().showAlertViewWith(title: "Something went wrong!", withMessage: "Please try again", withCancelText: "Ok")
-            // hide hud
-          
-              //  UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
-                
             return
         }
         
         guard let code = responseDic["code"] else {
-            // hide hud
             
             return
         }
+        //let code = responseDic["code"]
         
         let name = responseDic["name"]
         
@@ -613,65 +874,106 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         let imageName = responseDic["ImageName"]
         
-        let savedJobListString = responseDic["savedJobList"]
+        var emailId = responseDic["emailId"]
         
-        let appliedJobListString = responseDic["appliedJobList"]
+        var linkedInId = responseDic["linkId"]
+        
+                let savedJobListString = responseDic["savedJobList"]
+        
+                let appliedJobListString = responseDic["appliedJobList"]
         
         
-        if let savedJobListData = savedJobListString?.data(using: .utf8, allowLossyConversion: true)
+                if let savedJobListData = savedJobListString?.data(using: .utf8, allowLossyConversion: true)
+                {
+                    CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
+        
+                    var savedJobListArray:[Any]!
+                    do
+                    {
+                        savedJobListArray = try JSONSerialization.jsonObject(with: savedJobListData, options: .allowFragments) as! [Any]
+                    } catch let error as NSError
+                    {
+        
+                    }
+                    //var savedJobIdsArray = [Any]()
+                    //var appliedJobIdsArray = [Any]()
+        
+                    for index in 0 ..< savedJobListArray.count
+                    {
+                        let savedJobListDict = savedJobListArray[index] as! [String:AnyObject]
+        
+                        let jobId = savedJobListDict["jobId"] as! Int
+        
+                        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
+        
+                        //            savedJobIdsArray.append(jobId)
+                    }
+        
+        
+                }
+        
+                if let appliedJobListData = appliedJobListString?.data(using: .utf8, allowLossyConversion: true)
+                {
+                    CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
+        
+                    var appliedJobListArray:[Any]!
+                    do
+                    {
+                        appliedJobListArray = try JSONSerialization.jsonObject(with: appliedJobListData, options: .allowFragments) as! [Any]
+                    } catch let error as NSError
+                    {
+        
+                    }
+        
+                    for index in 0 ..< appliedJobListArray.count
+                    {
+                        let appliedJobListDict = appliedJobListArray[index] as! [String:AnyObject]
+                        
+                        let jobId = appliedJobListDict["jobId"] as! Int
+                        
+                        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
+                        //appliedJobIdsArray.append(jobId)
+                    }
+                    
+                }
+
+        if emailId == ""
         {
-            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
-            
-            var savedJobListArray:[Any]!
-            do
-            {
-                savedJobListArray = try JSONSerialization.jsonObject(with: savedJobListData, options: .allowFragments) as! [Any]
-            } catch let error as NSError
-            {
-                
-            }
-            //var savedJobIdsArray = [Any]()
-            //var appliedJobIdsArray = [Any]()
-            
-            for index in 0 ..< savedJobListArray.count
-            {
-                let savedJobListDict = savedJobListArray[index] as! [String:AnyObject]
-                
-                let jobId = savedJobListDict["jobId"] as! Int
-                
-                let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
-                
-                //            savedJobIdsArray.append(jobId)
-            }
-            
-            
+            emailId = "nil"
+        }
+        if linkedInId == ""
+        {
+            linkedInId = "nil"
         }
         
-        if let appliedJobListData = appliedJobListString?.data(using: .utf8, allowLossyConversion: true)
+        var userId = 0
+        let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithEmail(email: emailId, linkledInId: linkedInId)
+        
+        if !available
         {
-            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
             
-            var appliedJobListArray:[Any]!
-            do
-            {
-                appliedJobListArray = try JSONSerialization.jsonObject(with: appliedJobListData, options: .allowFragments) as! [Any]
-            } catch let error as NSError
-            {
-                
-            }
+            //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+            let userIdString = CoreDataManager.getSharedCoreDataManager().getMaxUserId(entityName: "User")
             
-            for index in 0 ..< appliedJobListArray.count
-            {
-                let appliedJobListDict = appliedJobListArray[index] as! [String:AnyObject]
-                
-                let jobId = appliedJobListDict["jobId"] as! Int
-                
-                let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
-                //appliedJobIdsArray.append(jobId)
-            }
+            userId = Int(userIdString)!
+            
+            userId = userId + 1
+            //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+            
+            let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["userId":"\(userId)", "name":name! ,"username":self.emailTextField.text!,"password":self.passwordTextField.text!,"pictureUrl":imageName!,"emailAddress":emailId,"linkedInId":linkedInId])
+        }
+        else
+        {
+            userId = CoreDataManager.getSharedCoreDataManager().getUserId(email: emailId, linkledInId: linkedInId)
             
         }
-        
+
+
+        UserDefaults.standard.set(self.emailTextField.text!, forKey: Constant.USERNAME)
+        UserDefaults.standard.set(self.passwordTextField.text!, forKey: Constant.PASSWORD)
+       // UserDefaults.standard.set(imageName!, forKey: Constant.IMAGENAME)
+        UserDefaults.standard.set("\(userId)", forKey: Constant.USERID)
+
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
@@ -679,15 +981,6 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         print(currentRootVC)
         
         let className = String(describing: type(of: currentRootVC))
-        
-        self.view.viewWithTag(789)?.removeFromSuperview() // remove hud
-        
-        CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
-        
-        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["name":name! ,"username":self.emailTextField.text!,"password":self.passwordTextField.text!,"pictureUrl":imageName!])
-        
-        UserDefaults.standard.set(self.emailTextField.text! , forKey: Constant.USERNAME)
-        UserDefaults.standard.set(self.passwordTextField.text! , forKey: Constant.PASSWORD)
         
         if className == "LoginViewController"
         {
@@ -700,15 +993,14 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         }
         else
         {
-            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
-
             self.dismiss(animated: true, completion: nil)
+            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
             
         }
         
-
+        
     }
-    
+
     
     override func viewWillDisappear(_ animated: Bool)
     {

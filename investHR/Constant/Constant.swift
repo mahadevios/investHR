@@ -19,6 +19,10 @@ struct Constant
     static let  DATE_TIME_FORMAT                         = "yyyy-MM-dd HH:mm:ss"
     static let  USERNAME                                 = "username"
     static let  PASSWORD                                 = "password"
+    static let  USERID                                   = "userId"
+
+    static let  IMAGENAME                                = "imageName"
+
     static let  USER_VIDEOS_FOLDER_NAME                  = "UserVideosFolder"
     static let  USER_RESUME_FOLDER_NAME                  = "UserResumeFolder"
 
@@ -27,8 +31,12 @@ struct Constant
     static let  FTP_PASSWORD                             = "mtone@123"
     static let  FTP_DIRECTORY_PATH                       = "TEST"
 
+    //static let  BASE_URL_PATH                            = "http://184.171.162.251:8080/InvestHr/investhr/"              // local server
+    //static let  USER_PROFILE_IMAGE_PATH                  = "http://184.171.162.251:8080/InvestHr/resources/UserImages/"
     static let  BASE_URL_PATH                            = "http://192.168.3.75:8080/coreflex/investhr/"              // local server
     static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.75:8080/coreflex/resources/UserImages/"
+  //  static let  BASE_URL_PATH                            = "http://192.168.3.66:8080/coreflex/investhr/"              // local server
+   // static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.66:8080/coreflex/resources/UserImages/"
     // static let  BASE_URL_PATH                            = "http://192.168.3.74:9090/coreflex/investhr/"              // local server
      //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.74:9090/coreflex/resources/UserImages/"
    // static let  BASE_URL_PATH                            = "http://192.168.3.67:7070/coreflex/investhr/"              // sable sarkar

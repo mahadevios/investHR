@@ -430,7 +430,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         
         self.uploadingOrDownloadingRow = indexpath!.row
 
-        let username = UserDefaults.standard.value(forKey: Constant.USERNAME) as? String
+        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
         let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
         

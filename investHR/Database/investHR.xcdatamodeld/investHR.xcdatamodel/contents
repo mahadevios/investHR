@@ -43,6 +43,10 @@
         <attribute name="userId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="UserVideos" representedClassName="UserVideos" syncable="YES">
+        <attribute name="userId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="videoName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="VertcalDomains" representedClassName="VertcalDomains" syncable="YES">
         <attribute name="verticalId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="verticalName" optional="YES" attributeType="String" syncable="YES"/>
@@ -50,12 +54,13 @@
     <elements>
         <element name="AppliedJobs" positionX="-27" positionY="54" width="128" height="90"/>
         <element name="City" positionX="-36" positionY="45" width="128" height="90"/>
+        <element name="CommonNotification" positionX="-36" positionY="45" width="128" height="105"/>
         <element name="HorizontalDomains" positionX="-27" positionY="45" width="128" height="75"/>
         <element name="Roles" positionX="-36" positionY="36" width="128" height="75"/>
         <element name="SavedJobs" positionX="-36" positionY="45" width="128" height="90"/>
         <element name="State" positionX="-18" positionY="63" width="128" height="75"/>
         <element name="User" positionX="-63" positionY="-18" width="128" height="165"/>
         <element name="VertcalDomains" positionX="-54" positionY="36" width="128" height="75"/>
-        <element name="CommonNotification" positionX="-36" positionY="45" width="128" height="105"/>
+        <element name="UserVideos" positionX="-36" positionY="45" width="128" height="75"/>
     </elements>
 </model>

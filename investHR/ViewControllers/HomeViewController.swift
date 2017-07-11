@@ -87,6 +87,12 @@ class HomeViewController: UIViewController
         
         let messagesString = notiObj["NotificationMessage"] as! String
         
+        if messagesString == "\("[ ]")"
+        {
+            return
+        }
+        else
+        {
         let messageData = messagesString.data(using: .utf8)
         
         do
@@ -128,7 +134,7 @@ class HomeViewController: UIViewController
         {
             
         }
-        
+        }
         
     }
     

@@ -48,6 +48,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
     let relocationArray = ["Not available","Yes","No","May be"]
     let relocationDic = ["Not available":"1","Yes":"2","No":"3","May be":"4"]
 
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView)
     {
       removePickerToolBar()
@@ -206,7 +207,8 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
 
         UserDefaults.standard.set(self.email!, forKey: Constant.USERNAME)
         UserDefaults.standard.set(self.password!, forKey: Constant.PASSWORD)
-        
+        UserDefaults.standard.set(imageName!, forKey: Constant.IMAGENAME)
+
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
@@ -372,6 +374,8 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
          relocationId = "1"
         }
         
+        self.resignAllResponders()
+        
        let dict = ["name":self.name,"email":self.email,"password":self.password,"mobile":self.mobile,"currentRole":self.currentRole,"currentCompany":self.currentCompany,"stateId":self.state!,"cityId":self.city!,"visaStatus":self.visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed1,"benifits":benefit1,"notJoinSpecificOrg":nonCompete1,"image":"","expInOffshoreEng":expOffshore,"relocation":relocationId,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":""] as [String : String]
         
         
@@ -413,6 +417,22 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
 //        APIManager.getSharedAPIManager().registerUser(dict: dict)
         
     }
+    
+    func resignAllResponders()
+    {
+      benefitsTextView.resignFirstResponder()
+        nonCompeteTextView.resignFirstResponder()
+        companiesInterViewedTextView.resignFirstResponder()
+        serviceTextField.resignFirstResponder()
+        linkedInURLTextField.resignFirstResponder()
+        revenueQuotaTextField.resignFirstResponder()
+        PLTexField.resignFirstResponder()
+        verticalTextField.resignFirstResponder()
+        expectedCompanyTextField.resignFirstResponder()
+        joiningTimeTextfield.resignFirstResponder()
+        
+    }
+    
     @IBAction func backButtonPressed(_ sender: Any)
     {
        // self.navigationController?.popViewController(animated: true)
@@ -731,7 +751,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
             //        UIToolbar *toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, picker.frame.origin.y - 40.0f, self.view.frame.size.width, 40.0f)];
             let toolBar = UIToolbar(frame: CGRect(x: 0, y: picker.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0))
             
-            toolBar.tag = 10000
+            toolBar.tag = 20000
             
             toolBar.setItems([btn], animated: true)
             
