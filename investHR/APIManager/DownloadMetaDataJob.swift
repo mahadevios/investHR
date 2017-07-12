@@ -146,12 +146,13 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
             {
                 case Constant.NEW_USER_LOGIN_API:
                 
-                    guard let dictFromJSON = response as? [String:String] else
+                    guard let dictFromJSON = response else
                     {
                         return
                     }
-                    if dictFromJSON["code"] == Constant.SUCCESS
+                    if dictFromJSON["code"] as! String == Constant.SUCCESS
                     {
+                        
                         UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
                     
                         //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"], withCancelText: "Ok")
@@ -163,7 +164,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                     {
                         UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
                     
-                        AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                        AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"] as! String, withCancelText: "Ok")
                     
                         //                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage: "username or password is incorrect, please try again", withCancelText: "Ok")
                         // NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_REGISTERED), object: dictFromJSON, userInfo: nil)
@@ -173,11 +174,11 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                 
             case Constant.NEW_USER_REGISTRATION_API:
                 
-                guard let dictFromJSON = response as? [String:String] else
+                guard let dictFromJSON = response else
                 {
                     return
                 }
-                if dictFromJSON["code"] == Constant.SUCCESS
+                if dictFromJSON["code"] as! String == Constant.SUCCESS
                 {
                     UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
                     
@@ -190,7 +191,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                 {
                     UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
                     
-                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"] as! String, withCancelText: "Ok")
                     
                     //                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Error", withMessage: "username or password is incorrect, please try again", withCancelText: "Ok")
                     // NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_REGISTERED), object: dictFromJSON, userInfo: nil)

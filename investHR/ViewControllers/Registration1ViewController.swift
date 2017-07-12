@@ -201,7 +201,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
     {
         //        self.view.viewWithTag(789)?.removeFromSuperview()
         
-        guard let responseDic = dataDic.object as? [String:String] else
+        guard let responseDic = dataDic.object as? [String:AnyObject] else
         {
             return
         }
@@ -212,17 +212,20 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         }
         //let code = responseDic["code"]
         
-        let name = responseDic["name"]
+        let name = responseDic["name"] as? String
         
-        let message = responseDic["Message"]
+        let message = responseDic["Message"] as? String
         
-        let imageName = responseDic["ImageName"]
+        let imageName = responseDic["ImageName"] as? String
         
-        var emailId = responseDic["emailId"]
+        var emailId = responseDic["emailId"] as? String
         
-        var linkedInId = responseDic["linkId"]
+        var linkedInId = responseDic["linkId"] as? String
         
-        var userId = 0
+        var userId = responseDic["UserId"] as? Int
+
+        
+        //var userId = 0
         if emailId == ""
         {
             emailId = "nil"
@@ -231,24 +234,25 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         {
             linkedInId = "nil"
         }
-        let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithEmail(email: emailId, linkledInId: linkedInId)
-        
+        //let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithEmail(email: emailId, linkledInId: linkedInId)
+        let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithUserId(userId: String(describing: userId))
+
         if !available
         {
            
             //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
-            let userIdString = CoreDataManager.getSharedCoreDataManager().getMaxUserId(entityName: "User")
+           // let userIdString = CoreDataManager.getSharedCoreDataManager().getMaxUserId(entityName: "User")
             
-            userId = Int(userIdString)!
+           // userId = Int(userIdString)!
             
-            userId = userId + 1
+           // userId = userId + 1
             //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
             
             let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["userId":"\(userId)", "name":name! ,"username":emailId,"password":self.password!,"pictureUrl":imageName!,"emailAddress":emailId,"linkedInId":linkedInId])
         }
         else
         {
-            userId = CoreDataManager.getSharedCoreDataManager().getUserId(email: emailId, linkledInId: linkedInId)
+            //userId = CoreDataManager.getSharedCoreDataManager().getUserId(email: emailId, linkledInId: linkedInId)
         
         }
         
@@ -702,16 +706,21 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         
         if textField == visaStatusTextField
         {
-            visaStatusTextField.resignFirstResponder()
-            currentRoleTextField.resignFirstResponder()
-            currentCompanyTextField.resignFirstResponder()
-            
-            self.addPickerToolBarForRelocation()
-            
-            if self.visaStatusTextField.text == ""
-            {
-                self.visaStatusTextField.text = self.visaTypesArray[0]
+            DispatchQueue.main.async
+                {
+                    self.visaStatusTextField.resignFirstResponder()
+                    self.currentRoleTextField.resignFirstResponder()
+                    self.currentCompanyTextField.resignFirstResponder()
+                    
+                    self.addPickerToolBarForRelocation()
+                    
+                    if self.visaStatusTextField.text == ""
+                    {
+                        self.visaStatusTextField.text = self.visaTypesArray[0]
+                    }
+
             }
+            
         }
     }
     
@@ -732,7 +741,11 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         //        {
         //            setViewMovedUp(movedUp: false, offset: 100)
         //        }
-        textField.resignFirstResponder()
+        DispatchQueue.main.async
+            {
+                textField.resignFirstResponder()
+
+        }
         return true
     }
     

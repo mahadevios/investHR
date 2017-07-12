@@ -45,25 +45,9 @@ class HomeViewController: UIViewController
 //
 //        }
         
-      if !AppPreferences.sharedPreferences().gotMessages
-      {
-        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-        
-        if username != nil && password != nil
-        {
-            APIManager.getSharedAPIManager().getCustomMessages(username: username!, password: password!, linkedinId: "")
-        }
-        else
-            if linkedInId != nil
-            {
-                APIManager.getSharedAPIManager().getCustomMessages(username: "", password: "", linkedinId: linkedInId!)
-                
-        }
-      }
+      
 
-        NotificationCenter.default.addObserver(self, selector: #selector(checkCustomMessagesList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_CUSTOM_MESSAGES), object: nil)
+        
 
        // AppPreferences.sharedPreferences().customMessagesArray.append("firstOne")
         //self.present(alert2, animated: true, completion: nil)
@@ -141,8 +125,25 @@ class HomeViewController: UIViewController
     override func viewWillAppear(_ animated: Bool)
     {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
+        NotificationCenter.default.addObserver(self, selector: #selector(checkCustomMessagesList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_CUSTOM_MESSAGES), object: nil)
         
-//        if AppPreferences.sharedPreferences().isReachable
+        if !AppPreferences.sharedPreferences().gotMessages
+        {
+            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            
+            if username != nil && password != nil
+            {
+                APIManager.getSharedAPIManager().getCustomMessages(username: username!, password: password!, linkedinId: "")
+            }
+            else
+                if linkedInId != nil
+                {
+                    APIManager.getSharedAPIManager().getCustomMessages(username: "", password: "", linkedinId: linkedInId!)
+                    
+            }
+        }//        if AppPreferences.sharedPreferences().isReachable
 //        {
 //            print("reachable")
 //        }

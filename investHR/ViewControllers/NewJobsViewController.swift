@@ -370,7 +370,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":appliedJobId,"userId":"1"])
         
-        applied = true
+        self.applied = true
         
         self.collectionView.reloadData()
         
@@ -585,28 +585,32 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         }
         
         
-            if applied
+            if self.applied
             {
                 applyButton.setTitle("Applied", for: .normal)
                 applyButton.setTitleColor(UIColor.appliedJobGreenColor(), for: .normal)
-                applyButton.isUserInteractionEnabled = false
+                //applyButton.isUserInteractionEnabled = false
+                applyButton.isEnabled = false
             }
             else
             {
                 applyButton.setTitle("Apply", for: .normal)
                 applyButton.setTitleColor(UIColor.init(colorLiteralRed: 54/255.0, green: 134/255.0, blue: 239/255.0, alpha: 1.0), for: .normal)
-                saveButton.isUserInteractionEnabled = true
+                //saveButton.isUserInteractionEnabled = true
+                applyButton.isEnabled = true
+
             }
-            if saved
+            if self.saved
             {
                 saveImageView.image = UIImage(named: "SideMenuSavedJob")
-                saveButton.isUserInteractionEnabled = false
+                saveButton.isEnabled = false
+
 
             }
             else
             {
                 saveImageView.image = UIImage(named: "SavedUnselected")
-                applyButton.isUserInteractionEnabled = true
+                saveButton.isEnabled = true
 
             }
        
@@ -698,7 +702,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":savedJobId,"userId":"1"])
         
-        saved = true
+        self.saved = true
         
         self.collectionView.reloadData()
     }

@@ -28,6 +28,9 @@
 		842BAFC91EF2A27C005327B0 /* HorizontalDomains+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842BAFC71EF2A27C005327B0 /* HorizontalDomains+CoreDataProperties.swift */; };
 		842BAFCC1EF2A368005327B0 /* Roles+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842BAFCA1EF2A368005327B0 /* Roles+CoreDataClass.swift */; };
 		842BAFCD1EF2A368005327B0 /* Roles+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842BAFCB1EF2A368005327B0 /* Roles+CoreDataProperties.swift */; };
+		842DFA541F161190001782F4 /* investHR.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 842DFA511F161190001782F4 /* investHR.sqlite */; };
+		842DFA551F161190001782F4 /* investHR.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 842DFA521F161190001782F4 /* investHR.sqlite-shm */; };
+		842DFA561F161190001782F4 /* investHR.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 842DFA531F161190001782F4 /* investHR.sqlite-wal */; };
 		8431B5C21EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8431B5C01EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld */; };
 		843425C41EE7D80500282419 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843425C31EE7D80400282419 /* UserNotifications.framework */; };
 		843425C81EE7ED5F00282419 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 843425C71EE7ED5F00282419 /* GoogleService-Info.plist */; };
@@ -55,9 +58,6 @@
 		846075C21F14D6A0006FF071 /* UserVideos+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846075C01F14D6A0006FF071 /* UserVideos+CoreDataClass.swift */; };
 		846075C31F14D6A0006FF071 /* UserVideos+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846075C11F14D6A0006FF071 /* UserVideos+CoreDataProperties.swift */; };
 		8467DEE11EEA68E300974A3D /* HybridAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8467DEE01EEA68E300974A3D /* HybridAuth.swift */; };
-		8477F6441EF92905007AEBAC /* investHR.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 8477F6411EF92905007AEBAC /* investHR.sqlite */; };
-		8477F6451EF92905007AEBAC /* investHR.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 8477F6421EF92905007AEBAC /* investHR.sqlite-shm */; };
-		8477F6461EF92905007AEBAC /* investHR.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 8477F6431EF92905007AEBAC /* investHR.sqlite-wal */; };
 		8493B8311EC4678200D8F7F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8493B8301EC4678200D8F7F9 /* AppDelegate.swift */; };
 		8493B8361EC4678200D8F7F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8493B8341EC4678200D8F7F9 /* Main.storyboard */; };
 		8493B83B1EC4678200D8F7F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8493B83A1EC4678200D8F7F9 /* Assets.xcassets */; };
@@ -131,6 +131,9 @@
 		842BAFC71EF2A27C005327B0 /* HorizontalDomains+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HorizontalDomains+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		842BAFCA1EF2A368005327B0 /* Roles+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Roles+CoreDataClass.swift"; sourceTree = "<group>"; };
 		842BAFCB1EF2A368005327B0 /* Roles+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Roles+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		842DFA511F161190001782F4 /* investHR.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = investHR.sqlite; sourceTree = "<group>"; };
+		842DFA521F161190001782F4 /* investHR.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "investHR.sqlite-shm"; sourceTree = "<group>"; };
+		842DFA531F161190001782F4 /* investHR.sqlite-wal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "investHR.sqlite-wal"; sourceTree = "<group>"; };
 		8431B5C11EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataDemo.xcdatamodel; sourceTree = "<group>"; };
 		843425C31EE7D80400282419 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		843425C71EE7ED5F00282419 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -159,9 +162,6 @@
 		846075C01F14D6A0006FF071 /* UserVideos+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserVideos+CoreDataClass.swift"; sourceTree = "<group>"; };
 		846075C11F14D6A0006FF071 /* UserVideos+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserVideos+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8467DEE01EEA68E300974A3D /* HybridAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HybridAuth.swift; sourceTree = "<group>"; };
-		8477F6411EF92905007AEBAC /* investHR.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = investHR.sqlite; sourceTree = "<group>"; };
-		8477F6421EF92905007AEBAC /* investHR.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "investHR.sqlite-shm"; sourceTree = "<group>"; };
-		8477F6431EF92905007AEBAC /* investHR.sqlite-wal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "investHR.sqlite-wal"; sourceTree = "<group>"; };
 		8493B82D1EC4678200D8F7F9 /* investHR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = investHR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8493B8301EC4678200D8F7F9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8493B8351EC4678200D8F7F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -361,9 +361,9 @@
 			isa = PBXGroup;
 			children = (
 				8451F6281EDE8E2F00B1DEDF /* investHR.entitlements */,
-				8477F6411EF92905007AEBAC /* investHR.sqlite */,
-				8477F6421EF92905007AEBAC /* investHR.sqlite-shm */,
-				8477F6431EF92905007AEBAC /* investHR.sqlite-wal */,
+				842DFA511F161190001782F4 /* investHR.sqlite */,
+				842DFA521F161190001782F4 /* investHR.sqlite-shm */,
+				842DFA531F161190001782F4 /* investHR.sqlite-wal */,
 				8431B5BF1EEFE28F0015C7E1 /* Database */,
 				8449B6041EE578EB0072A8DD /* Models */,
 				84EB8F3F1EDFE94900014DA4 /* Constant */,
@@ -606,12 +606,12 @@
 				84AD183A1EF000DE0049675A /* investHR.xcdatamodeld in Resources */,
 				8453BDF01EE96F6400C9B956 /* Auth0.plist in Resources */,
 				8493B83E1EC4678200D8F7F9 /* LaunchScreen.storyboard in Resources */,
-				8477F6451EF92905007AEBAC /* investHR.sqlite-shm in Resources */,
+				842DFA551F161190001782F4 /* investHR.sqlite-shm in Resources */,
 				843425C81EE7ED5F00282419 /* GoogleService-Info.plist in Resources */,
 				8493B83B1EC4678200D8F7F9 /* Assets.xcassets in Resources */,
 				8493B8361EC4678200D8F7F9 /* Main.storyboard in Resources */,
-				8477F6461EF92905007AEBAC /* investHR.sqlite-wal in Resources */,
-				8477F6441EF92905007AEBAC /* investHR.sqlite in Resources */,
+				842DFA561F161190001782F4 /* investHR.sqlite-wal in Resources */,
+				842DFA541F161190001782F4 /* investHR.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

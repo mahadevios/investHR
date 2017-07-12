@@ -64,14 +64,21 @@ class CoreDataManager: NSObject
         }
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
         
+
         if entity == "CommonNotification"
         {
+            let userId = UserDefaults.standard.object(forKey: Constant.USERID) as! String
+
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: "notificationDate", ascending: false)]
+            
+            fetchRequest.predicate = NSPredicate(format: "userId == %@", userId)
+
         }
         else
         if entity == "User"
         {
             let userId = UserDefaults.standard.object(forKey: Constant.USERID) as! String
+
             fetchRequest.predicate = NSPredicate(format: "userId == %@", userId)
 
         }
@@ -365,6 +372,40 @@ class CoreDataManager: NSObject
         return true
     }
     
+    func checkUserAlreadyExistWithUserId(userId:String?) -> Bool
+    {
+        var predicate:NSPredicate!
+        
+        predicate = NSPredicate(format: "userId == %@", argumentArray: [userId!])
+                    
+                    //            predicate = NSPredicate(format: "email == %@ OR linkedInId == %@", argumentArray: [email,linkledInId])
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+        
+        
+        //let predicate1 = NSPredicate(format: "linkedInId == %@", argumentArray: [linkledInId])
+        
+        request.predicate = predicate
+        
+        
+        do
+        {
+            let count = try appDelegate.managedObjectContext.count(for: request)
+            
+            if count == 0 {
+                return false
+            }
+        }
+        catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        
+        return true
+    }
+
     func updateUser(pictureUrl: String)
     {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -434,7 +475,7 @@ class CoreDataManager: NSObject
         
         
     }
-    func updateNotificationJob(entityName:String, jobId:Int, subject:String, notificationDate:Date)
+    func updateNotificationJob(entityName:String, jobId:Int, subject:String, notificationDate:Date, userId:String)
     {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         var context: NSManagedObjectContext = appDelegate.managedObjectContext

@@ -54,6 +54,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
         
+        let notification = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary
+        
+        
         var configureError: NSError?
         
         
@@ -120,6 +123,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 
         NotificationCenter.default.addObserver(self, selector: #selector(tokenRefreshNotification), name:NSNotification.Name.firInstanceIDTokenRefresh, object: nil)
 
+        if notification != nil
+        {
+           //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "outside", withCancelText: "got")
+//            if let data = notification?.value(forKey: "data") as? [AnyHashable:Any]
+//            {
+//                if let notificationString = notification?["notification"] as? String
+//                {
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: notificationString, withCancelText: "got")
+                    self.application(application, didReceiveRemoteNotification: notification as! [AnyHashable : Any])
+
+//                }
+//                else
+//                {
+//                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "got it 1", withCancelText: "got")
+//                }
+//            }
+//            else
+//            {
+//                AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "got it 2", withCancelText: "got")
+//            }
+            //self.application(application, didReceiveRemoteNotification: (notification?.userInfo)!)
+            
+        }
        // let obj = CoreDataManager.sharedManager
         
         return true
@@ -199,6 +225,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             
             let message = notificationObject["Message"] as? String
             
+            self.jobID = String(jobIDInt)
+            
+            print(self.jobID)
+            
+            //let alertObject = try JSONSerialization.jsonObject(with: alertData!, options: .allowFragments) as! [String:Any]
+            
+            let body = alertObject["body"]
+            
+            let title = alertObject["title"]
+            
             if message != nil
             {
                 ismessageNotification = true
@@ -207,7 +243,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                 
                 var idMessageDic = [String:Any]()
                 
-                idMessageDic["id"]  = jobIDInt
+                idMessageDic["jobId"]  = jobIDInt
                 
                 idMessageDic["message"]  = message
                 
@@ -218,29 +254,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             {
                 self.ismessageNotification = false
 
+                let jobIdExist = CoreDataManager.getSharedCoreDataManager().idExists(aToken: String(jobIDInt), entityName: "CommonNotification")
+                
+                if !jobIdExist
+                {
+                    let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
+                    CoreDataManager.getSharedCoreDataManager().save(entity: "CommonNotification", ["jobId":jobIDInt,"subject":body,"notificationDate":Date(), "userId":userId!])
+                }
+                else
+                {
+                    let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
+                    
+                    CoreDataManager.getSharedCoreDataManager().updateNotificationJob(entityName: "CommonNotification", jobId: jobIDInt, subject: body!, notificationDate: Date(), userId: userId!)
+                }
                 
             }
 
-            self.jobID = String(jobIDInt)
             
-            print(self.jobID)
-            
-            //let alertObject = try JSONSerialization.jsonObject(with: alertData!, options: .allowFragments) as! [String:Any]
-            
-            let body = alertObject["body"]
-            
-            let title = alertObject["title"]
 
-            let jobIdExist = CoreDataManager.getSharedCoreDataManager().idExists(aToken: String(jobIDInt), entityName: "CommonNotification")
             
-            if !jobIdExist
-            {
-                CoreDataManager.getSharedCoreDataManager().save(entity: "CommonNotification", ["jobId":jobIDInt,"subject":body,"notificationDate":Date()])
-            }
-            else
-            {
-            CoreDataManager.getSharedCoreDataManager().updateNotificationJob(entityName: "CommonNotification", jobId: jobIDInt, subject: body!, notificationDate: Date())
-            }
             
             
         } catch let error as NSError
@@ -257,6 +289,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 
         if UIApplication.shared.applicationState == UIApplicationState.active
         {
+            //AppPreferences.sharedPreferences().showHudWith(title: "active", detailText: "")
+            //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "app is active ", withCancelText: "got")
+
             notifView?.removeFromSuperview() //If already existing
             notifView = UIView(frame: CGRect(x: 0, y: -70, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 80))
             notifView?.backgroundColor = UIColor.appBlueColor()
@@ -309,7 +344,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         }
         else
         {
-            
+            //AppPreferences.sharedPreferences().showHudWith(title: "inacti", detailText: "")
+            //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "app is in active ", withCancelText: "got")
+
             self.notificationTapped()
         }
         
@@ -323,7 +360,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
        // print(UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.classForCoder)
         
        // print(investHR.NewJobsViewController.classForCoder())
-        
+        //loadAccount()
         if ismessageNotification == true
         {
             if let vc1 = UIApplication.shared.keyWindow?.rootViewController?.presentedViewController
@@ -351,8 +388,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             
             vc.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
             
-            UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
- 
+            
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            
+            let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
+            
+            print(currentRootVC)
+            
+            let className = String(describing: type(of: currentRootVC))
+            
+            if className == "LoginViewController"
+            {
+                let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+                let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                
+                DispatchQueue.main.async {
+                    appDelegate.window?.rootViewController?.present(vc, animated: true, completion: nil)
+                }
+                
+            }
+            else
+            {
+                
+            }
+            
+            //UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                appDelegate.window?.rootViewController?.present(vc, animated: true, completion: nil)
+            }
         }
         else
         {
@@ -367,7 +430,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             
 
             }
-        
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+
+            //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "\(appDelegate.window?.rootViewController)", withCancelText: "got")
+
                 self.notifView?.frame = CGRect(x: 0, y: -70, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 60)
             
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -376,9 +442,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                 vc.verticalId = String(0)
                 vc.domainType = "horizontal"
                 vc.jobId = self.jobID
-            
-                UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
-            
+
+            //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "\(vc.jobId)" + "\(vc)", withCancelText: "got")
+              //  UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                        appDelegate.window?.rootViewController?.present(vc, animated: true, completion: nil)
+            }
+
         }
 //        }) { (bo) in
 //            
@@ -493,6 +563,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
             
             appDelegate.window?.rootViewController = rootViewController
+            //UIApplication.shared.keyWindow?.rootViewController = rootViewController
         }
         else
         {
@@ -516,8 +587,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                     let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
                     
                     appDelegate.window?.rootViewController = rootViewController
-                    
-                    
+                //UIApplication.shared.keyWindow?.rootViewController = rootViewController
+
+
                     // }
                 
                 

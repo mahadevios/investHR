@@ -15,6 +15,7 @@ class PopUpMessageViewController: UIViewController,UIWebViewDelegate
     {
         self.dismiss(animated: true, completion: nil)
     }
+    @IBOutlet weak var viewJobButton: UIButton!
     
     var savedJobsIdsArray = [Int64]()
     
@@ -55,12 +56,18 @@ class PopUpMessageViewController: UIViewController,UIWebViewDelegate
     
     override func viewWillAppear(_ animated: Bool)
     {
-
+        if self.jobId == "0"
+        {
+            viewJobButton.isHidden = true
+        }
+        
            self.webView.loadHTMLString(self.messageString, baseURL: nil)
         
            self.webView.delegate = self
         
            self.webView.scrollView.isScrollEnabled = false
+        
+        
     }
     
     @IBAction func viewJobButtonClicked(_ sender: Any)

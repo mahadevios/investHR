@@ -793,24 +793,30 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         {
             applyButton.setTitle("Applied", for: .normal)
             applyButton.setTitleColor(UIColor.appliedJobGreenColor(), for: .normal)
-            applyButton.isUserInteractionEnabled = false
+            //applyButton.isUserInteractionEnabled = false
+            applyButton.isEnabled = true
+
         }
         else
         {
             applyButton.setTitle("Apply", for: .normal)
             applyButton.setTitleColor(UIColor.init(colorLiteralRed: 54/255.0, green: 134/255.0, blue: 239/255.0, alpha: 1.0), for: .normal)
-            applyButton.isUserInteractionEnabled = true
+           // applyButton.isUserInteractionEnabled = true
+            applyButton.isEnabled = true
+
         }
         if savedJobsIdsArray.contains(jobId)
         {
             saveImageView.image = UIImage(named: "SideMenuSavedJob")
-            saveButton.isUserInteractionEnabled = false
+            //saveButton.isUserInteractionEnabled = false
+            saveButton.isEnabled = false
 
         }
         else
         {
             saveImageView.image = UIImage(named: "SavedUnselected")
-            saveButton.isUserInteractionEnabled = true
+            //saveButton.isUserInteractionEnabled = true
+            saveButton.isEnabled = true
 
         }
 

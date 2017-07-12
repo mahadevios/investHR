@@ -263,7 +263,10 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
             {
                 do
                 {
+                    CoreDataManager.getSharedCoreDataManager().deleteUserVideos(entity: "UserVideos", videoName: videoName)
+
                     try fileManager.removeItem(atPath: savePath)
+                    
                     
                 }
                 catch let error as NSError

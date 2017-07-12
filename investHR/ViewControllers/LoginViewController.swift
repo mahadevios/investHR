@@ -704,7 +704,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
     func checkRegistrationResponse(dataDic:NSNotification)
     {
         
-        guard let responseDic = dataDic.object as? [String:String] else
+        guard let responseDic = dataDic.object as? [String:AnyObject] else
         {
             return
         }
@@ -715,19 +715,19 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         }
         //let code = responseDic["code"]
         
-        let name = responseDic["name"]
+        let name = responseDic["name"] as? String
         
-        let message = responseDic["Message"]
+        let message = responseDic["Message"] as? String
         
-        let imageName = responseDic["ImageName"]
+        let imageName = responseDic["ImageName"] as? String
         
-        var emailId = responseDic["emailId"]
+        var emailId = responseDic["emailId"] as? String
         
-        var linkedInId = responseDic["linkId"]
+        var linkedInId = responseDic["linkId"] as? String
         
-                let savedJobListString = responseDic["savedJobList"]
+                let savedJobListString = responseDic["savedJobList"] as? String
         
-                let appliedJobListString = responseDic["appliedJobList"]
+                let appliedJobListString = responseDic["appliedJobList"] as? String
         
         
                 if let savedJobListData = savedJobListString?.data(using: .utf8, allowLossyConversion: true)
@@ -789,10 +789,12 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         {
             linkedInId = "nil"
         }
-        var userId = 0
+        //var userId = 0
+        var userId = responseDic["UserId"] as? Int
 
-        let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithEmail(email: emailId, linkledInId: linkedInId)
-        
+        //let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithEmail(email: emailId, linkledInId: linkedInId)
+        let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithUserId(userId: String(describing: userId))
+
         if !available
         {
             if emailId == ""
@@ -804,11 +806,11 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                 linkedInId = "nil"
             }
             //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
-            let userIdString = CoreDataManager.getSharedCoreDataManager().getMaxUserId(entityName: "User")
-            
-            userId = Int(userIdString)!
-            
-            userId = userId + 1
+//            let userIdString = CoreDataManager.getSharedCoreDataManager().getMaxUserId(entityName: "User")
+//            
+//            userId = Int(userIdString)!
+//            
+//            userId = userId + 1
             //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
             
             let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["userId":"\(userId)", "name":name! ,"username":self.emailTextField.text!,"password":self.passwordTextField.text!,"pictureUrl":imageName!,"emailAddress":emailId,"linkedInId":linkedInId])
@@ -816,7 +818,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         else
         {
-            userId = CoreDataManager.getSharedCoreDataManager().getUserId(email: emailId, linkledInId: linkedInId)
+            //userId = CoreDataManager.getSharedCoreDataManager().getUserId(email: emailId, linkledInId: linkedInId)
             
         }
         
@@ -857,33 +859,35 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
     
     func checkLoginResponse(dataDic:NSNotification)
     {
-        guard let responseDic = dataDic.object as? [String:String] else
+        guard let responseDic = dataDic.object as? [String:AnyObject] else
         {
             return
         }
         
-        guard let code = responseDic["code"] else {
+        guard let code = responseDic["code"] as? String else {
             
             return
         }
         //let code = responseDic["code"]
         
-        let name = responseDic["name"]
+        let name = responseDic["name"] as! String
         
-        let message = responseDic["Message"]
+        let message = responseDic["Message"] as! String
         
-        let imageName = responseDic["ImageName"]
+        let imageName = responseDic["ImageName"] as! String
         
-        var emailId = responseDic["emailId"]
+        var emailId = responseDic["emailId"] as! String
         
-        var linkedInId = responseDic["linkId"]
+        var linkedInId = responseDic["linkId"] as! String
         
-                let savedJobListString = responseDic["savedJobList"]
+        var userId = responseDic["UserId"] as? Int
+
+                let savedJobListString = responseDic["savedJobList"] as! String
         
-                let appliedJobListString = responseDic["appliedJobList"]
+                let appliedJobListString = responseDic["appliedJobList"] as! String
         
         
-                if let savedJobListData = savedJobListString?.data(using: .utf8, allowLossyConversion: true)
+                if let savedJobListData = savedJobListString.data(using: .utf8, allowLossyConversion: true)
                 {
                     CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
         
@@ -912,7 +916,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
                 }
         
-                if let appliedJobListData = appliedJobListString?.data(using: .utf8, allowLossyConversion: true)
+                if let appliedJobListData = appliedJobListString.data(using: .utf8, allowLossyConversion: true)
                 {
                     CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
         
@@ -946,25 +950,26 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
             linkedInId = "nil"
         }
         
-        var userId = 0
-        let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithEmail(email: emailId, linkledInId: linkedInId)
-        
+        //var userId = 0
+        //let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithEmail(email: emailId, linkledInId: linkedInId)
+        let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithUserId(userId: String(describing: userId))
+
         if !available
         {
             
             //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
-            let userIdString = CoreDataManager.getSharedCoreDataManager().getMaxUserId(entityName: "User")
+            //let userIdString = CoreDataManager.getSharedCoreDataManager().getMaxUserId(entityName: "User")
             
-            userId = Int(userIdString)!
+           // userId = Int(userIdString)!
             
-            userId = userId + 1
+           // userId = userId + 1
             //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
             
-            let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["userId":"\(userId)", "name":name! ,"username":self.emailTextField.text!,"password":self.passwordTextField.text!,"pictureUrl":imageName!,"emailAddress":emailId,"linkedInId":linkedInId])
+            let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["userId":"\(userId)", "name":name ,"username":self.emailTextField.text!,"password":self.passwordTextField.text!,"pictureUrl":imageName,"emailAddress":emailId,"linkedInId":linkedInId])
         }
         else
         {
-            userId = CoreDataManager.getSharedCoreDataManager().getUserId(email: emailId, linkledInId: linkedInId)
+           // userId = CoreDataManager.getSharedCoreDataManager().getUserId(email: emailId, linkledInId: linkedInId)
             
         }
 

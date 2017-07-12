@@ -281,7 +281,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
 
             downloadOrViewImageView.image = #imageLiteral(resourceName: "ViewAttachment")
             
-            downloadOrViewImageView.frame = CGRect(x: downloadOrViewImageView.frame.origin.x, y: downloadOrViewImageView.frame.origin.y, width: 23.0, height: 13.0)
+            downloadOrViewImageView.frame = CGRect(x: downloadOrViewImageView.frame.origin.x, y: downloadOrViewImageView.frame.origin.y, width: 23.0, height: 23.0)
         }
         else
         {

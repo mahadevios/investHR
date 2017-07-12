@@ -122,7 +122,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
     {
 //        self.view.viewWithTag(789)?.removeFromSuperview()
 
-        guard let responseDic = dataDic.object as? [String:String] else
+        guard let responseDic = dataDic.object as? [String:AnyObject] else
         {
             //AppPreferences.sharedPreferences().showAlertViewWith(title: "Something went wrong!", withMessage: "Please try again", withCancelText: "Ok")
             // hide hud
@@ -142,11 +142,16 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         
         let imageName = responseDic["ImageName"]
         
-        let savedJobListString = responseDic["savedJobList"]
+        let savedJobListString = responseDic["savedJobList"] as? String
         
-        let appliedJobListString = responseDic["appliedJobList"]
+        let appliedJobListString = responseDic["appliedJobList"] as? String
         
-        
+        var emailId = responseDic["emailId"] as? String
+
+        var linkedInId = responseDic["linkId"] as? String
+
+        var userId = responseDic["UserId"] as? Int
+
         if let savedJobListData = savedJobListString?.data(using: .utf8, allowLossyConversion: true)
         {
             CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
@@ -201,13 +206,42 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
             
         }
         
-        CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+       // CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
 
-        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["name":name! ,"username":self.email!,"password":self.password!,"pictureUrl":imageName!])
+        if emailId == ""
+        {
+            emailId = "nil"
+        }
+        if linkedInId == ""
+        {
+            linkedInId = "nil"
+        }
+        //let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithEmail(email: emailId, linkledInId: linkedInId)
+        let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithUserId(userId: String(describing: userId))
 
+        if !available
+        {
+            
+            //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+//            let userIdString = CoreDataManager.getSharedCoreDataManager().getMaxUserId(entityName: "User")
+//            
+//            userId = Int(userIdString)!
+//            
+//            userId = userId + 1
+            //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+            
+            let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["userId":"\(userId)", "name":name! ,"username":emailId,"password":self.password!,"pictureUrl":imageName!,"emailAddress":emailId,"linkedInId":linkedInId])
+        }
+        else
+        {
+           // userId = CoreDataManager.getSharedCoreDataManager().getUserId(email: emailId, linkledInId: linkedInId)
+            
+        }
+        
         UserDefaults.standard.set(self.email!, forKey: Constant.USERNAME)
         UserDefaults.standard.set(self.password!, forKey: Constant.PASSWORD)
-        UserDefaults.standard.set(imageName!, forKey: Constant.IMAGENAME)
+        //UserDefaults.standard.set(imageName!, forKey: Constant.IMAGENAME)
+        UserDefaults.standard.set("\(userId)", forKey: Constant.USERID)
 
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
