@@ -187,8 +187,18 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         
         let userImage = info[UIImagePickerControllerOriginalImage] as? UIImage
         
-        imagedata    = UIImagePNGRepresentation(userImage!) as Data!
+        let width = userImage?.size.width
+        
+        let height = userImage?.size.height
 
+        let size = CGSize(width: width!, height: height!)
+        
+        let image = imageResize(image: userImage!,sizeChange: size)
+        
+        imagedata = UIImageJPEGRepresentation(image, 0.01)!
+
+        //imagedata    = UIImagePNGRepresentation(image) as Data!
+        
         var imageName:String!
         if let imageURL = info[UIImagePickerControllerReferenceURL] as? URL {
             let result = PHAsset.fetchAssets(withALAssetURLs: [imageURL], options: nil)
@@ -214,6 +224,18 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         //print(result)
         
     }
+    func imageResize (image:UIImage, sizeChange:CGSize)-> UIImage{
+        
+        let hasAlpha = true
+        let scale: CGFloat = 0.0 // Use scale factor of main screen
+        
+        UIGraphicsBeginImageContextWithOptions(sizeChange, !hasAlpha, scale)
+        image.draw(in: CGRect(origin: CGPoint.zero, size: sizeChange))
+        
+        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+        return scaledImage!
+    }
+    
     
     func addView() -> Void
     {

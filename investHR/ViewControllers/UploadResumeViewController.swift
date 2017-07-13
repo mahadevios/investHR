@@ -48,7 +48,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         
         let okAction = UIAlertAction(title: "Upload", style: UIAlertActionStyle.default, handler: { act -> Void in
             
-            AppPreferences.sharedPreferences().showHudWith(title: "Uploading Resume..", detailText: "Please wait")
+            AppPreferences.sharedPreferences().showHudWith(title: "Uploading Resume", detailText: "Please wait..")
 
             self.saveResumeToLocalDirectory(uniqueImageName: uniqueImageName, resumeData: resumeData! as Data)
 
@@ -182,7 +182,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         attachmentButton.setTitleColor(UIColor.init(colorLiteralRed: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1), for: UIControlState.normal)
         //attachmentButton.backgroundColor = UIColor.blue
         
-        let attachMentImageView = UIImageView(frame: CGRect(x: editProfileView.frame.size.width-16, y: 16, width: 16, height: 18))
+        let attachMentImageView = UIImageView(frame: CGRect(x: editProfileView.frame.size.width-16, y: 25, width: 16, height: 18))
         attachMentImageView.image = UIImage(named: "Attachment")
         
         
@@ -192,26 +192,34 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         
         let rightBarButtonItem = UIBarButtonItem(customView: editProfileView)
         self.navigationItem.rightBarButtonItem = rightBarButtonItem
-        
-        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-        
-        if username != nil && password != nil
+        if AppPreferences.sharedPreferences().isReachable
         {
-            APIManager.getSharedAPIManager().getUploadedResumeList(username: username!, password: password!, linkedinId: "")
-        }
-        else
-            if linkedInId != nil
+            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+            if username != nil && password != nil
             {
-                APIManager.getSharedAPIManager().getUploadedResumeList(username: "", password: "", linkedinId: linkedInId!)
+                APIManager.getSharedAPIManager().getUploadedResumeList(username: username!, password: password!, linkedinId: "")
+            }
+            else
+                if linkedInId != nil
+                {
+                    APIManager.getSharedAPIManager().getUploadedResumeList(username: "", password: "", linkedinId: linkedInId!)
                 
+                }
         }
+            else
+            {
+            
+            }
         NotificationCenter.default.addObserver(self, selector: #selector(checkUploadVideoResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_UPLOAD_USER_RESUME), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkUploadedResumeListResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_UPLOADED_RESUME_LIST), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkDeletedResumeListResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_DELETE_RESUME), object: nil)
+
+        AppPreferences.sharedPreferences().showHudWith(title: "Loading Resume", detailText: "Please wait..")
 
         // Do any additional setup after loading the view.
     }
@@ -539,7 +547,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
             //FTPImageUpload.deleteFileFromFTP(fileName: recordedVideoNamesArray[indexPath.row])
             self.downloadFileFromFTP(fileName: uploadedResumeNamesArray[sender.indexPath], sender: self)
 
-            AppPreferences.sharedPreferences().showHudWith(title: "Downloading video", detailText: "Please wait")
+            AppPreferences.sharedPreferences().showHudWith(title: "Downloading Resume", detailText: "Please wait")
         }
         
         

@@ -208,7 +208,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         
         
-        if self.domainType == "vertical" || self.domainType == "horizontal" || self.domainType == "roles"
+        if self.domainType == "vertical" || self.domainType == "horizontal" || self.domainType == "roles" || self.domainType == "location"
         {
             let jobId = jobDetailsDic?["jobid"] as! Int
             let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
@@ -378,7 +378,8 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
     }
     func saveJobButtonClicked(_ sender: subclassedUIButton)
     {
-        
+        AppPreferences.sharedPreferences().showHudWith(title: "Saving job..", detailText: "Please wait")
+
         let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
         let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
@@ -391,11 +392,13 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             if linkedInId != nil
             {
                 APIManager.getSharedAPIManager().saveJob(username: "", password: "", linkedinId: linkedInId!, jobId: String(describing: sender.jobId!))
-        }
+            }
         
     }
     func applyJobButtonClicked(_ sender: subclassedUIButton)
     {
+        AppPreferences.sharedPreferences().showHudWith(title: "Applying for job..", detailText: "Please wait")
+
         let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
         let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String

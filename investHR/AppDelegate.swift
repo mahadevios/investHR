@@ -296,7 +296,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             notifView = UIView(frame: CGRect(x: 0, y: -70, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 80))
             notifView?.backgroundColor = UIColor.appBlueColor()
             let imageView = UIImageView(frame: CGRect(x: 10, y: 15, width: 30, height: 30))
-            imageView.image = #imageLiteral(resourceName: "Logo")
+            imageView.image = UIImage(named: "AppIcon40x40")
             let label = UILabel(frame: CGRect(x: 60, y: 15, width: (UIApplication.shared.keyWindow?.frame.size.width)! - 100, height: 30))
             label.font = UIFont.systemFont(ofSize: 12)
             label.text = "New job"
@@ -346,8 +346,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         {
             //AppPreferences.sharedPreferences().showHudWith(title: "inacti", detailText: "")
             //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "app is in active ", withCancelText: "got")
+            if application.applicationState == UIApplicationState.background
+            {
+                
 
-            self.notificationTapped()
+            }
+            else
+            {
+               self.notificationTapped()
+            }
+            
         }
         
         

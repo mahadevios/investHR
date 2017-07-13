@@ -278,7 +278,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
     
     func saveJobButtonClicked(_ sender: subclassedUIButton)
     {
-        AppPreferences.sharedPreferences().showHudWith(title: "Saving job..", detailText: "Please wait")
+        AppPreferences.sharedPreferences().showHudWith(title: "Saving Job", detailText: "Please wait..")
         let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
         let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
@@ -298,7 +298,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
     }
     func applyJobButtonClicked(_ sender: subclassedUIButton)
     {
-        AppPreferences.sharedPreferences().showHudWith(title: "Applying for job..", detailText: "Please wait")
+        AppPreferences.sharedPreferences().showHudWith(title: "Applying for job", detailText: "Please wait..")
         
         let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String

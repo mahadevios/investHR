@@ -71,7 +71,7 @@ class HomeViewController: UIViewController
         
         let messagesString = notiObj["NotificationMessage"] as! String
         
-        if messagesString == "\("[ ]")"
+        if messagesString == "\("[ ]")" || messagesString == "null"
         {
             return
         }

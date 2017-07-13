@@ -179,8 +179,38 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         NotificationCenter.default.addObserver(self, selector: #selector(checkLoginResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_LOGGED_IN), object: nil)
 
         NotificationCenter.default.addObserver(self, selector: #selector(checkForgotPasswordResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_FORGOT_PASSWORD), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+
     }
  
+    func deviceRotated() -> Void
+    {
+        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+        {
+            if self.view != nil && self.linkedInLoginView != nil
+            {
+                //self.linkedInLoginView.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.size.width, height: self.view.frame.size.height)
+            
+                self.webView.frame = CGRect(x: self.linkedInLoginView.frame.origin.x, y: self.linkedInLoginView.frame.origin.y, width: self.view.frame.size.width, height: self.view.frame.size.height)
+
+            }
+        }
+        
+        if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+        {
+            if self.view != nil && self.linkedInLoginView != nil
+            {
+                //self.linkedInLoginView.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.size.width, height: self.view.frame.size.height)
+
+                self.webView.frame = CGRect(x: self.linkedInLoginView.frame.origin.x, y: self.linkedInLoginView.frame.origin.y, width: self.view.frame.size.width, height: self.view.frame.size.height)
+
+            }
+
+        }
+    }
+
+    
 // MARK: storyboard action methods
     
     @IBAction func forgotPasswordButtonClicked(_ sender: Any)
@@ -221,7 +251,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         // remove any whitespaces before and after the email address
         let emailClean = emailToLowerCase.trimmingCharacters(in: NSCharacterSet.whitespaces)
         
-        AppPreferences.sharedPreferences().showHudWith(title: "Checking info..", detailText: "Please wait")
+        AppPreferences.sharedPreferences().showHudWith(title: "Checking info", detailText: "Please wait..")
         APIManager.getSharedAPIManager().forgotPassword(emailId: emailClean)
 
     }
@@ -415,14 +445,15 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         //cancelLinkedInViewButton.setTitle("Cancel", for: .normal)
         //cancelLinkedInViewButton.setBackgroundImage(UIImage(named:"Cross"), for: .normal)
         cancelLinkedInViewImageView.image = UIImage(named: "Cross")
-        self.webView = UIWebView(frame: CGRect(x:linkedInLoginView.frame.origin.x , y: linkedInLoginView.frame.origin.y+40, width: linkedInLoginView.frame.size.width, height: linkedInLoginView.frame.size.height-40))
+        self.webView = UIWebView(frame: CGRect(x:linkedInLoginView.frame.origin.x , y: linkedInLoginView.frame.origin.y, width: linkedInLoginView.frame.size.width, height: linkedInLoginView.frame.size.height))
         
         webView.tag = 998
         
+        linkedInLoginView.addSubview(webView)
+
         linkedInLoginView.addSubview(cancelLinkedInViewImageView)
 
         linkedInLoginView.addSubview(cancelLinkedInViewButton)
-        linkedInLoginView.addSubview(webView)
         
         webView.delegate = self
         
@@ -441,6 +472,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
     func cancelLinkedInViewButtonClicked()
     {
         self.webView.delegate = nil
+        self.webView.removeFromSuperview()
         self.linkedInLoginView.removeFromSuperview()
         self.webView.stopLoading()
         //self.view.viewWithTag(1000)?.removeFromSuperview()

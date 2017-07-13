@@ -33,7 +33,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         
         menuItemsArray = ["Profile","Notification","Saved Jobs","Applied Jobs","Upload Resume","Upload Video","Refer a Friend","Settings","Log Out"]
         
-        menuImageNamesArray = ["SideMenuProfile","SideMenuNoti","SideMenuSavedJob","SideMenuAppliedJob","SideMenuSearchJob","SideMenuUploadResume","SideMenuUploadVideo","SideMenuReferFriend","SideMenuSetting","SideMenuLogout"]
+        menuImageNamesArray = ["SideMenuProfile","SideMenuNoti","SideMenuSavedJob","SideMenuAppliedJob","SideMenuUploadResume","SideMenuUploadVideo","SideMenuReferFriend","SideMenuSetting","SideMenuLogout"]
         
         NotificationCenter.default.addObserver(self, selector: #selector(upadateUserData), name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil)
         // Do any additional setup after loading the view.

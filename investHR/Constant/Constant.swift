@@ -39,8 +39,8 @@ struct Constant
    // static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.66:8080/coreflex/resources/UserImages/"
     // static let  BASE_URL_PATH                            = "http://192.168.3.74:9090/coreflex/investhr/"              // local server
      //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.74:9090/coreflex/resources/UserImages/"
-   // static let  BASE_URL_PATH                            = "http://192.168.3.67:7070/coreflex/investhr/"              // sable sarkar
-   // static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.67:7070/coreflex/resources/UserImages/"
+    //static let  BASE_URL_PATH                            = "http://192.168.3.67:7070/coreflex/investhr/"              // sable sarkar
+    //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.67:7070/coreflex/resources/UserImages/"
 
    
   //  static let  BASE_URL_PATH                            = "http://192.168.2.9:8080/InvestHr/investhr/"               // for testing

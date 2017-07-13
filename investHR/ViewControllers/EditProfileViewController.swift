@@ -570,6 +570,8 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
         CoreDataManager.getSharedCoreDataManager().updateUser(pictureUrl: imageName!)
 
+        NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
+
         do
         {
         
@@ -602,7 +604,6 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
                                 
 
                             }
-                        NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
 
 
                         }
@@ -756,24 +757,24 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
 
         //nameTextField.becomeFirstResponder()
         
-                stateTextField.itemSelectionHandler = { filteredResults, itemPosition in
-                    // Just in case you need the item position
-                    let item = filteredResults[itemPosition]
+//                stateTextField.itemSelectionHandler = { filteredResults, itemPosition in
+//                    // Just in case you need the item position
+//                    let item = filteredResults[itemPosition]
+//        
+//                    DispatchQueue.main.async
+//                        {
+//                            self.stateTextField.text = item.title
+//        
+//                            self.cityArray.removeAll()
+//        
+//                            self.getCitiesFromState(stateName: item.title)
+//        
+//                            self.cityTextField.filterStrings(self.cityArray)
+//        
+//                    }
+//                }
         
-                    DispatchQueue.main.async
-                        {
-                            self.stateTextField.text = item.title
-        
-                            self.cityArray.removeAll()
-        
-                            self.getCitiesFromState(stateName: item.title)
-        
-                            self.cityTextField.filterStrings(self.cityArray)
-        
-                    }
-                }
-        
-               stateTextField.filterStrings(statesArray)
+         //      stateTextField.filterStrings(statesArray)
     }
     func rightbarButtonClickedSave()
     {
@@ -982,7 +983,35 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
                 
             }
         }
+        var companiesInterViewed1:String!
+        if companiesInterViewed == "Companies interviewed in past 1 year"
+        {
+            companiesInterViewed1 = ""
+        }
+        else
+        {
+            companiesInterViewed1 = companiesInterviewedTextView.text
+        }
         
+        var benefit1:String!
+        if benefits == "Benefits in current organization(401k/insurance coverage etc)\n"
+        {
+            benefit1 = ""
+        }
+        else
+        {
+            benefit1 = benefitsTextView.text
+        }
+        var nonCompete1:String!
+        if nonCompete == "Any non-compete that will prevent you from managing a specific client OR Not join any specific organization"
+        {
+            nonCompete1 = ""
+        }
+        else
+        {
+            nonCompete1 = nonCompeteTextView.text
+        }
+
         var relocationId:String!
         if relocation != ""
         {
@@ -993,7 +1022,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             relocationId = "1"
         }
         
-        let dict = ["name":name,"email":username!,"password":password!,"linkedinId":linkedInId!,"editedEmail":editedEmail1,"editedPassword":editedPassword1,"mobile":mobileNumberWithCountryCode,"currentRole":cuurentRole,"currentCompany":currentCompany,"stateId":stateId!,"cityId":cityId,"visaStatus":visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed,"benifits":benefits,"notJoinSpecificOrg":nonCompete,"image":"","expInOffshoreEng":expOffshore,"relocation":relocationId,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":linkedInId!] as [String : String]
+        let dict = ["name":name,"email":username!,"password":password!,"linkedinId":linkedInId!,"editedEmail":editedEmail1,"editedPassword":editedPassword1,"mobile":mobileNumberWithCountryCode,"currentRole":cuurentRole,"currentCompany":currentCompany,"stateId":stateId!,"cityId":cityId,"visaStatus":visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed1,"benifits":benefit1,"notJoinSpecificOrg":nonCompete1,"image":"","expInOffshoreEng":expOffshore,"relocation":relocationId,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":linkedInId!] as [String : String]
         
         
         do {
@@ -1013,7 +1042,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
             //
             //            }
             
-            AppPreferences.sharedPreferences().showHudWith(title: "Updating profile..", detailText: "Please wait")
+            AppPreferences.sharedPreferences().showHudWith(title: "Updating profile", detailText: "Please wait..")
             
             
             // you can now cast it with the right type
@@ -1208,6 +1237,31 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
                     }
                     
         }
+        else
+                    if textField == stateTextField
+
+                {
+        
+                                    stateTextField.itemSelectionHandler = { filteredResults, itemPosition in
+                                        // Just in case you need the item position
+                                        let item = filteredResults[itemPosition]
+                    
+                                        DispatchQueue.main.async
+                                            {
+                                                self.stateTextField.text = item.title
+                    
+                                                self.cityArray.removeAll()
+                    
+                                                self.getCitiesFromState(stateName: item.title)
+                    
+                                                self.cityTextField.filterStrings(self.cityArray)
+                            
+                                        }
+                                    }
+                    
+                          stateTextField.filterStrings(statesArray)
+
+        }
 
     }
  
@@ -1382,15 +1436,28 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         
         let userImage = info[UIImagePickerControllerOriginalImage] as? UIImage
         
+        let width = userImage?.size.width
+        
+        let height = userImage?.size.height
+
+        print("width = \(width)" + "height = \(height)")
 //        UIImage *imageToDisplay =
 //            [UIImage imageWithCGImage:[originalImage CGImage]
 //                scale:[originalImage scale]
 //                orientation: UIImageOrientationUp];
         
         //let userImage = UIImage(cgImage: (imageToDisplay?.cgImage)!, scale: (imageToDisplay?.scale)!, orientation: .up)
-
-        imagedata    = UIImagePNGRepresentation(userImage!) as Data!
+        let size = CGSize(width: height!, height: width!)
+        let image = imageResize(image: userImage!,sizeChange: size)
+        //myImageView.image! = imageResize(myImageView.image!,sizeChange: size)
+        let width1 = image.size.width
         
+        let height1 = image.size.height
+        
+        print("width1 = \(width1)" + "height = \(height1)")
+        
+        //imagedata    = UIImagePNGRepresentation(image) as Data!
+        imagedata = UIImageJPEGRepresentation(image, 0.01)!
         var imageName:String!
         if let imageURL = info[UIImagePickerControllerReferenceURL] as? URL {
             let result = PHAsset.fetchAssets(withALAssetURLs: [imageURL], options: nil)
@@ -1412,7 +1479,18 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
         hideBarButtonItems(hide: "Save")
         
     }
-
+    func imageResize (image:UIImage, sizeChange:CGSize)-> UIImage{
+        
+        let hasAlpha = true
+        let scale: CGFloat = 0.0 // Use scale factor of main screen
+        
+        UIGraphicsBeginImageContextWithOptions(sizeChange, !hasAlpha, scale)
+        image.draw(in: CGRect(origin: CGPoint.zero, size: sizeChange))
+        
+        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+        return scaledImage!
+    }
+    
     
 //    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool
 //    {

@@ -217,6 +217,8 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                 {
                     UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
                     
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_VERTICAL_JOB_LIST), object: dictFromJSON, userInfo: nil)
+
                     //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
                     
                     
@@ -242,6 +244,8 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                 {
                     UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
                     
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_VERTICAL_JOB_LIST), object: dictFromJSON, userInfo: nil)
+
                     // AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
                     
                 }
@@ -265,6 +269,8 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                 {
                     UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
                     
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_VERTICAL_JOB_LIST), object: dictFromJSON, userInfo: nil)
+
                     //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
                     
                 }
@@ -289,6 +295,8 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                 {
                     UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
                     
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_VERTICAL_JOB_LIST), object: dictFromJSON, userInfo: nil)
+
                     //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
                     
                 }

@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "investHR/AppDelegate.swift"
-            timestampString = "521546504.706625"
+            timestampString = "521645279.38441"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "471"
-            endingLineNumber = "471"
+            startingLineNumber = "479"
+            endingLineNumber = "479"
             landmarkName = "dismissNotifFromScreen1()"
             landmarkType = "7">
          </BreakpointContent>
@@ -506,11 +506,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "investHR/ViewControllers/JobsViewController.swift"
-            timestampString = "521357896.9197"
+            timestampString = "521637778.287063"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "524"
-            endingLineNumber = "524"
+            startingLineNumber = "569"
+            endingLineNumber = "569"
             landmarkName = "setSearchController()"
             landmarkType = "7">
          </BreakpointContent>
@@ -682,11 +682,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "investHR/AppDelegate.swift"
-            timestampString = "521546504.706625"
+            timestampString = "521645279.38441"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "700"
-            endingLineNumber = "700"
+            startingLineNumber = "708"
+            endingLineNumber = "708"
             landmarkName = "AppDelegate"
             landmarkType = "3">
          </BreakpointContent>
@@ -858,11 +858,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "investHR/ViewControllers/LoginViewController.swift"
-            timestampString = "521544432.797251"
+            timestampString = "521648051.249691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1508"
-            endingLineNumber = "1508"
+            startingLineNumber = "1540"
+            endingLineNumber = "1540"
             landmarkName = "getStateAndCityUsingWebService()"
             landmarkType = "7">
             <Locations>
@@ -874,11 +874,11 @@
                   moduleName = "investHR"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Work/investHR/investHR/ViewControllers/LoginViewController.swift"
-                  timestampString = "521560905.722068"
+                  timestampString = "521649074.083525"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1508"
-                  endingLineNumber = "1508"
+                  startingLineNumber = "1540"
+                  endingLineNumber = "1540"
                   offsetFromSymbolStart = "968">
                </Location>
                <Location
@@ -889,11 +889,11 @@
                   moduleName = "investHR"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Work/investHR/investHR/ViewControllers/LoginViewController.swift"
-                  timestampString = "521560905.723511"
+                  timestampString = "521649074.086245"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "1510"
-                  endingLineNumber = "1510"
+                  startingLineNumber = "1542"
+                  endingLineNumber = "1542"
                   offsetFromSymbolStart = "36">
                </Location>
             </Locations>
@@ -906,11 +906,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "investHR/ViewControllers/LoginViewController.swift"
-            timestampString = "521544432.797251"
+            timestampString = "521648051.249691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1517"
-            endingLineNumber = "1517"
+            startingLineNumber = "1549"
+            endingLineNumber = "1549"
             landmarkName = "getStateAndCityUsingWebService()"
             landmarkType = "7">
          </BreakpointContent>
@@ -922,11 +922,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "investHR/ViewControllers/LoginViewController.swift"
-            timestampString = "521544432.797251"
+            timestampString = "521648051.249691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1614"
-            endingLineNumber = "1614"
+            startingLineNumber = "1646"
+            endingLineNumber = "1646"
             landmarkName = "getStateAndCityUsingWebService()"
             landmarkType = "7">
          </BreakpointContent>
@@ -938,11 +938,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "investHR/ViewControllers/LoginViewController.swift"
-            timestampString = "521544432.797251"
+            timestampString = "521648051.249691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1612"
-            endingLineNumber = "1612"
+            startingLineNumber = "1644"
+            endingLineNumber = "1644"
             landmarkName = "getStateAndCityUsingWebService()"
             landmarkType = "7">
          </BreakpointContent>
@@ -954,11 +954,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "investHR/ViewControllers/LoginViewController.swift"
-            timestampString = "521544432.797251"
+            timestampString = "521648051.249691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1512"
-            endingLineNumber = "1512"
+            startingLineNumber = "1544"
+            endingLineNumber = "1544"
             landmarkName = "getStateAndCityUsingWebService()"
             landmarkType = "7">
          </BreakpointContent>
@@ -970,11 +970,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "investHR/ViewControllers/LoginViewController.swift"
-            timestampString = "521544432.797251"
+            timestampString = "521648051.249691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1656"
-            endingLineNumber = "1656"
+            startingLineNumber = "1688"
+            endingLineNumber = "1688"
             landmarkName = "getStateAndCityUsingWebService()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1018,7 +1018,7 @@
                   moduleName = "investHR"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Work/investHR/investHR/ViewControllers/HomeViewController.swift"
-                  timestampString = "521560905.744918"
+                  timestampString = "521649074.114754"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "170"
@@ -1033,7 +1033,7 @@
                   moduleName = "investHR"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Work/investHR/investHR/ViewControllers/HomeViewController.swift"
-                  timestampString = "521560905.746231"
+                  timestampString = "521649074.116571"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "171"
@@ -1146,11 +1146,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "investHR/ViewControllers/RegistrationViewController.swift"
-            timestampString = "521033673.353632"
+            timestampString = "521627757.211324"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "209"
-            endingLineNumber = "209"
+            startingLineNumber = "219"
+            endingLineNumber = "219"
             landmarkName = "imagePickerController(_:didFinishPickingMediaWithInfo:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1162,11 +1162,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "investHR/ViewControllers/JobsViewController.swift"
-            timestampString = "521358440.196527"
+            timestampString = "521637778.287063"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "855"
-            endingLineNumber = "855"
+            startingLineNumber = "906"
+            endingLineNumber = "906"
             landmarkName = "collectionView(_:didSelectItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1178,11 +1178,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "investHR/ViewControllers/JobsViewController.swift"
-            timestampString = "521358440.196527"
+            timestampString = "521637778.287063"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "755"
-            endingLineNumber = "755"
+            startingLineNumber = "800"
+            endingLineNumber = "800"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1194,11 +1194,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "investHR/ViewControllers/LoginViewController.swift"
-            timestampString = "521544432.797251"
+            timestampString = "521648051.249691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2033"
-            endingLineNumber = "2033"
+            startingLineNumber = "2065"
+            endingLineNumber = "2065"
             landmarkName = "loadAccount(then:or:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1376,54 +1376,6 @@
             startingLineNumber = "86"
             endingLineNumber = "86"
             landmarkName = "checkCustomMessagesList(dataDic:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "investHR/ViewControllers/Registration1ViewController.swift"
-            timestampString = "521469424.218711"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "204"
-            endingLineNumber = "204"
-            landmarkName = "checkRegistrationResponse(dataDic:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "investHR/ViewControllers/Registration1ViewController.swift"
-            timestampString = "521542751.195409"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "225"
-            endingLineNumber = "225"
-            landmarkName = "checkRegistrationResponse(dataDic:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "investHR/ViewControllers/Registration1ViewController.swift"
-            timestampString = "521542987.77151"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "240"
-            endingLineNumber = "240"
-            landmarkName = "checkRegistrationResponse(dataDic:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

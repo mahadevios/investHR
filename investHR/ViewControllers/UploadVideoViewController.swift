@@ -97,6 +97,8 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
                     APIManager.getSharedAPIManager().getUploadedVideoList(username: "", password: "", linkedinId: linkedInId!)
                     
                 }
+            AppPreferences.sharedPreferences().showHudWith(title: "Loading Videos", detailText: "Please wait..")
+
         }
         else
         {
@@ -370,8 +372,10 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         }
         let uniqueImageName = String(Date().millisecondsSince1970) + ".mp4"
 
-        var savePath:String = folderpath + "/" + uniqueImageName
+        var unCompressedFilePath:String = folderpath + "/" + "unCompressed" + uniqueImageName
         
+        var savePath:String = folderpath + "/" + uniqueImageName
+
         let mediaType = info[UIImagePickerControllerMediaType] as! String
         
         let userId = UserDefaults.standard.object(forKey: Constant.USERID) as! String
@@ -388,12 +392,18 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
                 
                 do
                 {
-                    try imgData.write(to: URL(fileURLWithPath: savePath))
-                    
+                    try imgData.write(to: URL(fileURLWithPath: unCompressedFilePath))
+                    print("uncompressed kb - \(imgData.count / (1024))")
+
+                    let url = URL(fileURLWithPath: unCompressedFilePath)
                     recordedVideoNamesArray.append(uniqueImageName)
                     
-                    self.collectionView.reloadData()
-                    
+                    //self.collectionView.reloadData()
+                    DispatchQueue.main.async {
+                        //self.collectionView.reloadData()
+                        AppPreferences.sharedPreferences().showHudWith(title: "Saving Video", detailText: "Please wait")
+                    }
+                    self.convertVideoWithMediumQuality(fromUrl: url as NSURL, toPath: savePath)
                     
                 } catch let error as NSError
                 {
@@ -408,7 +418,6 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
             
         }
         
-        self.dismiss(animated: true, completion: nil)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController)
@@ -416,8 +425,70 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         // picker cancelled, dismiss picker view controller
         self.dismiss(animated: true, completion: nil)
     }
+    
+    func convertVideoWithMediumQuality(fromUrl : NSURL, toPath: String){
+        
+        
+        if FileManager.default.fileExists(atPath: toPath) {
+            do {
+                try FileManager.default.removeItem(atPath: toPath)
+            } catch { }
+        }
+        
+        let savePathUrl =  NSURL(fileURLWithPath: toPath)
+        
+        let sourceAsset = AVURLAsset(url: fromUrl as URL, options: nil)
+        
+        let assetExport: AVAssetExportSession = AVAssetExportSession(asset: sourceAsset, presetName: AVAssetExportPresetMediumQuality)!
+        assetExport.outputFileType = AVFileTypeQuickTimeMovie
+        assetExport.outputURL = savePathUrl as URL
+        assetExport.exportAsynchronously { () -> Void in
+            
+            switch assetExport.status {
+            case AVAssetExportSessionStatus.completed:
+                DispatchQueue.main.async( execute: {
+                    do {
+                        let videoData = try NSData(contentsOf: savePathUrl as URL, options: NSData.ReadingOptions())
+                        print("KB - \(videoData.length / (1024))")
+                        DispatchQueue.main.async {
+                            self.collectionView.reloadData()
+                            AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                            self.dismiss(animated: true, completion: nil)
 
-// MARK: - Support methods
+                        }
+                    } catch {
+                        print(error)
+                    }
+                    
+                })
+            case  AVAssetExportSessionStatus.failed:
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                    self.dismiss(animated: true, completion: nil)
+                    
+                }
+                print("failed \(assetExport.error)")
+            case AVAssetExportSessionStatus.cancelled:
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                    self.dismiss(animated: true, completion: nil)
+                    
+                }
+                print("cancelled \(assetExport.error)")
+            default:
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                    self.dismiss(animated: true, completion: nil)
+                    
+                }
+                print("complete")
+            }
+        }
+        
+    }// MARK: - Support methods
     
     // added these methods simply for convenience/completeness
     func documentsPath() ->String?
@@ -536,7 +607,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
             imagePicker.sourceType = UIImagePickerControllerSourceType.camera
             imagePicker.allowsEditing = true
             imagePicker.mediaTypes = ["public.movie"]
-            imagePicker.videoMaximumDuration = 10
+            imagePicker.videoMaximumDuration = 60
             
             self.present(imagePicker, animated: true, completion: nil)
         }

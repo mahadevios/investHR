@@ -12,6 +12,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
 {
 
     
+    @IBOutlet weak var dataNotFoundLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     var jobsArray:[String] = ["abc","bcd","cde","ghj"]
     var savedJobsIdsArray = [Int]()
@@ -73,6 +74,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
 
     override func viewWillAppear(_ animated: Bool)
     {
+        self.view.viewWithTag(200)?.isHidden = true
+        
         NotificationCenter.default.addObserver(self, selector: #selector(checkApplyJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_APPLY_JOB), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkSaveJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVE_JOB), object: nil)
@@ -181,7 +184,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
                         
                         
         }
-        AppPreferences.sharedPreferences().showHudWith(title: "Loading jobs..", detailText: "Please wait")
+        AppPreferences.sharedPreferences().showHudWith(title: "Loading jobs", detailText: "Please wait..")
 
     
     }
@@ -275,13 +278,21 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     
     func checkVerticalJobList(dataDic:NSNotification)
     {
-        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+        //AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
           return
         }
 
+        let codeString = String(describing: dataDictionary["code"]!)
+        
+        if codeString == "1001"
+        {
+            dataNotFoundLabel.isHidden = false
+            
+            return
+        }
          let verticalJobListString = dataDictionary["verticalJobList"] as! String
         
         if let totalJobsString = dataDictionary["totalCount"] as? Int
@@ -301,6 +312,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
             verticalJobListCopyForPredicateArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
             
             self.collectionView.reloadData()
+            
+            
 
         } catch let error as NSError
         {
@@ -311,10 +324,19 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     
     func checkHorizontalJobList(dataDic:NSNotification)
     {
-        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+        //AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
+            return
+        }
+        
+        let codeString = String(describing: dataDictionary["code"]!)
+        
+        if codeString == "1001"
+        {
+            dataNotFoundLabel.isHidden = false
+            
             return
         }
         
@@ -333,6 +355,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         do
         {
             verticalJobListArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
+            
+            verticalJobListCopyForPredicateArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
             
             self.collectionView.reloadData()
             
@@ -347,10 +371,19 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
 
     func checkRolesJobList(dataDic:NSNotification)
     {
-        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+//        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
+            return
+        }
+        
+        let codeString = String(describing: dataDictionary["code"]!)
+        
+        if codeString == "1001"
+        {
+            dataNotFoundLabel.isHidden = false
+            
             return
         }
         
@@ -370,6 +403,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         {
             verticalJobListArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
             
+            verticalJobListCopyForPredicateArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
+            
             self.collectionView.reloadData()
             
         } catch let error as NSError
@@ -381,13 +416,21 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     
     func checkLocationJobList(dataDic:NSNotification)
     {
-        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+        //AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
         
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
             return
         }
         
+        let codeString = String(describing: dataDictionary["code"]!)
+        
+        if codeString == "1001"
+        {
+            dataNotFoundLabel.isHidden = false
+            
+            return
+        }
         let verticalJobListString = dataDictionary["JobList"] as! String
         
         if let totalJobsString = dataDictionary["totalCount"] as? Int
@@ -403,6 +446,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         do
         {
             verticalJobListArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
+            
+            verticalJobListCopyForPredicateArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
             
             self.collectionView.reloadData()
             
@@ -794,7 +839,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
             applyButton.setTitle("Applied", for: .normal)
             applyButton.setTitleColor(UIColor.appliedJobGreenColor(), for: .normal)
             //applyButton.isUserInteractionEnabled = false
-            applyButton.isEnabled = true
+            applyButton.isEnabled = false
 
         }
         else
@@ -988,7 +1033,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     
     func saveJobButtonClicked(_ sender: subclassedUIButton)
     {
-        AppPreferences.sharedPreferences().showHudWith(title: "Saving job..", detailText: "Please wait")
+        AppPreferences.sharedPreferences().showHudWith(title: "Saving Job", detailText: "Please wait..")
         let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
         let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
@@ -1008,7 +1053,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     }
     func applyJobButtonClicked(_ sender: subclassedUIButton)
     {
-        AppPreferences.sharedPreferences().showHudWith(title: "Applying for job..", detailText: "Please wait")
+        AppPreferences.sharedPreferences().showHudWith(title: "Applying for job", detailText: "Please wait..")
 
         let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String

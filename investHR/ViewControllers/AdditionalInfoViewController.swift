@@ -436,9 +436,9 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
                 
                 hud.minSize = CGSize(width: 150.0, height: 100.0)
                 
-                hud.label.text = "Logging in.."
+                hud.label.text = "Logging in"
                 
-                hud.detailsLabel.text = "Please wait"
+                hud.detailsLabel.text = "Please wait.."
 
 
             // you can now cast it with the right type

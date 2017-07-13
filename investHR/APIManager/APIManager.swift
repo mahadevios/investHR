@@ -562,7 +562,7 @@ class APIManager: NSObject
     {
         if AppPreferences.sharedPreferences().isReachable
         {
-            AppPreferences.sharedPreferences().showHudWith(title: "Removing Video..", detailText: "Please wait")
+            AppPreferences.sharedPreferences().showHudWith(title: "Removing Video", detailText: "Please wait..")
 
             let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","videoName=\(fileName)"]
             
@@ -584,7 +584,7 @@ class APIManager: NSObject
     {
         if AppPreferences.sharedPreferences().isReachable
         {
-            AppPreferences.sharedPreferences().showHudWith(title: "Removing Resume..", detailText: "Please wait")
+            AppPreferences.sharedPreferences().showHudWith(title: "Removing Resume", detailText: "Please wait..")
 
             let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","resumeName=\(fileName)"]
             
@@ -756,12 +756,12 @@ class APIManager: NSObject
         for path in paths {
             let url = URL(fileURLWithPath: path)
             //let filename = url.lastPathComponent
-            let filename = "userImage.png"
+            let filename = "userImage.jpeg"
 
 //            let data = try Data(contentsOf: url)
             
 
-            let data1 = UIImagePNGRepresentation(UIImage(named:"Cross")!)
+            //let data1 = UIImagePNGRepresentation(UIImage(named:"Cross")!)
             let mimetype = mimeType(for: path)
             
             body.append("--\(boundary)\r\n")
