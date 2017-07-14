@@ -150,7 +150,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
 
         var linkedInId = responseDic["linkId"] as? String
 
-        var userId = responseDic["UserId"] as? Int
+        var userId = responseDic["UserId"] as! Int
 
         if let savedJobListData = savedJobListString?.data(using: .utf8, allowLossyConversion: true)
         {
@@ -265,11 +265,12 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
             //self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
 
             //self.presentingViewController?.dismiss(animated: true, completion: nil)
+            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
+
             self.presentingViewController?.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
 
             self.dismiss(animated: true, completion: nil)
 
-            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
             
         }
 

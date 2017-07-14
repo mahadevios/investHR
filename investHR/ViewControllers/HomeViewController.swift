@@ -20,10 +20,24 @@ import FirebaseAnalytics
 
 //import IOSLinkedInAPIFix
 
-class HomeViewController: UIViewController
+class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDelegate,NSURLConnectionDataDelegate
 {
     
     @IBOutlet weak var sliderButton: UIButton!
+    
+    let authorizationEndPoint = "https://www.linkedin.com/uas/oauth2/authorization"
+    
+    let accessTokenEndPoint = "https://www.linkedin.com/uas/oauth2/accessToken"
+    
+    let linkedInKey = "81no6kz3uepufn"
+    
+    let linkedInSecret = "tgGDfootCo2zoLwB"
+    
+    var webView:UIWebView!
+    
+    var linkedInLoginView:UIView!
+
+    var responseData = NSMutableData()
 
     override func viewDidLoad()
     {
@@ -57,7 +71,8 @@ class HomeViewController: UIViewController
         
 //        AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Invalid login", withCancelText: "Ok")
 
-   
+//        NotificationCenter.default.addObserver(self, selector: #selector(share(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: nil) // after getting the accessToken from linkedin webview, ask for user info and get back to this view with hud, NOTIFICATION_LIACCESSTOKEN_FETCHED when webview fetch the user info, get this info in this controller and pass it to the server and validate the user
+
         
         
     }
@@ -87,7 +102,8 @@ class HomeViewController: UIViewController
             
             print(messagesArray)
             
-
+            AppPreferences.sharedPreferences().customMessagesArray.removeAll()
+            
             for index in messagesArray
             {
                 var idMessageDic = [String:Any]()
@@ -127,7 +143,7 @@ class HomeViewController: UIViewController
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         NotificationCenter.default.addObserver(self, selector: #selector(checkCustomMessagesList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_CUSTOM_MESSAGES), object: nil)
         
-        if !AppPreferences.sharedPreferences().gotMessages
+        if AppPreferences.sharedPreferences().gotMessages == false
         {
             let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
             let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
@@ -154,6 +170,9 @@ class HomeViewController: UIViewController
        // }
        // CoreDataManager.getSharedCoreDataManager().getMaxUserId(entityName: "User")
     //uploadFtp()
+        
+        //self.showWebViewForShare()
+
     }
 
     override func viewWillDisappear(_ animated: Bool)
@@ -335,6 +354,326 @@ class HomeViewController: UIViewController
     }
     
     
+//    func showWebViewForShare() -> Void
+//    {
+//        let state = "linkedin\(Int(NSDate().timeIntervalSince1970))"
+//        
+//        
+//        let responseType = "code"
+//        
+//        let clientId = responseType
+//        
+//        var redirectUrl = "https://www.example.com"
+//        //var redirectUrl = "https://www.investhr.auth0.com/ios/com.xanadutec.investHR/callback"
+//        let scope = "r_basicprofile,r_emailaddress,w_share"
+//        
+//        
+//        
+//        
+//        redirectUrl = redirectUrl.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.alphanumerics)!
+//        
+//        //let authUrl = "https://www.linkedin.com/oauth/v2/authorization?scope=\(scope)%20r_emailaddress&redirect_uri=\(redirectUrl)&client_id=81no6kz3uepufn&state=\(state)&responseType=\(responseType)"
+//        
+//        
+//        var authorizationURL = "\(authorizationEndPoint)?"
+//        authorizationURL += "response_type=\(responseType)&"
+//        authorizationURL += "client_id=\(linkedInKey)&"
+//        authorizationURL += "redirect_uri=\(redirectUrl)&"
+//        authorizationURL += "state=\(state)&"
+//        authorizationURL += "scope=\(scope)"
+//        
+//        print("1=",authorizationURL)
+//        //print("2=",authUrl)
+//        
+//        //        let authUrl = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&redirect_uri=http%3A%2F%2Fwww.example.com%2Fauth%2Flinkedin&state=987654321&scope=r_basicprofile&client_id=F27W4sBvOjnfRKXZNGiL2V18uttDvQZu"
+//        //https://investhr.auth0.com/ios/com.xanadutec.investHR/callback
+//        
+//        
+//        //
+//        
+//        self.linkedInLoginView = UIView(frame: self.view.bounds)
+//        
+//        linkedInLoginView.tag = 1000
+//        
+//        let cancelLinkedInViewImageView = UIImageView(frame: CGRect(x:linkedInLoginView.frame.origin.x+10 , y: linkedInLoginView.frame.origin.y+15, width: 20, height: 20))
+//        let cancelLinkedInViewButton = UIButton(frame: CGRect(x:linkedInLoginView.frame.origin.x , y: linkedInLoginView.frame.origin.y, width: 70, height: 70))
+//        cancelLinkedInViewButton.addTarget(self, action: #selector(cancelLinkedInViewButtonClicked), for: .touchUpInside)
+//        
+//        cancelLinkedInViewButton.tag = 999
+//        //cancelLinkedInViewButton.setTitleColor(UIColor.red, for: UIControlState.normal)
+//        //cancelLinkedInViewButton.setTitle("Cancel", for: .normal)
+//        //cancelLinkedInViewButton.setBackgroundImage(UIImage(named:"Cross"), for: .normal)
+//        cancelLinkedInViewImageView.image = UIImage(named: "Cross")
+//        self.webView = UIWebView(frame: CGRect(x:linkedInLoginView.frame.origin.x , y: linkedInLoginView.frame.origin.y, width: linkedInLoginView.frame.size.width, height: linkedInLoginView.frame.size.height))
+//        
+//        webView.tag = 998
+//        
+//        linkedInLoginView.addSubview(webView)
+//        
+//        linkedInLoginView.addSubview(cancelLinkedInViewImageView)
+//        
+//        linkedInLoginView.addSubview(cancelLinkedInViewButton)
+//        
+//        webView.delegate = self
+//        
+//        DispatchQueue.global(qos: .background).async
+//            {
+//                self.webView.loadRequest(NSURLRequest(url: NSURL(string: authorizationURL) as! URL) as URLRequest)
+//                
+//        }
+//        
+//        self.view.addSubview(linkedInLoginView)
+//        
+//        
+//        
+//    }
+//    
+    
+    // MARK: webview delegates
+    
+//    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool
+//    {
+//        let url = request.url!
+//        print(url)
+//        
+//        if url.host == "www.example.com"
+//        {
+//            if url.absoluteString.range(of: "code") != nil
+//            {
+//                // Extract the authorization code.
+//                let urlParts = url.absoluteString.components(separatedBy: "?")
+//                let code = (urlParts[1].components(separatedBy:"=")[1]).components(separatedBy: "&")[0]
+//                
+//                requestForAccessToken(authorizationCode: code)
+////                let url = NSURL(string: Constant.LINKEDIN_SHARE_API.addingPercentEscapes(using: String.Encoding.utf8)!)
+////                
+////                let request = NSMutableURLRequest(url: url as! URL, cachePolicy: NSURLRequest.CachePolicy.useProtocolCachePolicy, timeoutInterval: 120)
+////                
+////               
+////                let parameter = ["comment": "Check out developer.linkedin.com!","content": [
+////                    "title": "LinkedIn Developers Resources",
+////                    "description": "Leverage LinkedIn's APIs to maximize engagement",
+////                    "submitted-url": "https://developer.linkedin.com",
+////                    "submitted-image-url": "https://example.com/logo.png"
+////                ],
+////                "visibility": [
+////                    "code": "anyone"
+////                ]
+////            ] as! [String : Any]
+////                
+////                
+////                
+////                do {
+////                    let jsonData = try JSONSerialization.data(withJSONObject: parameter, options: .prettyPrinted)
+////                    // here "jsonData" is the dictionary encoded in JSON data
+////                    
+////                    //let decoded = try JSONSerialization.jsonObject(with: jsonData, options: []) as! String
+////                    
+////                    //print(decoded)
+////                    
+////                    request.setValue("json", forHTTPHeaderField: "x-li-format")
+////                    
+////                    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+////                    
+////                    //let postData = decoded.data(using: .utf8)
+////                    
+////                    // Set the HTTP body using the postData object created above.
+////                    request.httpBody = jsonData
+////                    
+////                   // print(postData ?? "nil")
+////                    print(request.httpBody ?? "nil")
+////                    
+////                    //request.addValue("application/x-www-form-urlencoded;", forHTTPHeaderField: "Content-Type")
+////                    
+////                    
+////                    request.httpMethod = "POST"
+////                    
+////                    let urlConnection = NSURLConnection.init(request: request as URLRequest, delegate: self)
+////
+////                    // you can now cast it with the right type
+//////                    if let dictFromJSON = decoded as? [String:String] {
+//////                        // use dictFromJSON
+//////                    }
+////                } catch {
+////                    print(error.localizedDescription)
+////                }
+////
+//                                    //self.dismiss(animated: true, completion: nil)
+//            }
+//            else
+//            {
+//                //self.dismiss(animated: true, completion: nil)
+//                cancelLinkedInViewButtonClicked()
+//            }
+//        }
+//        
+//        return true
+//    }
+//    
+//    func requestForAccessToken(authorizationCode: String)
+//    {
+//        let grantType = "authorization_code"
+//        
+//        let redirectURL = "https://www.example.com".addingPercentEncoding(withAllowedCharacters: NSCharacterSet.alphanumerics)
+//        // }
+//        // Set the POST parameters.
+////        var postParams = "grant_type=\(grantType)&"
+////        postParams += "code=\(authorizationCode)&"
+////        postParams += "redirect_uri=\(redirectURL!)&"
+////        postParams += "client_id=\(linkedInKey)&"
+////        postParams += "client_secret=\(linkedInSecret)"
+//        
+//        
+//        APIManager.getSharedAPIManager().getLinkedInAccessToken(grant_type: grantType, code: authorizationCode, redirect_uri: redirectURL!, client_id: linkedInKey, client_secret: linkedInSecret)
+//        
+//        cancelLinkedInViewButtonClicked()
+//        
+//        //self.hud().show(animated: true)
+//        
+//        let hud = MBProgressHUD.showAdded(to: UIApplication.shared.keyWindow!, animated: true)
+//        
+//        hud.tag = 789
+//        
+//        hud.minSize = CGSize(width: 150.0, height: 100.0)
+//        
+//        hud.label.text = "Logging in.."
+//        
+//        hud.detailsLabel.text = "Please wait"
+//        
+//        
+//        //
+//        
+//    }
+//    func webViewDidStartLoad(_ webView: UIWebView)
+//    {
+//        
+//    }
+//    
+//    func webViewDidFinishLoad(_ webView: UIWebView)
+//    {
+//        
+//    }
+//    
+//    func webView(_ webView: UIWebView, didFailLoadWithError error: Error)
+//    {
+//        print(error)
+//    }
+//
+//    func cancelLinkedInViewButtonClicked()
+//    {
+//        self.webView.delegate = nil
+//        self.webView.removeFromSuperview()
+//        self.linkedInLoginView.removeFromSuperview()
+//        self.webView.stopLoading()
+//        //self.view.viewWithTag(1000)?.removeFromSuperview()
+//        
+//        
+//        let cookieStorage =  HTTPCookieStorage.shared
+//        for cookie in cookieStorage.cookies! {
+//            cookieStorage.deleteCookie(cookie)
+//        }
+//        //URLCache.shared.removeAllCachedResponses()
+//        //self.removeFromParentViewController()
+//    }
+//
+//    func connection(_ connection: NSURLConnection, didReceive response: URLResponse) {
+//        
+//        let httpResponse = response as! HTTPURLResponse
+//        
+//        let statusCode = httpResponse.statusCode
+//        
+//        print(statusCode)
+//    }
+//    
+//    func connectionDidFinishLoading(_ connection: NSURLConnection) {
+//        
+//        do {
+//            let response =  try JSONSerialization.jsonObject(with: responseData as Data, options: .allowFragments) as? [String:AnyObject]
+//            print(response)
+//        } catch let error as NSError
+//        {
+//            print(error)
+//        }
+//
+//    }
+//    
+//    func connection(_ connection: NSURLConnection, didReceive data: Data) {
+//        
+//        responseData.append(data)
+//    }
+//    
+//    func connection(_ connection: NSURLConnection, didFailWithError error: Error) {
+//        
+//        print(error)
+//
+//    }
+//    
+//    func share(dataDic:NSNotification)
+//    {
+//        
+//        let dic = dataDic.object as! [String:AnyObject]
+//        let accessToken = dic["access_token"] as! String
+//        
+//        let url = NSURL(string: Constant.LINKEDIN_SHARE_API.addingPercentEscapes(using: String.Encoding.utf8)!)
+//        
+//        let request = NSMutableURLRequest(url: url as! URL, cachePolicy: NSURLRequest.CachePolicy.useProtocolCachePolicy, timeoutInterval: 120)
+//        
+//        
+//        let parameter = ["comment": "Check out developer.linkedin.com!","content": [
+//            "title": "LinkedIn Developers Resources",
+//            "description": "Leverage LinkedIn's APIs to maximize engagement",
+//            "submitted-url": "https://developer.linkedin.com",
+//            "submitted-image-url": "https://example.com/logo.png"
+//            ],
+//                         "visibility": [
+//                            "code": "anyone"
+//            ]
+//            ] as! [String : Any]
+//        
+//        
+//        
+//        do {
+//            let jsonData = try JSONSerialization.data(withJSONObject: parameter, options: .prettyPrinted)
+//            // here "jsonData" is the dictionary encoded in JSON data
+//            
+//            //let decoded = try JSONSerialization.jsonObject(with: jsonData, options: []) as! String
+//            
+//            //print(decoded)
+//            request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+//            
+//            request.setValue("json", forHTTPHeaderField: "x-li-format")
+//            
+//            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//            
+//            //let postData = decoded.data(using: .utf8)
+//            
+//            // Set the HTTP body using the postData object created above.
+//            request.httpBody = jsonData
+//            
+//            // print(postData ?? "nil")
+//            print(request.httpBody ?? "nil")
+//            
+//            //request.addValue("application/x-www-form-urlencoded;", forHTTPHeaderField: "Content-Type")
+//            
+//            
+//            request.httpMethod = "POST"
+//            
+//            let urlConnection = NSURLConnection.init(request: request as URLRequest, delegate: self)
+//            
+//            // you can now cast it with the right type
+//            //                    if let dictFromJSON = decoded as? [String:String] {
+//            //                        // use dictFromJSON
+//            //                    }
+//        } catch {
+//            print(error.localizedDescription)
+//        }
+//        
+//        
+//        
+//        
+//        
+//    }
+
     /*
     // MARK: - Navigation
 

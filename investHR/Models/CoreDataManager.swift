@@ -412,7 +412,9 @@ class CoreDataManager: NSObject
         var context: NSManagedObjectContext = appDelegate.managedObjectContext
         
         var fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+        let userId = UserDefaults.standard.object(forKey: Constant.USERID) as! String
         
+        fetchRequest.predicate = NSPredicate(format: "userId == %@", userId)
         do
         {
             if let fetchResults = try appDelegate.managedObjectContext.fetch(fetchRequest) as? [NSManagedObject] {

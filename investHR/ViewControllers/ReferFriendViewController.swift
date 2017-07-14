@@ -142,48 +142,48 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource
         
     }
     
-    func serachiCloud()
-    {
-        let filemgr = FileManager.default
-        
-        let ubiquityURL = filemgr.url(forUbiquityContainerIdentifier: nil)
-        
-        guard ubiquityURL != nil else {
-            print("Unable to access iCloud Account")
-            print("Open the Settings app and enter your Apple ID into iCloud settings")
-            return
-        }
-        
-//        ubiquityURL = ubiquityURL?.appendingPathComponent(
-//            "Documents/savefile.txt")
-        
-//        metaDataQuery = NSMetadataQuery()
-        
-        metaDataQuery.predicate =
-            NSPredicate(format: "%K like 'AppIcon'",
-                        NSMetadataItemFSNameKey)
-
+//    func serachiCloud()
+//    {
+//        let filemgr = FileManager.default
+//        
+//        let ubiquityURL = filemgr.url(forUbiquityContainerIdentifier: nil)
+//        
+//        guard ubiquityURL != nil else {
+//            print("Unable to access iCloud Account")
+//            print("Open the Settings app and enter your Apple ID into iCloud settings")
+//            return
+//        }
+//        
+////        ubiquityURL = ubiquityURL?.appendingPathComponent(
+////            "Documents/savefile.txt")
+//        
+////        metaDataQuery = NSMetadataQuery()
+//        
 //        metaDataQuery.predicate =
-//            NSPredicate(format: "NOT %K.pathExtension = '.'",
+//            NSPredicate(format: "%K like 'AppIcon'",
 //                        NSMetadataItemFSNameKey)
-        
-        metaDataQuery.searchScopes =
-            [NSMetadataQueryUbiquitousDocumentsScope,NSMetadataQueryUbiquitousDataScope]
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(
-                                                metadataQueryDidFinishGathering),
-                                               name: NSNotification.Name.NSMetadataQueryDidFinishGathering,
-                                               object: metaDataQuery)
-        
+//
+////        metaDataQuery.predicate =
+////            NSPredicate(format: "NOT %K.pathExtension = '.'",
+////                        NSMetadataItemFSNameKey)
+//        
+//        metaDataQuery.searchScopes =
+//            [NSMetadataQueryUbiquitousDocumentsScope,NSMetadataQueryUbiquitousDataScope]
+//        
 //        NotificationCenter.default.addObserver(self,
 //                                               selector: #selector(
 //                                                metadataQueryDidFinishGathering),
-//                                               name: NSNotification.Name.NSMetadataQueryDidUpdate,
+//                                               name: NSNotification.Name.NSMetadataQueryDidFinishGathering,
 //                                               object: metaDataQuery)
-        
-        metaDataQuery.start()
-    }
+//        
+////        NotificationCenter.default.addObserver(self,
+////                                               selector: #selector(
+////                                                metadataQueryDidFinishGathering),
+////                                               name: NSNotification.Name.NSMetadataQueryDidUpdate,
+////                                               object: metaDataQuery)
+//        
+//        metaDataQuery.start()
+//    }
     
     func metadataQueryDidFinishGathering( notification:AnyObject)
     {

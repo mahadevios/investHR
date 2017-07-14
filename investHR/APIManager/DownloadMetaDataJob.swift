@@ -644,7 +644,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                     
                     NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_UPLOAD_USER_RESUME), object: dictFromJSON, userInfo: nil)
 
-                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Resume uploaded successfully", withCancelText: "Ok")
+                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Upload Success", withMessage: "Resume uploaded successfully", withCancelText: "Ok")
                     
                     
                 }

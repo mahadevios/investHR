@@ -71,6 +71,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         
         
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        
         print(urls[urls.count-1] as URL)
         
 //        if GIDSignIn.sharedInstance().hasAuthInKeychain()
@@ -204,12 +205,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         let apsDic = data["aps"] as! [String:Any]
         
         
-       // let bodyString = data["body"] as! String
-        
-       // let bodyData = bodyString.data(using: .utf8)
-        
-        
-        
         let alertObject = apsDic["alert"] as! [String:String]
         
         //let alertData = alertString.data(using: .utf8)
@@ -299,7 +294,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             imageView.image = UIImage(named: "AppIcon40x40")
             let label = UILabel(frame: CGRect(x: 60, y: 15, width: (UIApplication.shared.keyWindow?.frame.size.width)! - 100, height: 30))
             label.font = UIFont.systemFont(ofSize: 12)
-            label.text = "New job"
+            
+            if ismessageNotification == true
+            {
+                label.text = "New Message"
+
+            }
+            else
+            {
+                label.text = "New job"
+
+            }
             
             label.textColor = UIColor.white
             label.numberOfLines = 0
@@ -470,6 +475,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1, options: .curveEaseIn, animations: {
             
             self.notifView?.frame = CGRect(x: 0, y: -70, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 60)
+            
             
             
         }) { (bo) in

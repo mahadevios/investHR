@@ -222,7 +222,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         
         var linkedInId = responseDic["linkId"] as? String
         
-        var userId = responseDic["UserId"] as? Int
+        var userId = responseDic["UserId"] as! Int
 
         
         //var userId = 0
@@ -282,11 +282,12 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         }
         else
         {
+            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
+
             self.dismiss(animated: true, completion: nil)
             self.presentingViewController?.dismiss(animated: true, completion: nil)
             self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
             
-            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
             
         }
         

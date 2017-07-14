@@ -822,7 +822,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
             linkedInId = "nil"
         }
         //var userId = 0
-        var userId = responseDic["UserId"] as? Int
+        var userId = responseDic["UserId"] as! Int
 
         //let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithEmail(email: emailId, linkledInId: linkedInId)
         let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithUserId(userId: String(describing: userId))
@@ -912,7 +912,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         var linkedInId = responseDic["linkId"] as! String
         
-        var userId = responseDic["UserId"] as? Int
+        var userId = responseDic["UserId"] as! Int
 
                 let savedJobListString = responseDic["savedJobList"] as! String
         
@@ -1029,9 +1029,9 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
             
         }
         else
-        {
+        {            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
+
             self.dismiss(animated: true, completion: nil)
-            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
             
         }
         

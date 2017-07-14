@@ -616,11 +616,12 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
                 }
                 else
                 {
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
+
                     DispatchQueue.main.async
                         {
                             self.circleImageView.image = UIImage(named:"InsideDefaultCircle")
                         }
-                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
                 }
                 //}
         }

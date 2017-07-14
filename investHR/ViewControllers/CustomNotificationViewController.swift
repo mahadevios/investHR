@@ -54,6 +54,20 @@ class CustomNotificationViewController: UIViewController,UITableViewDelegate,UIT
     {
         self.dismiss(animated: true, completion: nil)
     }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let header = tableView.dequeueReusableCell(withIdentifier: "header")
+        
+        return header
+        
+    }
+    
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
+    {
+        return 50
+    }
     func numberOfSections(in tableView: UITableView) -> Int
     {
         return 1

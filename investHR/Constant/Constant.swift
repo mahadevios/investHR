@@ -51,7 +51,7 @@ struct Constant
 
     //static let  BASE_URL_PATH                            = "http://192.168.3.74:9090/coreflex/investhr/"
 
-
+    static let  LINKEDIN_SHARE_API                       = "https://api.linkedin.com/v1/people/~/shares?format=json"
     static let  LINKEDIN_LOGOUT_API                      = "https://api.linkedin.com/uas/oauth/invalidateToken"
     static let  LINKEDIN_ACCESS_TOKEN                    = "linkedInAccessToken"
     static let  LINKEDIN_ACCESS_TOKEN_EXPIRES_IN         = "linkedInAccessTokenExpiresIn"
