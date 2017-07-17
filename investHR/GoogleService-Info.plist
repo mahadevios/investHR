@@ -7,9 +7,9 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>921042585467-dq8vsuv5bj1fp199sc9k21k7mjha5k12.apps.googleusercontent.com</string>
+	<string>921042585467-g33ct3sov72ldmotgp1ua5eu6sgdk2qo.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.921042585467-dq8vsuv5bj1fp199sc9k21k7mjha5k12</string>
+	<string>com.googleusercontent.apps.921042585467-g33ct3sov72ldmotgp1ua5eu6sgdk2qo</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBosYHm9ATxgnln_ive3glH8m2wNBs3KP4</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,7 +17,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.xanadutec.investHR</string>
+	<string>com.investhr.investHr</string>
 	<key>PROJECT_ID</key>
 	<string>investhr-351df</string>
 	<key>STORAGE_BUCKET</key>
@@ -33,7 +33,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:921042585467:ios:a5321160458a2cee</string>
+	<string>1:921042585467:ios:e8c104f2e4882c16</string>
 	<key>DATABASE_URL</key>
 	<string>https://investhr-351df.firebaseio.com</string>
 </dict>

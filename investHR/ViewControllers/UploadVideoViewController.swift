@@ -688,9 +688,9 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
 //        }
         else
         {
-            videoImagePreview.image = UIImage(named:"SideMenuUploadVideo")
+            videoImagePreview.image = #imageLiteral(resourceName: "VideoBG")
             
-            playVideoImageView.image = #imageLiteral(resourceName: "Download")
+            playVideoImageView.image = nil
         }
         
         
@@ -766,6 +766,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         
         let player = AVPlayer(url: videoURL)
         
+    
         let playerViewController = AVPlayerViewController()
         
         playerViewController.player = player
@@ -1098,9 +1099,17 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
             let data = try Data.init(contentsOf: location)
             
             var savePath:String = self.UserVideosFolderPath() + "/" + self.downloadingFileName
+        
+            let url = URL(fileURLWithPath: savePath)
+            
+            //let savePath1 = Bundle.main.path(forResource: savePath, ofType: "mp4")
+            
             
             try data.write(to: URL(fileURLWithPath: savePath))
 
+            //data.write(toFile: savePath, atomically: false)
+            //try data.write(to: URL(fileURLWithPath: savePath), options: .atomic)
+            
             DispatchQueue.main.async
             {
                 AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
@@ -1112,7 +1121,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
             
         } catch let error as Error
         {
-            
+            print(error.localizedDescription)
         }
         
         
