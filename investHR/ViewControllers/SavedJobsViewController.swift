@@ -38,13 +38,29 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
 //        let rightBarButtonItem = UIBarButtonItem(customView: numberOfJobsLabel)
 //        
 //        self.navigationItem.rightBarButtonItem = rightBarButtonItem
+        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
         
+        if username != nil && password != nil
+        {
+            APIManager.getSharedAPIManager().getSavedJobs(username: username!, password: password!,linkedinId:"")
+        }
+        else
+            if linkedInId != nil
+            {
+                APIManager.getSharedAPIManager().getSavedJobs(username: "", password: "",linkedinId:linkedInId!)
+                
+        }
+        
+
         NotificationCenter.default.addObserver(self, selector: #selector(checkSAvedJobList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVED_JOB_LIST), object: nil)
 
         // Do any additional setup after loading the view.
     }
     override func viewWillAppear(_ animated: Bool)
     {
+        
         NotificationCenter.default.addObserver(self, selector: #selector(checkApplyJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_APPLY_JOB), object: nil)
         
         self.collectionView.reloadData()
@@ -167,7 +183,8 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
         let subjectLabel = cell.viewWithTag(101) as! UILabel
         let positionLabel = cell.viewWithTag(103) as! UILabel
         let appliedOnLabel = cell.viewWithTag(107) as! UILabel
-        
+        let appliedOnHeaderLabel = cell.viewWithTag(106) as! UILabel
+
         let appliedJobDict = verticalJobListArray[indexPath.row] as! [String:AnyObject]
         
         let subject = appliedJobDict["subject"] as! String
@@ -182,20 +199,26 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
 
         let appliedJobDateString = Date().getLocatDateFromMillisecods(millisecods: dateInt)
         appliedOnLabel.text = appliedJobDateString
-        
+
         let applyButton = cell.viewWithTag(108) as! subclassedUIButton
         
-        if appliedJobsIdsArray.contains(jobId as! Int)
+        if appliedJobsIdsArray.contains(jobId)
         {
             applyButton.setTitle("Applied", for: .normal)
-            applyButton.setTitleColor(UIColor.appliedJobGreenColor(), for: .normal)
+            applyButton.setTitleColor(UIColor.white, for: .normal)
+            applyButton.backgroundColor = UIColor.appliedJobGreenColor()
             applyButton.isUserInteractionEnabled = false
+            appliedOnHeaderLabel.text = "Applied On:"
+
         }
         else
         {
             applyButton.setTitle("Apply", for: .normal)
-            applyButton.setTitleColor(UIColor.init(colorLiteralRed: 54/255.0, green: 134/255.0, blue: 239/255.0, alpha: 1.0), for: .normal)
+            applyButton.setTitleColor(UIColor.white, for: .normal)
+            applyButton.backgroundColor = UIColor.appBlueColor()
             applyButton.isUserInteractionEnabled = true
+            appliedOnHeaderLabel.text = "Saved On  :"
+
         }
         applyButton.layer.borderColor = UIColor(red: 77/255.0, green: 150/255.0, blue: 241/255.0, alpha: 1).cgColor
         

@@ -16,9 +16,9 @@ import UserNotifications
 
 import FirebaseMessaging
 
-import Auth0
+//import Auth0
 
-
+import AVFoundation
 
 
 
@@ -50,6 +50,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     var messageString:String!
 
     var ismessageNotification:Bool!
+
+    var islinkedInNotification:Bool!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
@@ -220,6 +222,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             
             let message = notificationObject["Message"] as? String
             
+            let linkedIn = notificationObject["LinkedIn"] as? String
+            
             self.jobID = String(jobIDInt)
             
             print(self.jobID)
@@ -230,42 +234,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             
             let title = alertObject["title"]
             
-            if message != nil
+            if linkedIn != nil
             {
-                ismessageNotification = true
-                
-                self.messageString = message!
-                
-                var idMessageDic = [String:Any]()
-                
-                idMessageDic["jobId"]  = jobIDInt
-                
-                idMessageDic["message"]  = message
-                
-                AppPreferences.sharedPreferences().customMessagesArray.append(idMessageDic)
-
+                islinkedInNotification = true
             }
             else
             {
-                self.ismessageNotification = false
-
-                let jobIdExist = CoreDataManager.getSharedCoreDataManager().idExists(aToken: String(jobIDInt), entityName: "CommonNotification")
+                islinkedInNotification = false
                 
-                if !jobIdExist
+                if message != nil
                 {
-                    let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
-                    CoreDataManager.getSharedCoreDataManager().save(entity: "CommonNotification", ["jobId":jobIDInt,"subject":body,"notificationDate":Date(), "userId":userId!])
+                    ismessageNotification = true
+                
+                    self.messageString = message!
+                
+                    var idMessageDic = [String:Any]()
+                
+                    idMessageDic["jobId"]  = jobIDInt
+                
+                    idMessageDic["message"]  = message
+                
+                    AppPreferences.sharedPreferences().customMessagesArray.append(idMessageDic)
+
                 }
                 else
                 {
-                    let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
-                    
-                    CoreDataManager.getSharedCoreDataManager().updateNotificationJob(entityName: "CommonNotification", jobId: jobIDInt, subject: body!, notificationDate: Date(), userId: userId!)
-                }
-                
-            }
+                    self.ismessageNotification = false
 
-            
+                    let jobIdExist = CoreDataManager.getSharedCoreDataManager().idExists(aToken: String(jobIDInt), entityName: "CommonNotification")
+                
+                    if !jobIdExist
+                    {
+                        let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
+                        CoreDataManager.getSharedCoreDataManager().save(entity: "CommonNotification", ["jobId":jobIDInt,"subject":body,"notificationDate":Date(), "userId":userId!])
+                    }
+                    else
+                    {
+                        let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
+                    
+                        CoreDataManager.getSharedCoreDataManager().updateNotificationJob(entityName: "CommonNotification", jobId: jobIDInt, subject: body!, notificationDate: Date(), userId: userId!)
+                    }
+                
+                }
+
+            }
 
             
             
@@ -286,7 +298,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         {
             //AppPreferences.sharedPreferences().showHudWith(title: "active", detailText: "")
             //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "app is active ", withCancelText: "got")
-
+            // create a sound ID, in this case its the tweet sound.
+            let systemSoundID: SystemSoundID = 1315
+            
+            // to play sound
+            AudioServicesPlaySystemSound (systemSoundID)
+            
             notifView?.removeFromSuperview() //If already existing
             notifView = UIView(frame: CGRect(x: 0, y: -70, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 80))
             notifView?.backgroundColor = UIColor.appBlueColor()
@@ -295,6 +312,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             let label = UILabel(frame: CGRect(x: 60, y: 15, width: (UIApplication.shared.keyWindow?.frame.size.width)! - 100, height: 30))
             label.font = UIFont.systemFont(ofSize: 12)
             
+            if islinkedInNotification == true
+            {
+                label.text = "New Linkedin Job"
+
+            }
+            else
             if ismessageNotification == true
             {
                 label.text = "New Message"
@@ -302,7 +325,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             }
             else
             {
-                label.text = "New job"
+                label.text = "New Job"
 
             }
             
@@ -374,96 +397,105 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         
        // print(investHR.NewJobsViewController.classForCoder())
         //loadAccount()
-        if ismessageNotification == true
+        if islinkedInNotification == true
         {
-            if let vc1 = UIApplication.shared.keyWindow?.rootViewController?.presentedViewController
+            
+        }
+        else
+        {
+            if ismessageNotification == true
             {
-                if vc1.classForCoder == PopUpMessageViewController.classForCoder()
+                if let vc1 = UIApplication.shared.keyWindow?.rootViewController?.presentedViewController
                 {
-                    UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
-                    print("presented = " + "\(vc1.classForCoder)")
+                    if vc1.classForCoder == PopUpMessageViewController.classForCoder()
+                    {
+                        UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
+                        print("presented = " + "\(vc1.classForCoder)")
+                        
+                    }
+                    
                     
                 }
                 
+                self.notifView?.frame = CGRect(x: 0, y: -70, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 60)
                 
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyboard.instantiateViewController(withIdentifier: "PopUpMessageViewController") as! PopUpMessageViewController
+                
+                //vc.verticalId = String(0)
+                //vc.domainType = "horizontal"
+                vc.messageString = self.messageString
+                vc.jobId = self.jobID
+                vc.modalPresentationStyle = .overCurrentContext
+                
+                vc.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+                
+                
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                
+                let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
+                
+                print(currentRootVC)
+                
+                let className = String(describing: type(of: currentRootVC))
+                
+                if className == "LoginViewController"
+                {
+                    let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+                    let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                    
+                    DispatchQueue.main.async {
+                        appDelegate.window?.rootViewController?.present(vc, animated: true, completion: nil)
+                    }
+                    
+                }
+                else
+                {
+                    
+                }
+                
+                //UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
+                DispatchQueue.main.async {
+                    appDelegate.window?.rootViewController?.present(vc, animated: true, completion: nil)
+                }
             }
-            
-            self.notifView?.frame = CGRect(x: 0, y: -70, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 60)
-            
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "PopUpMessageViewController") as! PopUpMessageViewController
-            
-            //vc.verticalId = String(0)
-            //vc.domainType = "horizontal"
-            vc.messageString = self.messageString
-            vc.jobId = self.jobID
-            vc.modalPresentationStyle = .overCurrentContext
-            
-            vc.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
-            
-            
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            
-            let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
-            
-            print(currentRootVC)
-            
-            let className = String(describing: type(of: currentRootVC))
-            
-            if className == "LoginViewController"
+            else
             {
-                let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
-                let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+                if let vc1 = UIApplication.shared.keyWindow?.rootViewController?.presentedViewController
+                {
+                    if vc1.classForCoder == NewJobsViewController.classForCoder()
+                    {
+                        UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
+                        print("presented = " + "\(vc1.classForCoder)")
+                        
+                    }
+                    
+                    
+                }
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 
+                //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "\(appDelegate.window?.rootViewController)", withCancelText: "got")
+                
+                self.notifView?.frame = CGRect(x: 0, y: -70, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 60)
+                
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyboard.instantiateViewController(withIdentifier: "NewJobsViewController") as! NewJobsViewController
+                
+                vc.verticalId = String(0)
+                vc.domainType = "horizontal"
+                vc.jobId = self.jobID
+                
+                //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "\(vc.jobId)" + "\(vc)", withCancelText: "got")
+                //  UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
                 DispatchQueue.main.async {
                     appDelegate.window?.rootViewController?.present(vc, animated: true, completion: nil)
                 }
                 
             }
-            else
-            {
-                
-            }
-            
-            //UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
-            DispatchQueue.main.async {
-                appDelegate.window?.rootViewController?.present(vc, animated: true, completion: nil)
-            }
+
+        
         }
-        else
-        {
-            if let vc1 = UIApplication.shared.keyWindow?.rootViewController?.presentedViewController
-            {
-                if vc1.classForCoder == NewJobsViewController.classForCoder()
-                {
-                    UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
-                    print("presented = " + "\(vc1.classForCoder)")
-                
-                }
-            
-
-            }
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-
-            //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "\(appDelegate.window?.rootViewController)", withCancelText: "got")
-
-                self.notifView?.frame = CGRect(x: 0, y: -70, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 60)
-            
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let vc = storyboard.instantiateViewController(withIdentifier: "NewJobsViewController") as! NewJobsViewController
-            
-                vc.verticalId = String(0)
-                vc.domainType = "horizontal"
-                vc.jobId = self.jobID
-
-            //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "\(vc.jobId)" + "\(vc)", withCancelText: "got")
-              //  UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
-            DispatchQueue.main.async {
-                        appDelegate.window?.rootViewController?.present(vc, animated: true, completion: nil)
-            }
-
-        }
-//        }) { (bo) in
+        //        }) { (bo) in
 //            
 //        }
         
@@ -501,9 +533,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         // Print the error to console (you should alert the user that registration failed)
         print("APNs registration failed: \(error)")
     }
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool
-    {
-        
+//    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool
+//    {
+    
         
 //                return GIDSignIn.sharedInstance().handle(url,
 //                                                                    sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String,
@@ -545,7 +577,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 //                        OAuthSwift.handle(url: url)
 //                    }
                     
-        return Auth0.resumeAuth(url, options:options)
+       // return Auth0.resumeAuth(url, options:options)
        // }
 
                 
@@ -564,7 +596,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 //        if isGoogleOpenUrl { return true }
 //        return false    
     
-    }
+  //  }
 
     
     func loadAccount()

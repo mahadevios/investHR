@@ -816,7 +816,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                     
                     //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
                     
-                   // NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_DELETE_RESUME), object: dictFromJSON, userInfo: nil)
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_LOGOUT), object: dictFromJSON, userInfo: nil)
                     
                 }
                 else
@@ -824,6 +824,8 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                     //                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
                     AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
                     
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_LOGOUT), object: dictFromJSON, userInfo: nil)
+
                     //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
                     
                 }

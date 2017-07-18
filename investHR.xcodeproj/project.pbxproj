@@ -35,7 +35,6 @@
 		843425C41EE7D80500282419 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843425C31EE7D80400282419 /* UserNotifications.framework */; };
 		8439DFD71F038C5400F21C79 /* PlayVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439DFD61F038C5400F21C79 /* PlayVideoViewController.swift */; };
 		8439E04E1EC5F3C000FC2A12 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */; };
-		843A6AB91EE1824C00D86591 /* linkedin-sdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843A6AB81EE1824C00D86591 /* linkedin-sdk.framework */; };
 		8440D99A1F0CAEF6002EF023 /* CommonNotification+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8440D9981F0CAEF6002EF023 /* CommonNotification+CoreDataClass.swift */; };
 		8440D99B1F0CAEF6002EF023 /* CommonNotification+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8440D9991F0CAEF6002EF023 /* CommonNotification+CoreDataProperties.swift */; };
 		8440D99D1F0CE1E1002EF023 /* CustomNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8440D99C1F0CE1E1002EF023 /* CustomNotificationViewController.swift */; };
@@ -137,7 +136,6 @@
 		843425C31EE7D80400282419 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		8439DFD61F038C5400F21C79 /* PlayVideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayVideoViewController.swift; sourceTree = "<group>"; };
 		8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		843A6AB81EE1824C00D86591 /* linkedin-sdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = "linkedin-sdk.framework"; sourceTree = "<group>"; };
 		8440D9981F0CAEF6002EF023 /* CommonNotification+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommonNotification+CoreDataClass.swift"; sourceTree = "<group>"; };
 		8440D9991F0CAEF6002EF023 /* CommonNotification+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommonNotification+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8440D99C1F0CE1E1002EF023 /* CustomNotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNotificationViewController.swift; sourceTree = "<group>"; };
@@ -205,7 +203,6 @@
 				8451F62A1EDEE39100B1DEDF /* AVFoundation.framework in Frameworks */,
 				842B32FE1EDDB224000088D1 /* Social.framework in Frameworks */,
 				BD7B2F45DBC9DE328FC4F1DC /* Pods_investHR.framework in Frameworks */,
-				843A6AB91EE1824C00D86591 /* linkedin-sdk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,7 +244,6 @@
 				8424ED1C1EF14C6000E68B3D /* CustomTextFields */,
 				8424ECDC1EF0FEED00E68B3D /* MBProgressHUD */,
 				8467DEDF1EEA68E300974A3D /* OAuth */,
-				843A6AB71EE1824C00D86591 /* LinkedIn */,
 				84EB8F461EE03D6600014DA4 /* Reachability */,
 				84239B911EC476AD0076EF33 /* SWrevealView */,
 			);
@@ -288,14 +284,6 @@
 				84AD18371EF000140049675A /* investHR.xcdatamodeld */,
 			);
 			path = Database;
-			sourceTree = "<group>";
-		};
-		843A6AB71EE1824C00D86591 /* LinkedIn */ = {
-			isa = PBXGroup;
-			children = (
-				843A6AB81EE1824C00D86591 /* linkedin-sdk.framework */,
-			);
-			path = LinkedIn;
 			sourceTree = "<group>";
 		};
 		8449B6041EE578EB0072A8DD /* Models */ = {
@@ -995,8 +983,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.investhr.investHr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "de17767e-0142-4304-9c95-95d6e3ae2228";
+				PROVISIONING_PROFILE = "bad537b5-b663-4b58-b1d0-63169d2f0844";
 				PROVISIONING_PROFILE_SPECIFIER = investhrDevelopment;
+				SKIP_INSTALL = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "investHR/investHR-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -1023,8 +1012,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.investhr.investHr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d95c3778-dcec-4323-a7ef-eb424b94925b";
+				PROVISIONING_PROFILE = "ff0d63a3-a238-41db-aa0b-5cdab5365985";
 				PROVISIONING_PROFILE_SPECIFIER = investHrDistribution;
+				SKIP_INSTALL = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "investHR/investHR-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};

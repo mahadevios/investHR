@@ -27,6 +27,22 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
         
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkRolesJobList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_APPLIED_JOB_LIST), object: nil)
+        
+        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+        if username != nil && password != nil
+        {
+            APIManager.getSharedAPIManager().getAppliedJobs(username: username!, password: password!,linkedinId:"")
+        }
+        else
+            if linkedInId != nil
+            {
+                APIManager.getSharedAPIManager().getAppliedJobs(username:"", password:"",linkedinId:linkedInId!)
+                
+        }
+
 //        let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 25))
 //        numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
 //        numberOfJobsLabel.text = "108 jobs"

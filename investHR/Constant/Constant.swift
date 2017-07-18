@@ -121,6 +121,7 @@ struct Constant
     static let  NOTIFICATION_CUSTOM_MESSAGES                = "customMessage"
     static let  NOTIFICATION_LOCATION_WISE_JOB              = "locationJobs"
     static let  NOTIFICATION_FORGOT_PASSWORD                = "forgotPassord"
+    static let  NOTIFICATION_LOGOUT                         = "logout"
 
 
 

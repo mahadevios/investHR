@@ -21,7 +21,8 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
     var domainType:String = ""
     var jobId:String = ""
     var webViewHeight:CGFloat = 10.0
-
+    var savedJobsIdsArray = [Int]()
+    var appliedJobsIdsArray = [Int]()
     var jobLocationArray = [String]()
     var jobDetailsDic:[String:Any]?
     @IBOutlet weak var collectionView: UICollectionView!
@@ -51,6 +52,30 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         {
             getJobDetails()
         }
+        
+        savedJobsIdsArray.removeAll()
+        if let managedObjects = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "SavedJobs")
+        {
+            for savedJobObject in managedObjects as! [SavedJobs]
+            {
+                let jobId = savedJobObject.jobId
+                
+                savedJobsIdsArray.append(Int(jobId!)!)
+            }
+        }
+        
+        //let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
+        appliedJobsIdsArray.removeAll()
+        if let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
+        {
+            for appliedJobObject in managedObjects1 as! [AppliedJobs]
+            {
+                let jobId = appliedJobObject.jobId
+                
+                appliedJobsIdsArray.append(Int(jobId!)!)
+            }
+        }
+        
     }
     
     func getJobDetails()
@@ -225,7 +250,16 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                     APIManager.getSharedAPIManager().saveInterestedJob(username: "", password: "", linkedinId: linkedInId!, jobId: String(jobId))
             }
         }
-        
+        let jobId = jobDetailsDic?["jobid"] as! Int
+
+        if self.appliedJobsIdsArray.contains(jobId)
+        {
+            self.applied = true
+        }
+        if self.savedJobsIdsArray.contains(jobId)
+        {
+            self.saved = true
+        }
         self.collectionView.reloadData()
     }
     
@@ -591,14 +625,17 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             if self.applied
             {
                 applyButton.setTitle("Applied", for: .normal)
-                applyButton.setTitleColor(UIColor.appliedJobGreenColor(), for: .normal)
+                applyButton.setTitleColor(UIColor.white, for: .normal)
+                applyButton.backgroundColor = UIColor.appliedJobGreenColor()
                 //applyButton.isUserInteractionEnabled = false
                 applyButton.isEnabled = false
             }
             else
             {
                 applyButton.setTitle("Apply", for: .normal)
-                applyButton.setTitleColor(UIColor.init(colorLiteralRed: 54/255.0, green: 134/255.0, blue: 239/255.0, alpha: 1.0), for: .normal)
+                applyButton.setTitleColor(UIColor.white, for: .normal)
+                applyButton.backgroundColor = UIColor.appBlueColor()
+
                 //saveButton.isUserInteractionEnabled = true
                 applyButton.isEnabled = true
 
@@ -626,7 +663,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         saveButton.addTarget(self, action: #selector(saveJobButtonClicked), for: UIControlEvents.touchUpInside)
         applyButton.addTarget(self, action: #selector(applyJobButtonClicked), for: UIControlEvents.touchUpInside)
         
-        applyButton.layer.borderColor = UIColor(red: 77/255.0, green: 150/255.0, blue: 241/255.0, alpha: 1).cgColor
+        //applyButton.layer.borderColor = UIColor(red: 77/255.0, green: 150/255.0, blue: 241/255.0, alpha: 1).cgColor
         return cell
     }
     

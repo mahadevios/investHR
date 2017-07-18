@@ -103,7 +103,9 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource
         
         let cancelAction = UIAlertAction(title: "Delete", style: UIAlertActionStyle.default, handler: { act -> Void in})
         
-        let url = NSURL(string:"itms://itunes.com/apps/CubeDictate")
+//        let url = NSURL(string:"itms://itunes.com/apps/CubeDictate")
+        let url = NSURL(string:"itms://itunes.com/apps/investhr/idapp@investhr.com")
+//        let url = NSURL(string:"itms://itunes.com/apps/cubedictate/idappledeveloper@coreflexsolutions.com")
         
         let alertController = UIActivityViewController(activityItems:[url], applicationActivities: nil)
         

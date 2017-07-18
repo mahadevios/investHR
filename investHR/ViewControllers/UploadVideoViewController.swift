@@ -78,7 +78,8 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkDeletedVideoListResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_DELETE_VIDEO), object: nil)
 
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+
         if AppPreferences.sharedPreferences().isReachable
         {
             let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
@@ -118,6 +119,12 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
     }
 // MARK: - Notification response methods
    
+    func deviceRotated()
+    {
+        self.collectionView.reloadData()
+    }
+    
+    
     func checkUploadedVideoListResponse(dataDic:Notification)
     {
         guard let responseDic = dataDic.object as? [String:String] else

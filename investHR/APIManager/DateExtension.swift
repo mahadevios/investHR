@@ -64,7 +64,7 @@ extension UIColor
     {
         // create color from string
         // ... some code
-        return UIColor(colorLiteralRed: 32/255.0, green: 105/255.0, blue: 44/255.0, alpha: 1.0)
+        return UIColor(colorLiteralRed: 73/255.0, green: 167/255.0, blue: 101/255.0, alpha: 1.0)
     }
     class func appBlueColor() -> UIColor
     {

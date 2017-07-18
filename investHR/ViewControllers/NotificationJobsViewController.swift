@@ -202,13 +202,15 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         if appliedJobsIdsArray.contains(jobId)
         {
             applyButton.setTitle("Applied", for: .normal)
-            applyButton.setTitleColor(UIColor.appliedJobGreenColor(), for: .normal)
+            applyButton.setTitleColor(UIColor.white, for: .normal)
+            applyButton.backgroundColor = UIColor.appliedJobGreenColor()
             applyButton.isUserInteractionEnabled = false
         }
         else
         {
             applyButton.setTitle("Apply", for: .normal)
-            applyButton.setTitleColor(UIColor.init(colorLiteralRed: 54/255.0, green: 134/255.0, blue: 239/255.0, alpha: 1.0), for: .normal)
+            applyButton.setTitleColor(UIColor.white, for: .normal)
+            applyButton.backgroundColor = UIColor.appBlueColor()
             applyButton.isUserInteractionEnabled = true
         }
         if savedJobsIdsArray.contains(jobId)
@@ -233,7 +235,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         
         saveButton.addTarget(self, action: #selector(saveJobButtonClicked), for: UIControlEvents.touchUpInside)
         applyButton.addTarget(self, action: #selector(applyJobButtonClicked), for: UIControlEvents.touchUpInside)
-        applyButton.layer.borderColor = UIColor(red: 77/255.0, green: 150/255.0, blue: 241/255.0, alpha: 1).cgColor
+        //applyButton.layer.borderColor = UIColor(red: 77/255.0, green: 150/255.0, blue: 241/255.0, alpha: 1).cgColor
         
         
         //        applyButton.layer.cornerRadius = 3.0

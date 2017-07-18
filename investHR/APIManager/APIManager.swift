@@ -203,6 +203,8 @@ class APIManager: NSObject
     {
         if AppPreferences.sharedPreferences().isReachable
         {
+            AppPreferences.sharedPreferences().showHudWith(title: "Loading Data", detailText: "Please wait..")
+
             let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)"]
             
             let dic = [Constant.REQUEST_PARAMETER:params]
@@ -223,6 +225,8 @@ class APIManager: NSObject
     {
         if AppPreferences.sharedPreferences().isReachable
         {
+            AppPreferences.sharedPreferences().showHudWith(title: "Loading Data", detailText: "Please wait..")
+
             let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)"]
             
             let dic = [Constant.REQUEST_PARAMETER:params]
@@ -542,6 +546,8 @@ class APIManager: NSObject
     {
         if AppPreferences.sharedPreferences().isReachable
         {
+            AppPreferences.sharedPreferences().showHudWith(title: "Logging Out", detailText: "Please wait..")
+
             let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)"]
             
             let dic = [Constant.REQUEST_PARAMETER:params]

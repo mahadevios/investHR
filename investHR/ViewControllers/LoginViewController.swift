@@ -55,7 +55,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
     
     @IBOutlet weak var passwordTextField: UITextField!
     
-    var accesToken:LISDKAccessToken?
+   // var accesToken:LISDKAccessToken?
     
     
     
@@ -1907,248 +1907,248 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
     //    }
     
     
-    func loadAccount(then: (() -> Void)?, or: ((String) -> Void)?)
-    { // then & or are handling closures
-        //print(LISDKSessionManager.sharedInstance().session.accessToken)
-        //        let auth = HybridAuth()
-        //
-        //
-        //        auth.showLogin(withScope: "openid profile", connection: "linkedin") { (error, cred) in
-        //
-        //            DispatchQueue.main.async
-        //                {
-        //                    if let error = error
-        //                    {
-        //                        print(error)
-        //                    }
-        //                    else
-        //                    {
-        //                        let accesTOken = cred?.accessToken
-        //
-        //                        print(cred)
-        //
-        //                        auth.userInfo(accessToken: accesTOken!, callback: { (error, profile) in
-        //
-        //                            print(profile)
-        //                        })
-        //
-        //                    }
-        //            }
-        //
-        //        }
-        
-        
-        //        Auth0
-        //            .webAuth()
-        //            .scope("openid profile offline_access")
-        //            .connection("linkedin")
-        //            .start {
-        //                switch $0 {
-        //                case .failure(let error):
-        //                    // Handle the error
-        //                    print("Error: \(error)")
-        //                case .success(let credentials):
-        //                    guard let accessToken = credentials.accessToken, let refreshToken = credentials.refreshToken else { return }
-        //                    SessionManager.shared.storeTokens(accessToken, refreshToken: refreshToken)
-        //                    SessionManager.shared.retrieveProfile { error in
-        ////                        DispatchQueue.main.async {
-        ////                            self.performSegue(withIdentifier: "ShowProfileNonAnimated", sender: nil)
-        ////                        }
-        //                    }
-        //                }
-        //        }
-        
-        
-        
-        
-        
-        //  com.xanadutec.investHR://investhr.auth0.com/ios/com.xanadutec.investHR/callback
-        
-        
-        
-
-        let performFetch:() -> Void = {
-            
-            if LISDKSessionManager.hasValidSession() {
-                LISDKAPIHelper.sharedInstance().getRequest("https://api.linkedin.com/v1/people/~:(id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json",
-                                                           success: {
-                                                            response in
-                                                            print(response?.data ?? "hh")
-                                                            
-                                                            let token = LISDKSessionManager.sharedInstance().session.accessToken.serializedString()
-                                                            UserDefaults.standard.setValue(token, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
-                                                            UserDefaults.standard.synchronize()
-                                                            
-                                                            if let dataFromString = response?.data.data(using: String.Encoding.utf8, allowLossyConversion: false)
-                                                            {
-                                                                var jsonResponse:[String:AnyObject]?
-                                                                do
-                                                                {
-                                                                    jsonResponse = try JSONSerialization.jsonObject(with: dataFromString, options: .allowFragments) as! [String:AnyObject]
-                                                                }
-                                                                catch let error as NSError
-                                                                {
-                                                                    print(error.localizedDescription)
-                                                                }
-                                                                DispatchQueue.main.async
-                                                                    {
-                                                                        let userId = jsonResponse?["id"]
-                                                                        
-                                                                        // let idExist = CoreDataManager.sharedManager.idExists(aToken: userId as! String, entityName: "User")
-                                                                        CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
-                                                                        //                                                                        if idExist
-                                                                        //                                                                        {
-                                                                        //
-                                                                        //                                                                        }
-                                                                        //                                                                        else
-                                                                        //                                                                        {
-                                                                        let firstName = jsonResponse?["firstName"]
-                                                                        
-                                                                        let lastName = jsonResponse?["lastName"]
-                                                                        
-                                                                        let occupation = jsonResponse?["headline"]
-                                                                        
-                                                                        let emailAddress = jsonResponse?["emailAddress"]
-                                                                        
-                                                                        let pictureUrlsJson = jsonResponse?["pictureUrls"] as! [String:AnyObject]
-                                                                        
-                                                                        let totalUrlsNumber = pictureUrlsJson["_total"] as! Int
-                                                                        
-                                                                        let pictureUrlString:String!
-                                                                        
-                                                                        let pictureUrl:NSURL!
-                                                                        
-                                                                        var fileURL:NSURL! = NSURL()
-                                                                        
-                                                                        if(totalUrlsNumber == 0)
-                                                                        {
-                                                                            //
-                                                                            pictureUrlString = ""
-                                                                            
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            
-                                                                            let pictureUrlArray = pictureUrlsJson["values"] as! [String]
-                                                                            
-                                                                            pictureUrlString = pictureUrlArray[0]
-                                                                            
-                                                                            pictureUrl = NSURL(string: pictureUrlArray[0])
-                                                                        }
-                                                                        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["firstName":firstName ?? "nil","lastName":lastName ?? "nil","userId":userId ?? "nil","occupation":occupation ?? "nil","emailAddress":emailAddress ?? "nil","pictureUrl":pictureUrlString])
-                                                                        //}
-                                                                        
-                                                                        
-                                                                        
-                                                                        
-                                                                }
-                                                            }
-                                                            
-                                                            
-                                                            //then?()
-                                                            
-                                                            
-                },
-                                                           error: {
-                                                            error in
-                                                            print(error ?? "kk")
-                                                            // or?("error")
-                }
-                )
-            }
-            
-        }
-        
-        
-        let serializedToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-        
-        if let serializedToken = serializedToken
-        {
-            if serializedToken.characters.count > 0
-            {
-                let accessToken = LISDKAccessToken.init(serializedString: serializedToken)
-                
-                if (accessToken?.expiration)! > Date()
-                {
-                    
-                    DispatchQueue.main.async
-                        {
-                            
-                            self.dismiss(animated: true, completion: nil)
-                    }
-                    // self.dismiss(animated: true, completion: nil)
-                }
-            }
-            
-        }
-            
-        else
-        {
-            
-            LISDKSessionManager.createSession(withAuth: [LISDK_BASIC_PROFILE_PERMISSION,LISDK_EMAILADDRESS_PERMISSION], state: nil, showGoToAppStoreDialog: true,
-                                              successBlock:
-                {
-                    (state) in
-                    performFetch()
-                    DispatchQueue.main.async
-                        {
-                            
-                            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                            
-                            let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
-                            
-                            print(currentRootVC)
-                            
-                            let className = String(describing: type(of: currentRootVC))
-                            
-                            if className == "LoginViewController"
-                            {
-                                let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
-                                let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
-                                appDelegate.window?.rootViewController = rootViewController
-                                
-                            }
-                            else
-                            {
-                                self.dismiss(animated: true, completion: nil)
-                                
-                            }
-                            
-                    }
-            },
-                                              errorBlock:
-                {
-                    (error) in
-                    
-                    print("got error")
-                    
-            })
-            
-        }
-    }
-    
-    func checkForAvailableLinkedInSession() -> Void
-    {
-        let serializedToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-        
-        if let serializedToken = serializedToken
-        {
-            if serializedToken.characters.count > 0
-            {
-                let accessToken = LISDKAccessToken.init(serializedString: serializedToken)
-                
-                if (accessToken?.expiration)! > Date()
-                {
-                    LISDKSessionManager.createSession(with: accessToken)
-                    
-                    dismiss(animated: true, completion: nil)
-                    
-                }
-            }
-            
-        }
-        
-    }
+//    func loadAccount(then: (() -> Void)?, or: ((String) -> Void)?)
+//    { // then & or are handling closures
+//        //print(LISDKSessionManager.sharedInstance().session.accessToken)
+//        //        let auth = HybridAuth()
+//        //
+//        //
+//        //        auth.showLogin(withScope: "openid profile", connection: "linkedin") { (error, cred) in
+//        //
+//        //            DispatchQueue.main.async
+//        //                {
+//        //                    if let error = error
+//        //                    {
+//        //                        print(error)
+//        //                    }
+//        //                    else
+//        //                    {
+//        //                        let accesTOken = cred?.accessToken
+//        //
+//        //                        print(cred)
+//        //
+//        //                        auth.userInfo(accessToken: accesTOken!, callback: { (error, profile) in
+//        //
+//        //                            print(profile)
+//        //                        })
+//        //
+//        //                    }
+//        //            }
+//        //
+//        //        }
+//        
+//        
+//        //        Auth0
+//        //            .webAuth()
+//        //            .scope("openid profile offline_access")
+//        //            .connection("linkedin")
+//        //            .start {
+//        //                switch $0 {
+//        //                case .failure(let error):
+//        //                    // Handle the error
+//        //                    print("Error: \(error)")
+//        //                case .success(let credentials):
+//        //                    guard let accessToken = credentials.accessToken, let refreshToken = credentials.refreshToken else { return }
+//        //                    SessionManager.shared.storeTokens(accessToken, refreshToken: refreshToken)
+//        //                    SessionManager.shared.retrieveProfile { error in
+//        ////                        DispatchQueue.main.async {
+//        ////                            self.performSegue(withIdentifier: "ShowProfileNonAnimated", sender: nil)
+//        ////                        }
+//        //                    }
+//        //                }
+//        //        }
+//        
+//        
+//        
+//        
+//        
+//        //  com.xanadutec.investHR://investhr.auth0.com/ios/com.xanadutec.investHR/callback
+//        
+//        
+//        
+//
+//        let performFetch:() -> Void = {
+//            
+//            if LISDKSessionManager.hasValidSession() {
+//                LISDKAPIHelper.sharedInstance().getRequest("https://api.linkedin.com/v1/people/~:(id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json",
+//                                                           success: {
+//                                                            response in
+//                                                            print(response?.data ?? "hh")
+//                                                            
+//                                                            let token = LISDKSessionManager.sharedInstance().session.accessToken.serializedString()
+//                                                            UserDefaults.standard.setValue(token, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+//                                                            UserDefaults.standard.synchronize()
+//                                                            
+//                                                            if let dataFromString = response?.data.data(using: String.Encoding.utf8, allowLossyConversion: false)
+//                                                            {
+//                                                                var jsonResponse:[String:AnyObject]?
+//                                                                do
+//                                                                {
+//                                                                    jsonResponse = try JSONSerialization.jsonObject(with: dataFromString, options: .allowFragments) as! [String:AnyObject]
+//                                                                }
+//                                                                catch let error as NSError
+//                                                                {
+//                                                                    print(error.localizedDescription)
+//                                                                }
+//                                                                DispatchQueue.main.async
+//                                                                    {
+//                                                                        let userId = jsonResponse?["id"]
+//                                                                        
+//                                                                        // let idExist = CoreDataManager.sharedManager.idExists(aToken: userId as! String, entityName: "User")
+//                                                                        CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+//                                                                        //                                                                        if idExist
+//                                                                        //                                                                        {
+//                                                                        //
+//                                                                        //                                                                        }
+//                                                                        //                                                                        else
+//                                                                        //                                                                        {
+//                                                                        let firstName = jsonResponse?["firstName"]
+//                                                                        
+//                                                                        let lastName = jsonResponse?["lastName"]
+//                                                                        
+//                                                                        let occupation = jsonResponse?["headline"]
+//                                                                        
+//                                                                        let emailAddress = jsonResponse?["emailAddress"]
+//                                                                        
+//                                                                        let pictureUrlsJson = jsonResponse?["pictureUrls"] as! [String:AnyObject]
+//                                                                        
+//                                                                        let totalUrlsNumber = pictureUrlsJson["_total"] as! Int
+//                                                                        
+//                                                                        let pictureUrlString:String!
+//                                                                        
+//                                                                        let pictureUrl:NSURL!
+//                                                                        
+//                                                                        var fileURL:NSURL! = NSURL()
+//                                                                        
+//                                                                        if(totalUrlsNumber == 0)
+//                                                                        {
+//                                                                            //
+//                                                                            pictureUrlString = ""
+//                                                                            
+//                                                                        }
+//                                                                        else
+//                                                                        {
+//                                                                            
+//                                                                            let pictureUrlArray = pictureUrlsJson["values"] as! [String]
+//                                                                            
+//                                                                            pictureUrlString = pictureUrlArray[0]
+//                                                                            
+//                                                                            pictureUrl = NSURL(string: pictureUrlArray[0])
+//                                                                        }
+//                                                                        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["firstName":firstName ?? "nil","lastName":lastName ?? "nil","userId":userId ?? "nil","occupation":occupation ?? "nil","emailAddress":emailAddress ?? "nil","pictureUrl":pictureUrlString])
+//                                                                        //}
+//                                                                        
+//                                                                        
+//                                                                        
+//                                                                        
+//                                                                }
+//                                                            }
+//                                                            
+//                                                            
+//                                                            //then?()
+//                                                            
+//                                                            
+//                },
+//                                                           error: {
+//                                                            error in
+//                                                            print(error ?? "kk")
+//                                                            // or?("error")
+//                }
+//                )
+//            }
+//            
+//        }
+//        
+//        
+//        let serializedToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+//        
+//        if let serializedToken = serializedToken
+//        {
+//            if serializedToken.characters.count > 0
+//            {
+//                let accessToken = LISDKAccessToken.init(serializedString: serializedToken)
+//                
+//                if (accessToken?.expiration)! > Date()
+//                {
+//                    
+//                    DispatchQueue.main.async
+//                        {
+//                            
+//                            self.dismiss(animated: true, completion: nil)
+//                    }
+//                    // self.dismiss(animated: true, completion: nil)
+//                }
+//            }
+//            
+//        }
+//            
+//        else
+//        {
+//            
+//            LISDKSessionManager.createSession(withAuth: [LISDK_BASIC_PROFILE_PERMISSION,LISDK_EMAILADDRESS_PERMISSION], state: nil, showGoToAppStoreDialog: true,
+//                                              successBlock:
+//                {
+//                    (state) in
+//                    performFetch()
+//                    DispatchQueue.main.async
+//                        {
+//                            
+//                            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//                            
+//                            let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
+//                            
+//                            print(currentRootVC)
+//                            
+//                            let className = String(describing: type(of: currentRootVC))
+//                            
+//                            if className == "LoginViewController"
+//                            {
+//                                let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+//                                let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
+//                                appDelegate.window?.rootViewController = rootViewController
+//                                
+//                            }
+//                            else
+//                            {
+//                                self.dismiss(animated: true, completion: nil)
+//                                
+//                            }
+//                            
+//                    }
+//            },
+//                                              errorBlock:
+//                {
+//                    (error) in
+//                    
+//                    print("got error")
+//                    
+//            })
+//            
+//        }
+//    }
+//    
+//    func checkForAvailableLinkedInSession() -> Void
+//    {
+//        let serializedToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+//        
+//        if let serializedToken = serializedToken
+//        {
+//            if serializedToken.characters.count > 0
+//            {
+//                let accessToken = LISDKAccessToken.init(serializedString: serializedToken)
+//                
+//                if (accessToken?.expiration)! > Date()
+//                {
+//                    LISDKSessionManager.createSession(with: accessToken)
+//                    
+//                    dismiss(animated: true, completion: nil)
+//                    
+//                }
+//            }
+//            
+//        }
+//        
+//    }
 
     
     //        self.loadAccount(then: { () in

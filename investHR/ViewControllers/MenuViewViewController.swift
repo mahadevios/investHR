@@ -36,12 +36,43 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         menuImageNamesArray = ["SideMenuProfile","SideMenuNoti","SideMenuSavedJob","SideMenuAppliedJob","SideMenuUploadResume","SideMenuUploadVideo","SideMenuReferFriend","SideMenuSetting","SideMenuLogout"]
         
         NotificationCenter.default.addObserver(self, selector: #selector(upadateUserData), name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(loggedOut), name: NSNotification.Name(Constant.NOTIFICATION_LOGOUT), object: nil)
         // Do any additional setup after loading the view.
     }
     
     func upadateUserData()
     {
        showData()
+    }
+    
+    func loggedOut(dataDic:Notification)
+    {
+        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+
+       // LISDKSessionManager.clearSession()
+        
+        let cookieStorage =  HTTPCookieStorage.shared
+        for cookie in cookieStorage.cookies! {
+            cookieStorage.deleteCookie(cookie)
+        }
+        
+        UserDefaults.standard.setValue(nil, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+        UserDefaults.standard.setValue(nil, forKey: Constant.USERNAME)
+        UserDefaults.standard.setValue(nil, forKey: Constant.PASSWORD)
+        AppPreferences.sharedPreferences().customMessagesArray.removeAll()
+        AppPreferences.sharedPreferences().gotMessages = false
+        self.revealViewController().revealToggle(animated: true)
+        
+        
+        //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+        CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
+        CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
+        
+        self.present(vc, animated: true, completion: nil)
+    
     }
     override func viewWillAppear(_ animated: Bool)
     {
@@ -142,20 +173,20 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "SavedJobsViewController") as! SavedJobsViewController
             
             //APIManager.getSharedAPIManager().
-            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-            
-            if username != nil && password != nil
-            {
-                APIManager.getSharedAPIManager().getSavedJobs(username: username!, password: password!,linkedinId:"")
-            }
-            else
-                if linkedInId != nil
-                {
-                    APIManager.getSharedAPIManager().getSavedJobs(username: "", password: "",linkedinId:linkedInId!)
-                    
-                }
+//            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+//            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+//            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+//            
+//            if username != nil && password != nil
+//            {
+//                APIManager.getSharedAPIManager().getSavedJobs(username: username!, password: password!,linkedinId:"")
+//            }
+//            else
+//                if linkedInId != nil
+//                {
+//                    APIManager.getSharedAPIManager().getSavedJobs(username: "", password: "",linkedinId:linkedInId!)
+//                    
+//                }
             let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
             
             vc1.pushViewController(vc, animated: false)
@@ -175,20 +206,20 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
             
-            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-            
-            if username != nil && password != nil
-            {
-                APIManager.getSharedAPIManager().getAppliedJobs(username: username!, password: password!,linkedinId:"")
-            }
-            else
-                if linkedInId != nil
-                {
-                    APIManager.getSharedAPIManager().getAppliedJobs(username:"", password:"",linkedinId:linkedInId!)
-                    
-                }
+//            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+//            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+//            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+//            
+//            if username != nil && password != nil
+//            {
+//                APIManager.getSharedAPIManager().getAppliedJobs(username: username!, password: password!,linkedinId:"")
+//            }
+//            else
+//                if linkedInId != nil
+//                {
+//                    APIManager.getSharedAPIManager().getAppliedJobs(username:"", password:"",linkedinId:linkedInId!)
+//                    
+//                }
             vc1.pushViewController(vc, animated: false)
             
             self.revealViewController().pushFrontViewController(vc1, animated: false)
@@ -256,7 +287,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             break
             
         case 8:
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+//            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
             
             
             //let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
@@ -278,26 +309,26 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
                     APIManager.getSharedAPIManager().logout(username:"", password:"",linkedinId:linkedInId!)
                     
             }
-            LISDKSessionManager.clearSession()
-            
-            let cookieStorage =  HTTPCookieStorage.shared
-            for cookie in cookieStorage.cookies! {
-                cookieStorage.deleteCookie(cookie)
-            }
-            
-            UserDefaults.standard.setValue(nil, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
-            UserDefaults.standard.setValue(nil, forKey: Constant.USERNAME)
-            UserDefaults.standard.setValue(nil, forKey: Constant.PASSWORD)
-            AppPreferences.sharedPreferences().customMessagesArray.removeAll()
-            AppPreferences.sharedPreferences().gotMessages = false
-            self.revealViewController().revealToggle(animated: true)
-            
-            
-            //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
-            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
-            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
-
-            self.present(vc, animated: true, completion: nil)
+//            LISDKSessionManager.clearSession()
+//            
+//            let cookieStorage =  HTTPCookieStorage.shared
+//            for cookie in cookieStorage.cookies! {
+//                cookieStorage.deleteCookie(cookie)
+//            }
+//            
+//            UserDefaults.standard.setValue(nil, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+//            UserDefaults.standard.setValue(nil, forKey: Constant.USERNAME)
+//            UserDefaults.standard.setValue(nil, forKey: Constant.PASSWORD)
+//            AppPreferences.sharedPreferences().customMessagesArray.removeAll()
+//            AppPreferences.sharedPreferences().gotMessages = false
+//            self.revealViewController().revealToggle(animated: true)
+//            
+//            
+//            //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
+//            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
+//            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
+//
+//            self.present(vc, animated: true, completion: nil)
             
             
             

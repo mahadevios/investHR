@@ -710,10 +710,11 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     }
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
-        
+        let footerView1 = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Footer", for: indexPath)
             switch kind
             {
-        
+                
+
                 case UICollectionElementKindSectionFooter:
                     let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Footer", for: indexPath)
 
@@ -740,10 +741,11 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
                 return headerView
                 
             default:
-                
+                return footerView1
                 assert(false, "Unexpected element kind")
             }
-            
+        return footerView1
+
     }
 //
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize
@@ -837,7 +839,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         if appliedJobsIdsArray.contains(jobId)
         {
             applyButton.setTitle("Applied", for: .normal)
-            applyButton.setTitleColor(UIColor.appliedJobGreenColor(), for: .normal)
+            applyButton.setTitleColor(UIColor.white, for: .normal)
+            applyButton.backgroundColor = UIColor.appliedJobGreenColor()
             //applyButton.isUserInteractionEnabled = false
             applyButton.isEnabled = false
 
@@ -845,7 +848,9 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         else
         {
             applyButton.setTitle("Apply", for: .normal)
-            applyButton.setTitleColor(UIColor.init(colorLiteralRed: 54/255.0, green: 134/255.0, blue: 239/255.0, alpha: 1.0), for: .normal)
+            applyButton.setTitleColor(UIColor.white, for: .normal)
+
+            applyButton.backgroundColor = UIColor.appBlueColor()
            // applyButton.isUserInteractionEnabled = true
             applyButton.isEnabled = true
 
@@ -876,7 +881,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         saveButton.addTarget(self, action: #selector(saveJobButtonClicked), for: UIControlEvents.touchUpInside)
         applyButton.addTarget(self, action: #selector(applyJobButtonClicked), for: UIControlEvents.touchUpInside)
 
-        applyButton.layer.borderColor = UIColor(red: 77/255.0, green: 150/255.0, blue: 241/255.0, alpha: 1).cgColor
+        //applyButton.layer.borderColor = UIColor(red: 77/255.0, green: 150/255.0, blue: 241/255.0, alpha: 1).cgColor
 //        applyButton.layer.cornerRadius = 3.0
 
 //        for index in 0 ..< verticalJobListArray.count

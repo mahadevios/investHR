@@ -15,12 +15,13 @@ import Firebase
 
 import FirebaseAnalytics
 
+import SafariServices
 
 //import LinkedinSwift
 
 //import IOSLinkedInAPIFix
 
-class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDelegate,NSURLConnectionDataDelegate
+class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDelegate,NSURLConnectionDataDelegate, SFSafariViewControllerDelegate
 {
     
     @IBOutlet weak var sliderButton: UIButton!
@@ -159,7 +160,12 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
                     APIManager.getSharedAPIManager().getCustomMessages(username: "", password: "", linkedinId: linkedInId!)
                     
             }
-        }//        if AppPreferences.sharedPreferences().isReachable
+        }
+//        let safariVC = SFSafariViewController(url: NSURL(string: "https://www.example.com")! as URL)
+//        self.present(safariVC, animated: true, completion: nil)
+//        safariVC.delegate = self
+        
+        //        if AppPreferences.sharedPreferences().isReachable
 //        {
 //            print("reachable")
 //        }
@@ -178,7 +184,22 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
     override func viewWillDisappear(_ animated: Bool)
     {
         NotificationCenter.default.removeObserver(self)
+        
+        
     }
+    
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        
+        
+    }
+    
+    func safariViewController(_ controller: SFSafariViewController, didCompleteInitialLoad didLoadSuccessfully: Bool) {
+        
+    }
+    
+//    func safariViewController(_ controller: SFSafariViewController, activityItemsFor URL: URL, title: String?) -> [UIActivity] {
+//        
+//    }
     func uploadFtp()
     {
         let data1    = UIImagePNGRepresentation(UIImage(named:"Cross")!) as NSData!
