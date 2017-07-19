@@ -11,10 +11,13 @@ import CoreData
 import Photos
 
 import AssetsLibrary
-class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource,UITextViewDelegate,UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,URLSessionDelegate
+class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource,UITextViewDelegate,UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,URLSessionDelegate,UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate
 {
     @IBOutlet weak var circleImageView: UIImageView!
 
+    @IBOutlet weak var topSpaceConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var autoCompleteTableView: UITableView!
     @IBOutlet weak var outSideCircleView: UIImageView!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var mobileNumberTextField: UITextField!
@@ -53,10 +56,14 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     @IBOutlet weak var joiningTimeTextFIeld: UITextField!
     @IBOutlet weak var relocationTextFIeld: UITextField!
     
+    var existingStateName = ""
+    var existingCityName = ""
+
     //@IBOutlet weak var passwordTextField: TextField!
     
     var statesArray:[String] = []
     var cityArray:[String] = []
+    var filterArray = [String]()
     var stateNameAndIdDic = [String:Int16]()
     var cityNameAndIdDic = [String:Int64]()
     
@@ -161,13 +168,40 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
     
     override func viewWillAppear(_ animated: Bool)
     {
-    //    super.viewWillAppear(true)
       editProfileButton.setTitle("", for: .normal)
-      //  NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-      //  NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+      
+//        stateTextField.itemSelectionHandler = { filteredResults, itemPosition in
+//            let item = filteredResults[itemPosition]
+//            
+//           
+//            self.stateTextField.text = item.title
+//            
+//            self.cityArray.removeAll()
+//            
+//            self.getCitiesFromState(stateName: item.title)
+//            
+//            self.cityTextField.filterStrings(self.cityArray)
+//            
+//            self.cityTextField.isUserInteractionEnabled = true
+//            
+//        }
+//        
+//        stateTextField.filterStrings(statesArray)
+//        
+//        
+//        
+//        cityTextField.itemSelectionHandler = { filteredResults, itemPosition in
+//            let item = filteredResults[itemPosition]
+//            
+//            
+//            
+//            self.cityTextField.text = item.title
+//            
+//            self.cityTextField.resignFirstResponder()
+//            
+//        }
 
-        
-        
+        self.autoCompleteTableView.isHidden = true
         
     }
   
@@ -366,6 +400,12 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
         
         AppPreferences.sharedPreferences().showAlertViewWith(title: "Profile Update", withMessage: "Profile updated successfully", withCancelText: "Ok")
 
+        //self.setUserInteractionEnabled(setEnable: false)
+        
+        //self.resignAllResponsders()
+        
+        self.setTextFieldsTextColor(color: UIColor.gray)
+        
         if username != nil && password != nil
         {
             APIManager.getSharedAPIManager().getUserProfile(username: username!, password: password!, linkedinId:"")
@@ -377,9 +417,7 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
                 
         }
         
-        self.setUserInteractionEnabled(setEnable: false)
         
-        self.setTextFieldsTextColor(color: UIColor.gray)
 
     }
     
@@ -580,15 +618,32 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
         if stateDic != nil
         {
             let stateName = stateDic?["state_Name"] as? String
-            stateTextField.text = stateName
-            
+            self.cityArray.removeAll()
             self.getCitiesFromState(stateName: stateName!)
+            stateTextField.text = stateName!
+
+            //self.existingStateName = stateName!
+//            DispatchQueue.main.async {
+//                self.stateTextField.resignFirstResponder()
+//                self.cityTextField.resignFirstResponder()
+//            }
+            
+
 
         }
         if city != nil
         {
             let cityName = city?["city_Name"]
+            cityTextField.text = ""
+            cityTextField.resignFirstResponder()
             cityTextField.text = cityName as! String?
+                       // DispatchQueue.main.async {
+//                            self.stateTextField.resignFirstResponder()
+//                            self.cityTextField.resignFirstResponder()
+                       // }
+            //cityTextField.isUserInteractionEnabled = false
+            //self.existingStateName = cityName as! String
+
         }
         guard let pictureUrlString = imageName else
         {
@@ -658,7 +713,10 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
         {
             print(error.localizedDescription)
         }
-
+        
+        resignAllResponsders()
+        
+        setUserInteractionEnabled(setEnable: false)
 
     }
    
@@ -683,11 +741,13 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
     {
         NotificationCenter.default.removeObserver(self)
         
+    
         self.revealViewController().revealToggle(animated: true)
         
         //self.revealViewController().frontViewController.navigationController?.popToRootViewController(animated: true)
-        self.stateTextField = nil
-        self.stateTextField = nil
+       // self.stateTextField = nil
+       // self.cityTextField = nil
+        
         self.navigationController?.popViewController(animated: true)
         //self.navigationController?.popToRootViewController(animated: true)
         //self.revealViewController().frontViewController.popoverPresentationController
@@ -779,6 +839,7 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
     func rightbarButtonClickedEdit()
     {
         setUserInteractionEnabled(setEnable: true)
+        
         self.setTextFieldsTextColor(color: UIColor.black)
 
         setRightBarButtonItemSave()
@@ -789,8 +850,8 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
 //                    // Just in case you need the item position
 //                    let item = filteredResults[itemPosition]
 //        
-//                    DispatchQueue.main.async
-//                        {
+////                    DispatchQueue.main.async
+////                        {
 //                            self.stateTextField.text = item.title
 //        
 //                            self.cityArray.removeAll()
@@ -798,19 +859,38 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
 //                            self.getCitiesFromState(stateName: item.title)
 //        
 //                            self.cityTextField.filterStrings(self.cityArray)
+//                            
+//                            self.cityTextField.isUserInteractionEnabled = true
 //        
-//                    }
+//                   // }
 //                }
-        
-         //      stateTextField.filterStrings(statesArray)
+//        
+//               stateTextField.filterStrings(statesArray)
+//        
+//        //self.cityTextField.isUserInteractionEnabled = false
+//
+//        
+//            cityTextField.itemSelectionHandler = { filteredResults, itemPosition in
+//            // Just in case you need the item position
+//            let item = filteredResults[itemPosition]
+//            
+//            
+//                    
+//                    self.cityTextField.text = item.title
+//                    
+//        }
+
     }
     func rightbarButtonClickedSave()
     {
+        setUserInteractionEnabled(setEnable: false)
+
         updateUserProfile()
         
-        setUserInteractionEnabled(setEnable: false)
-        
         setRightBarButtonItemEdit()
+        
+        resignAllResponsders()
+
 
     }
     
@@ -827,6 +907,7 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
         if emailTextField.text == "" || !(emailTextField.text?.contains("@"))!
         {
             AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Please enter a valid email address", withCancelText: "Ok")
+            
             
             return
         }
@@ -870,8 +951,28 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
         }
         else
         {
-            stateId = String(describing: stateNameAndIdDic[state]!)
-            
+            if stateNameAndIdDic[state] != nil
+            {
+                stateId = String(describing: stateNameAndIdDic[state]!)
+                
+            }
+            else
+            {
+                DispatchQueue.main.async
+                {
+                    self.setUserInteractionEnabled(setEnable: true)
+                    
+                    self.setRightBarButtonItemSave()
+                    
+                    self.stateTextField.becomeFirstResponder()
+                    
+                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid State", withMessage: "Please select a valid state", withCancelText: "Ok")
+                }
+                
+                
+                return
+                
+            }
             
         }
         
@@ -883,7 +984,27 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
         }
         else
         {
-            cityId = String(describing: cityNameAndIdDic[city]!)
+            if cityNameAndIdDic[city] != nil
+            {
+                cityId = String(describing: cityNameAndIdDic[city]!)
+                
+            }
+            else
+            {
+                DispatchQueue.main.async
+                    {
+                self.setUserInteractionEnabled(setEnable: true)
+
+                self.setRightBarButtonItemSave()
+
+                self.cityTextField.becomeFirstResponder()
+
+                AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid City", withMessage: "Please select a valid city", withCancelText: "Ok")
+                
+                }
+                return
+                
+            }
         }
         
         guard let companiesInterViewed = companiesInterviewedTextView.text else {
@@ -1104,6 +1225,7 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
 
     func setUserInteractionEnabled(setEnable:Bool)
     {
+        editProfileButton.isEnabled = setEnable
         nameTextField.isUserInteractionEnabled = setEnable
         mobileNumberTextField.isUserInteractionEnabled = setEnable
         emailTextField.isUserInteractionEnabled = setEnable
@@ -1112,7 +1234,19 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
         currentCompanyTextField.isUserInteractionEnabled = setEnable
         // additionalPhoneTextfield.isUserInteractionEnabled = setEnable
         stateTextField.isUserInteractionEnabled = setEnable
-        cityTextField.isUserInteractionEnabled = setEnable
+        if stateTextField.text != "" && setEnable == true
+        {
+            cityTextField.isUserInteractionEnabled = setEnable
+        }
+        else
+        {
+//         if setEnable == false
+//         {
+            cityTextField.isUserInteractionEnabled = setEnable
+
+         //}
+        }
+        //cityTextField.isUserInteractionEnabled = setEnable
         visaStatusTextField.isUserInteractionEnabled = setEnable
         candidateFunctionTextField.isUserInteractionEnabled = setEnable
         servicesTextField.isUserInteractionEnabled = setEnable
@@ -1218,7 +1352,7 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
         }
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
+   func textFieldDidBeginEditing(_ textField: UITextField) {
         
         if textField == candidateFunctionTextField
         {
@@ -1248,8 +1382,7 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
                     }
                 }
                 
-        }
-        
+            }
             else
                 if textField == visaStatusTextField
                 {
@@ -1264,35 +1397,160 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
                         }
                     }
                     
-        }
-        else
+                }
+                else
                     if textField == stateTextField
+                    {
+                        filterArray.removeAll()
 
-                {
-        
-                                    stateTextField.itemSelectionHandler = { filteredResults, itemPosition in
-                                        // Just in case you need the item position
-                                        let item = filteredResults[itemPosition]
-                    
-                                        DispatchQueue.main.async
-                                            {
-                                                self.stateTextField.text = item.title
-                    
-                                                self.cityArray.removeAll()
-                    
-                                                self.getCitiesFromState(stateName: item.title)
-                    
-                                                self.cityTextField.filterStrings(self.cityArray)
+                        cityArray.removeAll()
+                        
+                        cityTextField.text = nil
+
+                        if stateTextField.text != nil
+                        {
+                            filterArray = self.statesArray.filter { $0.localizedCaseInsensitiveContains(stateTextField.text!) }
                             
-                                        }
-                                    }
-                    
-                          stateTextField.filterStrings(statesArray)
+                            if filterArray.count > 0
+                            {
+                                self.autoCompleteTableView.isHidden = false
+                                
+                            }
+                            else
+                            {
+                                self.autoCompleteTableView.isHidden = true
+                                
+                            }
+                            self.autoCompleteTableView.reloadData()
 
-        }
+
+                        }
+                        
+
+                        
+                        
+                        
+                        let cgrect = self.stateTextField.convert(stateTextField.frame, to: nil)
+
+                       // self.autoCompleteTableView.frame = CGRect(x: cgrect.origin.x, y: cgrect.origin.y , width: self.autoCompleteTableView.frame.size.width, height: self.autoCompleteTableView.frame.size.height)
+                        self.topSpaceConstraint.constant = 0
+                        
+
+                    }
+                        else
+                        if textField == cityTextField
+                        {
+                            if cityArray.count < 1
+                            {
+                                stateTextField.becomeFirstResponder()
+                                
+                                AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid State", withMessage: "Please select state first", withCancelText: "Ok")
+                                
+                                return
+                            }
+                            //let cgrect = self.cityTextField.convert(cityTextField.frame, to: nil)
+                            
+                            //self.autoCompleteTableView.frame = CGRect(x: self.cityTextField.frame.origin.x, y: self.cityTextField.frame.origin.y, width: self.autoCompleteTableView.frame.size.width, height: self.autoCompleteTableView.frame.size.height)
+                            self.topSpaceConstraint.constant = 50
+                            //self.autoCompleteTableView.frame = CGRect(x: cgrect.origin.x, y: cgrect.origin.y, width: self.autoCompleteTableView.frame.size.width, height: self.autoCompleteTableView.frame.size.height)
+                            //self.topSpaceConstraint
+//                            self.autoCompleteTableView.removeConstraint(topSpaceConstraint)
+//                            let con = NSLayoutConstraint(item: self.autoCompleteTableView, attribute: .top, relatedBy: .equal, toItem: self.cityTextField, attribute: .bottom, multiplier: 1, constant: 50)
+//
+//                            //self.autoCompleteTableView.addConstraint(con)
+//                            NSLayoutConstraint.activate([con])
+                            // Add the constraint to the view
+                            //self.view.addConstraint(constraintButton)
+                            
+                            filterArray.removeAll()
+
+                            if cityTextField.text != nil
+                            {
+                                filterArray = self.cityArray.filter { $0.localizedCaseInsensitiveContains(cityTextField.text!) }
+                                
+                                if filterArray.count > 0
+                                {
+                                    self.autoCompleteTableView.isHidden = false
+
+                                }
+                                else
+                                {
+                                    self.autoCompleteTableView.isHidden = true
+
+                                }
+                                self.autoCompleteTableView.reloadData()
+                                
+                                
+                            }
+                            
+
+                            
+                            //cityTextField.filterStrings(self.cityArray)
+
+                        }
+    
 
     }
  
+    func textFieldDidEndEditing(_ textField: UITextField)
+    {
+    
+//        if textField == self.stateTextField
+//        {
+//            if self.stateTextField.text != nil && self.stateTextField.text != ""
+//            {
+//                if !self.statesArray.contains(self.stateTextField.text!)
+//                {
+//                    self.cityTextField.isUserInteractionEnabled = false
+//                    
+//                    //                        DispatchQueue.main.async
+//                    //                            {
+//                    
+//                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid state", withMessage: "Please select a proper state", withCancelText: "Ok")
+////                    textField.text = self.existingStateName
+////                    self.cityTextField.text = self.existingCityName
+//                    textField.text = ""
+//                    self.cityTextField.text = ""
+//                    //}
+//                    
+//                    
+//                    
+//                }
+//                else
+//                {
+//                    textField.resignFirstResponder()
+//                    
+//                }
+//            }
+//
+//        }
+//        else
+//            if textField == cityTextField
+//            {
+//            if self.cityTextField.text != nil && self.cityTextField.text != ""
+//            {
+//                if !self.cityArray.contains(self.cityTextField.text!)
+//                {
+//                    //                                DispatchQueue.main.async
+//                    //                                    {
+//                    self.cityTextField.text = ""
+//                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid city", withMessage: "Please select a proper city", withCancelText: "Ok")
+//                    // }
+//                }
+//                else
+//                {
+//                    textField.resignFirstResponder()
+//                    
+//                }
+//            }
+//            else
+//            {
+//                //self.location1TextField.isUserInteractionEnabled = false
+//                textField.resignFirstResponder()
+//            }
+//        }
+        
+    }
     func textViewDidEndEditing(_ textView: UITextView)
     {
         if textView == companiesInterviewedTextView
@@ -1320,9 +1578,109 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
                         nonCompeteTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
                         nonCompeteTextView.text = "Any non-compete that will prevent you from managing a specific client OR Not join any specific organization";
                     }
-        }
+                }
 
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool
+    {
+        //        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+        //        {
+        //            if textField == emailTextField || textField == passwordTextField
+        //            {
+        //                setViewMovedUp(movedUp: false, offset: 180)
+        //            }
+        //            else
+        //            {
+        //                setViewMovedUp(movedUp: false, offset: 100)
+        //            }
+        //        }
+        //        else
+        //        {
+        //            setViewMovedUp(movedUp: false, offset: 100)
+        //        }
+        //        DispatchQueue.main.async
+        //            {
+        if textField == self.stateTextField
+        {
+            if self.stateTextField.text != nil && self.stateTextField.text != ""
+            {
+                if !self.statesArray.contains(self.stateTextField.text!)
+                {
+                    //self.cityTextField.isUserInteractionEnabled = false
+                    
+                    //                        DispatchQueue.main.async
+                    //                            {
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid state", withMessage: "Please select a proper state", withCancelText: "Ok")
+                    //textField.text = nil
+                   // self.cityTextField.text = nil
+                    textField.resignFirstResponder()
+
+                    self.autoCompleteTableView.isHidden = true
+
+                    //}
+                    
+                    
+                    
+                }
+                else
+                {
+                    self.cityArray.removeAll()
+                    self.getCitiesFromState(stateName: self.stateTextField.text!)
+                    textField.resignFirstResponder()
+                    self.autoCompleteTableView.isHidden = true
+
+                }
+            }
+            else
+            {
+                self.cityTextField.isUserInteractionEnabled = false
+                
+            }
+        }
+        else
+            if textField == self.cityTextField
+            {
+                if self.cityTextField.text != nil && self.cityTextField.text != ""
+                {
+                    if !self.cityArray.contains(self.cityTextField.text!)
+                    {
+                        //                                DispatchQueue.main.async
+                        //                                    {
+                        //self.cityTextField.text = ""
+                       // AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid city", withMessage: "Please select a proper city", withCancelText: "Ok")
+                        // }
+                        textField.resignFirstResponder()
+
+                        self.autoCompleteTableView.isHidden = true
+
+                    }
+                    else
+                    {
+                        textField.resignFirstResponder()
+                        self.autoCompleteTableView.isHidden = true
+
+                    }
+                }
+                else
+                {
+                    //self.location1TextField.isUserInteractionEnabled = false
+                    
+                }
+            }
+            else
+            {
+                textField.resignFirstResponder()
+                
+        }
+        
+        //}
+        return true
+    }
+
+   
+
 // MARK: Data support methods
     
     func getCandidateRoles()
@@ -1987,6 +2345,165 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
 //    {
 //        
 //    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
+    {
+        if textField == stateTextField
+        {
+            let nsString = textField.text as NSString?
+            let newString = nsString?.replacingCharacters(in: range, with: string)
+           // let newString = newString1?.lowercased()
+            print("ol1dString = \(nsString)")
+            print("newString = \(newString)")
+            
+            if newString == ""
+            {
+                cityArray.removeAll()
+                
+                filterArray.removeAll()
+                
+                self.autoCompleteTableView.reloadData()
+                
+                self.autoCompleteTableView.isHidden = true
+            }
+            else
+            {
+                filterArray.removeAll()
+                
+                    filterArray = self.statesArray.filter { $0.localizedCaseInsensitiveContains(newString!) }
+                
+                if filterArray.count > 0
+                {
+                    self.autoCompleteTableView.isHidden = false
+                    
+                }
+                else
+                {
+                    self.autoCompleteTableView.isHidden = true
+                    
+                }
+                
+                
+                        self.autoCompleteTableView.reloadData()
+                
+            }
+
+         }
+        else
+            if textField == cityTextField
+            {
+                let nsString = textField.text as NSString?
+                let newString = nsString?.replacingCharacters(in: range, with: string)
+                // let newString = newString1?.lowercased()
+                print("ol1dString = \(nsString)")
+                print("newString = \(newString)")
+                
+                if newString == ""
+                {
+                    filterArray.removeAll()
+                    
+                    self.autoCompleteTableView.reloadData()
+                    
+                    self.autoCompleteTableView.isHidden = true
+                    
+                    
+                }
+                else
+                {
+                    filterArray.removeAll()
+                    
+                    filterArray = self.cityArray.filter { $0.localizedCaseInsensitiveContains(newString!) }
+                    
+                    if filterArray.count > 0
+                    {
+                        self.autoCompleteTableView.isHidden = false
+                        
+                    }
+                    else
+                    {
+                        self.autoCompleteTableView.isHidden = true
+                        
+                    }
+                    self.autoCompleteTableView.reloadData()
+                    
+                }
+                
+        }
+
+        
+        return true
+    }
+
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return filterArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
+        
+        cell?.textLabel?.text = filterArray[indexPath.row]
+        
+        return cell!
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+    {
+        
+        let cell = tableView.cellForRow(at: indexPath)
+        if stateTextField.isFirstResponder
+        {
+            self.stateTextField.text = cell?.textLabel?.text
+            
+            self.cityArray.removeAll()
+            
+            self.filterArray.removeAll()
+            
+            self.getCitiesFromState(stateName: self.stateTextField.text!)
+            
+            self.autoCompleteTableView.reloadData()
+            
+            self.autoCompleteTableView.isHidden = true
+        }
+        else
+        {
+            self.cityTextField.text = cell?.textLabel?.text
+            
+            //self.cityArray.removeAll()
+            
+            //self.filterArray.removeAll()
+
+            self.autoCompleteTableView.reloadData()
+
+            self.autoCompleteTableView.isHidden = true
+
+        }
+        
+        
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView)
+    {
+//        if self.stateTextField.isFirstResponder
+//        {
+//            let cgrect = self.stateTextField.convert(stateTextField.frame, to: UIApplication.shared.keyWindow)
+//            
+//            self.autoCompleteTableView.frame = CGRect(x: cgrect.origin.x, y: cgrect.origin.y + self.stateTextField.frame.size.height+2 , width: self.autoCompleteTableView.frame.size.width, height: self.autoCompleteTableView.frame.size.height)
+//        }
+//        else
+//            if self.cityTextField.isFirstResponder
+//            {
+//                let cgrect = self.cityTextField.convert(cityTextField.frame, to: UIApplication.shared.keyWindow)
+//                
+//                self.autoCompleteTableView.frame = CGRect(x: cgrect.origin.x, y: cgrect.origin.y + self.cityTextField.frame.size.height , width: self.autoCompleteTableView.frame.size.width, height: self.autoCompleteTableView.frame.size.height)
+//            }
+//        
+        
+       // self.autoCompleteTableView.isHidden = true
+    }
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()

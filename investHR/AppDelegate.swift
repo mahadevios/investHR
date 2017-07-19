@@ -16,6 +16,8 @@ import UserNotifications
 
 import FirebaseMessaging
 
+import SafariServices
+
 //import Auth0
 
 import AVFoundation
@@ -47,7 +49,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     var window: UIWindow?
     var notifView: UIView?
     var jobID:String!
-    var messageString:String!
+    var messageString:String?
+    var linkedInUrl:String?
 
     var ismessageNotification:Bool!
 
@@ -222,7 +225,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             
             let message = notificationObject["Message"] as? String
             
-            let linkedIn = notificationObject["LinkedIn"] as? String
+            linkedInUrl = notificationObject["LinkedIn"] as? String
+            
+
             
             self.jobID = String(jobIDInt)
             
@@ -234,9 +239,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             
             let title = alertObject["title"]
             
-            if linkedIn != nil
+            if linkedInUrl != nil
             {
                 islinkedInNotification = true
+                
+                print(linkedInUrl ?? "nil")
+
             }
             else
             {
@@ -399,7 +407,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         //loadAccount()
         if islinkedInNotification == true
         {
+                    let safariVC = SFSafariViewController(url: NSURL(string: linkedInUrl!)! as URL)
             
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            
+                    DispatchQueue.main.async {
+                            appDelegate.window?.rootViewController?.present(safariVC, animated: true, completion: nil)
+                    }
+                    //safariVC.delegate = self
+
         }
         else
         {
@@ -424,7 +440,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                 
                 //vc.verticalId = String(0)
                 //vc.domainType = "horizontal"
-                vc.messageString = self.messageString
+                vc.messageString = self.messageString!
                 vc.jobId = self.jobID
                 vc.modalPresentationStyle = .overCurrentContext
                 

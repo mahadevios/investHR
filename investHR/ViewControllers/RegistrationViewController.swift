@@ -394,6 +394,21 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
 //        }
     }
     
+    func textFieldDidEndEditing(_ textField: UITextField)
+    {
+        if textField == self.emailTextField
+        {
+            if self.emailTextField.text != nil
+            {
+                let emailClean = self.emailTextField.text!.trimmingCharacters(in: NSCharacterSet.whitespaces) 
+                
+                self.emailTextField.text = emailClean
+            }
+            
+        }
+
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
     {
 //        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)

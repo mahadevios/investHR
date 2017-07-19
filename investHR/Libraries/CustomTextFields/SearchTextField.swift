@@ -358,7 +358,7 @@ open class SearchTextField: UITextField {
     open func textFieldDidEndEditingOnExit() {
         if let firstElement = filteredResults.first {
             if let itemSelectionHandler = self.itemSelectionHandler {
-                itemSelectionHandler(filteredResults, 0)
+               // itemSelectionHandler(filteredResults, 0)
             }
             else {
                 if inlineMode, let filterAfter = startFilteringAfter {

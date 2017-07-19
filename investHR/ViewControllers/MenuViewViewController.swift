@@ -62,6 +62,8 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         UserDefaults.standard.setValue(nil, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
         UserDefaults.standard.setValue(nil, forKey: Constant.USERNAME)
         UserDefaults.standard.setValue(nil, forKey: Constant.PASSWORD)
+        UserDefaults.standard.setValue(nil, forKey: Constant.USERID)
+
         AppPreferences.sharedPreferences().customMessagesArray.removeAll()
         AppPreferences.sharedPreferences().gotMessages = false
         self.revealViewController().revealToggle(animated: true)

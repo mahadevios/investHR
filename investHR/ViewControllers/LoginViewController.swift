@@ -158,6 +158,10 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         passwordTextField.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
+        self.emailTextField.text = nil
+        
+        self.passwordTextField.text = nil
+        
         let imageView1 = UIImageView(frame: CGRect(x: 15, y: 6, width: 16, height: 21))
         
         let image1 = UIImage(named: "Password")

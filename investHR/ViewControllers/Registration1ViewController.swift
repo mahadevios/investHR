@@ -71,22 +71,41 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         location1TextField.theme.bgColor = UIColor (red: 1, green: 1, blue: 1, alpha: 0.8)
         location1TextField.theme.cellHeight = 35
 
+        
         locationTextField.itemSelectionHandler = { filteredResults, itemPosition in
             // Just in case you need the item position
             let item = filteredResults[itemPosition]
             
             DispatchQueue.main.async
             {
-                self.locationTextField.text = item.title
-
-                self.cityArray.removeAll()
                 
-                self.getCitiesFromState(stateName: item.title)
+                    self.locationTextField.text = item.title
+                    
+                    self.cityArray.removeAll()
+                    
+                    self.location1TextField.isUserInteractionEnabled = true
+                    
+                    self.getCitiesFromState(stateName: item.title)
+                    
+                    self.location1TextField.filterStrings(self.cityArray)
                 
-                self.location1TextField.filterStrings(self.cityArray)
+                
 
             }
         }
+        
+        location1TextField.itemSelectionHandler = { filteredResults, itemPosition in
+            // Just in case you need the item position
+            let item = filteredResults[itemPosition]
+            
+            DispatchQueue.main.async
+                {
+                    
+                    self.location1TextField.text = item.title
+                    
+                }
+        }
+
         
 //        let statePickerView = UIPickerView(frame: CGRect(x: imageView2.frame.origin.x + imageView2.frame.size.width + 10, y: 1, width: locationTextField.frame.size.width * 0.40, height: 40))
 //        statePickerView.dataSource = self
@@ -121,7 +140,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         visaStatusTextField.delegate = self
         locationTextField.delegate = self
         location1TextField.delegate = self
-
+        location1TextField.isUserInteractionEnabled = false
         // LISDKSessionManager.clearSession()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
@@ -456,7 +475,20 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         }
         else
         {
-            stateId = String(describing: stateNameAndIdDic[state]!)
+            if stateNameAndIdDic[state] != nil
+            {
+                stateId = String(describing: stateNameAndIdDic[state]!)
+                
+            }
+            else
+            {
+                AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid State", withMessage: "Please select a valid state", withCancelText: "Ok")
+
+                
+                return
+
+            }
+           // stateId = String(describing: stateNameAndIdDic[state]!)
             
             
         }
@@ -468,8 +500,19 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             
         }
         else
+            
         {
-            cityId = String(describing: cityNameAndIdDic[city]!)
+            if cityNameAndIdDic[city] != nil
+            {
+                cityId = String(describing: cityNameAndIdDic[city]!)
+
+            }
+            else
+            {
+                AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid City", withMessage: "Please select a valid state", withCancelText: "Ok")
+
+                return
+            }
         }
 
         guard let visaStatus = visaStatusTextField.text else {
@@ -550,8 +593,19 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         }
         else
         {
-          stateId = String(describing: stateNameAndIdDic[state]!)
-            
+            if stateNameAndIdDic[state] != nil
+            {
+                stateId = String(describing: stateNameAndIdDic[state]!)
+                
+            }
+            else
+            {
+                AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid State", withMessage: "Please select a valid state", withCancelText: "Ok")
+                
+                
+                return
+                
+            }
             
         }
         
@@ -569,7 +623,19 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         }
         else
         {
-            cityId = String(describing: cityNameAndIdDic[city]!)
+            if cityNameAndIdDic[city] != nil
+            {
+                cityId = String(describing: cityNameAndIdDic[city]!)
+                
+            }
+            else
+            {
+                AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid City", withMessage: "Please select a valid city", withCancelText: "Ok")
+                
+                
+                return
+                
+            }
         }
         
         guard let visaStatus = visaStatusTextField.text else {
@@ -723,6 +789,11 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             }
             
         }
+        else
+            if textField == locationTextField
+            {
+                location1TextField.text = ""
+            }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
@@ -742,11 +813,71 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         //        {
         //            setViewMovedUp(movedUp: false, offset: 100)
         //        }
-        DispatchQueue.main.async
-            {
-                textField.resignFirstResponder()
+//        DispatchQueue.main.async
+//            {
+                if textField == self.locationTextField
+                {
+                  if self.locationTextField.text != nil && self.locationTextField.text != ""
+                  {
+                    if !self.statesArray.contains(self.locationTextField.text!)
+                    {
+                      self.location1TextField.isUserInteractionEnabled = false
 
-        }
+//                        DispatchQueue.main.async
+//                            {
+                        
+                                AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid state", withMessage: "Please select a proper state", withCancelText: "Ok")
+                                textField.text = nil
+                                self.location1TextField.text = nil
+                       //}
+                       
+                        
+                       
+                    }
+                    else
+                    {
+                        textField.resignFirstResponder()
+
+                    }
+                   }
+                    else
+                    {
+                      self.location1TextField.isUserInteractionEnabled = false
+
+                    }
+                }
+                    else
+                    if textField == self.location1TextField
+                    {
+                        if self.location1TextField.text != nil && self.location1TextField.text != ""
+                        {
+                            if !self.cityArray.contains(self.location1TextField.text!)
+                            {
+//                                DispatchQueue.main.async
+//                                    {
+                                self.location1TextField.text = ""
+                                AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid city", withMessage: "Please select a proper city", withCancelText: "Ok")
+                               // }
+                            }
+                            else
+                            {
+                                textField.resignFirstResponder()
+                                
+                            }
+                        }
+                        else
+                        {
+                            //self.location1TextField.isUserInteractionEnabled = false
+                            
+                        }
+                    }
+                else
+                {
+                    textField.resignFirstResponder()
+
+                }
+
+        //}
         return true
     }
     
