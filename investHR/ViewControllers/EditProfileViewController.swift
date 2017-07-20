@@ -24,7 +24,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var cuurentRoleTextField: UITextField!
     @IBOutlet weak var currentCompanyTextField: UITextField!
-    @IBOutlet weak var stateTextField: SearchTextField!
+    @IBOutlet weak var stateTextField: TextField!
     var coutryCodesArray:[String] = []
     var imagedata:Any!
     var candidateFunctionArray : [String] = []
@@ -36,7 +36,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     var roleNameAndIdDic = [String:Int16]()
     var countryCodeButton:UIButton!
     @IBOutlet weak var visaStatusTextField: TextField!
-    @IBOutlet weak var cityTextField: SearchTextField!
+    @IBOutlet weak var cityTextField: TextField!
     
     @IBOutlet weak var verticalsTextFiled: UITextField!
     
@@ -72,7 +72,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     {
         super.viewDidLoad()
         
-coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","+64","+1 268","+54","+374","+297","+247","+61","+43","+994","+1 242","+973","+880","+1 246","+375","+32","+501","+229","+1 441","+975","+591","+387","+267","+55","+1 284","+673","+359","+226","+95","+257","+855","+237","+1","+238","+1 345","+236","+235","+56","+86","+61","+57","+269","+242","+682","+506","+385","+53","+357","+420","+243","+45","+246","+253","+1 767","+1 809","+1 829","+1, 849","+593","+20","+503","+240","+291","+372","+251","+500","+298","+679","+358","+33","+594","+689","+241","+220","+995","+49","+233","+350","+30","+299","+1 473","+590","+1 671","+502","+224","+245","+592","+509","+39","+504","+852","+36","+354","+91","+62","+98","+964","+353","+44","+972","+225","+1 876","+81","+962","+7","+254","+686","+965","+996","+856","+371","+961","+266","+231","+218","+423","+370","+352","+853","+389","+261","+265","+60","+960","+223","+356","+692","+596","+222","+230","+262","+52","+691","+373","+377","+976","+382","+1 664","+212","+258","+264","+674","+977","+31","+599","+687","+64","+505","+227","+234","+683","+672","+850","+1 670","+47","+968","+92","+680","+970","+507","+595","+51","+63","+870","+48","+351","+1 787","+1 939","+974","+242","+262","+40","+250","+590","+290","+1 869","+1 758","+508","+1 784","+685","+378","+239","+966","+221","+381","+248","+232","+65","+1 721","+421","+386","+677","+252","+27","+82","+211","+34","+94","+249","+597","+47","+268","+46","+41","+963","+886","+992","+255","+66","+670","+228","+690","+676","+1 868","+216","+90","+993","+1 649","+688","+256","+380","+971","+598","+1 340","+998","+678","+58","+84","+681","+212","+967","+260","+263"]
+coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+672","+64","+1 268","+54","+374","+297","+247","+61","+43","+994","+1 242","+973","+880","+1 246","+375","+32","+501","+229","+1 441","+975","+591","+387","+267","+55","+1 284","+673","+359","+226","+95","+257","+855","+237","+238","+1 345","+236","+235","+56","+86","+61","+57","+269","+242","+682","+506","+385","+53","+357","+420","+243","+45","+246","+253","+1 767","+1 809","+1 829","+1, 849","+593","+20","+503","+240","+291","+372","+251","+500","+298","+679","+358","+33","+594","+689","+241","+220","+995","+49","+233","+350","+30","+299","+1 473","+590","+1 671","+502","+224","+245","+592","+509","+39","+504","+852","+36","+354","+91","+62","+98","+964","+353","+44","+972","+225","+1 876","+81","+962","+7","+254","+686","+965","+996","+856","+371","+961","+266","+231","+218","+423","+370","+352","+853","+389","+261","+265","+60","+960","+223","+356","+692","+596","+222","+230","+262","+52","+691","+373","+377","+976","+382","+1 664","+212","+258","+264","+674","+977","+31","+599","+687","+64","+505","+227","+234","+683","+672","+850","+1 670","+47","+968","+92","+680","+970","+507","+595","+51","+63","+870","+48","+351","+1 787","+1 939","+974","+242","+262","+40","+250","+590","+290","+1 869","+1 758","+508","+1 784","+685","+378","+239","+966","+221","+381","+248","+232","+65","+1 721","+421","+386","+677","+252","+27","+82","+211","+34","+94","+249","+597","+47","+268","+46","+41","+963","+886","+992","+255","+66","+670","+228","+690","+676","+1 868","+216","+90","+993","+1 649","+688","+256","+380","+971","+598","+1 340","+998","+678","+58","+84","+681","+212","+967","+260","+263"]
         //
         setNavigationItem()
         
@@ -90,13 +90,13 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
         
         cityTextField.addSubview(imageView3)
         
-        stateTextField.theme.font = UIFont.systemFont(ofSize: 15)
-        stateTextField.theme.bgColor = UIColor (red: 1, green: 1, blue: 1, alpha: 0.8)
-        stateTextField.theme.cellHeight = 35
-        
-        cityTextField.theme.font = UIFont.systemFont(ofSize: 15)
-        cityTextField.theme.bgColor = UIColor (red: 1, green: 1, blue: 1, alpha: 0.8)
-        cityTextField.theme.cellHeight = 35
+//        stateTextField.theme.font = UIFont.systemFont(ofSize: 15)
+//        stateTextField.theme.bgColor = UIColor (red: 1, green: 1, blue: 1, alpha: 0.8)
+//        stateTextField.theme.cellHeight = 35
+//        
+//        cityTextField.theme.font = UIFont.systemFont(ofSize: 15)
+//        cityTextField.theme.bgColor = UIColor (red: 1, green: 1, blue: 1, alpha: 0.8)
+//        cityTextField.theme.cellHeight = 35
         
         getState()
         getCandidateRoles()
@@ -159,7 +159,9 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
                 
         }
         
-
+        autoCompleteTableView.layer.borderColor = UIColor.gray.cgColor
+        autoCompleteTableView.layer.borderWidth = 1.0
+        autoCompleteTableView.layer.cornerRadius = 3.0
         //uploadFIleUsingFTP()
         // Do any additional setup after loading the view.
     }
@@ -223,7 +225,7 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
         imageView.image = image
         nameTextField.addSubview(imageView)
         
-        let leftView = UIView(frame: CGRect(x: 0, y: 5, width: 65, height: 40))
+        let leftView = UIView(frame: CGRect(x: 0, y: 5, width: 70, height: 40))
         let imageView1 = UIImageView(frame: CGRect(x: 15, y: 10, width: 18, height: 17))
         let image1 = UIImage(named: "Mobile")
         imageView1.image = image1
@@ -584,9 +586,26 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
         {
             let str = mobileNum
             
-            let code = str?[0 ..< 3]
+//            let code = str?[0 ..< 3]
+//            
+//            let mob = str?.substring(from: 3) // returns "def"
+            let mobileArray = str?.components(separatedBy: "-")
+            //
+            if mobileArray != nil
+            {
+                if mobileArray!.count > 1
+                {
+                    let code = mobileArray![0]
+                    let mob = mobileArray![1]
+                    countryCodeButton.titleLabel?.text = code
+                    mobileNumberTextField.text = mob
+                }
+            }
             
-            let mob = str?.substring(from: 3) // returns "def"
+            
+
+            //let mob = str?.substring(from: 3) // returns "def"
+            
 
 //            let index = str?.index((str?.startIndex)!, offsetBy: 4)
 //            str?[index!] // returns Character 'o'
@@ -596,8 +615,7 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
 //            
 //            str.substring(from: index) // returns String "o, world!"
 //            str.substring(to: index) // returns String "Hell"
-            countryCodeButton.titleLabel?.text = code!
-            mobileNumberTextField.text = mob!
+           
         }
         
         if emailId != nil && emailId != ""
@@ -691,6 +709,10 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
                         }
                       catch let error as NSError
                       {
+                        DispatchQueue.main.async
+                            {
+                                self.circleImageView.image = UIImage(named:"InsideDefaultCircle")
+                            }
                         print(error.localizedDescription)
                         }
                     
@@ -1081,7 +1103,7 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
         var mobileNumberWithCountryCode:String = ""
         if !(mobile == "")
         {
-          mobileNumberWithCountryCode = (countryCodeButton.titleLabel?.text!)! + mobile
+          mobileNumberWithCountryCode = (countryCodeButton.titleLabel?.text!)! + "-" + mobile
         }
         var username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         var password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
@@ -1182,6 +1204,7 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
             
             print(decoded)
             
+            self.autoCompleteTableView.isHidden = true
             // APIManager.getSharedAPIManager().registerUser(dict: decoded)
             //            do {
             //APIManager.getSharedAPIManager().uodateUserProfile(userDict: decoded)
@@ -1430,7 +1453,7 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
                         
                         
                         
-                        let cgrect = self.stateTextField.convert(stateTextField.frame, to: nil)
+                       // let cgrect = self.stateTextField.convert(stateTextField.frame, to: nil)
 
                        // self.autoCompleteTableView.frame = CGRect(x: cgrect.origin.x, y: cgrect.origin.y , width: self.autoCompleteTableView.frame.size.width, height: self.autoCompleteTableView.frame.size.height)
                         self.topSpaceConstraint.constant = 0
@@ -1635,8 +1658,8 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
             }
             else
             {
-                self.cityTextField.isUserInteractionEnabled = false
-                
+                //self.cityTextField.isUserInteractionEnabled = false
+                textField.resignFirstResponder()
             }
         }
         else
@@ -1665,6 +1688,7 @@ coutryCodesArray = ["+93","+355","+213","+1 684","+376","+244","+1 264","+672","
                 }
                 else
                 {
+                    textField.resignFirstResponder()
                     //self.location1TextField.isUserInteractionEnabled = false
                     
                 }

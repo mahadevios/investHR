@@ -82,7 +82,39 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         
         self.menuTableView.reloadData()
         
+        //NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_HOME_BUTTONS_DISABLED), object: nil, userInfo: nil)
+        
+
+        
     }
+    override func viewWillDisappear(_ animated: Bool)
+    {
+        //NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_HOME_BUTTONS_ENABLED), object: nil, userInfo: nil)
+        self.setUserInteractionEnabled(setEnable: true)
+
+
+    }
+    override func viewDidAppear(_ animated: Bool)
+    {
+        self.setUserInteractionEnabled(setEnable: false)
+
+    }
+    func setUserInteractionEnabled(setEnable:Bool)
+    {
+        let button1 = self.revealViewController().frontViewController.view.viewWithTag(501) as? UIButton
+        button1?.isEnabled = setEnable
+        
+        let button2 = self.revealViewController().frontViewController.view.viewWithTag(502) as? UIButton
+        button2?.isEnabled = setEnable
+        
+        let button3 = self.revealViewController().frontViewController.view.viewWithTag(503) as? UIButton
+        button3?.isEnabled = setEnable
+
+        let button4 = self.revealViewController().frontViewController.view.viewWithTag(504) as? UIButton
+        button4?.isEnabled = setEnable
+
+    }
+    
     func addView() -> Void
     {
         outSideCircleView.layer.cornerRadius = outSideCircleView.frame.size.width/2.0

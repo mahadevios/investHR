@@ -39,7 +39,15 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
     var linkedInLoginView:UIView!
 
     var responseData = NSMutableData()
+    
+    var notifView: UIView?
 
+
+    @IBOutlet weak var verticalButton: UIButton!
+    @IBOutlet weak var roleButton: UIButton!
+    
+    @IBOutlet weak var horizontalButton: UIButton!
+    @IBOutlet weak var locationButton: UIButton!
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -75,7 +83,8 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
 //        NotificationCenter.default.addObserver(self, selector: #selector(share(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: nil) // after getting the accessToken from linkedin webview, ask for user info and get back to this view with hud, NOTIFICATION_LIACCESSTOKEN_FETCHED when webview fetch the user info, get this info in this controller and pass it to the server and validate the user
 
         
-        
+        self.showPopUp()
+
     }
     
     func checkCustomMessagesList(dataDic:Notification)
@@ -161,32 +170,92 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
                     
             }
         }
-//        let safariVC = SFSafariViewController(url: NSURL(string: "https://www.example.com")! as URL)
-//        self.present(safariVC, animated: true, completion: nil)
-//        safariVC.delegate = self
-        
-        //        if AppPreferences.sharedPreferences().isReachable
-//        {
-//            print("reachable")
-//        }
        
-//        DispatchQueue.global().async
-//        {
+    }
+    
+    func showPopUp()
+    {
         
-       // }
-       // CoreDataManager.getSharedCoreDataManager().getMaxUserId(entityName: "User")
-    //uploadFtp()
+        let messageString = "Please select from one of the below quadrants to search and apply for a desirable role"
+         let height1 = heightForView(text: messageString, font: UIFont.systemFont(ofSize: 14), width: self.view.frame.size.width*0.7) as CGFloat
         
-        //self.showWebViewForShare()
+        notifView?.removeFromSuperview() //If already existing
 
+        notifView = UIView(frame: CGRect(x: self.view.frame.size.width*0.1, y: height1 - 30, width: self.view.frame.size.width*0.8, height: height1 + 30))
+        notifView?.layer.cornerRadius = 4.0
+        notifView?.backgroundColor = UIColor.appBlueColor()
+        
+        let label = UILabel(frame: CGRect(x: 10, y: 15, width: self.view.frame.size.width*0.7, height: height1))
+       // label.numberOfLines = 3
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = UIColor.white
+        label.text = messageString
+        label.textAlignment = NSTextAlignment.center
+        
+        notifView?.alpha = 0.95
+        
+        notifView?.addSubview(label)
+        
+        self.view.addSubview(notifView!)
+        
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.3, options: .curveEaseIn, animations: {
+            
+            self.notifView?.frame = CGRect(x: self.view.frame.size.width*0.1, y: 10, width: self.view.frame.size.width*0.8, height: height1 + 30)
+            
+        }) { (bo) in
+            
+        }
+        
+        self.perform(#selector(dismissPopUp), with: nil, afterDelay: 5.0)
     }
 
+    func dismissPopUp()
+    {
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.3, options: .curveEaseIn, animations: {
+            
+            self.notifView?.frame = CGRect(x: self.view.frame.size.width*0.1, y: -70, width: self.view.frame.size.width*0.8, height: 60)
+            
+        }) { (bo) in
+            self.notifView?.removeFromSuperview()
+
+        }
+    }
+    func heightForView(text:String, font:UIFont, width:CGFloat) -> CGFloat
+    {
+        let label:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: CGFloat.greatestFiniteMagnitude))
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.font = font
+        label.text = text
+        label.sizeToFit()
+        
+        return label.frame.height
+    }
     override func viewWillDisappear(_ animated: Bool)
     {
         NotificationCenter.default.removeObserver(self)
         
         
     }
+    
+//    func enableHomeButtons()
+//    {
+//       self.horizontalButton.isEnabled = true
+//       self.verticalButton.isEnabled = true
+//       self.roleButton.isEnabled = true
+//       self.locationButton.isEnabled = true
+//
+//    }
+//    
+//    func disableHomeButtons()
+//    {
+//        self.horizontalButton.isEnabled = false
+//        self.verticalButton.isEnabled = false
+//        self.roleButton.isEnabled = false
+//        self.locationButton.isEnabled = false
+//    }
     
     func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
         
@@ -318,6 +387,8 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
         if self.revealViewController() != nil
         {
             self.revealViewController().revealToggle(sender)
+            
+           // NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_HOME_BUTTONS_DISABLED), object: nil, userInfo: nil)
         }
     }
     

@@ -186,6 +186,12 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
 
+        let lastLoggedInUserName = UserDefaults.standard.object(forKey: Constant.LAST_LOGGEDIN_USER_NAME) as? String
+        
+        if lastLoggedInUserName != nil
+        {
+            self.emailTextField.text = lastLoggedInUserName!
+        }
     }
  
     func deviceRotated() -> Void
@@ -1014,6 +1020,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         UserDefaults.standard.set(self.passwordTextField.text!, forKey: Constant.PASSWORD)
        // UserDefaults.standard.set(imageName!, forKey: Constant.IMAGENAME)
         UserDefaults.standard.set("\(userId)", forKey: Constant.USERID)
+        UserDefaults.standard.set("\(self.emailTextField.text!)", forKey: Constant.LAST_LOGGEDIN_USER_NAME)
 
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         

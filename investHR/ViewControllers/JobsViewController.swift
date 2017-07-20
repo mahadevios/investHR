@@ -297,7 +297,16 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         if let totalJobsString = dataDictionary["totalCount"] as? Int
         {
-            self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
+            if totalJobsString == 1
+            {
+                self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("job")")
+
+            }
+            else
+            {
+                self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
+
+            }
             
         }
         //self.descriptionString = dataDictionary["discription"] as! String
@@ -344,8 +353,16 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         if let totalJobsString = dataDictionary["totalCount"] as? Int
         {
-            self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
-            
+            if totalJobsString == 1
+            {
+                self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("job")")
+                
+            }
+            else
+            {
+                self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
+                
+            }
         }
         //self.descriptionString = dataDictionary["discription"] as! String
         
@@ -391,8 +408,16 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         if let totalJobsString = dataDictionary["totalCount"] as? Int
         {
-            self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
-            
+            if totalJobsString == 1
+            {
+                self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("job")")
+                
+            }
+            else
+            {
+                self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
+                
+            }
         }
         //self.descriptionString = dataDictionary["discription"] as! String
         
@@ -435,8 +460,16 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         if let totalJobsString = dataDictionary["totalCount"] as? Int
         {
-            self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
-
+            if totalJobsString == 1
+            {
+                self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("job")")
+                
+            }
+            else
+            {
+                self.setRightBarButtonItem(totalJobs: "\(totalJobsString) \("jobs")")
+                
+            }
         }
         //self.descriptionString = dataDictionary["discription"] as! String
         

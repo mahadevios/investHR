@@ -142,7 +142,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         let cityStateListData = cityStateListString.data(using: .utf8, allowLossyConversion: true)
         var cityStateArray:[Any]?
-
+        
         do
         {
             cityStateArray = try JSONSerialization.jsonObject(with: cityStateListData!, options: .allowFragments) as? [Any]
@@ -159,31 +159,21 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                 {
                     uniqueStateArray.append(state)
                 }
-//                let optionalCity = cityStateDic?["city"]
-//                
-//                var city = ""
-//                
-//                if optionalCity is NSNull
-//                {
-//                    city = ""
-//                }
-//                else
-//                {
-//                 city = optionalCity! as! String
-//                }
-//                jobLocationArray.append("\(state)\(" ")\(city)")
-
+                
+                
             }
             for index0 in 0 ..< uniqueStateArray.count
             {
                 var stateAdded = false
-
+                var firstTime = true
+                
+                
                 for index in 0 ..< cityStateArray!.count
                 {
                     let cityStateDic = cityStateArray![index] as? [String:AnyObject]
-                
+                    
                     let state = cityStateDic?["state"] as! String
-                
+                    
                     
                     if state == uniqueStateArray[index0]
                     {
@@ -196,9 +186,9 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                             city = ""
                             if !stateAdded
                             {
-//                                jobLocationArray.append("\(state)\(":")\(city)")
+                                //                                jobLocationArray.append("\(state)\(":")\(city)")
                                 jobLocationArray.append("\(state)")
-
+                                
                                 stateAdded = true
                             }
                             else
@@ -214,22 +204,37 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                             {
                                 jobLocationArray.append("\(state)\(":")\(city)")
                                 stateAdded = true
+                                firstTime = false
+                                
                             }
                             else
                             {
-                                jobLocationArray.append("\(",")\(city)")
+                                if firstTime == true
+                                {
+                                    jobLocationArray.append("\(":")\(city)")
+                                    firstTime = false
+                                    
+                                }
+                                else
+                                {
+                                    jobLocationArray.append("\(",")\(city)")
+                                    
+                                }
+                                
                             }
                         }
-                      }
                     }
+                }
                 jobLocationArray.append("\n")
             }
-
-
+            
+            
         } catch let error as NSError
         {
             
         }
+        
+
         
         
         
@@ -336,6 +341,8 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             for index0 in 0 ..< uniqueStateArray.count
             {
                 var stateAdded = false
+                var firstTime = true
+
                 
                 for index in 0 ..< cityStateArray!.count
                 {
@@ -373,10 +380,23 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                             {
                                 jobLocationArray.append("\(state)\(":")\(city)")
                                 stateAdded = true
+                                firstTime = false
+
                             }
                             else
                             {
-                                jobLocationArray.append("\(",")\(city)")
+                                if firstTime == true
+                                {
+                                    jobLocationArray.append("\(":")\(city)")
+                                    firstTime = false
+
+                                }
+                                else
+                                {
+                                    jobLocationArray.append("\(",")\(city)")
+
+                                }
+
                             }
                         }
                     }

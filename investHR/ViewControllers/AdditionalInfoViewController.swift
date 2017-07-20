@@ -242,6 +242,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         UserDefaults.standard.set(self.password!, forKey: Constant.PASSWORD)
         //UserDefaults.standard.set(imageName!, forKey: Constant.IMAGENAME)
         UserDefaults.standard.set("\(userId)", forKey: Constant.USERID)
+        UserDefaults.standard.set("\(self.email!)", forKey: Constant.LAST_LOGGEDIN_USER_NAME)
 
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
