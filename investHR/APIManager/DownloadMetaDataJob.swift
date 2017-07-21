@@ -842,13 +842,40 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                     AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
                     
                     //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
-                    
                      NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_FORGOT_PASSWORD), object: dictFromJSON, userInfo: nil)
                     
                 }
                 else
                 {
                     //                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid Email!", withMessage: "Invalid email entered", withCancelText: "Ok")
+
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                }
+                break
+                
+            case Constant.RESET_PASSWORD_API:
+                
+                guard let dictFromJSON = response else
+                {
+                    return
+                }
+                if String(describing: dictFromJSON["code"]!) == Constant.SUCCESS
+                {
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                   // AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid Email!", withMessage: "Invalid email entered", withCancelText: "Ok")
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_RESET_PASSWORD), object: dictFromJSON, userInfo: nil)
+                    
+                }
+                else
+                {
+                    //                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    
                     AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
                     
                     //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")

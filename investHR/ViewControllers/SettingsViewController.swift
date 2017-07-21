@@ -17,7 +17,20 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        settingsItemsArray = ["Delete Account","Reset Password","Help/Support(Email ID)"]
+        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+        if username != nil && password != nil
+        {
+            settingsItemsArray = ["Delete Account","Reset Password","Help/Support(Email ID)"]
+        }
+        else
+        if linkedInId != nil
+        {
+            settingsItemsArray = ["Delete Account","Help/Support(Email ID)"]
+            
+        }
         
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
@@ -29,6 +42,14 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
         // Do any additional setup after loading the view.
     }
 
+    override func viewWillAppear(_ animated: Bool)
+    {
+        self.view.alpha = 1.0
+        
+        self.navigationController?.navigationBar.alpha = 1.0
+        
+        self.tableView.reloadData()
+    }
     func popViewController() -> Void
     {
         self.revealViewController().revealToggle(animated: true)
@@ -77,55 +98,77 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
     // method to run when table view cell is tapped
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
-        //let cell = tableView.cellForRow(at: indexPath)
-        
-        let titlePrompt = UIAlertController(title: "Forgot password?",
-                                            message: "Enter the email you registered with:",
-                                            preferredStyle: .alert)
-        
-        var oldPasswordTextField: UITextField?
-        var newPasswordTextField: UITextField?
-        var confirmNewPasswordTextField: UITextField?
+        let cell = tableView.cellForRow(at: indexPath)
+        let settingItemLabel = cell?.viewWithTag(200) as! UILabel
 
-        titlePrompt.addTextField { (textField) -> Void in
-            oldPasswordTextField = textField
-            textField.placeholder = "Old Password"
-        }
-        titlePrompt.addTextField { (textField) -> Void in
-            newPasswordTextField = textField
-            textField.placeholder = "New Password"
-        }
-        titlePrompt.addTextField { (textField) -> Void in
-            confirmNewPasswordTextField = textField
-            textField.placeholder = "Confirm New Password"
-        }
-        
-        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+        if settingItemLabel.text! == "Reset Password"
+        {
+//            let titlePrompt = UIAlertController(title: "Forgot password?",
+//                                                message: "Enter the email you registered with:",
+//                                                preferredStyle: .alert)
+//            
+//            var oldPasswordTextField: UITextField?
+//            var newPasswordTextField: UITextField?
+//            var confirmNewPasswordTextField: UITextField?
+//            
+//            titlePrompt.addTextField { (textField) -> Void in
+//                oldPasswordTextField = textField
+//                textField.placeholder = "Old Password"
+//            }
+//            
+//            
+//            titlePrompt.addTextField { (textField) -> Void in
+//                newPasswordTextField = textField
+//                textField.placeholder = "New Password"
+//            }
+//            titlePrompt.addTextField { (textField) -> Void in
+//                confirmNewPasswordTextField = textField
+//                textField.placeholder = "Confirm New Password"
+//            }
+//            
+//            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+//            
+//            let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+//            
+//            titlePrompt.addAction(cancelAction)
+//            
+//            titlePrompt.addAction(UIAlertAction(title: "Submit", style: .default, handler: { (action) -> Void in
+//                if oldPasswordTextField?.text == "" || newPasswordTextField?.text == "" || confirmNewPasswordTextField?.text == ""
+//                {
+//                    // please fill up all the fields
+//                }
+//                else
+//                    if oldPasswordTextField?.text != password
+//                    {
+//                        // wrong password
+//                    }
+//                    else
+//                        if newPasswordTextField?.text != confirmNewPasswordTextField?.text
+//                        {
+//                            // please confirm password
+//                        }
+//                
+//                
+//            }))
+//            
+//            self.present(titlePrompt, animated: true, completion: nil)
+            
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ChangePasswordViewController") as! ChangePasswordViewController
+//            vc.view.frame = CGRect(x: vc.view.frame.width*0.2, y: vc.view.frame.height*0.2, width: vc.view.frame.width*0.6, height: vc.view.frame.height*0.6)
+//            vc.view.frame = CGRect(x: vc.view.frame.width*0.2, y: vc.view.frame.height*0.2, width: vc.view.frame.width*0.6, height: vc.view.frame.height*0.6)
 
-        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
-        
-        titlePrompt.addAction(cancelAction)
-        
-        titlePrompt.addAction(UIAlertAction(title: "Submit", style: .default, handler: { (action) -> Void in
-            if oldPasswordTextField?.text == "" || newPasswordTextField?.text == "" || confirmNewPasswordTextField?.text == ""
-            {
-                    // please fill up all the fields
-            }
-            else
-            if oldPasswordTextField?.text != password
-            {
-                    // wrong password
-            }
-            else
-            if newPasswordTextField?.text != confirmNewPasswordTextField?.text
-            {
-                    // please confirm password
-            }
+            //self.view.alpha = 0.8
+  
+            //self.navigationController?.navigationBar.alpha = 0.8
+            //vc.modalPresentationStyle = .overCurrentContext
             
+            //vc.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
             
-        }))
+            self.present(vc, animated: true, completion: nil)
+        }
         
-        self.present(titlePrompt, animated: true, completion: nil)
+        
+                
     }
 
     func switchValueChanged(sender: UISwitch)

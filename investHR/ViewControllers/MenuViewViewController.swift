@@ -67,7 +67,8 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         AppPreferences.sharedPreferences().customMessagesArray.removeAll()
         AppPreferences.sharedPreferences().gotMessages = false
         self.revealViewController().revealToggle(animated: true)
-        
+        AppPreferences.sharedPreferences().popUpShown = false
+
         
         //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
         CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
@@ -80,9 +81,10 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
     {
         super.viewWillAppear(true)
         
+        NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_DISMISS_SUGGESTION_POPUP), object: nil, userInfo: nil)
+
         self.menuTableView.reloadData()
         
-        //NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_HOME_BUTTONS_DISABLED), object: nil, userInfo: nil)
         
 
         

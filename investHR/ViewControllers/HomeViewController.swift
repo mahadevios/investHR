@@ -83,7 +83,6 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
 //        NotificationCenter.default.addObserver(self, selector: #selector(share(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: nil) // after getting the accessToken from linkedin webview, ask for user info and get back to this view with hud, NOTIFICATION_LIACCESSTOKEN_FETCHED when webview fetch the user info, get this info in this controller and pass it to the server and validate the user
 
         
-        self.showPopUp()
 
     }
     
@@ -152,6 +151,7 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
     {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         NotificationCenter.default.addObserver(self, selector: #selector(checkCustomMessagesList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_CUSTOM_MESSAGES), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(dismissPopUp), name: NSNotification.Name(Constant.NOTIFICATION_DISMISS_SUGGESTION_POPUP), object: nil)
         
         if AppPreferences.sharedPreferences().gotMessages == false
         {
@@ -173,6 +173,15 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
        
     }
     
+    override func viewDidAppear(_ animated: Bool)
+    {
+        if AppPreferences.sharedPreferences().popUpShown == false
+        {
+           self.perform(#selector(showPopUp), with: nil, afterDelay: 0.2)
+           //self.showPopUp()
+           AppPreferences.sharedPreferences().popUpShown = true
+        }
+    }
     func showPopUp()
     {
         
@@ -181,7 +190,7 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
         
         notifView?.removeFromSuperview() //If already existing
 
-        notifView = UIView(frame: CGRect(x: self.view.frame.size.width*0.1, y: height1 - 30, width: self.view.frame.size.width*0.8, height: height1 + 30))
+        notifView = UIView(frame: CGRect(x: self.view.frame.size.width*0.1, y: -60, width: self.view.frame.size.width*0.8, height: height1 + 30))
         notifView?.layer.cornerRadius = 4.0
         notifView?.backgroundColor = UIColor.appBlueColor()
         
@@ -347,14 +356,16 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
     }
     @IBAction func verticalWiseButtonPressed(_ sender: Any)
     {
-       
-         let vc = self.storyboard?.instantiateViewController(withIdentifier: "VerticalViewController") as! VerticalViewController
+        self.dismissPopUp()
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "VerticalViewController") as! VerticalViewController
         vc.domainType = "vertical"
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @IBAction func rolesWiseButtonPressed(_ sender: Any)
     {
+        self.dismissPopUp()
+
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "VerticalViewController") as! VerticalViewController
         vc.domainType = "roles"
         self.navigationController?.pushViewController(vc, animated: true)
@@ -362,6 +373,8 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
     
     @IBAction func locationWiseButtonPressed(_ sender: Any)
     {
+        self.dismissPopUp()
+
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "LocationViewController") as! LocationViewController
         
         
@@ -377,6 +390,8 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
     
     @IBAction func horizontalWiseButtonPressed(_ sender: Any)
     {
+        self.dismissPopUp()
+
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "VerticalViewController") as! VerticalViewController
         vc.domainType = "horizontal"
         self.navigationController?.pushViewController(vc, animated: true)
@@ -394,6 +409,8 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
     
     @IBAction func notificationButtonClicked(_ sender: Any)
     {
+        self.dismissPopUp()
+
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "CustomNotificationViewController") as! CustomNotificationViewController
         vc.view.frame = CGRect(x: vc.view.frame.width*0.2, y: vc.view.frame.height*0.2, width: vc.view.frame.width*0.6, height: vc.view.frame.height*0.6)
         

@@ -21,11 +21,15 @@ class AppPreferences: NSObject,UIAlertViewDelegate
     
     var customMessagesArray:[Any]
     
+    var popUpShown:Bool
+    
     private override init()
     {
         isReachable = false
         
         gotMessages = false
+        
+        popUpShown = false
         
         firebaseInstanceId = ""
         

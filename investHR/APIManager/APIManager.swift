@@ -668,6 +668,28 @@ class APIManager: NSObject
         }
         
     }
+    
+    func resetPassword(username:String, password:String,newPassword:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            AppPreferences.sharedPreferences().showHudWith(title: "Resetting Password", detailText: "Please wait..")
+
+            let params = ["username=\(username)","password=\(password)","updatedPassword=\(newPassword)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.RESET_PASSWORD_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.RESET_PASSWORD_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
     func createRegistrationRequestAndSend(dict:Any, imageData:Data?)
     {
         var request:NSURLRequest!

@@ -41,6 +41,7 @@
 		8440DF701ED706CB0003F05B /* MenuViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8440DF6F1ED706CB0003F05B /* MenuViewViewController.swift */; };
 		844387B61ED41FF0002E71D6 /* RegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844387B51ED41FF0002E71D6 /* RegistrationViewController.swift */; };
 		844387B81ED46D2D002E71D6 /* Registration1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844387B71ED46D2D002E71D6 /* Registration1ViewController.swift */; };
+		8443BA691F22278F00D93C13 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8443BA681F22278F00D93C13 /* ChangePasswordViewController.swift */; };
 		8449B6091EE578EB0072A8DD /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8449B6051EE578EB0072A8DD /* CoreDataManager.swift */; };
 		844E5B2A1EEED4CF00E69646 /* LinkedInLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844E5B291EEED4CF00E69646 /* LinkedInLoginViewController.swift */; };
 		844F5F2D1EDBF0B20073A7D7 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844F5F2C1EDBF0B20073A7D7 /* EditProfileViewController.swift */; };
@@ -142,6 +143,7 @@
 		8440DF6F1ED706CB0003F05B /* MenuViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewViewController.swift; sourceTree = "<group>"; };
 		844387B51ED41FF0002E71D6 /* RegistrationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationViewController.swift; sourceTree = "<group>"; };
 		844387B71ED46D2D002E71D6 /* Registration1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registration1ViewController.swift; sourceTree = "<group>"; };
+		8443BA681F22278F00D93C13 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
 		8449B6051EE578EB0072A8DD /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataManager.swift; path = ../Models/CoreDataManager.swift; sourceTree = "<group>"; };
 		844E5B291EEED4CF00E69646 /* LinkedInLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkedInLoginViewController.swift; sourceTree = "<group>"; };
 		844F5F2C1EDBF0B20073A7D7 /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
@@ -404,13 +406,14 @@
 				84F690FE1EFC11D30000B768 /* NewJobsViewController.swift */,
 				844F5F301EDC2A160073A7D7 /* SavedJobsViewController.swift */,
 				844F5F321EDC34B20073A7D7 /* AppliedJobsViewController.swift */,
-				842B32F71EDD7A97000088D1 /* SettingsViewController.swift */,
 				844F5F341EDC3BA10073A7D7 /* UploadResumeViewController.swift */,
 				842B32F91EDD8F62000088D1 /* UploadVideoViewController.swift */,
 				842B32FB1EDDAE2B000088D1 /* ReferFriendViewController.swift */,
 				8439DFD61F038C5400F21C79 /* PlayVideoViewController.swift */,
 				8440D99C1F0CE1E1002EF023 /* CustomNotificationViewController.swift */,
 				84B54A001F0F5BAD00340541 /* PopUpMessageViewController.swift */,
+				842B32F71EDD7A97000088D1 /* SettingsViewController.swift */,
+				8443BA681F22278F00D93C13 /* ChangePasswordViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -807,6 +810,7 @@
 				841492681EF005D6007133D0 /* State+CoreDataClass.swift in Sources */,
 				8449B6091EE578EB0072A8DD /* CoreDataManager.swift in Sources */,
 				8440D99B1F0CAEF6002EF023 /* CommonNotification+CoreDataProperties.swift in Sources */,
+				8443BA691F22278F00D93C13 /* ChangePasswordViewController.swift in Sources */,
 				84EB8F431EDFEB8600014DA4 /* Constant.swift in Sources */,
 				8439DFD71F038C5400F21C79 /* PlayVideoViewController.swift in Sources */,
 				844E5B2A1EEED4CF00E69646 /* LinkedInLoginViewController.swift in Sources */,

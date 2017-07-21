@@ -243,7 +243,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
             titlePrompt.addAction(UIAlertAction(title: "Submit", style: .default, handler: { (action) -> Void in
                 if let textField = titleTextField {
                     
-                    //self.resetPassword(email: textField.text!)
+                    self.resetPassword(email: textField.text!)
                 }
             }))
             
@@ -501,16 +501,17 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
 
     func checkForgotPasswordResponse(dataDic:NSNotification)
     {
-        guard let responseDic = dataDic.object as? [String:String] else
-        {
-            return
-        }
-        
-        guard let code = responseDic["code"] else {
-            
-            return
-        }
+//        guard let responseDic = dataDic.object as? [String:String] else
+//        {
+//            return
+//        }
+//        
+//        guard let code = responseDic["code"] else {
+//            
+//            return
+//        }
     
+        AppPreferences.sharedPreferences().showAlertViewWith(title: "Forgot Passoword", withMessage: "Please check your email for your credentials", withCancelText: "Ok")
         
     }
     

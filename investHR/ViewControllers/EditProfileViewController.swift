@@ -11,7 +11,7 @@ import CoreData
 import Photos
 
 import AssetsLibrary
-class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource,UITextViewDelegate,UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,URLSessionDelegate,UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate
+class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource,UITextViewDelegate,UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,URLSessionDelegate,UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate,UIGestureRecognizerDelegate
 {
     @IBOutlet weak var circleImageView: UIImageView!
 
@@ -118,7 +118,10 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
 //        }
         
  //       stateTextField.filterStrings(statesArray)
-        
+        nameTextField.delegate = self
+        mobileNumberTextField.delegate = self
+        currentCompanyTextField.delegate = self
+        cuurentRoleTextField.delegate = self
         stateTextField.delegate = self
         cityTextField.delegate = self
         candidateFunctionTextField.delegate = self
@@ -129,6 +132,14 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         companiesInterviewedTextView.delegate = self
         servicesTextField.delegate = self
         visaStatusTextField.delegate = self
+        servicesTextField.delegate = self
+        linkedInProfileUrlTextField.delegate = self
+        verticalsTextFiled.delegate = self
+        revenueQuotaTextFiled.delegate = self
+        PLTextFiled.delegate = self
+        experienceTextField.delegate = self
+        joiningTimeTextFIeld.delegate = self
+        expectedCompanyTextField.delegate = self
         benefitsTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
         nonCompeteTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
@@ -162,12 +173,28 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         autoCompleteTableView.layer.borderColor = UIColor.gray.cgColor
         autoCompleteTableView.layer.borderWidth = 1.0
         autoCompleteTableView.layer.cornerRadius = 3.0
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(userTapped))
+        tap.delegate = self
+        self.view.addGestureRecognizer(tap)
         //uploadFIleUsingFTP()
         // Do any additional setup after loading the view.
     }
     
+    func userTapped()
+    {
+      autoCompleteTableView.isHidden = true
     
+    }
     
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool
+    {
+        if (touch.view?.isDescendant(of: self.autoCompleteTableView))!
+        {
+            return false
+        }
+        return true
+    }
     override func viewWillAppear(_ animated: Bool)
     {
       editProfileButton.setTitle("", for: .normal)
@@ -973,9 +1000,11 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         }
         else
         {
-            if stateNameAndIdDic[state] != nil
+            let firstLetterCapitalState = state.capitalizingFirstLetter()
+
+            if stateNameAndIdDic[firstLetterCapitalState] != nil
             {
-                stateId = String(describing: stateNameAndIdDic[state]!)
+                stateId = String(describing: stateNameAndIdDic[firstLetterCapitalState]!)
                 
             }
             else
@@ -1006,9 +1035,11 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         }
         else
         {
-            if cityNameAndIdDic[city] != nil
+            let firstLetterCapitalCity = city.capitalizingFirstLetter()
+            
+            if cityNameAndIdDic[firstLetterCapitalCity] != nil
             {
-                cityId = String(describing: cityNameAndIdDic[city]!)
+                cityId = String(describing: cityNameAndIdDic[firstLetterCapitalCity]!)
                 
             }
             else
@@ -1381,7 +1412,8 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         {
             DispatchQueue.main.async {
                 self.resignAllResponsders()
-                
+                self.autoCompleteTableView.isHidden = true
+
                 self.addPickerToolBar()
                 
                 if self.candidateFunctionTextField.text == ""
@@ -1396,7 +1428,8 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             {
                 DispatchQueue.main.async {
                     self.resignAllResponsders()
-                    
+                    self.autoCompleteTableView.isHidden = true
+
                     self.addPickerToolBarForRelocation()
                     
                     if self.relocationTextFIeld.text == ""
@@ -1413,7 +1446,8 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                        // self.visaStatusTextField.resignFirstResponder()
                         self.resignAllResponsders()
                         self.addPickerToolBarForVisaTypes()
-                        
+                        self.autoCompleteTableView.isHidden = true
+
                         if self.visaStatusTextField.text == ""
                         {
                             self.visaStatusTextField.text = self.visaTypesArray[0]
@@ -1463,6 +1497,18 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                         else
                         if textField == cityTextField
                         {
+                            
+
+                            if self.statesArray.contains(stateTextField.text!.capitalizingFirstLetter())
+                            {
+                                self.filterArray.removeAll()
+                                
+                                self.cityArray.removeAll()
+                                
+                                self.getCitiesFromState(stateName: self.stateTextField.text!.capitalizingFirstLetter())
+                            }
+                            
+
                             if cityArray.count < 1
                             {
                                 stateTextField.becomeFirstResponder()
@@ -1510,6 +1556,10 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                             
                             //cityTextField.filterStrings(self.cityArray)
 
+                        }
+                        else
+                        {
+                            self.autoCompleteTableView.isHidden = true
                         }
     
 
@@ -1748,6 +1798,13 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                 
                 stateNameAndIdDic[userObject.stateName!] = userObject.id
                 
+            }
+            
+            let index = statesArray.index(of: "asda")
+            
+            if index != nil
+            {
+                statesArray.remove(at: index!)
             }
             
         } catch let error as NSError
@@ -2525,8 +2582,11 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
 //                self.autoCompleteTableView.frame = CGRect(x: cgrect.origin.x, y: cgrect.origin.y + self.cityTextField.frame.size.height , width: self.autoCompleteTableView.frame.size.width, height: self.autoCompleteTableView.frame.size.height)
 //            }
 //        
-        
-       // self.autoCompleteTableView.isHidden = true
+//        if !scrollView.isKind(of: UITableView.classForCoder())
+//        {
+//         autoCompleteTableView.isHidden = true
+//        }
+        // self.autoCompleteTableView.isHidden = true
     }
     override func didReceiveMemoryWarning()
     {

@@ -342,6 +342,13 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
                 
             }
             
+            let index = statesArray.index(of: "asda")
+            
+            if index != nil
+            {
+                statesArray.remove(at: index!)
+            }
+            
         } catch let error as NSError
         {
             print(error.localizedDescription)

@@ -33,7 +33,7 @@ struct Constant
     static let  FTP_DIRECTORY_PATH                       = "TEST"
 
    // static let  BASE_URL_PATH                            = "http://184.171.162.251:8080/InvestHr/investhr/"              // local server
-    //static let  USER_PROFILE_IMAGE_PATH                  = "http://184.171.162.251:8080/InvestHr/resources/UserImages/"
+   // static let  USER_PROFILE_IMAGE_PATH                  = "http://184.171.162.251:8080/InvestHr/resources/UserImages/"
     static let  BASE_URL_PATH                            = "http://192.168.3.75:8080/coreflex/investhr/"              // local server
     static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.75:8080/coreflex/resources/UserImages/"
   //  static let  BASE_URL_PATH                            = "http://192.168.3.66:8080/coreflex/investhr/"              // local server
@@ -87,7 +87,9 @@ struct Constant
     static let  UPDATE_DEVICE_TOKEN_API                  = "login/UpdateDeviceToken"
     static let  LOCATION_WISE_JOB_API                    = "login/mobileLocationWiseJob"
 
-    static let  FORGOT_PASSWORD_API                      = "login/mobileForgotPassword"
+    static let  FORGOT_PASSWORD_API                      = "login/forgotPassword"
+    static let  RESET_PASSWORD_API                       = "login/resetpassword"
+
     static let  LOGOUT_API                               = "login/logout"
 
 
@@ -123,7 +125,9 @@ struct Constant
     static let  NOTIFICATION_LOCATION_WISE_JOB              = "locationJobs"
     static let  NOTIFICATION_FORGOT_PASSWORD                = "forgotPassord"
     static let  NOTIFICATION_LOGOUT                         = "logout"
-   // static let  NOTIFICATION_HOME_BUTTONS_ENABLED           = "enableHomeButtons"
+    static let  NOTIFICATION_DISMISS_SUGGESTION_POPUP       = "suggestionPopUp"
+    static let  NOTIFICATION_RESET_PASSWORD                 = "resetPassword"
+
    //  static let  NOTIFICATION_HOME_BUTTONS_DISABLED          = "disableHomeButtons"
 
 
