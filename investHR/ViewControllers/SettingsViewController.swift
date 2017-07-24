@@ -164,7 +164,7 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
             
             //vc.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
             
-            self.present(vc, animated: true, completion: nil)
+            self.navigationController?.present(vc, animated: true, completion: nil)
         }
         
         

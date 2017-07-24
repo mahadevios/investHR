@@ -14,6 +14,7 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource
    
 
     var metaDataQuery = NSMetadataQuery()
+    @IBOutlet weak var scrollView: UIScrollView!
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -28,11 +29,15 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource
         
         self.navigationItem.title = "Refer a friend"
         
-        
-        //let rightBarButtonItem = UIBarButtonItem(customView: numberOfJobsLabel)
-        let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.action, target: self, action: #selector(showActivityController))
+        self.automaticallyAdjustsScrollViewInsets = false
 
-        self.navigationItem.rightBarButtonItem = rightBarButtonItem
+//        scrollView.contentInset = UIEdgeInsets.zero;
+//        scrollView.scrollIndicatorInsets = UIEdgeInsets.zero;
+//        scrollView.contentOffset = CGPoint(x: 0.0, y: 0.0)
+        
+        //let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.action, target: self, action: #selector(showActivityController))
+
+        //self.navigationItem.rightBarButtonItem = rightBarButtonItem
         
         //self.serachiCloud()
         //let documentPickerController = UIDocumentPickerViewController(documentTypes: [String(kUTTypePDF), String(kUTTypeImage), String(kUTTypeMovie), String(kUTTypeVideo), String(kUTTypePlainText), String(kUTTypeMP3)], inMode: .Import)
@@ -43,6 +48,7 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource
 //        present(documentPickerController, animated: true, completion: nil)
         // Do any additional setup after loading the view.
     }
+    
     func popViewController() -> Void
     {
         self.revealViewController().revealToggle(animated: true)
@@ -50,6 +56,11 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource
         self.navigationController?.popViewController(animated: true)
     }
 
+    @IBAction func referFriendButtonClicked(_ sender: Any)
+    {
+        showActivityController()
+    }
+    
     func showActivityController()
     {
         let tweetAction = UIAlertAction(title: "Tweeter", style: UIAlertActionStyle.default, handler:{ act -> Void in

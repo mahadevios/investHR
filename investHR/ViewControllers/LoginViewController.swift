@@ -234,6 +234,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
             titlePrompt.addTextField { (textField) -> Void in
                 titleTextField = textField
                 textField.placeholder = "Email"
+                textField.keyboardType = .emailAddress
             }
             
             let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
@@ -511,7 +512,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
 //            return
 //        }
     
-        AppPreferences.sharedPreferences().showAlertViewWith(title: "Forgot Passoword", withMessage: "Please check your email for your credentials", withCancelText: "Ok")
+        AppPreferences.sharedPreferences().showAlertViewWith(title: "Forgot Passoword", withMessage: "Your Password has been sent on your Register email Id , please check your email to recover your password.", withCancelText: "Ok")
         
     }
     

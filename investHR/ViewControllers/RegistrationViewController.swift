@@ -24,8 +24,15 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     var movedUpBy:String = ""
     var imagedata:Any!
     var countryCodeButton:UIButton!
-
     var coutryCodesArray:[String] = []
+    lazy var imagePicker:UIImagePickerController = {
+    
+        let picker = UIImagePickerController()
+        
+        return  picker
+    }()
+    
+    //var picker = UIImagePickerController()
     override func viewDidLoad()
     {
         
@@ -174,22 +181,29 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     }
     @IBAction func changeProfilePictureButtonClicked(_ sender: Any)
     {
-        let imagePickerController = UIImagePickerController()
+        let imagePickerController = ImagePickerController.getSharedPickerController()
         
         imagePickerController.delegate = self
         
         imagePickerController.sourceType = .photoLibrary
         
-        self.addChildViewController(imagePickerController)
+//        self.addChildViewController(self.imagePicker)
+//        
+//        self.imagePicker.didMove(toParentViewController: self)
+//        
+//        self.view.addSubview(self.imagePicker.view)
         
-        imagePickerController.didMove(toParentViewController: self)
-        
-        self.view.addSubview(imagePickerController.view)
+       self.present(imagePickerController, animated: true, completion: nil)
+
         
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])
+    {
+        DispatchQueue.main.async
+            {
+                AppPreferences.sharedPreferences().showHudWith(title: "Loading Image", detailText: "Please wait..")
+        }
         let chosenImage = info[UIImagePickerControllerOriginalImage]
         
         let chosenImageName = info[UIImagePickerControllerOriginalImage]
@@ -207,10 +221,13 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         
         let image = imageResize(image: userImage!,sizeChange: size)
         
+        imagedata = nil
+        
         imagedata = UIImageJPEGRepresentation(image, 0.01)!
 
-        //imagedata    = UIImagePNGRepresentation(image) as Data!
         
+        //imagedata    = UIImagePNGRepresentation(image) as Data!
+        let compressedImage = UIImage(data: imagedata as! Data)
         var imageName:String!
         if let imageURL = info[UIImagePickerControllerReferenceURL] as? URL {
             let result = PHAsset.fetchAssets(withALAssetURLs: [imageURL], options: nil)
@@ -219,15 +236,28 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
             print(asset?.value(forKey: "filename") ?? "nil")
             
         }
-        circleImageView.image = userImage
+        circleImageView.image = nil
         
-        picker.view!.removeFromSuperview()
+        circleImageView.image = compressedImage
         
-        picker.removeFromParentViewController()
         
-        let uniqueImageName = String(Date().millisecondsSince1970)
+        //picker.view!.removeFromSuperview()
         
-        print(uniqueImageName)
+        //picker.removeFromParentViewController()
+        
+        //self.imagePicker.view.removeFromSuperview()
+        
+       // self.imagePicker.removeFromParentViewController()
+        
+        ImagePickerController.getSharedPickerController().dismiss(animated: true, completion: nil)
+
+        DispatchQueue.main.async
+        {
+            AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+        }
+        //let uniqueImageName = String(Date().millisecondsSince1970)
+        
+       // print(uniqueImageName)
         
         ///let ftp = FTPImageUpload(baseUrl: Constant.FTP_HOST_NAME, userName: Constant.FTP_USERNAME, password: Constant.FTP_PASSWORD, directoryPath: Constant.FTP_DIRECTORY_PATH)
         

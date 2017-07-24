@@ -23,6 +23,9 @@ class AppPreferences: NSObject,UIAlertViewDelegate
     
     var popUpShown:Bool
     
+    var logoutFromPasswordReset:Bool
+
+    
     private override init()
     {
         isReachable = false
@@ -30,6 +33,8 @@ class AppPreferences: NSObject,UIAlertViewDelegate
         gotMessages = false
         
         popUpShown = false
+        
+        logoutFromPasswordReset = false
         
         firebaseInstanceId = ""
         

@@ -41,6 +41,8 @@ class ChangePasswordViewController: UIViewController
 
     func checkResetPasswordResponse(dataDic:Notification)
     {
+        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
                 guard let responseDic = dataDic.object as? [String:String] else
                 {
                     return
@@ -52,13 +54,56 @@ class ChangePasswordViewController: UIViewController
                     return
                 }
         
-        let password = responseDic["updatedPassword"]
+        //let newPassword = responseDic["updatedPassword"]
         
-        UserDefaults.standard.set(password!, forKey: Constant.PASSWORD)
+        //UserDefaults.standard.set(newPassword!, forKey: Constant.PASSWORD)
         
-        AppPreferences.sharedPreferences().showAlertViewWith(title: "Password Reset", withMessage: "Password reset successfully, please login with new password", withCancelText: "Ok")
+        //self.revealViewController().revealToggle(animated: true)
         
+        //self.navigationController?.popViewController(animated: true)
+        let username = UserDefaults.standard.value(forKey: Constant.USERNAME)
         
+        let password = UserDefaults.standard.value(forKey: Constant.PASSWORD)
+
+        self.dismiss(animated: true, completion: nil)
+        
+        let sw = self.presentingViewController! as! SWRevealViewController
+        
+        let na = sw.frontViewController as! UINavigationController
+        
+        na.popViewController(animated: true)
+        
+        sw.revealToggle(animated: false)
+
+
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController")
+        
+        //print(self.presentingViewController!.navigationController?.popToViewController(HomeViewController, animated: true))
+
+
+
+        //self.presentingViewController?.revealToggle(animated: true)
+        
+        if AppPreferences.sharedPreferences().isReachable == true
+        {
+            AppPreferences.sharedPreferences().logoutFromPasswordReset = true
+            APIManager.getSharedAPIManager().logout(username: username as! String, password: password as! String, linkedinId: "")
+
+        }
+
+        
+//        let alert = UIAlertController(title: "Password Reset", message: "Password reset successfully, please login with new password", preferredStyle: .alert)
+//        
+//        let okAction = UIAlertAction(title: "Ok", style: .default) { (UIAlertAction) in
+//            
+//            self.dismiss(animated: true, completion: nil)
+//        }
+//        
+//        alert.addAction(okAction)
+//        
+//        alert.present(self, animated: true, completion: nil)
+        
+        //AppPreferences.sharedPreferences().showAlertViewWith(title: "Password Reset", withMessage: "Password reset successfully, please login with new password", withCancelText: "Ok")
         
     }
     

@@ -57,6 +57,7 @@
 		846075C21F14D6A0006FF071 /* UserVideos+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846075C01F14D6A0006FF071 /* UserVideos+CoreDataClass.swift */; };
 		846075C31F14D6A0006FF071 /* UserVideos+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846075C11F14D6A0006FF071 /* UserVideos+CoreDataProperties.swift */; };
 		8467DEE11EEA68E300974A3D /* HybridAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8467DEE01EEA68E300974A3D /* HybridAuth.swift */; };
+		8474AFAA1F2610BD008BB6ED /* ImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8474AFA91F2610BD008BB6ED /* ImagePickerController.swift */; };
 		8493B8311EC4678200D8F7F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8493B8301EC4678200D8F7F9 /* AppDelegate.swift */; };
 		8493B8361EC4678200D8F7F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8493B8341EC4678200D8F7F9 /* Main.storyboard */; };
 		8493B83B1EC4678200D8F7F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8493B83A1EC4678200D8F7F9 /* Assets.xcassets */; };
@@ -160,6 +161,7 @@
 		846075C01F14D6A0006FF071 /* UserVideos+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserVideos+CoreDataClass.swift"; sourceTree = "<group>"; };
 		846075C11F14D6A0006FF071 /* UserVideos+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UserVideos+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8467DEE01EEA68E300974A3D /* HybridAuth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HybridAuth.swift; sourceTree = "<group>"; };
+		8474AFA91F2610BD008BB6ED /* ImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerController.swift; sourceTree = "<group>"; };
 		8493B82D1EC4678200D8F7F9 /* investHR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = investHR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8493B8301EC4678200D8F7F9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8493B8351EC4678200D8F7F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -427,6 +429,7 @@
 				8449B6051EE578EB0072A8DD /* CoreDataManager.swift */,
 				84F690F01EFB87410000B768 /* FTPImageUpload.swift */,
 				84F690F21EFB8EBB0000B768 /* DateExtension.swift */,
+				8474AFA91F2610BD008BB6ED /* ImagePickerController.swift */,
 			);
 			path = APIManager;
 			sourceTree = "<group>";
@@ -769,6 +772,7 @@
 				84EB8F3D1EDFE90B00014DA4 /* APIManager.swift in Sources */,
 				84B54A011F0F5BAD00340541 /* PopUpMessageViewController.swift in Sources */,
 				84EB8F3E1EDFE90B00014DA4 /* DownloadMetaDataJob.swift in Sources */,
+				8474AFAA1F2610BD008BB6ED /* ImagePickerController.swift in Sources */,
 				84EB8F481EE03D6600014DA4 /* Reachability.swift in Sources */,
 				842BAFCD1EF2A368005327B0 /* Roles+CoreDataProperties.swift in Sources */,
 				84F690FB1EFBE45D0000B768 /* SavedJobs+CoreDataProperties.swift in Sources */,

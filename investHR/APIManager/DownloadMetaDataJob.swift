@@ -848,9 +848,10 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                 else
                 {
                     //                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
-                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid Email!", withMessage: "Invalid email entered", withCancelText: "Ok")
-
                     AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
+                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid Email!", withMessage: "Invalid email id entered", withCancelText: "Ok")
+
                     
                     //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
                     

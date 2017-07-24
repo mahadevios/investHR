@@ -28,6 +28,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     var coutryCodesArray:[String] = []
     var imagedata:Any!
     var candidateFunctionArray : [String] = []
+    var imagePickerController = UIImagePickerController()
     //    let servicesArray : [String] = ["Services","Service 2","Service 3","Service 4","Service 5"]
     let relocationArray = ["Not Available","Yes","No","May be"]
     let relocationDic = ["Yes":"1","No":"2","May be":"3","Not Available":"4"]
@@ -189,7 +190,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool
     {
-        if (touch.view?.isDescendant(of: self.autoCompleteTableView))!
+        if (touch.view?.isDescendant(of: self.autoCompleteTableView))! || (touch.view?.isDescendant(of: self.imagePickerController.view))!
         {
             return false
         }
@@ -1272,7 +1273,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             }
         }
         
-        hideBarButtonItems(hide: "Edit")
+        hideBarButtonItems(hide: "Save")
         
         // picker.removeFromParentViewController()
     }
@@ -1872,7 +1873,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     
     func showImagePickerController()
     {
-        let imagePickerController = UIImagePickerController()
+        imagePickerController = UIImagePickerController()
         
         
         imagePickerController.view.frame = self.view.frame
@@ -1958,7 +1959,15 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         return scaledImage!
     }
     
-    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController)
+    {
+        DispatchQueue.main.async
+            {
+            self.setRightBarButtonItemSave()
+
+        }
+
+    }
 //    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool
 //    {
 //        

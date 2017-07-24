@@ -48,7 +48,11 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
     
     func loggedOut(dataDic:Notification)
     {
-        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+        DispatchQueue.main.async
+            {
+                AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
+        }
 
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
 
@@ -74,6 +78,12 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
         CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
         
+        if AppPreferences.sharedPreferences().logoutFromPasswordReset == true
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "Password Reset", withMessage: "Password reset successfully, please login with new password", withCancelText: "Ok")
+            
+            AppPreferences.sharedPreferences().logoutFromPasswordReset = false
+        }
         self.present(vc, animated: true, completion: nil)
     
     }

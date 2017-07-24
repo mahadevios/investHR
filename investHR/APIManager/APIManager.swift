@@ -653,7 +653,7 @@ class APIManager: NSObject
         if AppPreferences.sharedPreferences().isReachable
         {
 //            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","emailId=\(emailId)"]
-            let params = ["emailId=\(emailId)"]
+            let params = ["email=\(emailId)"]
             
             let dic = [Constant.REQUEST_PARAMETER:params]
             
