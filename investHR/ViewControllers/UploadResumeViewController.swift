@@ -263,19 +263,21 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         
         let resumeNameLabel = cell?.viewWithTag(101) as! UILabel
         
-        resumeNameLabel.text = uploadedResumeNamesArray[indexPath.row]
-        
+//        resumeNameLabel.text = uploadedResumeNamesArray[indexPath.row]
+
+        resumeNameLabel.text = "Resume \(indexPath.row+1)"
+
         let downloadButton = cell?.viewWithTag(102) as! subclassedUIButton
         
         downloadButton.indexPath = indexPath.row
         
         let downloadOrViewImageView = cell?.viewWithTag(104) as! UIImageView
 
-        let deleteImageView = cell?.viewWithTag(105) as! UIImageView
+        //let deleteImageView = cell?.viewWithTag(105) as! UIImageView
 
-        var savePath:String = self.UserResumeFolderPath() + "/" + uploadedResumeNamesArray[indexPath.row]
+        let savePath:String = self.UserResumeFolderPath() + "/" + uploadedResumeNamesArray[indexPath.row]
         
-        let videoURL = URL(fileURLWithPath: savePath)
+       // let videoURL = URL(fileURLWithPath: savePath)
         
 
         

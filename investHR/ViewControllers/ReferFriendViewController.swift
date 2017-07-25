@@ -63,62 +63,63 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource
     
     func showActivityController()
     {
-        let tweetAction = UIAlertAction(title: "Tweeter", style: UIAlertActionStyle.default, handler:{ act -> Void in
-            
-            if SLComposeViewController.isAvailable(forServiceType: SLServiceTypeTwitter)
-            {
-                let twitterComposeVC = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
-                
-                twitterComposeVC?.setInitialText("Sample tweet from my app(Social app integration)")
-                
-                self.present(twitterComposeVC!, animated: true, completion: nil)
-                
-            }
-            else
-            {
-                let alertController = UIAlertController(title: "Not logged in", message: "Please login to share", preferredStyle: UIAlertControllerStyle.alert)
-                
-                let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { act -> Void in
-                    
-                    alertController.dismiss(animated: true, completion: nil)
-                }
-                )
-                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: {act -> Void in
-                    
-                    alertController.dismiss(animated: true, completion: nil)
-                    
-                })
-                
-                alertController.addAction(okAction)
-                alertController.addAction(cancelAction)
-                
-                self.present(alertController, animated: true, completion: nil)
-                
-            }
-        })
-        
-        let facebookPostAction = UIAlertAction(title: "Share on Facebook", style: UIAlertActionStyle.default) { (action) -> Void in
-            if SLComposeViewController.isAvailable(forServiceType: SLServiceTypeFacebook) {
-                let facebookComposeVC = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
-                
-                facebookComposeVC?.setInitialText("Facebook")
-                
-                self.present(facebookComposeVC!, animated: true, completion: nil)
-            }
-            else {
-                //self.showAlertMessage("You are not connected to your Facebook account.")
-            }
-        }
-        
-        let moreAction = UIAlertAction(title: "More", style: UIAlertActionStyle.default, handler:{ act -> Void in })
-        
-        let cancelAction = UIAlertAction(title: "Delete", style: UIAlertActionStyle.default, handler: { act -> Void in})
+//        let tweetAction = UIAlertAction(title: "Tweeter", style: UIAlertActionStyle.default, handler:{ act -> Void in
+//            
+//            if SLComposeViewController.isAvailable(forServiceType: SLServiceTypeTwitter)
+//            {
+//                let twitterComposeVC = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
+//                
+//                twitterComposeVC?.setInitialText("Sample tweet from my app(Social app integration)")
+//                
+//                self.present(twitterComposeVC!, animated: true, completion: nil)
+//                
+//            }
+//            else
+//            {
+//                let alertController = UIAlertController(title: "Not logged in", message: "Please login to share", preferredStyle: UIAlertControllerStyle.alert)
+//                
+//                let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { act -> Void in
+//                    
+//                    alertController.dismiss(animated: true, completion: nil)
+//                }
+//                )
+//                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: {act -> Void in
+//                    
+//                    alertController.dismiss(animated: true, completion: nil)
+//                    
+//                })
+//                
+//                alertController.addAction(okAction)
+//                alertController.addAction(cancelAction)
+//                
+//                self.present(alertController, animated: true, completion: nil)
+//                
+//            }
+//        })
+//        
+//        let facebookPostAction = UIAlertAction(title: "Share on Facebook", style: UIAlertActionStyle.default) { (action) -> Void in
+//            if SLComposeViewController.isAvailable(forServiceType: SLServiceTypeFacebook) {
+//                let facebookComposeVC = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
+//                
+//                facebookComposeVC?.setInitialText("Facebook")
+//                
+//                self.present(facebookComposeVC!, animated: true, completion: nil)
+//            }
+//            else {
+//                //self.showAlertMessage("You are not connected to your Facebook account.")
+//            }
+//        }
+//        
+//        let moreAction = UIAlertAction(title: "More", style: UIAlertActionStyle.default, handler:{ act -> Void in })
+//        
+//        let cancelAction = UIAlertAction(title: "Delete", style: UIAlertActionStyle.default, handler: { act -> Void in})
         
 //        let url = NSURL(string:"itms://itunes.com/apps/CubeDictate")
         let url = NSURL(string:"itms://itunes.com/apps/investhr/idapp@investhr.com")
 //        let url = NSURL(string:"itms://itunes.com/apps/cubedictate/idappledeveloper@coreflexsolutions.com")
         
-        let alertController = UIActivityViewController(activityItems:[url], applicationActivities: nil)
+        let alertController = UIActivityViewController(activityItems:[self], applicationActivities: nil)
+        
         
         // alertController .addAction(tweetAction)
         
@@ -135,14 +136,14 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource
     func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any
     {
         
-        return NSURL(string:"itms://itunes.com/apps/CubeDictate") ?? "investHR"
+        return NSURL(string:"itms://itunes.com/apps/investhr/idapp@investhr.com") ?? "investHR"
     }
     
     
     func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType) -> Any?
     {
 
-            return "Get investHR iOS application"
+            return NSURL(string:"itms://itunes.com/apps/investhr/idapp@investhr.com") ?? "investHR"
 
     }
     

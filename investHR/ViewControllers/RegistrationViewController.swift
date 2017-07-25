@@ -25,13 +25,13 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     var imagedata:Any!
     var countryCodeButton:UIButton!
     var coutryCodesArray:[String] = []
-    lazy var imagePicker:UIImagePickerController = {
-    
-        let picker = UIImagePickerController()
-        
-        return  picker
-    }()
-    
+//    lazy var imagePicker:UIImagePickerController = {
+//    
+//        let picker = UIImagePickerController()
+//        
+//        return  picker
+//    }()
+    var imagePicker:UIImagePickerController? = UIImagePickerController()
     //var picker = UIImagePickerController()
     override func viewDidLoad()
     {
@@ -86,6 +86,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         
         passwordTextField.addSubview(imageView3)
 
+        self.imagePicker!.delegate = self
         //self.addView()
         // Do any additional setup after loading the view.
     }
@@ -181,11 +182,12 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     }
     @IBAction func changeProfilePictureButtonClicked(_ sender: Any)
     {
-        let imagePickerController = ImagePickerController.getSharedPickerController()
+        //let imagePickerController = ImagePickerController.getSharedPickerController()
         
-        imagePickerController.delegate = self
-        
-        imagePickerController.sourceType = .photoLibrary
+       // imagePickerController.delegate = self
+        self.imagePicker!.allowsEditing = false
+
+        self.imagePicker!.sourceType = .photoLibrary
         
 //        self.addChildViewController(self.imagePicker)
 //        
@@ -193,7 +195,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
 //        
 //        self.view.addSubview(self.imagePicker.view)
         
-       self.present(imagePickerController, animated: true, completion: nil)
+       self.present(self.imagePicker!, animated: true, completion: nil)
 
         
     }
@@ -204,12 +206,12 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
             {
                 AppPreferences.sharedPreferences().showHudWith(title: "Loading Image", detailText: "Please wait..")
         }
-        let chosenImage = info[UIImagePickerControllerOriginalImage]
+        //let chosenImage = info[UIImagePickerControllerOriginalImage]
         
-        let chosenImageName = info[UIImagePickerControllerOriginalImage]
+        //let chosenImageName = info[UIImagePickerControllerOriginalImage]
 
         
-        let refURL = info[UIImagePickerControllerReferenceURL]
+        //let refURL = info[UIImagePickerControllerReferenceURL]
         
         let userImage = info[UIImagePickerControllerOriginalImage] as? UIImage
         
@@ -219,15 +221,17 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
 
         let size = CGSize(width: width!, height: height!)
         
-        let image = imageResize(image: userImage!,sizeChange: size)
         
         imagedata = nil
         
-        imagedata = UIImageJPEGRepresentation(image, 0.01)!
+        imagedata = UIImageJPEGRepresentation(userImage!, 0.01)!
 
         
         //imagedata    = UIImagePNGRepresentation(image) as Data!
         let compressedImage = UIImage(data: imagedata as! Data)
+        
+        let image = imageResize(image: compressedImage!,sizeChange: size)
+
         var imageName:String!
         if let imageURL = info[UIImagePickerControllerReferenceURL] as? URL {
             let result = PHAsset.fetchAssets(withALAssetURLs: [imageURL], options: nil)
@@ -238,7 +242,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         }
         circleImageView.image = nil
         
-        circleImageView.image = compressedImage
+        circleImageView.image = image
         
         
         //picker.view!.removeFromSuperview()
@@ -249,7 +253,8 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         
        // self.imagePicker.removeFromParentViewController()
         
-        ImagePickerController.getSharedPickerController().dismiss(animated: true, completion: nil)
+        self.imagePicker!.dismiss(animated: true, completion: nil)
+       // ImagePickerController.getSharedPickerController().dismiss(animated: true, completion: nil)
 
         DispatchQueue.main.async
         {
@@ -268,6 +273,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     }
     func imageResize (image:UIImage, sizeChange:CGSize)-> UIImage{
         
+        
         let hasAlpha = true
         let scale: CGFloat = 0.0 // Use scale factor of main screen
         
@@ -275,6 +281,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         image.draw(in: CGRect(origin: CGPoint.zero, size: sizeChange))
         
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
         return scaledImage!
     }
     

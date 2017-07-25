@@ -360,9 +360,37 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
         expectedCompanyTextField.textColor = color
         
-        benefitsTextView.textColor = color
-        nonCompeteTextView.textColor = color
-        companiesInterviewedTextView.textColor = color
+        
+        
+        
+        
+        
+        if companiesInterviewedTextView.text == "Companies interviewed in past 1 year" || companiesInterviewedTextView.text == "Companies interviewed in past 1 year\n"
+        {
+            companiesInterviewedTextView.textColor = UIColor.lightGray
+        }
+        else
+        {
+          companiesInterviewedTextView.textColor = color
+        }
+        if benefitsTextView.text == "Benefits in current organization(401k/insurance coverage etc)\n" || benefitsTextView.text == "Benefits in current organization(401k/insurance coverage etc)"
+        {
+            benefitsTextView.textColor = UIColor.lightGray
+
+        }
+        else
+        {
+            benefitsTextView.textColor = color
+        }
+        if nonCompeteTextView.text == "Any non-compete that will prevent you from managing a specific client OR Not join any specific organization" || nonCompeteTextView.text == "Any non-compete that will prevent you from managing a specific client OR Not join any specific organization\n"
+        {
+            nonCompeteTextView.textColor = UIColor.lightGray
+
+        }
+        else
+        {
+            nonCompeteTextView.textColor = color
+        }
         joiningTimeTextFIeld.textColor = color
         relocationTextFIeld.textColor = color
 
@@ -434,7 +462,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
         //self.resignAllResponsders()
         
-        self.setTextFieldsTextColor(color: UIColor.gray)
+        self.setTextFieldsTextColor(color: UIColor.lightGray)
         
         if username != nil && password != nil
         {
@@ -455,7 +483,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     
     func checkGetProfileResponse(dataDic:Notification)
     {
-        self.setTextFieldsTextColor(color: UIColor.gray)
+        self.setTextFieldsTextColor(color: UIColor.lightGray)
 
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
@@ -814,6 +842,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     
     @IBAction func editProfileButtonClicked(_ sender: Any)
     {
+        self.resignAllResponsders()
         showImagePickerController()
     }
     
@@ -1186,6 +1215,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                 
             }
         }
+        
         var companiesInterViewed1:String!
         if companiesInterViewed == "Companies interviewed in past 1 year"
         {
@@ -1355,21 +1385,44 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool
     {
+        
+        
+       
+
         if textView == companiesInterviewedTextView
         {
-            companiesInterviewedTextView.text = "";
+            if companiesInterviewedTextView.text == "Companies interviewed in past 1 year" || companiesInterviewedTextView.text == "Companies interviewed in past 1 year\n"
+            {
+                companiesInterviewedTextView.text = "";
+            }
+            else
+            {
+            }
+            
             companiesInterviewedTextView.textColor = UIColor.black
+
         }
         else
             if textView == benefitsTextView
             {
-                benefitsTextView.text = "";
+                if benefitsTextView.text == "Benefits in current organization(401k/insurance coverage etc)\n" || benefitsTextView.text == "Benefits in current organization(401k/insurance coverage etc)"
+                {
+                    benefitsTextView.text = "";
+                    
+                }
+                else
+                {
+                }
                 benefitsTextView.textColor = UIColor.black
             }
             else
                 if textView == nonCompeteTextView
                 {
-                    nonCompeteTextView.text = "";
+                    if nonCompeteTextView.text == "Any non-compete that will prevent you from managing a specific client OR Not join any specific organization" || nonCompeteTextView.text == "Any non-compete that will prevent you from managing a specific client OR Not join any specific organization\n"
+                    {
+                        nonCompeteTextView.text = "";
+                        
+                    }
                     nonCompeteTextView.textColor = UIColor.black
         }
         
@@ -1754,7 +1807,16 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         return true
     }
 
-   
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool
+    {
+        
+        if text == "\n"
+        {
+          textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
 
 // MARK: Data support methods
     
@@ -1956,6 +2018,8 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         image.draw(in: CGRect(origin: CGPoint.zero, size: sizeChange))
         
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
         return scaledImage!
     }
     
