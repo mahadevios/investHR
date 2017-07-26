@@ -42,7 +42,8 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
     
     var notifView: UIView?
 
-
+    
+    
     @IBOutlet weak var verticalButton: UIButton!
     @IBOutlet weak var roleButton: UIButton!
     
@@ -82,7 +83,7 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
 
 //        NotificationCenter.default.addObserver(self, selector: #selector(share(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: nil) // after getting the accessToken from linkedin webview, ask for user info and get back to this view with hud, NOTIFICATION_LIACCESSTOKEN_FETCHED when webview fetch the user info, get this info in this controller and pass it to the server and validate the user
 
-        
+
 
     }
     
@@ -783,7 +784,71 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
 //        
 //    }
 
-    /*
+//    func addReferFriendView()
+//    {
+//        
+//        scrollView = UIScrollView(frame: CGRect(x: self.view.frame.size.width*0.1, y: self.view.frame.size.height*0.2, width: self.view.frame.size.width*0.8, height: self.view.frame.size.height*0.6))
+//        
+//        scrollView.tag = 222
+//        
+//        insideView = UIView(frame: CGRect(x: 0, y: 0, width: scrollView.frame.size.width, height: 500))
+//        
+//        view.backgroundColor = UIColor.black
+//        
+//        view.alpha = 0.5
+//        
+//        
+//        let textField = UITextField(frame: CGRect(x: insideView.frame.size.width*0.1, y: insideView.frame.size.height*0.2, width: insideView.frame.size.width*0.8, height: 40))
+//        
+//        let textField1 = UITextField(frame: CGRect(x: textField.frame.origin.x, y: textField.frame.origin.y + textField.frame.size.height + 15, width: textField.frame.size.width, height: textField.frame.size.height))
+//        
+//        let textField2 = UITextField(frame: CGRect(x: textField.frame.origin.x, y: textField1.frame.origin.y + textField1.frame.size.height + 15, width: textField.frame.size.width, height: textField.frame.size.height))
+//        
+//        let textField3 = UITextField(frame: CGRect(x: textField.frame.origin.x, y: textField2.frame.origin.y + textField2.frame.size.height + 15, width: textField.frame.size.width, height: textField.frame.size.height))
+//        
+//        let submitButton = UIButton(frame: CGRect(x: textField.frame.origin.x, y: textField3.frame.origin.y + textField3.frame.size.height + 15, width: textField.frame.size.width, height: textField.frame.size.height))
+//        
+//        submitButton.addTarget(self, action: #selector(dismissReferFriendView), for: .touchUpInside)
+//        
+//        textField.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+//        
+//        textField1.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+//        
+//        textField2.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+//        
+//        textField3.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+//        
+//        textField.layer.borderWidth = 1.0
+//        
+//        textField1.layer.borderWidth = 1.0
+//        
+//        textField2.layer.borderWidth = 1.0
+//        
+//        textField3.layer.borderWidth = 1.0
+//        
+//        insideView.addSubview(textField)
+//        insideView.addSubview(textField1)
+//        insideView.addSubview(textField2)
+//        insideView.addSubview(textField3)
+//        insideView.addSubview(submitButton)
+//        
+//        scrollView.addSubview(insideView)
+//        
+//        //self.view.addSubview(insideView)
+//        self.view.addSubview(scrollView)
+//
+//        
+//    }
+//    func dismissReferFriendView()
+//    {
+//        view.backgroundColor = UIColor.white
+//        
+//        view.alpha = 1.0
+//        
+//        self.view.viewWithTag(222)?.removeFromSuperview()
+//    }
+
+        /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation

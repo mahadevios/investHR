@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewJobsViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIWebViewDelegate
+class NewJobsViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIWebViewDelegate,UIGestureRecognizerDelegate,UITextFieldDelegate
 {
     var applied:Bool = false
     var saved:Bool = false
@@ -25,10 +25,38 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
     var appliedJobsIdsArray = [Int]()
     var jobLocationArray = [String]()
     var jobDetailsDic:[String:Any]?
+    
+    var overLayView:UIView!
+    
+    var scrollView:UIScrollView!
+    
+    var insideView:UIView!
+    
+    var referenceLabel:UILabel!
+    
+    var lineView:UIView!
+    
+    var textField:UITextField!
+    
+    var textField1:UITextField!
+
+    var textField2:UITextField!
+
+    var textField3:UITextField!
+
+    var browseButton:UIButton!
+
+    var submitButton:UIButton!
+
     @IBOutlet weak var collectionView: UICollectionView!
     @IBAction func backButtonPressed(_ sender: Any)
     {
         self.dismiss(animated: true, completion: nil)
+    }
+    @IBAction func shareFriendButtonClicked(_ sender: Any)
+    {
+        self.addReferFriendView()
+
     }
     override func viewDidLoad()
     {
@@ -75,6 +103,9 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                 appliedJobsIdsArray.append(Int(jobId!)!)
             }
         }
+        
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
         
     }
     
@@ -768,6 +799,292 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
     }
     
     
+    
+    func addReferFriendView()
+    {
+        
+        
+        overLayView = UIView(frame: self.view.frame)
+        
+        overLayView.tag = 222
+        
+        overLayView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+
+        let tapToDismissNotif = UITapGestureRecognizer(target: self, action: #selector(tapped))
+        
+        self.view.addGestureRecognizer(tapToDismissNotif)
+        
+        tapToDismissNotif.delegate = self
+        
+        scrollView = UIScrollView(frame: CGRect(x: self.view.frame.size.width*0.1, y: self.view.frame.size.height*0.09, width: self.view.frame.size.width*0.8, height: self.view.frame.size.height*0.73))
+        
+        //scrollView.isOpaque = false
+        scrollView.delegate = self
+        
+        self.automaticallyAdjustsScrollViewInsets = false
+
+        
+        scrollView.backgroundColor = UIColor.white
+        
+        insideView = UIView(frame: CGRect(x: 0, y: 0, width: scrollView.frame.size.width, height: 500))
+        
+        //insideView.isOpaque = false
+
+        insideView.backgroundColor = UIColor.white
+
+        scrollView.layer.cornerRadius = 4.0
+        
+        insideView.layer.cornerRadius = 4.0
+
+        
+        referenceLabel = UILabel(frame: CGRect(x: insideView.frame.size.width/2 - 60, y: 10, width: 120, height: 35))
+        
+        referenceLabel.textAlignment = NSTextAlignment.center
+        
+        referenceLabel.text = "Reference"
+        
+        referenceLabel.textColor = UIColor(colorLiteralRed: 24/255.0, green: 125/255.0, blue: 239/255.0, alpha: 1.0)
+        
+        
+        lineView = UIView(frame: CGRect(x: 0, y: referenceLabel.frame.origin.y + referenceLabel.frame.size.height + 10, width: insideView.frame.size.width, height: 2))
+        
+        lineView.backgroundColor = UIColor(colorLiteralRed: 24/255.0, green: 125/255.0, blue: 239/255.0, alpha: 1.0)
+
+        
+        
+        textField = UITextField(frame: CGRect(x: insideView.frame.size.width*0.07, y: lineView.frame.origin.y + lineView.frame.size.height + 10, width: insideView.frame.size.width*0.86, height: 30))
+
+        textField1 = UITextField(frame: CGRect(x: textField.frame.origin.x, y: textField.frame.origin.y + textField.frame.size.height + 15, width: textField.frame.size.width, height: textField.frame.size.height))
+        
+        textField2 = UITextField(frame: CGRect(x: textField.frame.origin.x, y: textField1.frame.origin.y + textField1.frame.size.height + 15, width: textField.frame.size.width, height: textField.frame.size.height))
+        
+        textField3 = UITextField(frame: CGRect(x: textField.frame.origin.x, y: textField2.frame.origin.y + textField2.frame.size.height + 15, width: textField.frame.size.width, height: textField.frame.size.height))
+        
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 30))
+        textField.leftView = paddingView
+        textField.leftViewMode = .always
+        textField.font = UIFont.systemFont(ofSize: 14.0)
+        textField.delegate = self
+        
+        let paddingView1 = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 30))
+        textField1.leftView = paddingView1
+        textField1.leftViewMode = .always
+        textField1.font = UIFont.systemFont(ofSize: 14.0)
+        textField1.delegate = self
+
+        let paddingView2 = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 30))
+        textField2.leftView = paddingView2
+        textField2.leftViewMode = .always
+        textField2.font = UIFont.systemFont(ofSize: 14.0)
+        textField2.delegate = self
+
+        let paddingView3 = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 30))
+        textField3.leftView = paddingView3
+        textField3.leftViewMode = .always
+        textField3.font = UIFont.systemFont(ofSize: 14.0)
+        textField3.delegate = self
+
+        browseButton = UIButton(frame: CGRect(x: textField.frame.origin.x, y: textField3.frame.origin.y + textField3.frame.size.height + 15, width: textField.frame.size.width/2.3, height: textField.frame.size.height))
+        
+        browseButton.backgroundColor = UIColor.lightGray
+        
+        browseButton.setTitle("Browse Resume", for: .normal)
+        
+        browseButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        
+        browseButton.setTitleColor(UIColor.black, for: .normal)
+        
+        browseButton.layer.cornerRadius = 4.0
+        
+        browseButton.addTarget(self, action: #selector(browseResumeButtonClicked), for: .touchUpInside)
+        
+        submitButton = UIButton(frame: CGRect(x: insideView.frame.width/2 - 50, y: browseButton.frame.origin.y + browseButton.frame.size.height + 15, width: 100, height: 40))
+        
+        submitButton.backgroundColor = UIColor(colorLiteralRed: 24/255.0, green: 125/255.0, blue: 239/255.0, alpha: 1.0)
+        
+        submitButton.setTitle("Send", for: .normal)
+        
+        submitButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+
+        submitButton.setTitleColor(UIColor.white, for: .normal)
+        
+        //submitButton.layer.cornerRadius = 4.0
+        
+        submitButton.addTarget(self, action: #selector(submitButtonClicked), for: .touchUpInside)
+
+        textField.placeholder = "Name"
+        
+        textField1.placeholder = "Email"
+        
+        textField2.placeholder = "Mobile"
+        
+        textField3.placeholder = "Linkedin Url"
+        
+        textField.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        
+        textField1.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        
+        textField2.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        
+        textField3.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        
+        textField.layer.borderWidth = 1.0
+        
+        textField1.layer.borderWidth = 1.0
+        
+        textField2.layer.borderWidth = 1.0
+        
+        textField3.layer.borderWidth = 1.0
+        
+        textField.layer.cornerRadius = 4.0
+        
+        textField1.layer.cornerRadius = 4.0
+        
+        textField2.layer.cornerRadius = 4.0
+        
+        textField3.layer.cornerRadius = 4.0
+        
+        insideView.addSubview(referenceLabel)
+        insideView.addSubview(lineView)
+        insideView.addSubview(textField)
+        insideView.addSubview(textField1)
+        insideView.addSubview(textField2)
+        insideView.addSubview(textField3)
+        insideView.addSubview(browseButton)
+        insideView.addSubview(submitButton)
+        
+        scrollView.addSubview(insideView)
+        
+        overLayView.addSubview(scrollView)
+        //self.view.addSubview(insideView)
+        self.scrollView.contentSize = CGSize(width: self.view.frame.size.width*0.1, height: 450)
+
+        self.view.addSubview(overLayView)
+        
+        
+    }
+
+    func browseResumeButtonClicked()
+    {
+    
+    }
+    
+    func submitButtonClicked()
+    {
+        self.view.viewWithTag(222)?.removeFromSuperview()
+
+    }
+    
+    func dismissReferFriendView()
+    {
+//        view.backgroundColor = UIColor.white
+//        
+//        view.alpha = 1.0
+
+        self.view.viewWithTag(222)?.removeFromSuperview()
+    }
+    
+    func deviceRotated() -> Void
+    {
+        if self.view.viewWithTag(222) != nil
+        {
+            if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+            {
+                //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
+                DispatchQueue.main.async
+                    {
+                        self.overLayView.frame = self.view.frame
+                        
+                        self.scrollView.frame = CGRect(x: self.view.frame.size.width*0.1, y: self.view.frame.size.height*0.07, width: self.view.frame.size.width*0.8, height: self.view.frame.size.height*0.8)
+                        
+                        
+                        self.insideView.frame = CGRect(x: 0, y: 0, width: self.scrollView.frame.size.width, height: 450)
+                        
+                        self.referenceLabel.frame = CGRect(x: self.insideView.frame.size.width/2 - 60, y: 10, width: 120, height: 35)
+                        
+                        self.lineView.frame = CGRect(x: 0, y: self.referenceLabel.frame.origin.y + self.referenceLabel.frame.size.height + 10, width: self.insideView.frame.size.width, height: 2)
+                        
+                        self.textField.frame = CGRect(x: self.insideView.frame.size.width*0.07, y: self.lineView.frame.origin.y + self.lineView.frame.size.height + 10, width: self.insideView.frame.size.width*0.86, height: 30)
+                        
+                        self.textField1.frame = CGRect(x: self.textField.frame.origin.x, y: self.textField.frame.origin.y + self.textField.frame.size.height + 15, width: self.textField.frame.size.width, height: self.textField.frame.size.height)
+                        
+                        self.textField2.frame = CGRect(x: self.textField.frame.origin.x, y: self.textField1.frame.origin.y + self.textField1.frame.size.height + 15, width: self.textField.frame.size.width, height: self.textField.frame.size.height)
+                        
+                        self.textField3.frame = CGRect(x: self.textField.frame.origin.x, y: self.textField2.frame.origin.y + self.textField2.frame.size.height + 15, width: self.textField.frame.size.width, height: self.textField.frame.size.height)
+                        
+                        self.browseButton.frame = CGRect(x: self.textField.frame.origin.x, y: self.textField3.frame.origin.y + self.textField3.frame.size.height + 15, width: self.textField.frame.size.width/2.3, height: 40)
+                        
+                        self.submitButton.frame = CGRect(x: self.insideView.frame.width/2 - 100, y: self.browseButton.frame.origin.y + self.browseButton.frame.size.height + 15, width: 200, height: 40)
+                        
+                        self.scrollView.contentSize = CGSize(width: self.view.frame.size.width*0.1, height: 450)
+                }
+                
+                
+                print("Landscape")
+            }
+            
+            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+            {
+                //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
+                DispatchQueue.main.async
+                    {
+                        self.overLayView.frame = self.view.frame
+                        
+                        self.scrollView.frame = CGRect(x: self.view.frame.size.width*0.1, y: self.view.frame.size.height*0.09, width: self.view.frame.size.width*0.8, height: self.view.frame.size.height*0.7)
+                        
+                        self.insideView.frame = CGRect(x: 0, y: 0, width: self.scrollView.frame.size.width, height: 450)
+                        
+                        //self.insideView.frame = CGRect(x: 0, y: 0, width: self.scrollView.frame.size.width, height: 500)
+                        
+                        self.referenceLabel.frame = CGRect(x: self.insideView.frame.size.width/2 - 60, y: 10, width: 120, height: 35)
+                        
+                        self.lineView.frame = CGRect(x: 0, y: self.referenceLabel.frame.origin.y + self.referenceLabel.frame.size.height + 10, width: self.insideView.frame.size.width, height: 2)
+                        
+                        self.textField.frame = CGRect(x: self.insideView.frame.size.width*0.07, y: self.lineView.frame.origin.y + self.lineView.frame.size.height + 10, width: self.insideView.frame.size.width*0.86, height: 30)
+                        
+                        self.textField1.frame = CGRect(x: self.textField.frame.origin.x, y: self.textField.frame.origin.y + self.textField.frame.size.height + 15, width: self.textField.frame.size.width, height: self.textField.frame.size.height)
+                        
+                        self.textField2.frame = CGRect(x: self.textField.frame.origin.x, y: self.textField1.frame.origin.y + self.textField1.frame.size.height + 15, width: self.textField.frame.size.width, height: self.textField.frame.size.height)
+                        
+                        self.textField3.frame = CGRect(x: self.textField.frame.origin.x, y: self.textField2.frame.origin.y + self.textField2.frame.size.height + 15, width: self.textField.frame.size.width, height: self.textField.frame.size.height)
+                        
+                        self.browseButton.frame = CGRect(x: self.textField.frame.origin.x, y: self.textField3.frame.origin.y + self.textField3.frame.size.height + 15, width: self.textField.frame.size.width/2.3, height: 40)
+                        
+                        self.submitButton.frame = CGRect(x: self.insideView.frame.width/2 - 50, y: self.browseButton.frame.origin.y + self.browseButton.frame.size.height + 15, width: 100, height: 40)
+                        
+                        self.scrollView.contentSize = CGSize(width: self.view.frame.size.width*0.1, height: 450)
+                        
+                }
+                print("Portrait")
+            }
+
+        }
+        
+    }
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool
+    {
+        if touch.view == self.overLayView
+        {
+            return true
+        }
+        else
+        {
+            return false
+        }
+        
+    }
+    func tapped(sender:UITapGestureRecognizer) -> Void
+    {
+        self.view.viewWithTag(222)?.removeFromSuperview()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool
+    {
+            textField.resignFirstResponder()
+        
+            return true
+    }
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()

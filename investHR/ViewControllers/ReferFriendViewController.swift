@@ -8,8 +8,8 @@
 
 import UIKit
 import Social
-
-class ReferFriendViewController: UIViewController,UIActivityItemSource
+import MessageUI
+class ReferFriendViewController: UIViewController,UIActivityItemSource,MFMailComposeViewControllerDelegate
 {
    
 
@@ -47,6 +47,50 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource
 //        documentPickerController.delegate = self
 //        present(documentPickerController, animated: true, completion: nil)
         // Do any additional setup after loading the view.
+        //showEmail()
+        //let vc = self.storyboard!.instantiateViewController(withIdentifier: "FriendsDetailsViewController")
+       // vc.view.frame = CGRect(x: vc.view.frame.width*0.2, y: vc.view.frame.height*0.2, width: vc.view.frame.width*0.6, height: vc.view.frame.height*0.6)
+        
+//        vc.modalPresentationStyle = .custom
+//        
+//        vc.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+//        
+//        present(vc, animated: true, completion: nil)
+    }
+    
+    func showEmail()
+    {
+        let emailTitle = "Refer your friend to investHr"
+        let messageBody = "This is a test email body"
+        let toRecipents = ["mandale.mahadev7@gmail.com"]
+        let mc: MFMailComposeViewController = MFMailComposeViewController()
+        mc.mailComposeDelegate = self
+        mc.setSubject(emailTitle)
+        mc.setMessageBody(messageBody, isHTML: false)
+        mc.setToRecipients(toRecipents)
+    
+        
+        self.present(mc, animated: true, completion: nil)
+    }
+    
+    func mailComposeController(_ controller:MFMailComposeViewController, didFinishWith result:MFMailComposeResult, error:Error?) {
+        switch result {
+        case MFMailComposeResult.cancelled:
+            print("Mail cancelled")
+            break
+        case MFMailComposeResult.saved:
+            print("Mail saved")
+            break
+        case MFMailComposeResult.sent:
+            print("Mail sent")
+            break
+        case MFMailComposeResult.failed:
+            print("Mail sent failure: \(error?.localizedDescription)")
+            break
+        default:
+            break
+        }
+        self.dismiss(animated: false, completion: nil)
     }
     
     func popViewController() -> Void
