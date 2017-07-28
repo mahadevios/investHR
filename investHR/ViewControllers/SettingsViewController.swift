@@ -17,20 +17,20 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-        
-        if username != nil && password != nil
-        {
-            settingsItemsArray = ["Delete Account","Reset Password","Help/Support(Email ID)"]
-        }
-        else
-        if linkedInId != nil
-        {
-            settingsItemsArray = ["Delete Account","Help/Support(Email ID)"]
+//        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+//        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+//        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+//        
+//        if username != nil && password != nil
+//        {
+//            settingsItemsArray = ["Delete Account","Reset Password","Help/Support(Email ID)"]
+//        }
+//        else
+//        if linkedInId != nil
+//        {
+            settingsItemsArray = ["Delete Account","Reset Password"]
             
-        }
+      //  }
         
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
@@ -39,6 +39,8 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
         
         self.navigationItem.title = "Settings"
         
+        NotificationCenter.default.addObserver(self, selector: #selector(checkDeleteAccountResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_DELETE_ACCOUNT), object: nil)
+
         // Do any additional setup after loading the view.
     }
 
@@ -56,6 +58,59 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
 
         self.navigationController?.popViewController(animated: true)
     }
+    func checkDeleteAccountResponse(dataDic:Notification)
+    {
+        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+        
+        guard let responseDic = dataDic.object as? [String:String] else
+        {
+            return
+        }
+        
+        print(responseDic)
+        guard let code = responseDic["code"] else {
+            
+            return
+        }
+        
+        //let newPassword = responseDic["updatedPassword"]
+        
+        //UserDefaults.standard.set(newPassword!, forKey: Constant.PASSWORD)
+        
+        //self.revealViewController().revealToggle(animated: true)
+        
+        //self.navigationController?.popViewController(animated: true)
+        let username = UserDefaults.standard.value(forKey: Constant.USERNAME)
+        
+        let password = UserDefaults.standard.value(forKey: Constant.PASSWORD)
+        
+        //self.dismiss(animated: true, completion: nil)
+        
+        //let sw = self.presentingViewController! as! SWRevealViewController
+        
+        //let na = sw.frontViewController as! UINavigationController
+        if AppPreferences.sharedPreferences().isReachable == true
+        {
+            UserDefaults.standard.set(nil, forKey: Constant.LAST_LOGGEDIN_USER_NAME)
+            APIManager.getSharedAPIManager().logout(username: username as! String, password: password as! String, linkedinId: "")
+            
+        }
+        self.revealViewController().revealToggle(animated: true)
+        
+        self.navigationController?.popViewController(animated: true)
+        
+        
+        //let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController")
+        
+        //print(self.presentingViewController!.navigationController?.popToViewController(HomeViewController, animated: true))
+        
+        
+        
+        //self.presentingViewController?.revealToggle(animated: true)
+        
+        
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int
     {
         return 1
@@ -166,6 +221,34 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
             
             self.navigationController?.present(vc, animated: true, completion: nil)
         }
+        else
+            if settingItemLabel.text! == "Delete Account"
+            {
+                let alertController = UIAlertController(title: "Delete Account?", message: "Are you sure to delete this account", preferredStyle: .alert)
+                
+                let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: { (action) in
+                    
+                    let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+ 
+                    let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+
+                    alertController.dismiss(animated: true, completion: nil)
+
+                    APIManager.getSharedAPIManager().deleteAccount(username: username!, password: password!)
+                })
+                
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+                    
+                    alertController.dismiss(animated: true, completion: nil)
+                })
+                
+                alertController.addAction(deleteAction)
+                alertController.addAction(cancelAction)
+                
+                self.present(alertController, animated: true, completion: nil)
+                
+        
+            }
         
         
                 

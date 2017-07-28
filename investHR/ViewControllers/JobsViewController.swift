@@ -263,6 +263,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
             }
             verticalJobListArray.append(contentsOf: loadMoreJobListArray)
             
+            verticalJobListCopyForPredicateArray.append(contentsOf: loadMoreJobListArray)
+
             self.collectionView.insertItems(at: indexes)
             
             //self.collectionView.setNeedsDisplay()

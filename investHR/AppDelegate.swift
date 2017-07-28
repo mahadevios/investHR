@@ -154,6 +154,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         }
        // let obj = CoreDataManager.sharedManager
         
+        CoreDataManager.getSharedCoreDataManager().deleteOldNotifications(entity: "CommonNotification")
+        
         return true
     }
     

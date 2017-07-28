@@ -37,7 +37,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     var roleNameAndIdDic = [String:Int16]()
     var countryCodeButton:UIButton!
     @IBOutlet weak var visaStatusTextField: TextField!
-    @IBOutlet weak var cityTextField: TextField!
+   // @IBOutlet weak var cityTextField: TextField!
     
     @IBOutlet weak var verticalsTextFiled: UITextField!
     
@@ -63,7 +63,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     //@IBOutlet weak var passwordTextField: TextField!
     
     var statesArray:[String] = []
-    var cityArray:[String] = []
+    //var cityArray:[String] = []
     var filterArray = [String]()
     var stateNameAndIdDic = [String:Int16]()
     var cityNameAndIdDic = [String:Int64]()
@@ -89,7 +89,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
 
         stateTextField.addSubview(imageView2)
         
-        cityTextField.addSubview(imageView3)
+        //cityTextField.addSubview(imageView3)
         
 //        stateTextField.theme.font = UIFont.systemFont(ofSize: 15)
 //        stateTextField.theme.bgColor = UIColor (red: 1, green: 1, blue: 1, alpha: 0.8)
@@ -124,7 +124,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         currentCompanyTextField.delegate = self
         cuurentRoleTextField.delegate = self
         stateTextField.delegate = self
-        cityTextField.delegate = self
+        //cityTextField.delegate = self
         candidateFunctionTextField.delegate = self
         relocationTextFIeld.delegate = self
         stateTextField.delegate = self
@@ -347,7 +347,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         currentCompanyTextField.textColor = color
         stateTextField.textColor = color
         visaStatusTextField.textColor = color
-        cityTextField.textColor = color
+        //cityTextField.textColor = color
         
         verticalsTextFiled.textColor = color
         
@@ -692,8 +692,8 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         if stateDic != nil
         {
             let stateName = stateDic?["state_Name"] as? String
-            self.cityArray.removeAll()
-            self.getCitiesFromState(stateName: stateName!)
+            //self.cityArray.removeAll()
+            //self.getCitiesFromState(stateName: stateName!)
             stateTextField.text = stateName!
 
             //self.existingStateName = stateName!
@@ -705,20 +705,20 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
 
 
         }
-        if city != nil
-        {
-            let cityName = city?["city_Name"]
-            cityTextField.text = ""
-            cityTextField.resignFirstResponder()
-            cityTextField.text = cityName as! String?
-                       // DispatchQueue.main.async {
-//                            self.stateTextField.resignFirstResponder()
-//                            self.cityTextField.resignFirstResponder()
-                       // }
-            //cityTextField.isUserInteractionEnabled = false
-            //self.existingStateName = cityName as! String
-
-        }
+//        if city != nil
+//        {
+//            let cityName = city?["city_Name"]
+//            cityTextField.text = ""
+//            cityTextField.resignFirstResponder()
+//            cityTextField.text = cityName as! String?
+//                       // DispatchQueue.main.async {
+////                            self.stateTextField.resignFirstResponder()
+////                            self.cityTextField.resignFirstResponder()
+//                       // }
+//            //cityTextField.isUserInteractionEnabled = false
+//            //self.existingStateName = cityName as! String
+//
+//        }
         guard let pictureUrlString = imageName else
         {
             return
@@ -1019,10 +1019,10 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             
             return
         }
-        guard let city = cityTextField.text else {
-            
-            return
-        }
+//        guard let city = cityTextField.text else {
+//            
+//            return
+//        }
         var stateId:String? = ""
         if state == ""
         {
@@ -1057,38 +1057,38 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             
         }
         
-        var cityId:String! = ""
-        
-        if city == ""
-        {
-            
-        }
-        else
-        {
-            let firstLetterCapitalCity = city.capitalizingFirstLetter()
-            
-            if cityNameAndIdDic[firstLetterCapitalCity] != nil
-            {
-                cityId = String(describing: cityNameAndIdDic[firstLetterCapitalCity]!)
-                
-            }
-            else
-            {
-                DispatchQueue.main.async
-                    {
-                self.setUserInteractionEnabled(setEnable: true)
-
-                self.setRightBarButtonItemSave()
-
-                self.cityTextField.becomeFirstResponder()
-
-                AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid City", withMessage: "Please select a valid city", withCancelText: "Ok")
-                
-                }
-                return
-                
-            }
-        }
+//        var cityId:String! = ""
+//        
+//        if city == ""
+//        {
+//            
+//        }
+//        else
+//        {
+//            let firstLetterCapitalCity = city.capitalizingFirstLetter()
+//            
+//            if cityNameAndIdDic[firstLetterCapitalCity] != nil
+//            {
+//                cityId = String(describing: cityNameAndIdDic[firstLetterCapitalCity]!)
+//                
+//            }
+//            else
+//            {
+//                DispatchQueue.main.async
+//                    {
+//                self.setUserInteractionEnabled(setEnable: true)
+//
+//                self.setRightBarButtonItemSave()
+//
+//                self.cityTextField.becomeFirstResponder()
+//
+//                AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid City", withMessage: "Please select a valid city", withCancelText: "Ok")
+//                
+//                }
+//                return
+//                
+//            }
+//        }
         
         guard let companiesInterViewed = companiesInterviewedTextView.text else {
             
@@ -1255,7 +1255,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             relocationId = "1"
         }
         
-        let dict = ["name":name,"email":username!,"password":password!,"linkedinId":linkedInId!,"editedEmail":editedEmail1,"editedPassword":editedPassword1,"mobile":mobileNumberWithCountryCode,"currentRole":cuurentRole,"currentCompany":currentCompany,"stateId":stateId!,"cityId":cityId,"visaStatus":visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed1,"benifits":benefit1,"notJoinSpecificOrg":nonCompete1,"image":"","expInOffshoreEng":expOffshore,"relocation":relocationId,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":linkedInId!] as [String : String]
+        let dict = ["name":name,"email":username!,"password":password!,"linkedinId":linkedInId!,"editedEmail":editedEmail1,"editedPassword":editedPassword1,"mobile":mobileNumberWithCountryCode,"currentRole":cuurentRole,"currentCompany":currentCompany,"stateId":stateId!,"cityId":"","visaStatus":visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed1,"benifits":benefit1,"notJoinSpecificOrg":nonCompete1,"image":"","expInOffshoreEng":expOffshore,"relocation":relocationId,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":linkedInId!] as [String : String]
         
         
         do {
@@ -1319,18 +1319,18 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         currentCompanyTextField.isUserInteractionEnabled = setEnable
         // additionalPhoneTextfield.isUserInteractionEnabled = setEnable
         stateTextField.isUserInteractionEnabled = setEnable
-        if stateTextField.text != "" && setEnable == true
-        {
-            cityTextField.isUserInteractionEnabled = setEnable
-        }
-        else
-        {
-//         if setEnable == false
-//         {
-            cityTextField.isUserInteractionEnabled = setEnable
-
-         //}
-        }
+//        if stateTextField.text != "" && setEnable == true
+//        {
+//            cityTextField.isUserInteractionEnabled = setEnable
+//        }
+//        else
+//        {
+////         if setEnable == false
+////         {
+//            cityTextField.isUserInteractionEnabled = setEnable
+//
+//         //}
+//        }
         //cityTextField.isUserInteractionEnabled = setEnable
         visaStatusTextField.isUserInteractionEnabled = setEnable
         candidateFunctionTextField.isUserInteractionEnabled = setEnable
@@ -1361,7 +1361,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         currentCompanyTextField.resignFirstResponder()
         // additionalPhoneTextfield.isUserInteractionEnabled = setEnable
         stateTextField.resignFirstResponder()
-        cityTextField.resignFirstResponder()
+        //cityTextField.resignFirstResponder()
         visaStatusTextField.resignFirstResponder()
         candidateFunctionTextField.resignFirstResponder()
         servicesTextField.resignFirstResponder()
@@ -1514,9 +1514,9 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                     {
                         filterArray.removeAll()
 
-                        cityArray.removeAll()
+                        //cityArray.removeAll()
                         
-                        cityTextField.text = nil
+                        //cityTextField.text = nil
 
                         if stateTextField.text != nil
                         {
@@ -1548,69 +1548,69 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                         
 
                     }
-                        else
-                        if textField == cityTextField
-                        {
-                            
-
-                            if self.statesArray.contains(stateTextField.text!.capitalizingFirstLetter())
-                            {
-                                self.filterArray.removeAll()
-                                
-                                self.cityArray.removeAll()
-                                
-                                self.getCitiesFromState(stateName: self.stateTextField.text!.capitalizingFirstLetter())
-                            }
-                            
-
-                            if cityArray.count < 1
-                            {
-                                stateTextField.becomeFirstResponder()
-                                
-                                AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid State", withMessage: "Please select state first", withCancelText: "Ok")
-                                
-                                return
-                            }
-                            //let cgrect = self.cityTextField.convert(cityTextField.frame, to: nil)
-                            
-                            //self.autoCompleteTableView.frame = CGRect(x: self.cityTextField.frame.origin.x, y: self.cityTextField.frame.origin.y, width: self.autoCompleteTableView.frame.size.width, height: self.autoCompleteTableView.frame.size.height)
-                            self.topSpaceConstraint.constant = 50
-                            //self.autoCompleteTableView.frame = CGRect(x: cgrect.origin.x, y: cgrect.origin.y, width: self.autoCompleteTableView.frame.size.width, height: self.autoCompleteTableView.frame.size.height)
-                            //self.topSpaceConstraint
-//                            self.autoCompleteTableView.removeConstraint(topSpaceConstraint)
-//                            let con = NSLayoutConstraint(item: self.autoCompleteTableView, attribute: .top, relatedBy: .equal, toItem: self.cityTextField, attribute: .bottom, multiplier: 1, constant: 50)
+//                        else
+//                        if textField == cityTextField
+//                        {
+//                            
 //
-//                            //self.autoCompleteTableView.addConstraint(con)
-//                            NSLayoutConstraint.activate([con])
-                            // Add the constraint to the view
-                            //self.view.addConstraint(constraintButton)
-                            
-                            filterArray.removeAll()
-
-                            if cityTextField.text != nil
-                            {
-                                filterArray = self.cityArray.filter { $0.localizedCaseInsensitiveContains(cityTextField.text!) }
-                                
-                                if filterArray.count > 0
-                                {
-                                    self.autoCompleteTableView.isHidden = false
-
-                                }
-                                else
-                                {
-                                    self.autoCompleteTableView.isHidden = true
-
-                                }
-                                self.autoCompleteTableView.reloadData()
-                                
-                                
-                            }
-                            
-
-                            
-                            //cityTextField.filterStrings(self.cityArray)
-
-                        }
+//                            if self.statesArray.contains(stateTextField.text!.capitalizingFirstLetter())
+//                            {
+//                                self.filterArray.removeAll()
+//                                
+//                                self.cityArray.removeAll()
+//                                
+//                                self.getCitiesFromState(stateName: self.stateTextField.text!.capitalizingFirstLetter())
+//                            }
+//                            
+//
+//                            if cityArray.count < 1
+//                            {
+//                                stateTextField.becomeFirstResponder()
+//                                
+//                                AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid State", withMessage: "Please select state first", withCancelText: "Ok")
+//                                
+//                                return
+//                            }
+//                            //let cgrect = self.cityTextField.convert(cityTextField.frame, to: nil)
+//                            
+//                            //self.autoCompleteTableView.frame = CGRect(x: self.cityTextField.frame.origin.x, y: self.cityTextField.frame.origin.y, width: self.autoCompleteTableView.frame.size.width, height: self.autoCompleteTableView.frame.size.height)
+//                            self.topSpaceConstraint.constant = 50
+//                            //self.autoCompleteTableView.frame = CGRect(x: cgrect.origin.x, y: cgrect.origin.y, width: self.autoCompleteTableView.frame.size.width, height: self.autoCompleteTableView.frame.size.height)
+//                            //self.topSpaceConstraint
+////                            self.autoCompleteTableView.removeConstraint(topSpaceConstraint)
+////                            let con = NSLayoutConstraint(item: self.autoCompleteTableView, attribute: .top, relatedBy: .equal, toItem: self.cityTextField, attribute: .bottom, multiplier: 1, constant: 50)
+////
+////                            //self.autoCompleteTableView.addConstraint(con)
+////                            NSLayoutConstraint.activate([con])
+//                            // Add the constraint to the view
+//                            //self.view.addConstraint(constraintButton)
+//                            
+//                            filterArray.removeAll()
+//
+//                            if cityTextField.text != nil
+//                            {
+//                                filterArray = self.cityArray.filter { $0.localizedCaseInsensitiveContains(cityTextField.text!) }
+//                                
+//                                if filterArray.count > 0
+//                                {
+//                                    self.autoCompleteTableView.isHidden = false
+//
+//                                }
+//                                else
+//                                {
+//                                    self.autoCompleteTableView.isHidden = true
+//
+//                                }
+//                                self.autoCompleteTableView.reloadData()
+//                                
+//                                
+//                            }
+//                            
+//
+//                            
+//                            //cityTextField.filterStrings(self.cityArray)
+//
+//                        }
                         else
                         {
                             self.autoCompleteTableView.isHidden = true
@@ -1753,8 +1753,8 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                 }
                 else
                 {
-                    self.cityArray.removeAll()
-                    self.getCitiesFromState(stateName: self.stateTextField.text!)
+                    //self.cityArray.removeAll()
+                    //self.getCitiesFromState(stateName: self.stateTextField.text!)
                     textField.resignFirstResponder()
                     self.autoCompleteTableView.isHidden = true
 
@@ -1766,37 +1766,37 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                 textField.resignFirstResponder()
             }
         }
-        else
-            if textField == self.cityTextField
-            {
-                if self.cityTextField.text != nil && self.cityTextField.text != ""
-                {
-                    if !self.cityArray.contains(self.cityTextField.text!)
-                    {
-                        //                                DispatchQueue.main.async
-                        //                                    {
-                        //self.cityTextField.text = ""
-                       // AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid city", withMessage: "Please select a proper city", withCancelText: "Ok")
-                        // }
-                        textField.resignFirstResponder()
-
-                        self.autoCompleteTableView.isHidden = true
-
-                    }
-                    else
-                    {
-                        textField.resignFirstResponder()
-                        self.autoCompleteTableView.isHidden = true
-
-                    }
-                }
-                else
-                {
-                    textField.resignFirstResponder()
-                    //self.location1TextField.isUserInteractionEnabled = false
-                    
-                }
-            }
+//        else
+//            if textField == self.cityTextField
+//            {
+//                if self.cityTextField.text != nil && self.cityTextField.text != ""
+//                {
+//                    if !self.cityArray.contains(self.cityTextField.text!)
+//                    {
+//                        //                                DispatchQueue.main.async
+//                        //                                    {
+//                        //self.cityTextField.text = ""
+//                       // AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid city", withMessage: "Please select a proper city", withCancelText: "Ok")
+//                        // }
+//                        textField.resignFirstResponder()
+//
+//                        self.autoCompleteTableView.isHidden = true
+//
+//                    }
+//                    else
+//                    {
+//                        textField.resignFirstResponder()
+//                        self.autoCompleteTableView.isHidden = true
+//
+//                    }
+//                }
+//                else
+//                {
+//                    textField.resignFirstResponder()
+//                    //self.location1TextField.isUserInteractionEnabled = false
+//                    
+//                }
+//            }
             else
             {
                 textField.resignFirstResponder()
@@ -1878,30 +1878,30 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
     }
     
-    func getCitiesFromState( stateName:String)
-    {
-        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
-        
-        do
-        {
-            var managedObjects:[NSManagedObject]?
-            
-            managedObjects = coreDataManager.fetchCitiesFromStateId(entity: "City", stateId: Int16(stateNameAndIdDic[stateName]!))
-            for userObject in managedObjects as! [City]
-            {
-                cityArray.append(userObject.cityName!)
-                
-                cityNameAndIdDic[userObject.cityName!] = userObject.id
-                //stateNameAndIdDic[userObject.stateName!] = userObject.id as AnyObject?
-                
-            }
-            
-        } catch let error as NSError
-        {
-            print(error.localizedDescription)
-        }
-        
-    }
+//    func getCitiesFromState( stateName:String)
+//    {
+//        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
+//        
+//        do
+//        {
+//            var managedObjects:[NSManagedObject]?
+//            
+//            managedObjects = coreDataManager.fetchCitiesFromStateId(entity: "City", stateId: Int16(stateNameAndIdDic[stateName]!))
+//            for userObject in managedObjects as! [City]
+//            {
+//                cityArray.append(userObject.cityName!)
+//                
+//                cityNameAndIdDic[userObject.cityName!] = userObject.id
+//                //stateNameAndIdDic[userObject.stateName!] = userObject.id as AnyObject?
+//                
+//            }
+//            
+//        } catch let error as NSError
+//        {
+//            print(error.localizedDescription)
+//        }
+//        
+//    }
 
     
    
@@ -2512,7 +2512,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             
             if newString == ""
             {
-                cityArray.removeAll()
+                //cityArray.removeAll()
                 
                 filterArray.removeAll()
                 
@@ -2543,46 +2543,46 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             }
 
          }
-        else
-            if textField == cityTextField
-            {
-                let nsString = textField.text as NSString?
-                let newString = nsString?.replacingCharacters(in: range, with: string)
-                // let newString = newString1?.lowercased()
-                print("ol1dString = \(nsString)")
-                print("newString = \(newString)")
-                
-                if newString == ""
-                {
-                    filterArray.removeAll()
-                    
-                    self.autoCompleteTableView.reloadData()
-                    
-                    self.autoCompleteTableView.isHidden = true
-                    
-                    
-                }
-                else
-                {
-                    filterArray.removeAll()
-                    
-                    filterArray = self.cityArray.filter { $0.localizedCaseInsensitiveContains(newString!) }
-                    
-                    if filterArray.count > 0
-                    {
-                        self.autoCompleteTableView.isHidden = false
-                        
-                    }
-                    else
-                    {
-                        self.autoCompleteTableView.isHidden = true
-                        
-                    }
-                    self.autoCompleteTableView.reloadData()
-                    
-                }
-                
-        }
+//        else
+//            if textField == cityTextField
+//            {
+//                let nsString = textField.text as NSString?
+//                let newString = nsString?.replacingCharacters(in: range, with: string)
+//                // let newString = newString1?.lowercased()
+//                print("ol1dString = \(nsString)")
+//                print("newString = \(newString)")
+//                
+//                if newString == ""
+//                {
+//                    filterArray.removeAll()
+//                    
+//                    self.autoCompleteTableView.reloadData()
+//                    
+//                    self.autoCompleteTableView.isHidden = true
+//                    
+//                    
+//                }
+//                else
+//                {
+//                    filterArray.removeAll()
+//                    
+//                    filterArray = self.cityArray.filter { $0.localizedCaseInsensitiveContains(newString!) }
+//                    
+//                    if filterArray.count > 0
+//                    {
+//                        self.autoCompleteTableView.isHidden = false
+//                        
+//                    }
+//                    else
+//                    {
+//                        self.autoCompleteTableView.isHidden = true
+//                        
+//                    }
+//                    self.autoCompleteTableView.reloadData()
+//                    
+//                }
+//                
+//        }
 
         
         return true
@@ -2612,29 +2612,29 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         {
             self.stateTextField.text = cell?.textLabel?.text
             
-            self.cityArray.removeAll()
+            //self.cityArray.removeAll()
             
             self.filterArray.removeAll()
             
-            self.getCitiesFromState(stateName: self.stateTextField.text!)
+            //self.getCitiesFromState(stateName: self.stateTextField.text!)
             
             self.autoCompleteTableView.reloadData()
             
             self.autoCompleteTableView.isHidden = true
         }
-        else
-        {
-            self.cityTextField.text = cell?.textLabel?.text
-            
-            //self.cityArray.removeAll()
-            
-            //self.filterArray.removeAll()
-
-            self.autoCompleteTableView.reloadData()
-
-            self.autoCompleteTableView.isHidden = true
-
-        }
+//        else
+//        {
+//            self.cityTextField.text = cell?.textLabel?.text
+//            
+//            //self.cityArray.removeAll()
+//            
+//            //self.filterArray.removeAll()
+//
+//            self.autoCompleteTableView.reloadData()
+//
+//            self.autoCompleteTableView.isHidden = true
+//
+//        }
         
         
     }

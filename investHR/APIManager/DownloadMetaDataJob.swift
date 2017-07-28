@@ -883,6 +883,59 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                     
                 }
                 break
+                
+            case Constant.REFER_FRIEND_API:
+                
+                guard let dictFromJSON = response else
+                {
+                    return
+                }
+                if String(describing: dictFromJSON["code"]!) == Constant.SUCCESS
+                {
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    // AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid Email!", withMessage: "Invalid email entered", withCancelText: "Ok")
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_REFER_FRIEND), object: dictFromJSON, userInfo: nil)
+                    
+                }
+                else
+                {
+                    //                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                }
+                break
+
+            case Constant.DELETE_ACCOUNT_API:
+                
+                guard let dictFromJSON = response else
+                {
+                    return
+                }
+                if String(describing: dictFromJSON["code"]!) == Constant.SUCCESS
+                {
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    // AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid Email!", withMessage: "Invalid email entered", withCancelText: "Ok")
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_DELETE_ACCOUNT), object: dictFromJSON, userInfo: nil)
+                    
+                }
+                else
+                {
+                    //                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    
+                    AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                }
+                break
+
 
             default: break
                 

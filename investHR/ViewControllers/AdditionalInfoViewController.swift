@@ -37,7 +37,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
     var password:String!
     var imageData:Any?
     var state:String!
-    var city:String!
+    //var city:String!
     var currentRole:String!
     var currentCompany:String!
     var visaStatus:String!
@@ -412,7 +412,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         
         self.resignAllResponders()
         
-       let dict = ["name":self.name,"email":self.email,"password":self.password,"mobile":self.mobile,"currentRole":self.currentRole,"currentCompany":self.currentCompany,"stateId":self.state!,"cityId":self.city!,"visaStatus":self.visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed1,"benifits":benefit1,"notJoinSpecificOrg":nonCompete1,"image":"","expInOffshoreEng":expOffshore,"relocation":relocationId,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":""] as [String : String]
+       let dict = ["name":self.name,"email":self.email,"password":self.password,"mobile":self.mobile,"currentRole":self.currentRole,"currentCompany":self.currentCompany,"stateId":self.state!,"cityId":"","visaStatus":self.visaStatus,"candidateFunction":roleId!,"services":service,"linkedInProfileUrl":linkedInUR,"verticalsServiceTo":vertical,"revenueQuota":revenueQuota,"PandL":PL,"currentCompLastYrW2":currentCompany,"expectedCompany":expectedCompany,"joiningTime":joinigTime,"compInterviewPast1Yr":companiesInterViewed1,"benifits":benefit1,"notJoinSpecificOrg":nonCompete1,"image":"","expInOffshoreEng":expOffshore,"relocation":relocationId,"deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":""] as [String : String]
         
         
         do {

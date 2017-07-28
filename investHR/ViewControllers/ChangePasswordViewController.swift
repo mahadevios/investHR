@@ -76,7 +76,7 @@ class ChangePasswordViewController: UIViewController
         sw.revealToggle(animated: false)
 
 
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController")
+        //let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController")
         
         //print(self.presentingViewController!.navigationController?.popToViewController(HomeViewController, animated: true))
 

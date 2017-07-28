@@ -14,7 +14,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
 
     @IBOutlet weak var visaStatusTextField: TextField!
     @IBOutlet weak var locationTextField: TextField!
-    @IBOutlet weak var location1TextField: TextField!
+   // @IBOutlet weak var location1TextField: TextField!
     @IBOutlet weak var currentRoleTextField: TextField!
     @IBOutlet weak var currentCompanyTextField: TextField!
     var name:String?
@@ -58,13 +58,13 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         let image2 = UIImage(named: "Location")
         imageView2.image = image2
         
-        let imageView3 = UIImageView(frame: CGRect(x: 15, y: 10, width: 14, height: 17))
-        let image3 = UIImage(named: "Location")
-        imageView3.image = image3
+       // let imageView3 = UIImageView(frame: CGRect(x: 15, y: 10, width: 14, height: 17))
+        //let image3 = UIImage(named: "Location")
+        //imageView3.image = image3
         //locationTextField.leftView = imageView2
         
         locationTextField.addSubview(imageView2)
-        location1TextField.addSubview(imageView3)
+        //location1TextField.addSubview(imageView3)
 
 //        locationTextField.theme.font = UIFont.systemFont(ofSize: 15)
 //        locationTextField.theme.bgColor = UIColor (red: 1, green: 1, blue: 1, alpha: 0.8)
@@ -146,7 +146,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         currentCompanyTextField.delegate = self
         visaStatusTextField.delegate = self
         locationTextField.delegate = self
-        location1TextField.delegate = self
+        //location1TextField.delegate = self
         //location1TextField.isUserInteractionEnabled = false
         // LISDKSessionManager.clearSession()
         
@@ -463,7 +463,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         currentRoleTextField.resignFirstResponder()
         currentCompanyTextField.resignFirstResponder()
         locationTextField.resignFirstResponder()
-        location1TextField.resignFirstResponder()
+        //location1TextField.resignFirstResponder()
         visaStatusTextField.resignFirstResponder()
         
         guard let mobileNumber = self.mobile else {
@@ -482,10 +482,10 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             
             return
         }
-        guard let city = location1TextField.text else {
-            
-            return
-        }
+//        guard let city = location1TextField.text else {
+//            
+//            return
+//        }
         var stateId:String? = ""
         if state == ""
         {
@@ -513,29 +513,29 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             
         }
         
-        var cityId:String! = ""
-        
-        if city == ""
-        {
-            
-        }
-        else
-            
-        {
-            if cityNameAndIdDic[city] != nil
-            {
-                cityId = String(describing: cityNameAndIdDic[city]!)
-
-            }
-            else
-            {
-                self.location1TextField.becomeFirstResponder()
-
-                AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid City", withMessage: "Please select a valid state", withCancelText: "Ok")
-
-                return
-            }
-        }
+//        var cityId:String! = ""
+//        
+//        if city == ""
+//        {
+//            
+//        }
+//        else
+//            
+//        {
+//            if cityNameAndIdDic[city] != nil
+//            {
+//                cityId = String(describing: cityNameAndIdDic[city]!)
+//
+//            }
+//            else
+//            {
+//                self.location1TextField.becomeFirstResponder()
+//
+//                AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid City", withMessage: "Please select a valid state", withCancelText: "Ok")
+//
+//                return
+//            }
+//        }
 
         guard let visaStatus = visaStatusTextField.text else {
             
@@ -546,7 +546,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         
         
         
-        let dict = ["name":self.name!,"email":self.email!,"password":self.password!,"mobile":mobileNumber,"currentRole":currentRole,"currentCompany":currentCompany,"stateId":stateId!,"cityId":cityId!,"visaStatus":visaStatus,"candidateFunction":"","services":"","linkedInProfileUrl":"","verticalsServiceTo":"","revenueQuota":"","PandL":"","currentCompLastYrW2":"","expectedCompany":"","joiningTime":"","compInterviewPast1Yr":"","benifits":"","notJoinSpecificOrg":"","image":"","expInOffshoreEng":"","relocation":"","deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":""] as [String : String]
+        let dict = ["name":self.name!,"email":self.email!,"password":self.password!,"mobile":mobileNumber,"currentRole":currentRole,"currentCompany":currentCompany,"stateId":stateId!,"cityId":"","visaStatus":visaStatus,"candidateFunction":"","services":"","linkedInProfileUrl":"","verticalsServiceTo":"","revenueQuota":"","PandL":"","currentCompLastYrW2":"","expectedCompany":"","joiningTime":"","compInterviewPast1Yr":"","benifits":"","notJoinSpecificOrg":"","image":"","expInOffshoreEng":"","relocation":"","deviceToken":AppPreferences.sharedPreferences().firebaseInstanceId,"linkedIn":""] as [String : String]
         
         
         do {
@@ -633,36 +633,36 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             
         }
         
-        guard let city = location1TextField.text else
-        {
-            
-            return
-        }
-        
-        var cityId:String! = ""
-        
-        if city == ""
-        {
-            
-        }
-        else
-        {
-            if cityNameAndIdDic[city] != nil
-            {
-                cityId = String(describing: cityNameAndIdDic[city]!)
-                
-            }
-            else
-            {
-                self.location1TextField.becomeFirstResponder()
-
-                AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid City", withMessage: "Please select a valid city", withCancelText: "Ok")
-                
-                
-                return
-                
-            }
-        }
+//        guard let city = location1TextField.text else
+//        {
+//            
+//            return
+//        }
+//        
+//        var cityId:String! = ""
+//        
+//        if city == ""
+//        {
+//            
+//        }
+//        else
+//        {
+//            if cityNameAndIdDic[city] != nil
+//            {
+//                cityId = String(describing: cityNameAndIdDic[city]!)
+//                
+//            }
+//            else
+//            {
+//                //self.location1TextField.becomeFirstResponder()
+//
+//                AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid City", withMessage: "Please select a valid city", withCancelText: "Ok")
+//                
+//                
+//                return
+//                
+//            }
+//        }
         
         guard let visaStatus = visaStatusTextField.text else {
             
@@ -677,7 +677,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         vc.state = stateId!
         vc.currentRole = currentRole
         vc.visaStatus = visaStatus
-        vc.city = cityId!
+        //vc.city = cityId!
         vc.currentCompany = currentCompany
         
         self.navigationController?.present(vc, animated: true, completion: nil)
@@ -708,7 +708,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         if self.view.frame.origin.y >= 0
         {
                         
-            if visaStatusTextField.isFirstResponder || locationTextField.isFirstResponder || location1TextField.isFirstResponder
+            if visaStatusTextField.isFirstResponder || locationTextField.isFirstResponder
             {
                 setViewMovedUp(movedUp: true, localOffset: 136)
             }
@@ -822,7 +822,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
                 
                 cityArray.removeAll()
                 
-                location1TextField.text = nil
+                //location1TextField.text = nil
                 
                 if locationTextField.text != nil
                 {
@@ -847,44 +847,44 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
                 
                 
             }
-            else
-                if textField == location1TextField
-                {
-                    if cityArray.count < 1
-                    {
-                        locationTextField.becomeFirstResponder()
-                        
-                        AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid State", withMessage: "Please select a valid state", withCancelText: "Ok")
-                        
-                        return
-                    }
-                    self.topSpaceConstraint.constant = 50
-                   
-                    
-                    filterArray.removeAll()
-                    
-                    if location1TextField.text != nil
-                    {
-                        filterArray = self.cityArray.filter { $0.localizedCaseInsensitiveContains(location1TextField.text!) }
-                        
-                        if filterArray.count > 0
-                        {
-                            self.autoCompleteTableView.isHidden = false
-                            
-                        }
-                        else
-                        {
-                            self.autoCompleteTableView.isHidden = true
-                            
-                        }
-                        self.autoCompleteTableView.reloadData()
-                        
-                        
-                    }
-                    
-                    
-                    
-        }
+//            else
+//                if textField == location1TextField
+//                {
+//                    if cityArray.count < 1
+//                    {
+//                        locationTextField.becomeFirstResponder()
+//                        
+//                        AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid State", withMessage: "Please select a valid state", withCancelText: "Ok")
+//                        
+//                        return
+//                    }
+//                    self.topSpaceConstraint.constant = 50
+//                   
+//                    
+//                    filterArray.removeAll()
+//                    
+//                    if location1TextField.text != nil
+//                    {
+//                        filterArray = self.cityArray.filter { $0.localizedCaseInsensitiveContains(location1TextField.text!) }
+//                        
+//                        if filterArray.count > 0
+//                        {
+//                            self.autoCompleteTableView.isHidden = false
+//                            
+//                        }
+//                        else
+//                        {
+//                            self.autoCompleteTableView.isHidden = true
+//                            
+//                        }
+//                        self.autoCompleteTableView.reloadData()
+//                        
+//                        
+//                    }
+//                    
+//                    
+//                    
+//        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
@@ -945,41 +945,41 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
                 
             }
         }
-        else
-            if textField == self.location1TextField
-            {
-                if self.location1TextField.text != nil && self.location1TextField.text != ""
-                {
-                    if !self.cityArray.contains(self.location1TextField.text!)
-                    {
-                        //                                DispatchQueue.main.async
-                        //                                    {
-                        //self.cityTextField.text = ""
-                        // AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid city", withMessage: "Please select a proper city", withCancelText: "Ok")
-                        // }
-                        textField.resignFirstResponder()
-                        
-                        self.autoCompleteTableView.isHidden = true
-                        
-                    }
-                    else
-                    {
-                        textField.resignFirstResponder()
-                        self.autoCompleteTableView.isHidden = true
-                        
-                    }
-                }
-                else
-                {
-                    //self.location1TextField.isUserInteractionEnabled = false
-                    
-                }
-            }
-            else
-            {
-                textField.resignFirstResponder()
-                
-        }
+//        else
+//            if textField == self.location1TextField
+//            {
+//                if self.location1TextField.text != nil && self.location1TextField.text != ""
+//                {
+//                    if !self.cityArray.contains(self.location1TextField.text!)
+//                    {
+//                        //                                DispatchQueue.main.async
+//                        //                                    {
+//                        //self.cityTextField.text = ""
+//                        // AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid city", withMessage: "Please select a proper city", withCancelText: "Ok")
+//                        // }
+//                        textField.resignFirstResponder()
+//                        
+//                        self.autoCompleteTableView.isHidden = true
+//                        
+//                    }
+//                    else
+//                    {
+//                        textField.resignFirstResponder()
+//                        self.autoCompleteTableView.isHidden = true
+//                        
+//                    }
+//                }
+//                else
+//                {
+//                    //self.location1TextField.isUserInteractionEnabled = false
+//                    
+//                }
+//            }
+//            else
+//            {
+//                textField.resignFirstResponder()
+//                
+//        }
 
         //}
         return true
@@ -1093,46 +1093,46 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             }
             
         }
-        else
-            if textField == location1TextField
-            {
-                let nsString = textField.text as NSString?
-                let newString = nsString?.replacingCharacters(in: range, with: string)
-                // let newString = newString1?.lowercased()
-                print("ol1dString = \(nsString)")
-                print("newString = \(newString)")
-                
-                if newString == ""
-                {
-                    filterArray.removeAll()
-                    
-                    self.autoCompleteTableView.reloadData()
-                    
-                    self.autoCompleteTableView.isHidden = true
-                    
-                    
-                }
-                else
-                {
-                    filterArray.removeAll()
-                    
-                    filterArray = self.cityArray.filter { $0.localizedCaseInsensitiveContains(newString!) }
-                    
-                    if filterArray.count > 0
-                    {
-                        self.autoCompleteTableView.isHidden = false
-                        
-                    }
-                    else
-                    {
-                        self.autoCompleteTableView.isHidden = true
-                        
-                    }
-                    self.autoCompleteTableView.reloadData()
-                    
-                }
-                
-        }
+//        else
+//            if textField == location1TextField
+//            {
+//                let nsString = textField.text as NSString?
+//                let newString = nsString?.replacingCharacters(in: range, with: string)
+//                // let newString = newString1?.lowercased()
+//                print("ol1dString = \(nsString)")
+//                print("newString = \(newString)")
+//                
+//                if newString == ""
+//                {
+//                    filterArray.removeAll()
+//                    
+//                    self.autoCompleteTableView.reloadData()
+//                    
+//                    self.autoCompleteTableView.isHidden = true
+//                    
+//                    
+//                }
+//                else
+//                {
+//                    filterArray.removeAll()
+//                    
+//                    filterArray = self.cityArray.filter { $0.localizedCaseInsensitiveContains(newString!) }
+//                    
+//                    if filterArray.count > 0
+//                    {
+//                        self.autoCompleteTableView.isHidden = false
+//                        
+//                    }
+//                    else
+//                    {
+//                        self.autoCompleteTableView.isHidden = true
+//                        
+//                    }
+//                    self.autoCompleteTableView.reloadData()
+//                    
+//                }
+//                
+//        }
         
         
         return true
@@ -1162,29 +1162,29 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         {
             self.locationTextField.text = cell?.textLabel?.text
             
-            self.cityArray.removeAll()
+            //self.cityArray.removeAll()
             
             self.filterArray.removeAll()
             
-            self.getCitiesFromState(stateName: self.locationTextField.text!)
+            //self.getCitiesFromState(stateName: self.locationTextField.text!)
             
             self.autoCompleteTableView.reloadData()
             
             self.autoCompleteTableView.isHidden = true
         }
-        else
-        {
-            self.location1TextField.text = cell?.textLabel?.text
-            
-            //self.cityArray.removeAll()
-            
-            //self.filterArray.removeAll()
-            
-            self.autoCompleteTableView.reloadData()
-            
-            self.autoCompleteTableView.isHidden = true
-            
-        }
+//        else
+//        {
+//            self.location1TextField.text = cell?.textLabel?.text
+//            
+//            //self.cityArray.removeAll()
+//            
+//            //self.filterArray.removeAll()
+//            
+//            self.autoCompleteTableView.reloadData()
+//            
+//            self.autoCompleteTableView.isHidden = true
+//            
+//        }
         
         
     }

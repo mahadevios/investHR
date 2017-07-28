@@ -196,6 +196,80 @@ class CoreDataManager: NSObject
 
     
     }
+    
+    func getNotiRecordsTodelete(entity: String, date:Date) -> [NSManagedObject]?
+    {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            
+            
+            return nil
+        }
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        
+        
+        
+            //let userId = UserDefaults.standard.object(forKey: Constant.USERID) as! String
+            
+        
+            fetchRequest.predicate = NSPredicate(format: "notificationDate < %@", date as CVarArg)
+            
+            do {
+            let manageObjects = try appDelegate.managedObjectContext.fetch(fetchRequest)
+            
+            if manageObjects.count > 0
+            {
+                return manageObjects as? [NSManagedObject]
+            }
+        } catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        //        if let entities = managedObjectContext.fetch(request) as? [NSManagedObject]
+        //        {
+        //            if entities.count > 0
+        //            {
+        //                return entities
+        //            }
+        //        }
+        return nil
+    }
+
+    func deleteOldNotifications(entity: String) -> Bool
+    {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        let date = Date()
+        
+        let dateToDelete = date.addingTimeInterval(-10*24*60*60)
+        
+        let notifObj = getNotiRecordsTodelete(entity: "CommonNotification", date:dateToDelete) as? [CommonNotification]
+        
+        if notifObj != nil
+        {
+            //appDelegate.managedObjectContext.delete(data![index])
+            
+            //data!.remove(at: index)
+            
+            for obj in notifObj!
+            {
+                appDelegate.managedObjectContext.delete(obj)
+            }
+            do
+            {
+                
+                try appDelegate.managedObjectContext.save()
+                
+            } catch let error as NSError
+            {
+                print(error.localizedDescription)
+            }
+            
+            return true
+        }
+        
+        return false
+    }
+    
     func idExists (aToken:String,  entityName:String) -> Bool
     {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate

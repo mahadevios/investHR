@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewJobsViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIWebViewDelegate,UIGestureRecognizerDelegate,UITextFieldDelegate
+class NewJobsViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIWebViewDelegate,UIGestureRecognizerDelegate,UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource
 {
     var applied:Bool = false
     var saved:Bool = false
@@ -44,7 +44,11 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
 
     var textField3:UITextField!
 
-    var browseButton:UIButton!
+    var countryCodeButton:UIButton!
+
+    var coutryCodesArray:[String] = []
+
+    //var browseButton:UIButton!
 
     var submitButton:UIButton!
 
@@ -66,7 +70,9 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkSavedOrAppliedJobDescriptionResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVED_APPLIED_JOB_DESCRIPTION), object: nil)
 
+        NotificationCenter.default.addObserver(self, selector: #selector(checkRederFriendResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_REFER_FRIEND), object: nil)
 
+        coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+672","+64","+1 268","+54","+374","+297","+247","+61","+43","+994","+1 242","+973","+880","+1 246","+375","+32","+501","+229","+1 441","+975","+591","+387","+267","+55","+1 284","+673","+359","+226","+95","+257","+855","+237","+238","+1 345","+236","+235","+56","+86","+61","+57","+269","+242","+682","+506","+385","+53","+357","+420","+243","+45","+246","+253","+1 767","+1 809","+1 829","+1, 849","+593","+20","+503","+240","+291","+372","+251","+500","+298","+679","+358","+33","+594","+689","+241","+220","+995","+49","+233","+350","+30","+299","+1 473","+590","+1 671","+502","+224","+245","+592","+509","+39","+504","+852","+36","+354","+91","+62","+98","+964","+353","+44","+972","+225","+1 876","+81","+962","+7","+254","+686","+965","+996","+856","+371","+961","+266","+231","+218","+423","+370","+352","+853","+389","+261","+265","+60","+960","+223","+356","+692","+596","+222","+230","+262","+52","+691","+373","+377","+976","+382","+1 664","+212","+258","+264","+674","+977","+31","+599","+687","+64","+505","+227","+234","+683","+672","+850","+1 670","+47","+968","+92","+680","+970","+507","+595","+51","+63","+870","+48","+351","+1 787","+1 939","+974","+242","+262","+40","+250","+590","+290","+1 869","+1 758","+508","+1 784","+685","+378","+239","+966","+221","+381","+248","+232","+65","+1 721","+421","+386","+677","+252","+27","+82","+211","+34","+94","+249","+597","+47","+268","+46","+41","+963","+886","+992","+255","+66","+670","+228","+690","+676","+1 868","+216","+90","+993","+1 649","+688","+256","+380","+971","+598","+1 340","+998","+678","+58","+84","+681","+212","+967","+260","+263"]
         // Do any additional setup after loading the view.
     }
 
@@ -193,71 +199,87 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                 
                 
             }
-            for index0 in 0 ..< uniqueStateArray.count
+            jobLocationArray.removeAll()
+            
+            for index in 0 ..< uniqueStateArray.count
             {
-                var stateAdded = false
-                var firstTime = true
-                
-                
-                for index in 0 ..< cityStateArray!.count
+                if index != uniqueStateArray.count - 1
                 {
-                    let cityStateDic = cityStateArray![index] as? [String:AnyObject]
+                    jobLocationArray.append(uniqueStateArray[index])
                     
-                    let state = cityStateDic?["state"] as! String
-                    
-                    
-                    if state == uniqueStateArray[index0]
-                    {
-                        let optionalCity = cityStateDic?["city"]
-                        
-                        var city = ""
-                        
-                        if optionalCity is NSNull
-                        {
-                            city = ""
-                            if !stateAdded
-                            {
-                                //                                jobLocationArray.append("\(state)\(":")\(city)")
-                                jobLocationArray.append("\(state)")
-                                
-                                stateAdded = true
-                            }
-                            else
-                            {
-                                //jobLocationArray.append("\(",")\(city)")
-                            }
-                        }
-                        else
-                        {
-                            city = optionalCity! as! String
-                            
-                            if !stateAdded
-                            {
-                                jobLocationArray.append("\(state)\(":")\(city)")
-                                stateAdded = true
-                                firstTime = false
-                                
-                            }
-                            else
-                            {
-                                if firstTime == true
-                                {
-                                    jobLocationArray.append("\(":")\(city)")
-                                    firstTime = false
-                                    
-                                }
-                                else
-                                {
-                                    jobLocationArray.append("\(",")\(city)")
-                                    
-                                }
-                                
-                            }
-                        }
-                    }
+                    jobLocationArray.append(",")
                 }
-                jobLocationArray.append("\n")
+                else
+                {
+                    jobLocationArray.append(uniqueStateArray[index])
+                    
+                }
             }
+            //for index0 in 0 ..< uniqueStateArray.count
+//            {
+//                var stateAdded = false
+//                var firstTime = true
+//                
+//                
+//                for index in 0 ..< cityStateArray!.count
+//                {
+//                    let cityStateDic = cityStateArray![index] as? [String:AnyObject]
+//                    
+//                    let state = cityStateDic?["state"] as! String
+//                    
+//                    
+//                    if state == uniqueStateArray[index0]
+//                    {
+//                        let optionalCity = cityStateDic?["city"]
+//                        
+//                        var city = ""
+//                        
+//                        if optionalCity is NSNull
+//                        {
+//                            city = ""
+//                            if !stateAdded
+//                            {
+//                                //                                jobLocationArray.append("\(state)\(":")\(city)")
+//                                jobLocationArray.append("\(state)")
+//                                
+//                                stateAdded = true
+//                            }
+//                            else
+//                            {
+//                                //jobLocationArray.append("\(",")\(city)")
+//                            }
+//                        }
+//                        else
+//                        {
+//                            city = optionalCity! as! String
+//                            
+//                            if !stateAdded
+//                            {
+//                                jobLocationArray.append("\(state)\(":")\(city)")
+//                                stateAdded = true
+//                                firstTime = false
+//                                
+//                            }
+//                            else
+//                            {
+//                                if firstTime == true
+//                                {
+//                                    jobLocationArray.append("\(":")\(city)")
+//                                    firstTime = false
+//                                    
+//                                }
+//                                else
+//                                {
+//                                    jobLocationArray.append("\(",")\(city)")
+//                                    
+//                                }
+//                                
+//                            }
+//                        }
+//                    }
+//                }
+//                jobLocationArray.append("\n")
+//            }
             
             
         } catch let error as NSError
@@ -369,71 +391,98 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                 //                jobLocationArray.append("\(state)\(" ")\(city)")
                 
             }
-            for index0 in 0 ..< uniqueStateArray.count
+            jobLocationArray.removeAll()
+            
+//            for uniqueStateName in uniqueStateArray
+//            {
+//                jobLocationArray.append(uniqueStateName)
+//                
+//                jobLocationArray.append(",")
+//
+//            }
+            
+            for index in 0 ..< uniqueStateArray.count
             {
-                var stateAdded = false
-                var firstTime = true
-
-                
-                for index in 0 ..< cityStateArray!.count
+                if index != uniqueStateArray.count - 1
                 {
-                    let cityStateDic = cityStateArray![index] as? [String:AnyObject]
-                    
-                    let state = cityStateDic?["state"] as! String
-                    
-                    
-                    if state == uniqueStateArray[index0]
-                    {
-                        let optionalCity = cityStateDic?["city"]
-                        
-                        var city = ""
-                        
-                        if optionalCity is NSNull
-                        {
-                            city = ""
-                            if !stateAdded
-                            {
-                                //                                jobLocationArray.append("\(state)\(":")\(city)")
-                                jobLocationArray.append("\(state)")
-                                
-                                stateAdded = true
-                            }
-                            else
-                            {
-                                //jobLocationArray.append("\(",")\(city)")
-                            }
-                        }
-                        else
-                        {
-                            city = optionalCity! as! String
-                            
-                            if !stateAdded
-                            {
-                                jobLocationArray.append("\(state)\(":")\(city)")
-                                stateAdded = true
-                                firstTime = false
+                    jobLocationArray.append(uniqueStateArray[index])
 
-                            }
-                            else
-                            {
-                                if firstTime == true
-                                {
-                                    jobLocationArray.append("\(":")\(city)")
-                                    firstTime = false
-
-                                }
-                                else
-                                {
-                                    jobLocationArray.append("\(",")\(city)")
-
-                                }
-
-                            }
-                        }
-                    }
+                    jobLocationArray.append(",")
                 }
-                jobLocationArray.append("\n")
+                else
+                {
+                    jobLocationArray.append(uniqueStateArray[index])
+
+                }
             }
+            
+
+           // for 0..< u
+            //for index0 in 0 ..< uniqueStateArray.count
+//            {
+//                var stateAdded = false
+//                var firstTime = true
+//
+//                
+//                for index in 0 ..< cityStateArray!.count
+//                {
+//                    let cityStateDic = cityStateArray![index] as? [String:AnyObject]
+//                    
+//                    let state = cityStateDic?["state"] as! String
+//                    
+//                    
+//                    if state == uniqueStateArray[index0]
+//                    {
+//                        let optionalCity = cityStateDic?["city"]
+//                        
+//                        var city = ""
+//                        
+//                        if optionalCity is NSNull
+//                        {
+//                            city = ""
+//                            if !stateAdded
+//                            {
+//                                //                                jobLocationArray.append("\(state)\(":")\(city)")
+//                                jobLocationArray.append("\(state)")
+//                                
+//                                stateAdded = true
+//                            }
+//                            else
+//                            {
+//                                //jobLocationArray.append("\(",")\(city)")
+//                            }
+//                        }
+//                        else
+//                        {
+//                            city = optionalCity! as! String
+//                            
+//                            if !stateAdded
+//                            {
+//                                jobLocationArray.append("\(state)\(":")\(city)")
+//                                stateAdded = true
+//                                firstTime = false
+//
+//                            }
+//                            else
+//                            {
+//                                if firstTime == true
+//                                {
+//                                    jobLocationArray.append("\(":")\(city)")
+//                                    firstTime = false
+//
+//                                }
+//                                else
+//                                {
+//                                    jobLocationArray.append("\(",")\(city)")
+//
+//                                }
+//
+//                            }
+//                        }
+//                    }
+//                }
+//                jobLocationArray.append("\n")
+//            }
             
             
         } catch let error as NSError
@@ -841,7 +890,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         referenceLabel.textAlignment = NSTextAlignment.center
         
-        referenceLabel.text = "Reference"
+        referenceLabel.text = "Referral"
         
         referenceLabel.textColor = UIColor(colorLiteralRed: 24/255.0, green: 125/255.0, blue: 239/255.0, alpha: 1.0)
         
@@ -852,7 +901,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
 
         
         
-        textField = UITextField(frame: CGRect(x: insideView.frame.size.width*0.07, y: lineView.frame.origin.y + lineView.frame.size.height + 10, width: insideView.frame.size.width*0.86, height: 30))
+        textField = UITextField(frame: CGRect(x: insideView.frame.size.width*0.07, y: lineView.frame.origin.y + lineView.frame.size.height + 20, width: insideView.frame.size.width*0.86, height: 30))
 
         textField1 = UITextField(frame: CGRect(x: textField.frame.origin.x, y: textField.frame.origin.y + textField.frame.size.height + 15, width: textField.frame.size.width, height: textField.frame.size.height))
         
@@ -871,34 +920,43 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         textField1.leftViewMode = .always
         textField1.font = UIFont.systemFont(ofSize: 14.0)
         textField1.delegate = self
+        textField1.keyboardType = .emailAddress
 
-        let paddingView2 = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 30))
-        textField2.leftView = paddingView2
+        let paddingView2 = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 30))
         textField2.leftViewMode = .always
         textField2.font = UIFont.systemFont(ofSize: 14.0)
         textField2.delegate = self
+        textField2.keyboardType = .phonePad
+        countryCodeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 30))
+        countryCodeButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        countryCodeButton.setTitleColor(UIColor.black, for: .normal)
+        countryCodeButton.setTitle("\(coutryCodesArray[0])", for: .normal)
+        countryCodeButton.addTarget(self, action: #selector(countryCodeButtonClicekd), for: .touchUpInside)
+        paddingView2.addSubview(countryCodeButton)
+        textField2.leftView = paddingView2
 
         let paddingView3 = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 30))
         textField3.leftView = paddingView3
         textField3.leftViewMode = .always
         textField3.font = UIFont.systemFont(ofSize: 14.0)
         textField3.delegate = self
+        textField3.keyboardType = .URL
 
-        browseButton = UIButton(frame: CGRect(x: textField.frame.origin.x, y: textField3.frame.origin.y + textField3.frame.size.height + 15, width: textField.frame.size.width/2.3, height: textField.frame.size.height))
+//        browseButton = UIButton(frame: CGRect(x: textField.frame.origin.x, y: textField3.frame.origin.y + textField3.frame.size.height + 15, width: textField.frame.size.width/2.3, height: textField.frame.size.height))
+//        
+//        browseButton.backgroundColor = UIColor.lightGray
+//        
+//        browseButton.setTitle("Browse Resume", for: .normal)
+//        
+//        browseButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+//        
+//        browseButton.setTitleColor(UIColor.black, for: .normal)
+//        
+//        browseButton.layer.cornerRadius = 4.0
+//        
+//        browseButton.addTarget(self, action: #selector(browseResumeButtonClicked), for: .touchUpInside)
         
-        browseButton.backgroundColor = UIColor.lightGray
-        
-        browseButton.setTitle("Browse Resume", for: .normal)
-        
-        browseButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-        
-        browseButton.setTitleColor(UIColor.black, for: .normal)
-        
-        browseButton.layer.cornerRadius = 4.0
-        
-        browseButton.addTarget(self, action: #selector(browseResumeButtonClicked), for: .touchUpInside)
-        
-        submitButton = UIButton(frame: CGRect(x: insideView.frame.width/2 - 50, y: browseButton.frame.origin.y + browseButton.frame.size.height + 15, width: 100, height: 40))
+        submitButton = UIButton(frame: CGRect(x: insideView.frame.width/2 - 50, y: textField3.frame.origin.y + textField3.frame.size.height + 20, width: 100, height: 40))
         
         submitButton.backgroundColor = UIColor(colorLiteralRed: 24/255.0, green: 125/255.0, blue: 239/255.0, alpha: 1.0)
         
@@ -950,7 +1008,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         insideView.addSubview(textField1)
         insideView.addSubview(textField2)
         insideView.addSubview(textField3)
-        insideView.addSubview(browseButton)
+        //insideView.addSubview(browseButton)
         insideView.addSubview(submitButton)
         
         scrollView.addSubview(insideView)
@@ -971,7 +1029,46 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
     
     func submitButtonClicked()
     {
-        self.view.viewWithTag(222)?.removeFromSuperview()
+        if textField.text == ""
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Please enter a name", withCancelText: "Ok")
+        }
+        else
+            if textField1.text == "" || !(textField1.text?.contains("@"))!  || !(textField1.text?.contains("."))!
+            {
+                AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Please enter a valid email address", withCancelText: "Ok")
+            }
+        else
+            {
+                let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+                let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+                let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+                let name = textField.text
+                
+                let email = textField1.text
+                
+                var mobileNum = ""
+                
+                if textField2.text != nil || textField2.text != ""
+                {
+                    mobileNum = (countryCodeButton.titleLabel?.text)! + "-" + textField2.text!
+                }
+                let linkedIn = textField3.text
+                
+                if username != nil && password != nil
+                {
+                    APIManager.getSharedAPIManager().referFriend(username: username!, password: password!, linkedinId: "", email: email!, jobId: self.jobId, name: name!, linkedInIdOfFriend: linkedIn!, mobile: mobileNum)
+                }
+                else
+                    if linkedInId != nil
+                    {
+                        APIManager.getSharedAPIManager().referFriend(username: "", password: "", linkedinId: linkedInId!, email: email!, jobId: self.jobId, name: name!, linkedInIdOfFriend: linkedIn!, mobile: mobileNum)
+                }
+                
+                
+            }
+        
+        //self.view.viewWithTag(222)?.removeFromSuperview()
 
     }
     
@@ -1004,7 +1101,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                         
                         self.lineView.frame = CGRect(x: 0, y: self.referenceLabel.frame.origin.y + self.referenceLabel.frame.size.height + 10, width: self.insideView.frame.size.width, height: 2)
                         
-                        self.textField.frame = CGRect(x: self.insideView.frame.size.width*0.07, y: self.lineView.frame.origin.y + self.lineView.frame.size.height + 10, width: self.insideView.frame.size.width*0.86, height: 30)
+                        self.textField.frame = CGRect(x: self.insideView.frame.size.width*0.07, y: self.lineView.frame.origin.y + self.lineView.frame.size.height + 20, width: self.insideView.frame.size.width*0.86, height: 30)
                         
                         self.textField1.frame = CGRect(x: self.textField.frame.origin.x, y: self.textField.frame.origin.y + self.textField.frame.size.height + 15, width: self.textField.frame.size.width, height: self.textField.frame.size.height)
                         
@@ -1012,9 +1109,11 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                         
                         self.textField3.frame = CGRect(x: self.textField.frame.origin.x, y: self.textField2.frame.origin.y + self.textField2.frame.size.height + 15, width: self.textField.frame.size.width, height: self.textField.frame.size.height)
                         
-                        self.browseButton.frame = CGRect(x: self.textField.frame.origin.x, y: self.textField3.frame.origin.y + self.textField3.frame.size.height + 15, width: self.textField.frame.size.width/2.3, height: 40)
+                        //submitButton = UIButton(frame: CGRect(x: insideView.frame.width/2 - 50, y: textField3.frame.origin.y + textField3.frame.size.height + 15, width: 100, height: 40))
                         
-                        self.submitButton.frame = CGRect(x: self.insideView.frame.width/2 - 100, y: self.browseButton.frame.origin.y + self.browseButton.frame.size.height + 15, width: 200, height: 40)
+                       // self.browseButton.frame = CGRect(x: self.textField.frame.origin.x, y: self.textField3.frame.origin.y + self.textField3.frame.size.height + 15, width: self.textField.frame.size.width/2.3, height: 40)
+                        
+                        self.submitButton.frame = CGRect(x: self.insideView.frame.width/2 - 100, y: self.textField3.frame.origin.y + self.textField3.frame.size.height + 20, width: 200, height: 40)
                         
                         self.scrollView.contentSize = CGSize(width: self.view.frame.size.width*0.1, height: 450)
                 }
@@ -1040,7 +1139,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                         
                         self.lineView.frame = CGRect(x: 0, y: self.referenceLabel.frame.origin.y + self.referenceLabel.frame.size.height + 10, width: self.insideView.frame.size.width, height: 2)
                         
-                        self.textField.frame = CGRect(x: self.insideView.frame.size.width*0.07, y: self.lineView.frame.origin.y + self.lineView.frame.size.height + 10, width: self.insideView.frame.size.width*0.86, height: 30)
+                        self.textField.frame = CGRect(x: self.insideView.frame.size.width*0.07, y: self.lineView.frame.origin.y + self.lineView.frame.size.height + 20, width: self.insideView.frame.size.width*0.86, height: 30)
                         
                         self.textField1.frame = CGRect(x: self.textField.frame.origin.x, y: self.textField.frame.origin.y + self.textField.frame.size.height + 15, width: self.textField.frame.size.width, height: self.textField.frame.size.height)
                         
@@ -1048,9 +1147,9 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                         
                         self.textField3.frame = CGRect(x: self.textField.frame.origin.x, y: self.textField2.frame.origin.y + self.textField2.frame.size.height + 15, width: self.textField.frame.size.width, height: self.textField.frame.size.height)
                         
-                        self.browseButton.frame = CGRect(x: self.textField.frame.origin.x, y: self.textField3.frame.origin.y + self.textField3.frame.size.height + 15, width: self.textField.frame.size.width/2.3, height: 40)
+                        //self.browseButton.frame = CGRect(x: self.textField.frame.origin.x, y: self.textField3.frame.origin.y + self.textField3.frame.size.height + 15, width: self.textField.frame.size.width/2.3, height: 40)
                         
-                        self.submitButton.frame = CGRect(x: self.insideView.frame.width/2 - 50, y: self.browseButton.frame.origin.y + self.browseButton.frame.size.height + 15, width: 100, height: 40)
+                        self.submitButton.frame = CGRect(x: self.insideView.frame.width/2 - 50, y: self.textField3.frame.origin.y + self.textField3.frame.size.height + 20, width: 100, height: 40)
                         
                         self.scrollView.contentSize = CGSize(width: self.view.frame.size.width*0.1, height: 450)
                         
@@ -1085,6 +1184,165 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
             return true
     }
+    func countryCodeButtonClicekd(sender:UIButton)
+    {
+        resignAllResponders()
+        self.addPickerToolBarForCountryCodes()
+        
+    }
+    func resignAllResponders()
+    {
+        DispatchQueue.main.async
+            {
+                self.textField.resignFirstResponder()
+                self.textField1.resignFirstResponder()
+                self.textField2.resignFirstResponder()
+                self.textField3.resignFirstResponder()
+            }
+        
+
+    }
+    func addPickerToolBarForCountryCodes()
+    {
+        if self.view.viewWithTag(10000) == nil
+        {
+            
+            let picker = UIPickerView()
+            
+            picker.tag = 10001;
+            
+            picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
+            
+            picker.delegate = self
+            
+            picker.dataSource = self
+            
+            picker.showsSelectionIndicator = true
+            
+            self.view.addSubview(picker)
+            
+            picker.isUserInteractionEnabled = true
+            
+            picker.backgroundColor = UIColor.lightGray
+            
+            //        UIBarButtonItem *btn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneBtnPressToGetValue:)];
+            let btn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(pickerDoneButtonPressed))
+            
+            //        UIToolbar *toolBar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, picker.frame.origin.y - 40.0f, self.view.frame.size.width, 40.0f)];
+            let toolBar = UIToolbar(frame: CGRect(x: 0, y: picker.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0))
+            
+            toolBar.tag = 10000
+            
+            toolBar.setItems([btn], animated: true)
+            
+            self.view.addSubview(toolBar)
+            //     OperatorTextField.inputAccessoryView=toolBar;
+        }
+    }
+
+    func numberOfComponents(in pickerView: UIPickerView) -> Int
+    {
+        return 1
+    }
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int
+    {
+        
+        return coutryCodesArray.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?
+    {
+        
+        return coutryCodesArray[row]
+        
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView{
+        
+        var label = view as! UILabel!
+        if label == nil {
+            label = UILabel()
+        }
+        //
+        //        if pickerView.tag == 1
+        //        {
+        //            label?.font = UIFont.systemFont(ofSize: 12)
+        //            label?.text =  candidateFunctionArray[row] as? String
+        //            label?.textAlignment = .left
+        //        }
+        //        else
+        //        {
+        label?.font = UIFont.systemFont(ofSize: 14)
+        label?.text =  coutryCodesArray[row] as String
+        
+        label?.textAlignment = .center
+        // label?.textAlignment = .left
+        //}
+        
+        return label!
+        
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int)
+    {
+        
+        let selectedCountryCode = coutryCodesArray[row]
+        
+        countryCodeButton.setTitle(selectedCountryCode, for: .normal)
+        // relocationTextFIeld.text = selectedRole
+        
+    }
+
+    func pickerDoneButtonPressed()
+    {
+        removePickerToolBar()
+    }
+    
+    func removePickerToolBar()
+    {
+        if let picker = self.view.viewWithTag(10000)
+        {
+            picker.removeFromSuperview()
+            
+        }
+        
+        
+        
+        
+        
+        
+        if let toolbar1 = self.view.viewWithTag(10001)
+        {
+            toolbar1.removeFromSuperview()
+            
+        }
+        
+        
+        // [DescriptionTextView becomeFirstResponder];
+        
+    }
+    
+    func checkRederFriendResponse(dataDic:Notification)
+    {
+        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+        
+        guard let responseDic = dataDic.object as? [String:String] else
+        {
+            return
+        }
+        
+        print(responseDic)
+        guard let code = responseDic["code"] else {
+            
+            return
+        }
+        
+        self.view.viewWithTag(222)?.removeFromSuperview()
+
+        AppPreferences.sharedPreferences().showAlertViewWith(title: "Referral Sent", withMessage: "Referral Sent successfully", withCancelText: "Ok")
+        
+    }
+    
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()

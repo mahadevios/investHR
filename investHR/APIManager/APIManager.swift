@@ -406,6 +406,8 @@ class APIManager: NSObject
     {
         if AppPreferences.sharedPreferences().isReachable
         {
+            AppPreferences.sharedPreferences().showHudWith(title: "Loading Profile", detailText: "Please wait")
+            
             let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)"]
             
             let dic = [Constant.REQUEST_PARAMETER:params]
@@ -690,6 +692,51 @@ class APIManager: NSObject
         }
         
     }
+    
+    func deleteAccount(username:String, password:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            AppPreferences.sharedPreferences().showHudWith(title: "Deleting Account", detailText: "Please wait..")
+            
+            let params = ["username=\(username)","password=\(password)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.DELETE_ACCOUNT_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.DELETE_ACCOUNT_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+    
+    func referFriend(username:String, password:String, linkedinId:String,email:String,jobId:String,name:String,linkedInIdOfFriend:String,mobile:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            AppPreferences.sharedPreferences().showHudWith(title: "Sending Referral", detailText: "Please wait..")
+            
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","email=\(email)","jobId=\(jobId)","name=\(name)","linkedInIdOfFriend=\(linkedInIdOfFriend)","mobile=\(mobile)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.REFER_FRIEND_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.REFER_FRIEND_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+    
     func createRegistrationRequestAndSend(dict:Any, imageData:Data?)
     {
         var request:NSURLRequest!

@@ -31,9 +31,23 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         
         self.perform(#selector(addView), with: nil, afterDelay: 0.2)
         
-        menuItemsArray = ["Profile","Notification","Saved Jobs","Applied Jobs","Upload Resume","Upload Video","Refer a Friend","Settings","Log Out"]
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
         
-        menuImageNamesArray = ["SideMenuProfile","SideMenuNoti","SideMenuSavedJob","SideMenuAppliedJob","SideMenuUploadResume","SideMenuUploadVideo","SideMenuReferFriend","SideMenuSetting","SideMenuLogout"]
+        if linkedInId != nil
+        {
+            menuItemsArray.removeAll()
+            
+            menuItemsArray = ["Profile","Notification","Saved Jobs","Applied Jobs","Upload Resume","Upload Video","Refer a Friend","Contact Us","Log Out"]
+            
+            menuImageNamesArray = ["SideMenuProfile","SideMenuNoti","SideMenuSavedJob","SideMenuAppliedJob","SideMenuUploadResume","SideMenuUploadVideo","SideMenuReferFriend","SideMenuContactUs","SideMenuLogout"]
+        }
+        else
+        {
+            menuItemsArray = ["Profile","Notification","Saved Jobs","Applied Jobs","Upload Resume","Upload Video","Refer a Friend","Contact Us","Settings","Log Out"]
+            
+            menuImageNamesArray = ["SideMenuProfile","SideMenuNoti","SideMenuSavedJob","SideMenuAppliedJob","SideMenuUploadResume","SideMenuUploadVideo","SideMenuReferFriend","SideMenuContactUs","SideMenuSetting","SideMenuLogout"]
+        }
+
         
         NotificationCenter.default.addObserver(self, selector: #selector(upadateUserData), name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil)
         
@@ -291,6 +305,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             break
             
+            
         case 5:
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "UploadVideoViewController") as! UploadVideoViewController
             
@@ -305,6 +320,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             break
             
+            
         case 6:
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "ReferFriendViewController") as! ReferFriendViewController
             
@@ -318,8 +334,10 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             self.revealViewController().revealToggle(animated: true)
             
             break
+            
+        
         case 7:
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ContactUsViewController") as! ContactUsViewController
             
             
             let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
@@ -332,7 +350,46 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             break
             
+
         case 8:
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+
+            if linkedInId != nil
+            {
+                let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+                let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+                let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+                
+                if username != nil && password != nil
+                {
+                    APIManager.getSharedAPIManager().logout(username: username!, password: password!,linkedinId:"")
+                }
+                else
+                    if linkedInId != nil
+                    {
+                        APIManager.getSharedAPIManager().logout(username:"", password:"",linkedinId:linkedInId!)
+                        
+                }
+            }
+            else
+            {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+                
+                
+                let vc1 = self.storyboard?.instantiateViewController(withIdentifier: "DashBoardNavigation") as! UINavigationController
+                
+                vc1.pushViewController(vc, animated: false)
+                
+                self.revealViewController().pushFrontViewController(vc1, animated: false)
+                
+                self.revealViewController().revealToggle(animated: true)
+            }
+            
+            
+            break
+            
+            
+        case 9:
 //            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
             
             
@@ -403,6 +460,27 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
     
     func showData() -> Void
     {
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+        if linkedInId != nil
+        {
+            menuItemsArray.removeAll()
+            
+            menuItemsArray = ["Profile","Notification","Saved Jobs","Applied Jobs","Upload Resume","Upload Video","Refer a Friend","Contact Us","Log Out"]
+            
+            menuImageNamesArray = ["SideMenuProfile","SideMenuNoti","SideMenuSavedJob","SideMenuAppliedJob","SideMenuUploadResume","SideMenuUploadVideo","SideMenuReferFriend","SideMenuContactUs","SideMenuLogout"]
+        }
+        else
+        {
+            menuItemsArray.removeAll()
+            
+            menuItemsArray = ["Profile","Notification","Saved Jobs","Applied Jobs","Upload Resume","Upload Video","Refer a Friend","Contact Us","Settings","Log Out"]
+            
+            menuImageNamesArray = ["SideMenuProfile","SideMenuNoti","SideMenuSavedJob","SideMenuAppliedJob","SideMenuUploadResume","SideMenuUploadVideo","SideMenuReferFriend","SideMenuContactUs","SideMenuSetting","SideMenuLogout"]
+        }
+        
+        self.menuTableView.reloadData()
+        
         let coreDataManager = CoreDataManager.getSharedCoreDataManager()
         
         
@@ -478,6 +556,10 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         {
             print(error.localizedDescription)
         }
+        
+       
+
+        
         
     }
     override func didReceiveMemoryWarning()

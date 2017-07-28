@@ -32,23 +32,23 @@ struct Constant
     static let  FTP_PASSWORD                             = "mtone@123"
     static let  FTP_DIRECTORY_PATH                       = "TEST"
 
-    static let  BASE_URL_PATH                            = "http://184.171.162.251:8080/InvestHr/investhr/"              // local server
-    static let  USER_PROFILE_IMAGE_PATH                  = "http://184.171.162.251:8080/InvestHr/resources/UserImages/"
-   // static let  BASE_URL_PATH                            = "http://192.168.3.75:8080/coreflex/investhr/"              // local server
-   // static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.75:8080/coreflex/resources/UserImages/"
-  //  static let  BASE_URL_PATH                            = "http://192.168.3.66:8080/coreflex/investhr/"              // local server
+   // static let  BASE_URL_PATH                            = "http://184.171.162.251:8080/InvestHr/investhr/"              // local server
+   // static let  USER_PROFILE_IMAGE_PATH                  = "http://184.171.162.251:8080/InvestHr/resources/UserImages/"
+  //  static let  BASE_URL_PATH                            = "http://192.168.3.75:9090/coreflex/investhr/"              // local server
+   // static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.75:9090/coreflex/resources/UserImages/"
+    //static let  BASE_URL_PATH                            = "http://192.168.3.66:8080/coreflex/investhr/"              // local server
    // static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.66:8080/coreflex/resources/UserImages/"
     // static let  BASE_URL_PATH                            = "http://192.168.3.74:9090/coreflex/investhr/"              // local server
      //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.74:9090/coreflex/resources/UserImages/"
-    //static let  BASE_URL_PATH                            = "http://192.168.3.67:7070/coreflex/investhr/"              // sable sarkar
-    //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.67:7070/coreflex/resources/UserImages/"
+    //static let  BASE_URL_PATH                            = "http://192.168.3.67:9090/coreflex/investhr/"              // sable sarkar
+    //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.67:9090/coreflex/resources/UserImages/"
 
    
-  //  static let  BASE_URL_PATH                            = "http://192.168.2.9:8080/InvestHr/investhr/"               // for testing
-//    static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.2.9:8080/InvestHr/resources/UserImages/"
+    //static let  BASE_URL_PATH                            = "http://192.168.2.9:9090/InvestHr/investhr/"               // for testing
+    //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.2.9:9090/InvestHr/resources/UserImages/"
 
-    //static let  BASE_URL_PATH                            = "http://192.168.2.9:9090/coreflex/investhr/"               // for testing
-    //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.2.9:9090/coreflex/resources/UserImages/"
+    static let  BASE_URL_PATH                            = "http://192.168.2.9:9090/coreflex/investhr/"               // for testing
+    static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.2.9:9090/coreflex/resources/UserImages/"
 
     //static let  BASE_URL_PATH                            = "http://192.168.3.74:9090/coreflex/investhr/"
 
@@ -91,6 +91,8 @@ struct Constant
     static let  RESET_PASSWORD_API                       = "login/resetpassword"
 
     static let  LOGOUT_API                               = "login/logout"
+    static let  DELETE_ACCOUNT_API                       = "login/deleteAccount"
+    static let  REFER_FRIEND_API                         = "login/mobileReferedJob"
 
 
     
@@ -127,7 +129,8 @@ struct Constant
     static let  NOTIFICATION_LOGOUT                         = "logout"
     static let  NOTIFICATION_DISMISS_SUGGESTION_POPUP       = "suggestionPopUp"
     static let  NOTIFICATION_RESET_PASSWORD                 = "resetPassword"
-
+    static let  NOTIFICATION_DELETE_ACCOUNT                 = "deleteAccount"
+    static let  NOTIFICATION_REFER_FRIEND                   = "referFriend"
    //  static let  NOTIFICATION_HOME_BUTTONS_DISABLED          = "disableHomeButtons"
 
 
