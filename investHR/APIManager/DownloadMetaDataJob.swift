@@ -83,8 +83,10 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         }
         else
         {
+            //parameter = parameter.addingPercentEncoding(withAllowedCharacters: .alphanumerics)!
+            parameter = parameter.replacingOccurrences(of: "+", with: "%2B")
             let postData = parameter.data(using: .utf8)
-            
+            //let postData = parameter.data(using: .utf8, allowLossyConversion: true)
             // Set the HTTP body using the postData object created above.
             request.httpBody = postData
             
@@ -812,6 +814,10 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                 }
                 if String(describing: dictFromJSON["code"]!) == Constant.SUCCESS
                 {
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    
+                    //appDelegate.window?.makeKeyAndVisible()
+                    
                     AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
                     
                     //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
@@ -850,7 +856,9 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                     //                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
                     AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
-                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid Email!", withMessage: "Invalid email id entered", withCancelText: "Ok")
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_FORGOT_PASSWORD), object: dictFromJSON, userInfo: nil)
+
+//                    AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid Email!", withMessage: "Invalid email id entered", withCancelText: "Ok")
 
                     
                     //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")

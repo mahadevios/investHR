@@ -226,32 +226,35 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
     @IBAction func forgotPasswordButtonClicked(_ sender: Any)
     {
         
-            let titlePrompt = UIAlertController(title: "Forgot password?",
-                                                message: "Enter the email you registered with:",
-                                                preferredStyle: .alert)
-            
-            var titleTextField: UITextField?
-            titlePrompt.addTextField { (textField) -> Void in
-                titleTextField = textField
-                textField.placeholder = "Email"
-                textField.keyboardType = .emailAddress
+        self.forgotPassword()
+        
+    }
+    
+    func forgotPassword()
+    {
+        let titlePrompt = UIAlertController(title: "Forgot password?",
+                                            message: "Enter the email you registered with:",
+                                            preferredStyle: .alert)
+        
+        var titleTextField: UITextField?
+        titlePrompt.addTextField { (textField) -> Void in
+            titleTextField = textField
+            textField.placeholder = "Email"
+            textField.keyboardType = .emailAddress
+        }
+        
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        
+        titlePrompt.addAction(cancelAction)
+        
+        titlePrompt.addAction(UIAlertAction(title: "Submit", style: .default, handler: { (action) -> Void in
+            if let textField = titleTextField {
+                
+                self.resetPassword(email: textField.text!)
             }
-            
-            let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
-            
-            titlePrompt.addAction(cancelAction)
-            
-            titlePrompt.addAction(UIAlertAction(title: "Submit", style: .default, handler: { (action) -> Void in
-                if let textField = titleTextField {
-                    
-                    self.resetPassword(email: textField.text!)
-                }
-            }))
-            
-            self.present(titlePrompt, animated: true, completion: nil)
+        }))
         
-        
-        
+        self.present(titlePrompt, animated: true, completion: nil)
     }
     
     func resetPassword(email : String)
@@ -262,7 +265,6 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         // remove any whitespaces before and after the email address
         let emailClean = emailToLowerCase.trimmingCharacters(in: NSCharacterSet.whitespaces)
         
-        AppPreferences.sharedPreferences().showHudWith(title: "Checking info", detailText: "Please wait..")
         APIManager.getSharedAPIManager().forgotPassword(emailId: emailClean)
 
     }
@@ -502,17 +504,27 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
 
     func checkForgotPasswordResponse(dataDic:NSNotification)
     {
-//        guard let responseDic = dataDic.object as? [String:String] else
-//        {
-//            return
-//        }
-//        
-//        guard let code = responseDic["code"] else {
-//            
-//            return
-//        }
+        guard let responseDic = dataDic.object as? [String:String] else
+        {
+            return
+        }
+        
+        guard let code = responseDic["code"] else {
+            
+            return
+        }
     
-        AppPreferences.sharedPreferences().showAlertViewWith(title: "Forgot Passoword", withMessage: "Your Password has been sent on your Register email Id , please check your email to recover your password.", withCancelText: "Ok")
+        if code == "1001"
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "Invalid Email!", withMessage: "Invalid email id entered", withCancelText: "Ok")
+            
+            self.forgotPassword()
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "Forgot Passoword", withMessage: "Your Password has been sent on your Register email Id, please check your email to recover your password.", withCancelText: "Ok")
+
+        }
         
     }
     

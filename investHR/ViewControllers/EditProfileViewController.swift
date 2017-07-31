@@ -125,6 +125,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         cuurentRoleTextField.delegate = self
         stateTextField.delegate = self
         //cityTextField.delegate = self
+        emailTextField.delegate = self
         candidateFunctionTextField.delegate = self
         relocationTextFIeld.delegate = self
         stateTextField.delegate = self
@@ -439,6 +440,11 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
         let linkId = responseDic["linkId"]
 
+        if emailId != nil
+        {
+            UserDefaults.standard.set(emailId!, forKey: Constant.USERNAME)
+
+        }
         
         let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         
@@ -677,6 +683,8 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         if emailId != nil && emailId != ""
         {
             emailTextField.text = emailId
+            
+            UserDefaults.standard.set(emailId!, forKey: Constant.LAST_LOGGEDIN_USER_NAME)
         }
 
         if currentRole != nil && currentRole != ""
@@ -1002,10 +1010,10 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             
             return
         }
-        guard let email = emailTextField.text else {
-            
-            return
-        }
+//        guard let email = emailTextField.text else {
+//            
+//            return
+//        }
         guard let mobile = mobileNumberTextField.text else {
             
             return

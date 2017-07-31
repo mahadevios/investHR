@@ -37,13 +37,13 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         {
             menuItemsArray.removeAll()
             
-            menuItemsArray = ["Profile","Notification","Saved Jobs","Applied Jobs","Upload Resume","Upload Video","Refer a Friend","Contact Us","Log Out"]
+            menuItemsArray = ["Profile","Notification","Saved Jobs","Applied Jobs","Upload Resume","Upload Video","Refer A Friend","Contact Us","Log Out"]
             
             menuImageNamesArray = ["SideMenuProfile","SideMenuNoti","SideMenuSavedJob","SideMenuAppliedJob","SideMenuUploadResume","SideMenuUploadVideo","SideMenuReferFriend","SideMenuContactUs","SideMenuLogout"]
         }
         else
         {
-            menuItemsArray = ["Profile","Notification","Saved Jobs","Applied Jobs","Upload Resume","Upload Video","Refer a Friend","Contact Us","Settings","Log Out"]
+            menuItemsArray = ["Profile","Notification","Saved Jobs","Applied Jobs","Upload Resume","Upload Video","Refer A Friend","Contact Us","Settings","Log Out"]
             
             menuImageNamesArray = ["SideMenuProfile","SideMenuNoti","SideMenuSavedJob","SideMenuAppliedJob","SideMenuUploadResume","SideMenuUploadVideo","SideMenuReferFriend","SideMenuContactUs","SideMenuSetting","SideMenuLogout"]
         }

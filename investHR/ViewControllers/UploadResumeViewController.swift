@@ -267,11 +267,11 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
 
         resumeNameLabel.text = "Resume \(indexPath.row+1)"
 
-        let downloadButton = cell?.viewWithTag(102) as! subclassedUIButton
+        let downloadButton = cell?.viewWithTag(103) as! subclassedUIButton
         
         downloadButton.indexPath = indexPath.row
         
-        let downloadOrViewImageView = cell?.viewWithTag(104) as! UIImageView
+        let downloadOrViewImageView = cell?.viewWithTag(105) as! UIImageView
 
         //let deleteImageView = cell?.viewWithTag(105) as! UIImageView
 
@@ -306,7 +306,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         downloadButton.cell = cell
 
         
-        let deleteButton = cell?.viewWithTag(103) as! subclassedUIButton
+        let deleteButton = cell?.viewWithTag(102) as! subclassedUIButton
                 
         deleteButton.indexPath = indexPath.row
         

@@ -182,6 +182,8 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
            //self.showPopUp()
            AppPreferences.sharedPreferences().popUpShown = true
         }
+        
+        //print("Total windows = " + "\(UIApplication.shared.windows)")
     }
     func showPopUp()
     {

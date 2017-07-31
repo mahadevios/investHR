@@ -3589,14 +3589,14 @@
                                                 <button opaque="NO" tag="103" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PuH-CL-087" customClass="subclassedUIButton" customModule="investHR" customModuleProvider="target">
                                                     <rect key="frame" x="324" y="0.0" width="45" height="44"/>
                                                 </button>
-                                                <imageView userInteractionEnabled="NO" tag="104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Download" translatesAutoresizingMaskIntoConstraints="NO" id="n7r-Hi-LxK">
+                                                <imageView userInteractionEnabled="NO" tag="104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Delete" translatesAutoresizingMaskIntoConstraints="NO" id="n7r-Hi-LxK">
                                                     <rect key="frame" x="381" y="11" width="23" height="23"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="23" id="6w5-CH-lYn"/>
                                                         <constraint firstAttribute="width" constant="23" id="FTc-Dx-lSc"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" tag="105" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Delete" translatesAutoresizingMaskIntoConstraints="NO" id="qyx-w0-9Dg">
+                                                <imageView userInteractionEnabled="NO" tag="105" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Download" translatesAutoresizingMaskIntoConstraints="NO" id="qyx-w0-9Dg">
                                                     <rect key="frame" x="339" y="12" width="20" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="1tu-G9-Cmb"/>
@@ -3825,7 +3825,7 @@
                                                     <color key="textColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" tag="110" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="81F20124-E099-4A29-AF95-291A7E177333" translatesAutoresizingMaskIntoConstraints="NO" id="p0G-Ct-fBW">
+                                                <imageView userInteractionEnabled="NO" tag="110" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="76D4B49E-395E-4F01-B58D-1BECAF53F4DC" translatesAutoresizingMaskIntoConstraints="NO" id="p0G-Ct-fBW">
                                                     <rect key="frame" x="184" y="56" width="21" height="19"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="19" id="dZg-s2-dDx"/>
@@ -3935,7 +3935,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="81F20124-E099-4A29-AF95-291A7E177333" width="21" height="19">
+        <image name="76D4B49E-395E-4F01-B58D-1BECAF53F4DC" width="21" height="19">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

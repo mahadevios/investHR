@@ -1049,9 +1049,12 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                 
                 var mobileNum = ""
                 
-                if textField2.text != nil || textField2.text != ""
+                if textField2.text != nil && textField2.text != ""
                 {
-                    mobileNum = (countryCodeButton.titleLabel?.text)! + "-" + textField2.text!
+                   // mobileNum = (countryCodeButton.titleLabel?.text)! + "-" + textField2.text!
+                    mobileNum = "\((countryCodeButton.titleLabel?.text)! + "-" + textField2.text!)"
+
+                    
                 }
                 let linkedIn = textField3.text
                 

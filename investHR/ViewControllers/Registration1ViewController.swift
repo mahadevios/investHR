@@ -931,8 +931,8 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
                 }
                 else
                 {
-                    self.cityArray.removeAll()
-                    self.getCitiesFromState(stateName: self.locationTextField.text!)
+                    //self.cityArray.removeAll()
+                    //self.getCitiesFromState(stateName: self.locationTextField.text!)
                     textField.resignFirstResponder()
                     self.autoCompleteTableView.isHidden = true
                     

@@ -103,10 +103,14 @@ class AppPreferences: NSObject,UIAlertViewDelegate
         hud.label.text = title
         
         hud.detailsLabel.text = detailText
+        
+        //print("keywindow = " + "\(UIApplication.shared.keyWindow)")
     }
     
     func hideHudWithTag(tag:Int)
     {
+       // print("keywindow = " + "\(UIApplication.shared.keyWindow)")
+
         UIApplication.shared.keyWindow?.viewWithTag(tag)?.removeFromSuperview()
 
     }

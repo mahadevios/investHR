@@ -89,6 +89,27 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
         //let sw = self.presentingViewController! as! SWRevealViewController
         
         //let na = sw.frontViewController as! UINavigationController
+        
+//        let alert = UIAlertController(title: "Account Delete", message: "Account deleted successfully", preferredStyle: .alert)
+//        
+//        let okAction = UIAlertAction(title: "Ok", style: .default) { (UIAlertAction) in
+//            
+//            self.dismiss(animated: true, completion: nil)
+//            
+//            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//            
+//            appDelegate.window?.makeKeyAndVisible()
+//            
+//            AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+//            
+//        }
+//        
+//        alert.addAction(okAction)
+//        
+//        self.present(alert, animated: true)
+        
+        AppPreferences.sharedPreferences().showAlertViewWith(title: "Account Delete", withMessage: "Account deleted successfully", withCancelText: "Ok")
+        
         if AppPreferences.sharedPreferences().isReachable == true
         {
             UserDefaults.standard.set(nil, forKey: Constant.LAST_LOGGEDIN_USER_NAME)
@@ -98,6 +119,8 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
         self.revealViewController().revealToggle(animated: true)
         
         self.navigationController?.popViewController(animated: true)
+       // AppPreferences.sharedPreferences().showAlertViewWith(title: "Account Delete", withMessage: "Account deleted successfully", withCancelText: "Ok")
+        
         
         
         //let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController")
