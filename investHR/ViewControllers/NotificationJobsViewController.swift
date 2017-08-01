@@ -35,6 +35,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         
         self.navigationItem.title = "Notifications"
         
+        NotificationCenter.default.addObserver(self, selector: #selector(checkLocationJobList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_CLOSED_JOBIDS), object: nil)
 //        let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 25))
 //        numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
 //        numberOfJobsLabel.text = "108 jobs"
@@ -56,6 +57,26 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         NotificationCenter.default.addObserver(self, selector: #selector(checkSaveJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVE_JOB), object: nil)
         
     }
+    
+    func checkLocationJobList(dataDic:Notification)
+    {
+        guard let dataDictionary = dataDic.object as? [String:AnyObject] else
+        {
+            return
+        }
+        
+        let codeString = String(describing: dataDictionary["code"]!)
+        
+        if codeString == "1001"
+        {
+            //dataNotFoundLabel.isHidden = false
+            
+            return
+        }
+
+    }
+    
+    
     func checkSaveJob(dataDic:NSNotification)
     {
         AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
@@ -191,7 +212,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         
         subjectLabel.text = notificationObject.subject!
         
-        let date = String(describing: notificationObject.notificationDate!).components(separatedBy: " ")[0] as! String
+        let date = String(describing: notificationObject.notificationDate1!).components(separatedBy: " ")[0] as! String
         
         dateLabel.text = date
 

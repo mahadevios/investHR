@@ -192,6 +192,7 @@
 		84F690F81EFBE45D0000B768 /* SavedJobs+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SavedJobs+CoreDataClass.swift"; sourceTree = "<group>"; };
 		84F690F91EFBE45D0000B768 /* SavedJobs+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SavedJobs+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		84F690FE1EFC11D30000B768 /* NewJobsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewJobsViewController.swift; sourceTree = "<group>"; };
+		
 		8F373153BB0521F279CA83EB /* Pods_investHRTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_investHRTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B46ECC2453C6493610B27C31 /* Pods-investHRTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-investHRTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-investHRTests/Pods-investHRTests.release.xcconfig"; sourceTree = "<group>"; };
 		BF1F6F4D1CE0CCB272F213F1 /* Pods-investHR.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-investHR.release.xcconfig"; path = "Pods/Target Support Files/Pods-investHR/Pods-investHR.release.xcconfig"; sourceTree = "<group>"; };

@@ -69,7 +69,7 @@ class CoreDataManager: NSObject
         {
             let userId = UserDefaults.standard.object(forKey: Constant.USERID) as! String
 
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "notificationDate", ascending: false)]
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "notificationDate1", ascending: false)]
             
             fetchRequest.predicate = NSPredicate(format: "userId == %@", userId)
 
@@ -209,9 +209,11 @@ class CoreDataManager: NSObject
         
         
             //let userId = UserDefaults.standard.object(forKey: Constant.USERID) as! String
-            
+                let date = Date()
+        //
+                let dateToDelete = date.addingTimeInterval(-2*24*60*60)
         
-            fetchRequest.predicate = NSPredicate(format: "notificationDate < %@", date as CVarArg)
+            fetchRequest.predicate = NSPredicate(format: "notificationDate1 < %@", date as CVarArg)
             
             do {
             let manageObjects = try appDelegate.managedObjectContext.fetch(fetchRequest)
@@ -245,7 +247,7 @@ class CoreDataManager: NSObject
         
         
         var dayComponent = DateComponents()
-        dayComponent.day = -1
+        dayComponent.day = -2
         
         let theCalendar = Calendar.current
         //    NSDate *nextDate = [theCalendar dateByAddingComponents:dayComponent toDate:[NSDate date] options:0];
@@ -589,7 +591,7 @@ class CoreDataManager: NSObject
                     
                     var managedObject = fetchResults[0]
                     managedObject.setValue(subject, forKey: "subject")
-                    managedObject.setValue(notificationDate, forKey: "notificationDate")
+                    managedObject.setValue(notificationDate, forKey: "notificationDate1")
 
                     try appDelegate.managedObjectContext.save()
                     

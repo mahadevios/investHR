@@ -717,6 +717,28 @@ class APIManager: NSObject
         
     }
     
+    func getDeletedJobIds(username:String, password:String, linkedInId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            AppPreferences.sharedPreferences().showHudWith(title: "Loading Data", detailText: "Please wait..")
+            
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedInId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.CLOSED_JOBIDS_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.CLOSED_JOBIDS_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+
     func referFriend(username:String, password:String, linkedinId:String,email:String,jobId:String,name:String,linkedInIdOfFriend:String,mobile:String) -> Void
     {
         if AppPreferences.sharedPreferences().isReachable

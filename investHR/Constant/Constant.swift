@@ -93,6 +93,7 @@ struct Constant
     static let  LOGOUT_API                               = "login/logout"
     static let  DELETE_ACCOUNT_API                       = "login/deleteAccount"
     static let  REFER_FRIEND_API                         = "login/mobileReferedJob"
+    static let  CLOSED_JOBIDS_API                         = "login/mobileCloseJob"
 
 
     
@@ -131,6 +132,8 @@ struct Constant
     static let  NOTIFICATION_RESET_PASSWORD                 = "resetPassword"
     static let  NOTIFICATION_DELETE_ACCOUNT                 = "deleteAccount"
     static let  NOTIFICATION_REFER_FRIEND                   = "referFriend"
+    static let  NOTIFICATION_CLOSED_JOBIDS                  = "closedJobIds"
+
    //  static let  NOTIFICATION_HOME_BUTTONS_DISABLED          = "disableHomeButtons"
 
 

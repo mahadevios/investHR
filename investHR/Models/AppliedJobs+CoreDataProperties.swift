@@ -2,7 +2,7 @@
 //  AppliedJobs+CoreDataProperties.swift
 //  investHR
 //
-//  Created by mac on 22/06/17.
+//  Created by mac on 01/08/17.
 //  Copyright © 2017 Xanadutec. All rights reserved.
 //
 
