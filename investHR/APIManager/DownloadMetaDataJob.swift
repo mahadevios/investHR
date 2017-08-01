@@ -726,7 +726,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                     UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
                     
                     //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
-                    
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_SAVE_EDITED_PROFILE), object: dictFromJSON, userInfo: nil)
                 }
                 break
                 

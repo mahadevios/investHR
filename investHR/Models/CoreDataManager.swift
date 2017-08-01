@@ -197,7 +197,7 @@ class CoreDataManager: NSObject
     
     }
     
-    func getNotiRecordsTodelete(entity: String, date:Date) -> [NSManagedObject]?
+    func getNotiRecordsTodelete(entity: String, date:String) -> [NSManagedObject]?
     {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             
@@ -238,12 +238,34 @@ class CoreDataManager: NSObject
     {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
-        let date = Date()
+//        let date = Date()
+//        
+//        let dateToDelete = date.addingTimeInterval(-10*24*60*60)
         
-        let dateToDelete = date.addingTimeInterval(-10*24*60*60)
         
-        let notifObj = getNotiRecordsTodelete(entity: "CommonNotification", date:dateToDelete) as? [CommonNotification]
         
+        var dayComponent = DateComponents()
+        dayComponent.day = -1
+        
+        let theCalendar = Calendar.current
+        //    NSDate *nextDate = [theCalendar dateByAddingComponents:dayComponent toDate:[NSDate date] options:0];
+//        NSDate *nextDate = [theCalendar dateByAddingComponents:dayComponent toDate:[NSDate date] options:0];
+        let formatter = DateFormatter()
+        
+        let nextDate = theCalendar.date(byAdding: dayComponent, to: Date())
+        
+        //NSLog(@"nextDate: %@ ...", nextDate);
+        // NSDate *purgeDataDate = [[NSDate date] dateByAddingTimeInterval:-5*24*60*60];
+        
+        
+        formatter.dateFormat = "MM-dd-yyyy"
+        
+        let newDate = formatter.string(from: nextDate!)
+        
+        let notifObj = getNotiRecordsTodelete(entity: "CommonNotification", date:newDate) as? [CommonNotification]
+
+        //NSString *query3=[NSString stringWithFormat:@"Select RecordItemName,TransferDate from CubeData Where TransferStatus = 1 and DeleteStatus = 0 and TransferDate < '%@'",newDate];
+
         if notifObj != nil
         {
             //appDelegate.managedObjectContext.delete(data![index])
@@ -551,7 +573,7 @@ class CoreDataManager: NSObject
         
         
     }
-    func updateNotificationJob(entityName:String, jobId:Int, subject:String, notificationDate:Date, userId:String)
+    func updateNotificationJob(entityName:String, jobId:Int, subject:String, notificationDate:String!, userId:String)
     {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         var context: NSManagedObjectContext = appDelegate.managedObjectContext

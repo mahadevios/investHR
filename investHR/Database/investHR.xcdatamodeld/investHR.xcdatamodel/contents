@@ -12,7 +12,7 @@
     </entity>
     <entity name="CommonNotification" representedClassName="CommonNotification" syncable="YES">
         <attribute name="jobId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="notificationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="notificationDate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="notificationId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userId" optional="YES" attributeType="String" syncable="YES"/>

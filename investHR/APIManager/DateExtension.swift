@@ -39,6 +39,30 @@ extension Date
         
         return date2
     }
+    
+    func getLocalDateWithouTimeInString() -> String?
+    {
+        var dayComponent = DateComponents()
+        
+        dayComponent.day = 0
+        
+        let theCalendar = Calendar.current
+        //    NSDate *nextDate = [theCalendar dateByAddingComponents:dayComponent toDate:[NSDate date] options:0];
+        //        NSDate *nextDate = [theCalendar dateByAddingComponents:dayComponent toDate:[NSDate date] options:0];
+        let formatter = DateFormatter()
+        
+        let nextDate = theCalendar.date(byAdding: dayComponent, to: Date())
+        
+        //NSLog(@"nextDate: %@ ...", nextDate);
+        // NSDate *purgeDataDate = [[NSDate date] dateByAddingTimeInterval:-5*24*60*60];
+        
+        
+        formatter.dateFormat = "MM-dd-yyyy"
+        
+        let newDate = formatter.string(from: nextDate!)
+        
+        return newDate
+    }
 }
 
 extension Data

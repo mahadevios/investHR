@@ -273,16 +273,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 
                     let jobIdExist = CoreDataManager.getSharedCoreDataManager().idExists(aToken: String(jobIDInt), entityName: "CommonNotification")
                 
+                    let date = Date().getLocalDateWithouTimeInString()
+
                     if !jobIdExist
                     {
                         let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
-                        CoreDataManager.getSharedCoreDataManager().save(entity: "CommonNotification", ["jobId":jobIDInt,"subject":body,"notificationDate":Date(), "userId":userId!])
+                        
+                        
+                        CoreDataManager.getSharedCoreDataManager().save(entity: "CommonNotification", ["jobId":jobIDInt,"subject":body,"notificationDate":date, "userId":userId!])
                     }
                     else
                     {
                         let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
                     
-                        CoreDataManager.getSharedCoreDataManager().updateNotificationJob(entityName: "CommonNotification", jobId: jobIDInt, subject: body!, notificationDate: Date(), userId: userId!)
+                        CoreDataManager.getSharedCoreDataManager().updateNotificationJob(entityName: "CommonNotification", jobId: jobIDInt, subject: body!, notificationDate: date, userId: userId!)
                     }
                 
                 }

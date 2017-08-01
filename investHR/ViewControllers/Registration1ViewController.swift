@@ -945,6 +945,10 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
                 
             }
         }
+        else
+        {
+          textField.resignFirstResponder()
+        }
 //        else
 //            if textField == self.location1TextField
 //            {

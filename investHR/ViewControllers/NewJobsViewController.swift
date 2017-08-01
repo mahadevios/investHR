@@ -865,7 +865,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         tapToDismissNotif.delegate = self
         
-        scrollView = UIScrollView(frame: CGRect(x: self.view.frame.size.width*0.1, y: self.view.frame.size.height*0.09, width: self.view.frame.size.width*0.8, height: self.view.frame.size.height*0.73))
+        scrollView = UIScrollView(frame: CGRect(x: self.view.frame.size.width, y: -100, width: self.view.frame.size.width*0.8, height: self.view.frame.size.height*0.73))
         
         //scrollView.isOpaque = false
         scrollView.delegate = self
@@ -1019,6 +1019,22 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
 
         self.view.addSubview(overLayView)
         
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.1, options: .transitionCurlDown, animations: {
+            
+            self.scrollView.frame = CGRect(x: self.view.frame.size.width*0.1, y: self.view.frame.size.height*0.09, width: self.view.frame.size.width*0.8, height: self.view.frame.size.height*0.73)
+            
+            
+        }) { (bo) in
+            
+        }
+//        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.1, options: .transitionFlipFromTop, animations: {
+//            
+//            self.scrollView.frame = CGRect(x: self.view.frame.size.width*0.1, y: self.view.frame.size.height*0.09, width: self.view.frame.size.width*0.8, height: self.view.frame.size.height*0.73)
+//            
+//            
+//        }) { (bo) in
+//            
+//        }
         
     }
 
@@ -1178,7 +1194,17 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
     }
     func tapped(sender:UITapGestureRecognizer) -> Void
     {
-        self.view.viewWithTag(222)?.removeFromSuperview()
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.1, options: .transitionCurlUp, animations: {
+            
+            self.scrollView.frame = CGRect(x: -self.view.frame.size.width, y: -self.view.frame.size.height*0.09, width: self.view.frame.size.width*0.8, height: self.view.frame.size.height*0.73)
+            
+            
+        }) { (bo) in
+            
+            self.view.viewWithTag(222)?.removeFromSuperview()
+
+        }
+        //self.view.viewWithTag(222)?.removeFromSuperview()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
@@ -1340,9 +1366,17 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             return
         }
         
-        self.view.viewWithTag(222)?.removeFromSuperview()
-
-        AppPreferences.sharedPreferences().showAlertViewWith(title: "Referral Sent", withMessage: "Referral Sent successfully", withCancelText: "Ok")
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.1, options: .transitionCurlUp, animations: {
+            
+            self.scrollView.frame = CGRect(x: -self.view.frame.size.width, y: -self.view.frame.size.height*0.09, width: self.view.frame.size.width*0.8, height: self.view.frame.size.height*0.73)
+            
+            
+        }) { (bo) in
+            
+            self.view.viewWithTag(222)?.removeFromSuperview()
+            
+        }
+        AppPreferences.sharedPreferences().showAlertViewWith(title: "Referral Sent", withMessage: "Referral sent successfully", withCancelText: "Ok")
         
     }
     

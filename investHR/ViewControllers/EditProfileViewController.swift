@@ -361,7 +361,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
         expectedCompanyTextField.textColor = color
         
-        
+        countryCodeButton.setTitleColor(color, for: .normal)
         
         
         
@@ -436,6 +436,26 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             return
         }
         
+        
+        if code == "1001"
+        {
+            guard let ErrorMessage = responseDic["ErrorMessage"] else {
+                
+                return
+            }
+            
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: ErrorMessage, withCancelText: "Ok")
+            
+            self.resignAllResponsders()
+            
+            self.setUserInteractionEnabled(setEnable: false)
+            
+            //self.setRightBarButtonItemEdit()
+            self.setTextFieldsTextColor(color: UIColor.lightGray)
+            
+            return
+
+        }
         let emailId = responseDic["emailId"]
         
         let linkId = responseDic["linkId"]

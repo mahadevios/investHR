@@ -60,7 +60,7 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource,MFMailCom
     
     func showEmail()
     {
-        let emailTitle = "Refer your friend to investHr"
+        let emailTitle = "Refer your friend to InvestHR"
         let messageBody = "This is a test email body"
         let toRecipents = ["mandale.mahadev7@gmail.com"]
         let mc: MFMailComposeViewController = MFMailComposeViewController()
