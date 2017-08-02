@@ -124,6 +124,8 @@ class APIManager: NSObject
     {
         if AppPreferences.sharedPreferences().isReachable
         {
+            AppPreferences.sharedPreferences().showHudWith(title: "Loading jobs", detailText: "Please wait..")
+            
             let params = ["username=\(username)","password=\(password)","varticalId=\(varticalId)","linkedinId=\(linkedinId)"]
             
             let dic = [Constant.REQUEST_PARAMETER:params]
@@ -144,6 +146,8 @@ class APIManager: NSObject
     {
         if AppPreferences.sharedPreferences().isReachable
         {
+            AppPreferences.sharedPreferences().showHudWith(title: "Loading jobs", detailText: "Please wait..")
+            
             let params = ["username=\(username)","password=\(password)","horizontalId=\(horizontalId)","linkedinId=\(linkedinId)"]
             
             let dic = [Constant.REQUEST_PARAMETER:params]
@@ -164,6 +168,8 @@ class APIManager: NSObject
     {
         if AppPreferences.sharedPreferences().isReachable
         {
+            AppPreferences.sharedPreferences().showHudWith(title: "Loading jobs", detailText: "Please wait..")
+            
             let params = ["username=\(username)","password=\(password)","roleId=\(roleId)","linkedinId=\(linkedinId)"]
             
             let dic = [Constant.REQUEST_PARAMETER:params]
@@ -184,6 +190,8 @@ class APIManager: NSObject
     {
         if AppPreferences.sharedPreferences().isReachable
         {
+            AppPreferences.sharedPreferences().showHudWith(title: "Loading jobs", detailText: "Please wait..")
+            
             let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","stateId=\(stateId)","cityId=\(cityId)"]
             
             let dic = [Constant.REQUEST_PARAMETER:params]
@@ -307,6 +315,8 @@ class APIManager: NSObject
     {
         if AppPreferences.sharedPreferences().isReachable
         {
+            AppPreferences.sharedPreferences().showHudWith(title: "Loading job..", detailText: "Please wait")
+
             let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","varticalId=\(varticalId)","jobId=\(jobId)"]
             
             let dic = [Constant.REQUEST_PARAMETER:params]
@@ -488,6 +498,8 @@ class APIManager: NSObject
     {
         if AppPreferences.sharedPreferences().isReachable
         {
+            AppPreferences.sharedPreferences().showHudWith(title: "Loading Video", detailText: "Please wait..")
+
             let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)"]
             
             let dic = [Constant.REQUEST_PARAMETER:params]
@@ -508,6 +520,8 @@ class APIManager: NSObject
     {
         if AppPreferences.sharedPreferences().isReachable
         {
+            AppPreferences.sharedPreferences().showHudWith(title: "Loading Resume", detailText: "Please wait..")
+            
             let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)"]
             
             let dic = [Constant.REQUEST_PARAMETER:params]
@@ -625,7 +639,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection", withCancelText: "Ok")
         }
         
     }

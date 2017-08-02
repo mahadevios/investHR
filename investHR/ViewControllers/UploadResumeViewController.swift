@@ -192,8 +192,8 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         
         let rightBarButtonItem = UIBarButtonItem(customView: editProfileView)
         self.navigationItem.rightBarButtonItem = rightBarButtonItem
-        if AppPreferences.sharedPreferences().isReachable
-        {
+//        if AppPreferences.sharedPreferences().isReachable
+//        {
             let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
             let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
             let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
@@ -208,18 +208,18 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
                     APIManager.getSharedAPIManager().getUploadedResumeList(username: "", password: "", linkedinId: linkedInId!)
                 
                 }
-        }
-            else
-            {
-            
-            }
+//        }
+//            else
+//            {
+//            
+//            }
         NotificationCenter.default.addObserver(self, selector: #selector(checkUploadVideoResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_UPLOAD_USER_RESUME), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkUploadedResumeListResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_UPLOADED_RESUME_LIST), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkDeletedResumeListResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_DELETE_RESUME), object: nil)
 
-        AppPreferences.sharedPreferences().showHudWith(title: "Loading Resume", detailText: "Please wait..")
+        //AppPreferences.sharedPreferences().showHudWith(title: "Loading Resume", detailText: "Please wait..")
 
         // Do any additional setup after loading the view.
     }

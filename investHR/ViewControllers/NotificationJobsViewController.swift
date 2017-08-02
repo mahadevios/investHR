@@ -19,6 +19,9 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
     
     var savedJobsIdsArray = [Int64]()
     
+    var closedJobsIdsArray = [Int64]()
+
+    
     var appliedJobsIdsArray = [Int64]()
 
     override func viewDidLoad()
@@ -35,7 +38,33 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         
         self.navigationItem.title = "Notifications"
         
-        NotificationCenter.default.addObserver(self, selector: #selector(checkLocationJobList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_CLOSED_JOBIDS), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(checkClosedJobList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_CLOSED_JOBIDS), object: nil)
+        
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            
+            if username != nil && password != nil
+            {
+                APIManager.getSharedAPIManager().getDeletedJobIds(username: username!, password: password!, linkedInId: "")
+            }
+            else
+                if linkedInId != nil
+                {
+                    APIManager.getSharedAPIManager().getDeletedJobIds(username: "", password: "", linkedInId: linkedInId!)
+                    
+                }
+        }
+        else
+        {
+            commonNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
+            
+            self.collectionView.reloadData()
+        }
+        
+
 //        let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 25))
 //        numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
 //        numberOfJobsLabel.text = "108 jobs"
@@ -48,9 +77,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
     
     override func viewWillAppear(_ animated: Bool)
     {
-      commonNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
-        
-        self.collectionView.reloadData()
+      
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkApplyJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_APPLY_JOB), object: nil)
         
@@ -58,7 +85,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         
     }
     
-    func checkLocationJobList(dataDic:Notification)
+    func checkClosedJobList(dataDic:Notification)
     {
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
@@ -67,12 +94,51 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         
         let codeString = String(describing: dataDictionary["code"]!)
         
+        self.commonNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
+        
         if codeString == "1001"
         {
             //dataNotFoundLabel.isHidden = false
             
+            self.collectionView.reloadData()
+            
             return
         }
+        
+        let closedJobIdsString = dataDictionary["deletedJobId"] as! String
+        
+        let closedJobIdsData = closedJobIdsString.data(using: .utf8)
+        
+        do
+        {
+            self.closedJobsIdsArray = try JSONSerialization.jsonObject(with: closedJobIdsData!, options: .allowFragments) as! [Int64]
+            
+            if self.closedJobsIdsArray.count < 1
+            {
+                self.collectionView.reloadData()
+            }
+            else
+            {
+                for notiObj in self.commonNotificationObjectsArray!
+                {
+                    if self.closedJobsIdsArray.contains(notiObj.jobId)
+                    {
+                        let index = self.commonNotificationObjectsArray?.index(of: notiObj)
+                        
+                        self.commonNotificationObjectsArray?.remove(at: index!)
+                        
+                        self.collectionView.reloadData()
+                    }
+                }
+               // print(closedJobsIdsArray)
+            }
+           
+
+        } catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        
 
     }
     

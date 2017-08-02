@@ -98,11 +98,13 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
                     APIManager.getSharedAPIManager().getUploadedVideoList(username: "", password: "", linkedinId: linkedInId!)
                     
                 }
-            AppPreferences.sharedPreferences().showHudWith(title: "Loading Videos", detailText: "Please wait..")
+            //AppPreferences.sharedPreferences().showHudWith(title: "Loading Videos", detailText: "Please wait..")
 
         }
         else
         {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+
             self.getStoredVideoList() // if internet connection not avaialbel show the stored video list
             
             self.collectionView.reloadData()

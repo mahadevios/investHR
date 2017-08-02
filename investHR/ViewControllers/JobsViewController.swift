@@ -53,9 +53,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
        self.setRightBarButtonItem(totalJobs: "")
 //self.navigationItem.rightBarButtonItem.
+        
         self.setSearchController()
-        
-        
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkVerticalJobList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_VERTICAL_JOB_LIST), object: nil)
 
@@ -65,7 +64,21 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
          NotificationCenter.default.addObserver(self, selector: #selector(checkLocationJobList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LOCATION_WISE_JOB), object: nil)
         
-        getJobList()
+         NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        
+         NotificationCenter.default.addObserver(self, selector: #selector(checkApplyJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_APPLY_JOB), object: nil)
+        
+         NotificationCenter.default.addObserver(self, selector: #selector(checkSaveJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVE_JOB), object: nil)
+        
+         NotificationCenter.default.addObserver(self, selector: #selector(getLoadMoreData(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LOAD_MORE_VERTICAL_JOB), object: nil)
+        
+         NotificationCenter.default.addObserver(self, selector: #selector(getLoadMoreData(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LOAD_MORE_HORIZONTAL_JOB), object: nil)
+        
+         NotificationCenter.default.addObserver(self, selector: #selector(getLoadMoreData(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LOAD_MORE_ROLE_JOB), object: nil)
+        
+         NotificationCenter.default.addObserver(self, selector: #selector(getLoadMoreData(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LOAD_MORE_LOCATION_JOB), object: nil)
+        
+         getJobList()
 
         
                // Do any additional setup after loading the view.
@@ -76,22 +89,46 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     {
         self.view.viewWithTag(200)?.isHidden = true
         
-        NotificationCenter.default.addObserver(self, selector: #selector(checkApplyJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_APPLY_JOB), object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(checkSaveJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVE_JOB), object: nil)
-        
-         NotificationCenter.default.addObserver(self, selector: #selector(getLoadMoreData(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LOAD_MORE_VERTICAL_JOB), object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(getLoadMoreData(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LOAD_MORE_HORIZONTAL_JOB), object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(getLoadMoreData(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LOAD_MORE_ROLE_JOB), object: nil)
+        //self.setSearchController()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(getLoadMoreData(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LOAD_MORE_LOCATION_JOB), object: nil)
         
-        self.collectionView.reloadData()
+        
+        
+        deviceRotated()
+
 
     }
 
+    func deviceRotated()
+    {
+       
+            if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+            {
+                DispatchQueue.main.async
+                    {
+                        
+                    self.searchController.searchBar.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.size.width, height: 50)
+
+                }
+                
+                
+
+            }
+    
+            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+            {
+                //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
+                DispatchQueue.main.async
+                    {
+                        self.searchController.searchBar.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.size.width, height: 50)
+                        
+                }
+            }
+    
+        self.collectionView.reloadData()
+
+    }
+    
     func getJobList()
     {
     
@@ -184,13 +221,13 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
                         
                         
         }
-        AppPreferences.sharedPreferences().showHudWith(title: "Loading jobs", detailText: "Please wait..")
+       // AppPreferences.sharedPreferences().showHudWith(title: "Loading jobs", detailText: "Please wait..")
 
     
     }
     override func viewWillDisappear(_ animated: Bool)
     {
-        NotificationCenter.default.removeObserver(self)
+        //NotificationCenter.default.removeObserver(self)
     }
     func setRightBarButtonItem(totalJobs:String!)
     {
@@ -615,6 +652,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         //self.searchController.searchBar.barTintColor = UIColor.white
         // Add the search bar as a subview of the UIView you added above the table view
         self.searchBarView.addSubview(self.searchController.searchBar)
+        
+        
         // Call sizeToFit() on the search bar so it fits nicely in the UIView
         //self.searchController.searchBar.sizeToFit()
         // For some reason, the search bar will extend outside the view to the left after calling sizeToFit. This next line corrects this.
@@ -735,14 +774,14 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         return verticalJobListArray.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath)
-    {
-        
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath)
-    {
-    }
+//    func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath)
+//    {
+//        
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath)
+//    {
+//    }
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         let footerView1 = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Footer", for: indexPath)
@@ -805,14 +844,14 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     }
     // make a cell for each cell index path
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath)
-    {
-        
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
-    }
+//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath)
+//    {
+//        
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        
+//    }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         

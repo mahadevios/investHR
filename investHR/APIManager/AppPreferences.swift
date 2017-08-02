@@ -25,6 +25,7 @@ class AppPreferences: NSObject,UIAlertViewDelegate
     
     var logoutFromPasswordReset:Bool
 
+    var reach: Reachability?
     
     private override init()
     {
@@ -39,6 +40,8 @@ class AppPreferences: NSObject,UIAlertViewDelegate
         firebaseInstanceId = ""
         
         customMessagesArray = [Any]()
+        
+        reach = Reachability(hostname: "www.google.com")
         
         super.init()
     }
@@ -60,9 +63,9 @@ class AppPreferences: NSObject,UIAlertViewDelegate
     
     func startReachabilityNotifier()
     {
-        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged), name: ReachabilityChangedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged(_:)), name: ReachabilityChangedNotification, object: nil)
         
-        let reach = Reachability(hostname: "www.google.com")
+        reach = Reachability(hostname: "www.google.com")
 
         do
         {
@@ -77,11 +80,11 @@ class AppPreferences: NSObject,UIAlertViewDelegate
         
     }
     
-    func reachabilityChanged( note:Notification) -> Void
+    func reachabilityChanged(_ note:Notification) -> Void
     {
-        let reach = note.object as! Reachability
+        reach = note.object as? Reachability
         
-        if (reach.currentReachabilityStatus == .reachableViaWiFi) || (reach.currentReachabilityStatus == .reachableViaWWAN)
+        if (reach?.currentReachabilityStatus == .reachableViaWiFi) || (reach?.currentReachabilityStatus == .reachableViaWWAN)
         {
             self.isReachable = true
         }
@@ -90,7 +93,9 @@ class AppPreferences: NSObject,UIAlertViewDelegate
             self.isReachable = false
         }
     }
-    
+//    func reachabilityChanged(_ note: NSNotification) {
+//        //
+//    }
     func showHudWith(title:String, detailText:String) -> Void
     {
         //let hud = MBProgressHUD.init(window: UIApplication.shared.keyWindow!)

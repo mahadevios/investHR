@@ -6,6 +6,9 @@
 //  Copyright © 2017 Xanadutec. All rights reserved.
 //
 
+// pro. prifiles http://escoz.com/blog/demystifying-ios-certificates-and-provisioning-files/
+
+// https://stackoverflow.com/questions/24583654/understanding-the-certificate-and-provisioning-profile-let-me-know-if-it-is-rig
 import UIKit
 
 import CoreData

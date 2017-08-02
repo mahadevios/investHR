@@ -209,9 +209,9 @@ class CoreDataManager: NSObject
         
         
             //let userId = UserDefaults.standard.object(forKey: Constant.USERID) as! String
-                let date = Date()
+              //  let date = Date()
         //
-                let dateToDelete = date.addingTimeInterval(-2*24*60*60)
+                //let dateToDelete = date.addingTimeInterval(-2*24*60*60)
         
             fetchRequest.predicate = NSPredicate(format: "notificationDate1 < %@", date as CVarArg)
             
@@ -247,7 +247,7 @@ class CoreDataManager: NSObject
         
         
         var dayComponent = DateComponents()
-        dayComponent.day = -2
+        dayComponent.day = 0
         
         let theCalendar = Calendar.current
         //    NSDate *nextDate = [theCalendar dateByAddingComponents:dayComponent toDate:[NSDate date] options:0];
