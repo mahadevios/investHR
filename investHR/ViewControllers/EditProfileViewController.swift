@@ -1576,6 +1576,19 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                         
 
                     }
+                    if textField == emailTextField
+                    {
+                        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+                        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+                        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+                        
+                        if linkedInId != nil
+                        {
+                          textField.resignFirstResponder()
+                        
+                        }
+                        
+                    }
 //                        else
 //                        if textField == cityTextField
 //                        {

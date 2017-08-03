@@ -102,28 +102,28 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     func deviceRotated()
     {
        
-            if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
-            {
-                DispatchQueue.main.async
-                    {
-                        
-                    self.searchController.searchBar.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.size.width, height: 50)
-
-                }
-                
-                
-
-            }
-    
-            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
-            {
+//            if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+//            {
+//                DispatchQueue.main.async
+//                    {
+//                        
+//                    self.searchController.searchBar.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.size.width, height: 50)
+//
+//                }
+//                
+//                
+//
+//            }
+//    
+//            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+//            {
                 //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
                 DispatchQueue.main.async
                     {
                         self.searchController.searchBar.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.size.width, height: 50)
                         
                 }
-            }
+            //}
     
         self.collectionView.reloadData()
 
@@ -248,7 +248,9 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         //print("iscoming")
         isLoading = false
+
         self.collectionView.collectionViewLayout.invalidateLayout()
+
         AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
@@ -794,13 +796,25 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
 
                     if isLoading
                     {
-                        
+                        if footerView.viewWithTag(123) != nil
+                        {
+                            footerView.viewWithTag(123)?.removeFromSuperview()
+                        }
                         activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
                         activityView.frame = CGRect(x: self.view.center.x, y: 10, width: 30, height: 30)
                         //activityView.frame = footerView.center
                         activityView.startAnimating()
+                        
+                        activityView.tag = 123
                         footerView.bringSubview(toFront: activityView)
                         footerView.addSubview(activityView)
+                    }
+                    else
+                    {
+                        if footerView.viewWithTag(123) != nil
+                        {
+                            footerView.viewWithTag(123)?.removeFromSuperview()
+                        }
                     }
                     
                     

@@ -24,6 +24,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
     
     var appliedJobsIdsArray = [Int64]()
 
+    @IBOutlet weak var dataNotFoundLabel: UILabel!
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -48,12 +49,12 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
             
             if username != nil && password != nil
             {
-                APIManager.getSharedAPIManager().getDeletedJobIds(username: username!, password: password!, linkedInId: "")
+               // APIManager.getSharedAPIManager().getDeletedJobIds(username: username!, password: password!, linkedInId: "")
             }
             else
                 if linkedInId != nil
                 {
-                    APIManager.getSharedAPIManager().getDeletedJobIds(username: "", password: "", linkedInId: linkedInId!)
+                   // APIManager.getSharedAPIManager().getDeletedJobIds(username: "", password: "", linkedInId: linkedInId!)
                     
                 }
         }
@@ -98,7 +99,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         
         if codeString == "1001"
         {
-            //dataNotFoundLabel.isHidden = false
+            dataNotFoundLabel.isHidden = false
             
             self.collectionView.reloadData()
             

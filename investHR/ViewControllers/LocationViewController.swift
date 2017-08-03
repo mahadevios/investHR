@@ -70,14 +70,49 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
     {
         super.viewWillAppear(true)
         
+        deviceRotated()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+
         
     }
     func popViewController() -> Void
     {
-        
+        NotificationCenter.default.removeObserver(self)
         self.navigationController?.popViewController(animated: true)
     }
     
+    func deviceRotated()
+    {
+        
+        //            if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+        //            {
+        //                DispatchQueue.main.async
+        //                    {
+        //
+        //                    self.searchController.searchBar.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.size.width, height: 50)
+        //
+        //                }
+        //
+        //
+        //
+        //            }
+        //
+        //            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+        //            {
+        //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
+        DispatchQueue.main.async
+            {
+                self.searchController.searchBar.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.size.width, height: 50)
+                
+        }
+        //}
+        
+        //self.collectionView.reloadData()
+        
+    }
+    
+
     func setSearchController() -> Void
     {
         self.searchController = UISearchController(searchResultsController: nil)

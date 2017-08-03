@@ -573,7 +573,10 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         self.webViewWidth = webView.scrollView.contentSize.width
 
         var webViewFrame = webView.frame
-        webViewFrame.size.height = 1
+       // var webViewFrame = CGRect(x: webView.frame.origin.x, y: webView.frame.origin.y, width: 270, height: webView.frame.size.height)
+
+        //webViewFrame.size.height = 1
+        //webViewFrame.size.width = 1
         webView.frame = webViewFrame
         let fittingSize = webView.sizeThatFits(CGSize.zero)
         webViewFrame.size = fittingSize
@@ -599,16 +602,63 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         {
             webView.isUserInteractionEnabled = false
         }
-        
+        let ht = webView.stringByEvaluatingJavaScript(from: "document.documentElement.scrollHeight")
+
         self.collectionView.reloadData()
         
         
         print("webview h = \(webViewHeit)")
         print("webview w = \(webViewWidth)")
 
+        //self.refreshWebView(webView: webView)
 
     }
     
+//    func refreshWebView(webView:UIWebView)
+//    {
+//        self.webViewHeight = webView.scrollView.contentSize.height
+//        self.webViewWidth = webView.scrollView.contentSize.width
+//        
+//        var webViewFrame = webView.frame
+//        // var webViewFrame = CGRect(x: webView.frame.origin.x, y: webView.frame.origin.y, width: 270, height: webView.frame.size.height)
+//        
+//        //webViewFrame.size.height = 1
+//        //webViewFrame.size.width = 1
+//        webView.frame = webViewFrame
+//        let fittingSize = webView.sizeThatFits(CGSize.zero)
+//        webViewFrame.size = fittingSize
+//        webView.autoresizingMask = .flexibleWidth
+//        webView.autoresizingMask = .flexibleHeight
+//        
+//        // webViewFrame.size.width = 276; Making sure that the webView doesn't get wider than 276 px
+//        //        webView.frame = webViewFrame;
+//        // webView.frame = CGRect(x: webView.frame.origin.x, y: webView.frame.origin.y, width: self.view.frame.size.width, height: webView.frame.size.height)
+//        
+//        let webViewHeit = webView.frame.size.height
+//        let webViewWidth = webView.frame.size.width
+//        
+//        //webView.scrollView.contentSize = CGSize(width: self.webViewWidth, height: self.webViewHeight)
+//        webViewLoaded = true
+//        webViewAdded = true
+//        
+//        webView.scrollView.showsVerticalScrollIndicator = false
+//        
+//        webView.scrollView.showsHorizontalScrollIndicator = false
+//        
+//        if self.webViewWidth < self.view.frame.size.width
+//        {
+//            webView.isUserInteractionEnabled = false
+//        }
+//        let ht = webView.stringByEvaluatingJavaScript(from: "document.documentElement.scrollHeight")
+//        
+//        self.collectionView.reloadData()
+//        
+//        
+//        print("webview h = \(webViewHeit)")
+//        print("webview w = \(webViewWidth)")
+//
+//    
+//    }
 
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
@@ -655,19 +705,22 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
 //        }
         descriptionWebView1 = UIWebView(frame: CGRect(x: descriptionWebView.frame.origin.x, y: descriptionWebView.frame.origin.y+50, width: descriptionWebView.frame.size.width, height: descriptionWebView.frame.size.height))
 
+        //descriptionWebView1.scalesPageToFit = true
         //descriptionWebView1.tag = 120
 
 //        descriptionWebView1.scrollView.showsVerticalScrollIndicator = false
 //        
 //        descriptionWebView1.scrollView.showsHorizontalScrollIndicator = false
         
+        var height:CGFloat = 0
+        var height1:CGFloat = 0
 
         if let subject = jobDetailsDic?["subject"]
         {
             companyNameLabel.text = subject as? String
             companyNameLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
             companyNameLabel.numberOfLines = 0
-            let height1 = heightForView(text: subject as! String, font: UIFont.systemFont(ofSize: 14), width: locationLabel.frame.size.width) as CGFloat
+            height1 = heightForView(text: subject as! String, font: UIFont.systemFont(ofSize: 14), width: locationLabel.frame.size.width) as CGFloat
             companyNameLabel.frame = CGRect(x: companyNameLabel.frame.origin.x, y: companyNameLabel.frame.origin.y, width: companyNameLabel.frame.size.width, height: height1)
             
             //
@@ -697,7 +750,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             locationLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
             locationLabel.numberOfLines = 0
             locationLabel.textColor = UIColor(colorLiteralRed: 142/255.0, green: 159/255.0, blue: 168/255.0, alpha: 1.0)
-            let height = heightForView(text: jobLocationString as String, font: UIFont.systemFont(ofSize: 14), width: locationLabel.frame.size.width) as CGFloat
+            height = heightForView(text: jobLocationString as String, font: UIFont.systemFont(ofSize: 14), width: locationLabel.frame.size.width) as CGFloat
             
             
             locationLabel.frame = CGRect(x: locationLabel.frame.origin.x, y: locationLabel.frame.origin.y, width: locationLabel.frame.size.width, height: height)
@@ -720,7 +773,16 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             //
             //descriptionWebView1.scrollView.contentSize = CGSize(width: <#T##CGFloat#>, height: <#T##CGFloat#>)
 //            descriptionWebView1 = UIWebView(frame: CGRect(x: descriptionWebView.frame.origin.x, y: companyNameLabel.frame.origin.y+20+height1+20+height+jobDescLabel.frame.size.height+30, width: descriptionWebView.frame.size.width, height: descriptionWebView.frame.size.height))
-            descriptionWebView1.frame = CGRect(x: descriptionWebView.frame.origin.x, y: companyNameLabel.frame.origin.y+20+height1+20+height+jobDescLabel.frame.size.height+30, width: descriptionWebView.frame.size.width, height: descriptionWebView.frame.size.height)
+            
+//            if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight
+//            {
+//              descriptionWebView1.frame = CGRect(x: descriptionWebView.frame.origin.x, y: companyNameLabel.frame.origin.y+20+height1+20+height+jobDescLabel.frame.size.height+30, width: 260, height: descriptionWebView.frame.size.height)
+//            }
+//            else
+//            {
+//              descriptionWebView1.frame = CGRect(x: descriptionWebView.frame.origin.x, y: companyNameLabel.frame.origin.y+20+height1+20+height+jobDescLabel.frame.size.height+30, width: descriptionWebView.frame.size.width, height: descriptionWebView.frame.size.height)
+//            }
+            
             
             descriptionWebView1.tag = 120
 
@@ -741,7 +803,31 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         {
             if !webViewLoaded
             {
-                descriptionWebView1.loadHTMLString(discription, baseURL: nil)
+//                [self.viewer stringByEvaluatingJavaScriptFromString:
+//                    [NSString stringWithFormat:
+//                    @"document.querySelector('meta[name=viewport]').setAttribute('content', 'width=%d;', false); ",
+//                    (int)self.viewer.frame.size.width]];
+                let newString = "<html><head><meta name=\("viewport") content=\("width=device-width")/></head><body>\(discription)</body></html>"
+   //             let newString = "<head><meta name=\("viewport") content=\("width=device-width")/></head><body><p>\(discription)</p></body>"
+                if self.interfaceOrientation == UIInterfaceOrientation.landscapeRight || self.interfaceOrientation == UIInterfaceOrientation.landscapeLeft
+                {
+                   descriptionWebView1.frame = CGRect(x: 30, y: companyNameLabel.frame.origin.y+20+height1+20+height+jobDescLabel.frame.size.height+30, width: self.view.frame.size.height - 50, height: descriptionWebView.frame.size.height)
+                }
+//                if UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft || UIDevice.current.orientation == UIDeviceOrientation.landscapeRight || (UIDevice.current.orientation == UIDeviceOrientation.faceUp && (self.interfaceOrientation == UIInterfaceOrientation.landscapeLeft || self.interfaceOrientation == UIInterfaceOrientation.landscapeRight))
+//                {
+//                    descriptionWebView1.frame = CGRect(x: 30, y: companyNameLabel.frame.origin.y+20+height1+20+height+jobDescLabel.frame.size.height+30, width: 260, height: descriptionWebView.frame.size.height)
+//                }
+                else
+                {
+                    descriptionWebView1.frame = CGRect(x: descriptionWebView.frame.origin.x, y: companyNameLabel.frame.origin.y+20+height1+20+height+jobDescLabel.frame.size.height+30, width: descriptionWebView.frame.size.width, height: descriptionWebView.frame.size.height)
+                }
+
+
+                descriptionWebView1.loadHTMLString(newString, baseURL: nil)
+               
+                let ht = descriptionWebView1.stringByEvaluatingJavaScript(from: "document.height")
+
+                print(ht)
                 //descriptionWebView.loadHTMLString(discription, baseURL: nil)
 
             }
@@ -750,6 +836,11 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
  
         if !webViewAdded
         {
+            
+//            if cell.viewWithTag(120) != nil
+//            {
+//                cell.viewWithTag(120)?.removeFromSuperview()
+//            }
             cell.addSubview(descriptionWebView1)
 
         }
@@ -876,23 +967,35 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
     }
     
     
-//    override func viewWillLayoutSubviews()
-//    {
-////        let discription1 = jobDetailsDic?["discription"]  as? String
-////        //{
-////        if discription1 != nil
-////        {
-////            print(discription1!)
-////            descriptionWebView1.loadHTMLString(discription1!, baseURL: nil)
-////        }
-//        
-//            //descriptionWebView1.loadHTMLString(discription, baseURL: nil)
-//
-//            
-//        //}
-//        collectionView.collectionViewLayout.invalidateLayout()
-//
-//    }
+    override func viewWillLayoutSubviews()
+    {
+//        let discription1 = jobDetailsDic?["discription"]  as? String
+//        //{
+//        if discription1 != nil
+//        {
+//            print(discription1!)
+//            descriptionWebView1.loadHTMLString(discription1!, baseURL: nil)
+//        }
+        
+            //descriptionWebView1.loadHTMLString(discription, baseURL: nil)
+
+            
+        //}
+        //collectionView.collectionViewLayout.invalidateLayout()
+        if let discription = jobDetailsDic?["discription"]  as? String
+        {
+
+            let ht = descriptionWebView1.stringByEvaluatingJavaScript(from: "document.documentElement.scrollWidth")
+            //let wt = webView.stringByEvaluatingJavaScript(from: "document.documentElement.scrollHeight")
+
+            descriptionWebView1.frame = CGRect(x: descriptionWebView1.frame.origin.x, y: descriptionWebView1.frame.origin.y, width: 200, height: descriptionWebView1.frame.size.height)
+
+         let string = self.descriptionWebView1.stringByEvaluatingJavaScript(from: "document.querySelector('meta[name=viewport]').setAttribute('content', 'width=\(200);', false); ")
+        }
+        //
+        //                let ht = descriptionWebView1.stringByEvaluatingJavaScript(from: "document.height")
+
+    }
     // MARK: - UICollectionViewDelegate protocol
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -1259,16 +1362,40 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         {
 //            self.webViewLoaded = false
 //            self.webViewAdded = false
-//            self.descriptionWebView1.removeFromSuperview()
+////            self.descriptionWebView1.removeFromSuperview()
 //            self.collectionView.reloadData()
+            
             if let discription = jobDetailsDic?["discription"]  as? String
             {
+//                 let string = self.descriptionWebView1.stringByEvaluatingJavaScript(from: "document.querySelector('meta[name=viewport]').setAttribute('content', 'width=\(200);', false); ")
+//                
+//                let ht = descriptionWebView1.stringByEvaluatingJavaScript(from: "document.height")
+
+//                DispatchQueue.main.async
+//                    {
+//                        self.descriptionWebView1.reload()
+//
+//                }
+                
+//                [self.viewer stringByEvaluatingJavaScriptFromString:
+//                    [NSString stringWithFormat:
+//                    @"document.querySelector('meta[name=viewport]').setAttribute('content', 'width=%d;', false); ",
+//                    (int)self.viewer.frame.size.width]];
+                //descriptionWebView1.stopLoading()
                 //descriptionWebView1.loadHTMLString(discription, baseURL: nil)
 
             }
         }
         
-        
+        DispatchQueue.main.async
+            {
+                //self.webViewLoaded = false
+                //self.webViewAdded = false
+                //self.descriptionWebView1.removeFromSuperview()
+                self.collectionView.reloadData()
+                
+                //self.refreshWebView(webView: self.descriptionWebView1)
+        }
        
     }
 

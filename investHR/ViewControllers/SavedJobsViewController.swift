@@ -15,6 +15,7 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
     var verticalJobListArray:[AnyObject] = []
     var appliedJobsIdsArray = [Int]()
 
+    @IBOutlet weak var dataNotFoundLabel: UILabel!
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -72,7 +73,20 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
     }
     func checkSAvedJobList(dataDic:Notification)
     {
+        
         let appliedJobsDict = dataDic.object as! [String:AnyObject]
+
+        let codeString = String(describing: appliedJobsDict["code"]!)
+        
+        
+        if codeString == "1001"
+        {
+            dataNotFoundLabel.isHidden = false
+            
+            //self.collectionView.reloadData()
+            
+            return
+        }
         
         let appliedJobsNumber = appliedJobsDict["savedJobSize"] as? Int
         

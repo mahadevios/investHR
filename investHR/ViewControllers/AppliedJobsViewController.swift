@@ -14,6 +14,7 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
     @IBOutlet weak var collectionView: UICollectionView!
     var verticalJobListArray:[AnyObject] = []
 
+    @IBOutlet weak var dataNotFoundLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -61,6 +62,18 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
     func checkRolesJobList(dataDic:NSNotification)
     {
         let appliedJobsDict = dataDic.object as! [String:AnyObject]
+        
+        let codeString = String(describing: appliedJobsDict["code"]!)
+        
+        
+        if codeString == "1001"
+        {
+            dataNotFoundLabel.isHidden = false
+            
+            //self.collectionView.reloadData()
+            
+            return
+        }
         
         let appliedJobsNumber = appliedJobsDict["appliedJobSize"] as? Int
         

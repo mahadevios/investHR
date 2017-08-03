@@ -64,6 +64,13 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
         
     }
 
+//    override func viewWillAppear(_ animated: Bool)
+//    {
+//        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+//
+//    }
+    
+    
     func getdomainNames( type:String)
     {
         let coreDataManager = CoreDataManager.getSharedCoreDataManager()
@@ -121,6 +128,7 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
     func popViewController() -> Void
     {
        // self.revealViewController().revealToggle(animated: true)
+        NotificationCenter.default.removeObserver(self)
 
         self.navigationController?.popViewController(animated: true)
     }

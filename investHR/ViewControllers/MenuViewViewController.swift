@@ -77,6 +77,11 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             cookieStorage.deleteCookie(cookie)
         }
         
+        if UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) != nil
+        {
+            UserDefaults.standard.setValue(nil, forKey: Constant.LAST_LOGGEDIN_USER_NAME)
+
+        }
         UserDefaults.standard.setValue(nil, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
         UserDefaults.standard.setValue(nil, forKey: Constant.USERNAME)
         UserDefaults.standard.setValue(nil, forKey: Constant.PASSWORD)
