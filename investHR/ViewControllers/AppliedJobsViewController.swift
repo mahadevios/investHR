@@ -74,7 +74,11 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
             
             return
         }
-        
+        else
+        {
+            dataNotFoundLabel.isHidden = true
+            
+        }        
         let appliedJobsNumber = appliedJobsDict["appliedJobSize"] as? Int
         
         if appliedJobsNumber != nil
@@ -117,6 +121,11 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
         do {
             verticalJobListArray = try JSONSerialization.jsonObject(with: jobData!, options: .allowFragments) as! [AnyObject]
             
+            if verticalJobListArray.count == 0
+            {
+                self.dataNotFoundLabel.isHidden = false
+            }
+
             self.collectionView.reloadData()
         } catch let error as NSError
         {
@@ -206,6 +215,9 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "NewJobsViewController") as! NewJobsViewController
         
         vc.appliedAndSaveHidden = true
+        
+        vc.jobId = "\(jobId)"
+        
         
         self.present(vc, animated: true, completion: nil)
     }

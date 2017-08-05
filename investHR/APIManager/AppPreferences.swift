@@ -25,7 +25,7 @@ class AppPreferences: NSObject,UIAlertViewDelegate
     
     var logoutFromPasswordReset:Bool
 
-    var reach: Reachability?
+    var reach = Reachability(hostname: "www.google.com")
     
     private override init()
     {

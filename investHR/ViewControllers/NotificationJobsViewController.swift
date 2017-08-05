@@ -49,12 +49,12 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
             
             if username != nil && password != nil
             {
-               // APIManager.getSharedAPIManager().getDeletedJobIds(username: username!, password: password!, linkedInId: "")
+                APIManager.getSharedAPIManager().getDeletedJobIds(username: username!, password: password!, linkedInId: "")
             }
             else
                 if linkedInId != nil
                 {
-                   // APIManager.getSharedAPIManager().getDeletedJobIds(username: "", password: "", linkedInId: linkedInId!)
+                    APIManager.getSharedAPIManager().getDeletedJobIds(username: "", password: "", linkedInId: linkedInId!)
                     
                 }
         }
@@ -65,6 +65,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
             self.collectionView.reloadData()
         }
         
+       // self.automaticallyAdjustsScrollViewInsets = false
 
 //        let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 25))
 //        numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
@@ -73,6 +74,8 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
 //        let rightBarButtonItem = UIBarButtonItem(customView: numberOfJobsLabel)
 //        
 //        self.navigationItem.rightBarButtonItem = rightBarButtonItem
+        
+        
         // Do any additional setup after loading the view.
     }
     
@@ -99,12 +102,19 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         
         if codeString == "1001"
         {
-            dataNotFoundLabel.isHidden = false
+            //dataNotFoundLabel.isHidden = false
             
+            commonNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
+
             self.collectionView.reloadData()
             
             return
         }
+//        else
+//        {
+//            //dataNotFoundLabel.isHidden = true
+//
+//        }
         
         let closedJobIdsString = dataDictionary["deletedJobId"] as! String
         
@@ -116,6 +126,8 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
             
             if self.closedJobsIdsArray.count < 1
             {
+                dataNotFoundLabel.isHidden = false
+
                 self.collectionView.reloadData()
             }
             else
@@ -128,9 +140,10 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
                         
                         self.commonNotificationObjectsArray?.remove(at: index!)
                         
-                        self.collectionView.reloadData()
                     }
                 }
+                self.collectionView.reloadData()
+
                // print(closedJobsIdsArray)
             }
            
@@ -254,10 +267,30 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
 
         if commonNotificationObjectsArray != nil
         {
+            if commonNotificationObjectsArray?.count == 0
+            {
+                dataNotFoundLabel.isHidden = false
+            }
+            else
+            {
+                dataNotFoundLabel.isHidden = true
+
+            }
+            
             return commonNotificationObjectsArray!.count
         }
         else
         {
+            if commonNotificationObjectsArray?.count == 0
+            {
+                dataNotFoundLabel.isHidden = false
+            }
+            else
+            {
+                dataNotFoundLabel.isHidden = true
+                
+            }
+
             return 0
         }
     }
@@ -270,9 +303,21 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath)
         
         let subjectLabel = cell.viewWithTag(101) as! UILabel
+        
         let applyButton = cell.viewWithTag(102) as! subclassedUIButton
+        
         let saveButton = cell.viewWithTag(103) as! subclassedUIButton
+        
         let saveImageView = cell.viewWithTag(104) as! UIImageView
+        
+        applyButton.isHidden = true
+        saveButton.isHidden = true
+        
+        applyButton.isEnabled = false
+        saveButton.isEnabled = false
+
+        saveImageView.isHidden = true
+
         let dateLabel = cell.viewWithTag(105) as! UILabel
 
         let notificationObject = commonNotificationObjectsArray![indexPath.row]
@@ -287,48 +332,42 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         
         let jobId = notificationObject.jobId
         
-        if appliedJobsIdsArray.contains(jobId)
-        {
-            applyButton.setTitle("Applied", for: .normal)
-            applyButton.setTitleColor(UIColor.white, for: .normal)
-            applyButton.backgroundColor = UIColor.appliedJobGreenColor()
-            applyButton.isUserInteractionEnabled = false
-        }
-        else
-        {
-            applyButton.setTitle("Apply", for: .normal)
-            applyButton.setTitleColor(UIColor.white, for: .normal)
-            applyButton.backgroundColor = UIColor.appBlueColor()
-            applyButton.isUserInteractionEnabled = true
-        }
-        if savedJobsIdsArray.contains(jobId)
-        {
-            saveImageView.image = UIImage(named: "SideMenuSavedJob")
-            saveButton.isUserInteractionEnabled = false
-            
-        }
-        else
-        {
-            saveImageView.image = UIImage(named: "SavedUnselected")
-            saveButton.isUserInteractionEnabled = true
-            
-        }
-
-        saveButton.jobId = notificationObject.jobId
-        applyButton.jobId = notificationObject.jobId
-        
-        //applyButton.tag = jobId as! Int
-        saveButton.indexPath = indexPath.row
-        applyButton.indexPath = indexPath.row
-        
-        saveButton.addTarget(self, action: #selector(saveJobButtonClicked), for: UIControlEvents.touchUpInside)
-        applyButton.addTarget(self, action: #selector(applyJobButtonClicked), for: UIControlEvents.touchUpInside)
-        //applyButton.layer.borderColor = UIColor(red: 77/255.0, green: 150/255.0, blue: 241/255.0, alpha: 1).cgColor
-        
-        
-        //        applyButton.layer.cornerRadius = 3.0
-        
-        // Use the outlet in our custom class to get a reference to the UILabel in the cell
+//        if appliedJobsIdsArray.contains(jobId)
+//        {
+//            applyButton.setTitle("Applied", for: .normal)
+//            applyButton.setTitleColor(UIColor.white, for: .normal)
+//            applyButton.backgroundColor = UIColor.appliedJobGreenColor()
+//            applyButton.isUserInteractionEnabled = false
+//        }
+//        else
+//        {
+//            applyButton.setTitle("Apply", for: .normal)
+//            applyButton.setTitleColor(UIColor.white, for: .normal)
+//            applyButton.backgroundColor = UIColor.appBlueColor()
+//            applyButton.isUserInteractionEnabled = true
+//        }
+//        if savedJobsIdsArray.contains(jobId)
+//        {
+//            saveImageView.image = UIImage(named: "SideMenuSavedJob")
+//            saveButton.isUserInteractionEnabled = false
+//            
+//        }
+//        else
+//        {
+//            saveImageView.image = UIImage(named: "SavedUnselected")
+//            saveButton.isUserInteractionEnabled = true
+//            
+//        }
+//
+//        saveButton.jobId = notificationObject.jobId
+//        applyButton.jobId = notificationObject.jobId
+//        
+//        //applyButton.tag = jobId as! Int
+//        saveButton.indexPath = indexPath.row
+//        applyButton.indexPath = indexPath.row
+//        
+//        saveButton.addTarget(self, action: #selector(saveJobButtonClicked), for: UIControlEvents.touchUpInside)
+//        applyButton.addTarget(self, action: #selector(applyJobButtonClicked), for: UIControlEvents.touchUpInside)
         
         return cell
     }

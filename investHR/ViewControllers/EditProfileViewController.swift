@@ -446,12 +446,12 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             
             AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: ErrorMessage, withCancelText: "Ok")
             
-            self.resignAllResponsders()
+            //self.resignAllResponsders()
             
-            self.setUserInteractionEnabled(setEnable: false)
-            
+            self.setUserInteractionEnabled(setEnable: true)
+            self.setRightBarButtonItemSave()
             //self.setRightBarButtonItemEdit()
-            self.setTextFieldsTextColor(color: UIColor.lightGray)
+            //self.setTextFieldsTextColor(color: UIColor.lightGray)
             
             return
 

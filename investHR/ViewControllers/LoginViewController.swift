@@ -71,7 +71,11 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
             
             return
         }
+        
+        print(linkedInLoginCircleButton.frame.size)
         let managedObjectContext1 = appDelegate.managedObjectContext
+        
+        
 
        // CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "City")
 
@@ -235,6 +239,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
     
     func forgotPassword()
     {
+        
         let titlePrompt = UIAlertController(title: "Forgot password?",
                                             message: "Enter the email you registered with:",
                                             preferredStyle: .alert)

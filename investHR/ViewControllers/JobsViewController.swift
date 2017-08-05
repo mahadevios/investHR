@@ -27,8 +27,10 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     var domainType:String = ""
     var stateId:String = ""
     var cityId:String = ""
-    var activityView:UIActivityIndicatorView = UIActivityIndicatorView()
+    var activityView:UIActivityIndicatorView?
     var isLoading:Bool = false
+    var isIndicatorAdded:Bool = false
+
     var indexePathArray:[IndexPath]=[]
 
     @IBOutlet weak var saveJobImage: UIImageView!
@@ -99,6 +101,11 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
 
     }
 
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+//        
+//    
+//    }
+    
     func deviceRotated()
     {
        
@@ -118,11 +125,14 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
 //            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
 //            {
                 //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
-                DispatchQueue.main.async
-                    {
+//                DispatchQueue.main.async
+//                    {
+                       // self.searchBarView.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.size.width, height: 50)
                         self.searchController.searchBar.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.size.width, height: 50)
                         
-                }
+                        
+                        
+              //  }
             //}
     
         self.collectionView.reloadData()
@@ -249,6 +259,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         //print("iscoming")
         isLoading = false
 
+        isIndicatorAdded = false
+        
         self.collectionView.collectionViewLayout.invalidateLayout()
 
         AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
@@ -653,13 +665,14 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         self.searchController.searchBar.delegate = self
         //self.searchController.searchBar.barTintColor = UIColor.white
         // Add the search bar as a subview of the UIView you added above the table view
+        self.searchController.searchBar.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.size.width, height: 50)
         self.searchBarView.addSubview(self.searchController.searchBar)
         
         
         // Call sizeToFit() on the search bar so it fits nicely in the UIView
         //self.searchController.searchBar.sizeToFit()
         // For some reason, the search bar will extend outside the view to the left after calling sizeToFit. This next line corrects this.
-        self.searchController.searchBar.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.size.width, height: 50)
+        
         //self.searchController.searchBar.frame.size.width = self.view.frame.size.width
     
     }
@@ -704,6 +717,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         self.collectionView.reloadData()
     }
     
+    
+    
 //    - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 //    {
 //        UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header" forIndexPath:indexPath];
@@ -731,15 +746,20 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         if y > (h + reload_distance)
         {
             
-            if !isLoading
+            if isLoading == false
             {
                 loadMoreData()
 
                 isLoading = true
 
                 self.collectionView.collectionViewLayout.invalidateLayout()
-                
 
+            }
+            else
+            {
+               // isLoading = false
+
+                //self.collectionView.collectionViewLayout.invalidateLayout()
 
             }
             
@@ -784,6 +804,12 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
 //    func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath)
 //    {
 //    }
+    
+//    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+//        return cache[indexPath.row]
+//    }
+
+    
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         let footerView1 = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Footer", for: indexPath)
@@ -792,35 +818,53 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
                 
 
                 case UICollectionElementKindSectionFooter:
-                    let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Footer", for: indexPath)
-
-                    if isLoading
-                    {
-                        if footerView.viewWithTag(123) != nil
-                        {
-                            footerView.viewWithTag(123)?.removeFromSuperview()
-                        }
-                        activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-                        activityView.frame = CGRect(x: self.view.center.x, y: 10, width: 30, height: 30)
-                        //activityView.frame = footerView.center
-                        activityView.startAnimating()
+                    
+//                    let attributes = collectionView.layoutAttributesForItem(at: indexPath)
+//                    
+//                    if attributes == nil
+//                    {
+                        let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Footer", for: indexPath) as UICollectionReusableView
                         
-                        activityView.tag = 123
-                        footerView.bringSubview(toFront: activityView)
-                        footerView.addSubview(activityView)
-                    }
-                    else
-                    {
-                        if footerView.viewWithTag(123) != nil
+                        if isLoading == true && isIndicatorAdded == false
                         {
-                            footerView.viewWithTag(123)?.removeFromSuperview()
+                            if footerView.viewWithTag(123) != nil
+                            {
+                                footerView.viewWithTag(123)?.removeFromSuperview()
+                            }
+                            activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                            activityView!.frame = CGRect(x: self.view.center.x, y: 10, width: 30, height: 30)
+                            //activityView.frame = footerView.center
+                            activityView!.startAnimating()
+                            
+                            activityView!.tag = 123
+                            
+                            isIndicatorAdded = true
+                            
+                            footerView.bringSubview(toFront: activityView!)
+                            footerView.addSubview(activityView!)
                         }
-                    }
-                    
-                    
-                //footerView.backgroundColor = UIColor.green;
-                return footerView
+                        else
+                        {
 
+                            if activityView != nil
+                            {
+                                activityView!.removeFromSuperview()
+                                
+                            }
+                            isIndicatorAdded = false
+
+                        }
+                        
+                        
+                        //footerView.backgroundColor = UIColor.green;
+                        return footerView
+
+//                    }
+//                    else
+//                    {
+//                        return attributes?.representedElementKind
+//                    }
+                
             case UICollectionElementKindSectionHeader:
                 
                 let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath) 
@@ -830,7 +874,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
                 
             default:
                 return footerView1
-                assert(false, "Unexpected element kind")
+//                assert(false, "Unexpected element kind")
             }
         return footerView1
 
@@ -889,6 +933,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
        
         let subjectLabel = cell.viewWithTag(101) as! UILabel
+        subjectLabel.isUserInteractionEnabled = false
         //let companyWebSiteLabel = cell.viewWithTag(102) as! UILabel
         let applyButton = cell.viewWithTag(103) as! subclassedUIButton
         let saveButton = cell.viewWithTag(104) as! subclassedUIButton
@@ -1022,9 +1067,9 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     func loadMoreData()
     {
         var existingJobIdsArray:[String] = []
-        for index in 0 ..< verticalJobListArray.count
+        for index in 0 ..< verticalJobListCopyForPredicateArray.count
         {
-            let jobDic = verticalJobListArray[index] as! [String:AnyObject]
+            let jobDic = verticalJobListCopyForPredicateArray[index] as! [String:AnyObject]
             
             existingJobIdsArray.append(String(jobDic["jobid"] as! Int) as String)
             

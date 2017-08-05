@@ -83,6 +83,9 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
 
 //        NotificationCenter.default.addObserver(self, selector: #selector(share(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: nil) // after getting the accessToken from linkedin webview, ask for user info and get back to this view with hud, NOTIFICATION_LIACCESSTOKEN_FETCHED when webview fetch the user info, get this info in this controller and pass it to the server and validate the user
 
+        
+        
+        
 
 
     }
@@ -172,6 +175,8 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
             }
         }
        
+        
+        
     }
     
     override func viewDidAppear(_ animated: Bool)

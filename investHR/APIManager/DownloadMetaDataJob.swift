@@ -90,6 +90,10 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
             // Set the HTTP body using the postData object created above.
             request.httpBody = postData
             
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            
+            //request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
             print(postData ?? "nil")
             print(request.httpBody ?? "nil")
 
@@ -120,6 +124,8 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         //let dictFromJSON:[String:String]?
         do
         {
+            //let response1 =  try JSONSerialization.jsonObject(with: responseData as Data, options: .mutableContainers) as? [String:Any]
+
             response =  try JSONSerialization.jsonObject(with: responseData as Data, options: .allowFragments) as? [String:AnyObject]
             
             guard response != nil else
