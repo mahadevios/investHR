@@ -16,8 +16,10 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     @IBOutlet weak var circleImageView: UIImageView!
 
     @IBOutlet weak var topSpaceConstraint: NSLayoutConstraint!
+    @IBOutlet weak var collapsableTableViewHeight: NSLayoutConstraint!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var autoCompleteTableView: UITableView!
+    @IBOutlet weak var collapsableTableView: UITableView!
     @IBOutlet weak var outSideCircleView: UIImageView!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var mobileNumberTextField: UITextField!
@@ -26,14 +28,24 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     @IBOutlet weak var currentCompanyTextField: UITextField!
     @IBOutlet weak var stateTextField: TextField!
     var coutryCodesArray:[String] = []
+    var arrayForBool = [false,false]
     var imagedata:Any!
     var candidateFunctionArray : [String] = []
     var imagePickerController = UIImagePickerController()
     //    let servicesArray : [String] = ["Services","Service 2","Service 3","Service 4","Service 5"]
     let relocationArray = ["Not Available","Yes","No","May be"]
+    
     let relocationDic = ["Yes":"1","No":"2","May be":"3","Not Available":"4"]
+    
     let visaTypesArray = ["US Citizen","Green Card Holder","UK Tier 1 Visa","Uk Tier 2 Visa","UK Citizen","UK – PR"," Canadian Citizen","TN Visa","Euro Zone Citizen","EAD card Holder","L2 EAD","H1 Visa","L1 Visa","H4 Visa","L2 Visa"]
+    
     let visaTypesAndIdArray = ["US Citizen":"1","Green Card Holder":"2","UK Tier 1 Visa":"3","Uk Tier 2 Visa":"4","UK Citizen":"5","UK – PR":"6"," Canadian Citizen":"7","TN Visa":"8","Euro Zone Citizen":"9","EAD card Holder":"10","L2 EAD":"11","H1 Visa":"12","L1 Visa":"13","H4 Visa":"14","L2 Visa":"15"]
+    
+    let sectionTitleArray = ["Resume","Video"];
+    
+    var resumeNamesArray : [String] = []
+    var videoNamesArray : [String] = []
+    var totalCollpsableDynamicHeight = 80
     var roleNameAndIdDic = [String:Int16]()
     var countryCodeButton:UIButton!
     @IBOutlet weak var visaStatusTextField: TextField!
@@ -538,7 +550,45 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         let mobileNum = userDetailsDict["mobileNum"] as? String
 
         let emailId = userDetailsDict["emailId"] as? String
+        
+        if let resumeName = userDetailsDict["resumeName"] as? String
+        {
+            let resumeNameArrayCopy = resumeName.components(separatedBy: "#@")
+            
+            for name in resumeNameArrayCopy
+            {
+                if name != ""
+                {
+                    resumeNamesArray.append(name)
+                }
+            }
+        }
+        if let videoName = userDetailsDict["videoName"] as? String
+        {
+            let videoNameArrayCopy = videoName.components(separatedBy: "#@")
+            
+            for name in videoNameArrayCopy
+            {
+                if name != ""
+                {
+                    videoNamesArray.append(name)
+                }
+            }
+        }
+        
+        
+        
+        
+        let count1 = resumeNamesArray.count*30
 
+        
+        let count2 =  videoNamesArray.count*30
+        
+        
+        totalCollpsableDynamicHeight = count1 + count2 + 80
+
+        
+        
         let currentRole = userDetailsDict["currentRole"] as? String
 
         let currentCompany = userDetailsDict["currentCompany"] as? String
@@ -774,20 +824,23 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                         
                                 let imageData = try Data(contentsOf: pictureUrl as URL)
                         
-                                let userImage1 = UIImage(data: imageData)
+                                if let userImage1 = UIImage(data: imageData)
+                                {
+                                    let userImage = self.fixOrientation(img: userImage1)
+                                    
+                                    //let userImage = UIImage(cgImage: (userImage1?.cgImage)!, scale: (userImage1?.scale)!, orientation: .up)
+                                    DispatchQueue.main.async
+                                        {
+                                            
+                                            self.circleImageView.image = userImage
+                                            
+                                            print("got in main queue")
+                                            
+                                            
+                                    }
                         
-                        let userImage = self.fixOrientation(img: userImage1!)
+                                }
                         
-                        //let userImage = UIImage(cgImage: (userImage1?.cgImage)!, scale: (userImage1?.scale)!, orientation: .up)
-                        DispatchQueue.main.async
-                            {
-                                
-                                self.circleImageView.image = userImage
-                                
-                                print("got in main queue")
-                                
-
-                            }
 
 
                         }
@@ -826,7 +879,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
 
     }
    
-    func fixOrientation(img:UIImage) -> UIImage {
+       func fixOrientation(img:UIImage) -> UIImage {
         
         if (img.imageOrientation == UIImageOrientation.up) {
             return img;
@@ -2629,9 +2682,141 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         return true
     }
 
+    func numberOfSections(in tableView: UITableView) -> Int
+    {
+        if tableView == collapsableTableView
+        {
+            return sectionTitleArray.count
+        }
+        else
+        {
+            return 1
+        }
+    }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
+    {
         
+        if tableView == collapsableTableView
+        {
+            return 40
+        }
+        else
+        {
+            return 0
+        }
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+    {
+        if tableView == collapsableTableView
+        {
+            let sectionView = UIView(frame: CGRect(x: 0, y: 0, width: self.collapsableTableView.frame.size.width, height: 50))
+            
+            sectionView.tag = section
+            
+            let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped(gestureRecognizer:)))
+            
+            let titleLabel = UILabel(frame: CGRect(x: 10, y: 10, width: 100, height: 40))
+            
+            titleLabel.font = UIFont.systemFont(ofSize: 14)
+            
+            titleLabel.textColor = UIColor.gray
+            
+            titleLabel.text = sectionTitleArray[section]
+            //#selector(tapped:)
+           // gestureRecognizer.delegate  = self
+            sectionView.addSubview(titleLabel)
+            
+            sectionView.addGestureRecognizer(gestureRecognizer)
+            
+            return sectionView
+        }
+        else
+        {
+            return nil
+        }
+        
+        
+    }
+    func tapped( gestureRecognizer:UITapGestureRecognizer)
+    {
+     
+        let indexPath = IndexPath(row: 0, section: (gestureRecognizer.view?.tag)!)
+        
+        let collapsed = arrayForBool[indexPath.section]
+        
+        for index in 0 ..< sectionTitleArray.count
+        {
+            if index == indexPath.section
+            {
+                arrayForBool[index] = !collapsed
+                
+               
+            }
+        }
+        //var totalOpenedSection = 0
+        var totalHeight = 80
+
+        for index in 0 ..< arrayForBool.count
+        {
+          let opened = arrayForBool[index]
+            
+            if index == 0
+            {
+                if opened == true
+                {
+                    totalHeight = totalHeight + resumeNamesArray.count * 30
+                }
+            }
+            else
+            if index == 1
+            {
+                if opened == true
+                {
+                    totalHeight = totalHeight + videoNamesArray.count * 30
+                }
+            }
+           
+        }
+        
+        DispatchQueue.main.async
+            {
+            
+                self.collapsableTableViewHeight.constant = CGFloat(totalHeight)
+            }
+        
+        collapsableTableView.reloadSections(NSIndexSet.init(index: (gestureRecognizer.view?.tag)!) as IndexSet, with: .automatic)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    {
+      return 30
+        
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
+        if tableView == collapsableTableView
+        {
+            if arrayForBool[section] == true
+            {
+                if section == 0
+                {
+                    return resumeNamesArray.count
+                }
+
+                else
+                {
+                  return videoNamesArray.count
+                    
+                }
+            }
+            else
+            {
+              return 0
+            }
+
+        }
         return filterArray.count
     }
     
@@ -2640,9 +2825,30 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
         
-        cell?.textLabel?.text = filterArray[indexPath.row]
+        if tableView == autoCompleteTableView
+        {
+            cell?.textLabel?.text = filterArray[indexPath.row]
+            
+            return cell!
+        }
+        else
+        {
+            let nameLabel = cell?.viewWithTag(101) as! UILabel
+            
+            if indexPath.section == 0
+            {
+                nameLabel.text = resumeNamesArray[indexPath.row]
+
+            }
+            else
+            {
+                nameLabel.text = videoNamesArray[indexPath.row]
+
+            }
+          //cell?.textLabel?.text = "\(indexPath.row)"
+            return cell!
+        }
         
-        return cell!
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)

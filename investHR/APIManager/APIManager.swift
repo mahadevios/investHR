@@ -429,7 +429,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Connect to internet & reload the page.", withCancelText: "Ok")
         }
         
     }

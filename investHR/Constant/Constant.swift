@@ -27,14 +27,23 @@ struct Constant
     static let  USER_VIDEOS_FOLDER_NAME                  = "UserVideosFolder"
     static let  USER_RESUME_FOLDER_NAME                  = "UserResumeFolder"
 
-    static let  FTP_HOST_NAME                            = "ftp.mtcommunicator.com"
-    static let  FTP_USERNAME                             = "mt@mtcommunicator.com"
-    static let  FTP_PASSWORD                             = "mtone@123"
-    static let  FTP_DIRECTORY_PATH                       = "TEST"
+//    static let  FTP_HOST_NAME                            = "ftp.mtcommunicator.com"
+//    static let  FTP_USERNAME                             = "mt@mtcommunicator.com"
+//    static let  FTP_PASSWORD                             = "mtone@123"
+    
+    static let  FTP_HOST_NAME                            = "ftp.investhr.biz"
+    static let  FTP_USERNAME                             =  "bizinvesthr@investhr.biz"
+    static let  FTP_PASSWORD                             = "communicator@123"
+    static let  FTP_DIRECTORY_PATH                       = "public_ftp/TEST"
 
-    static let  BASE_URL_PATH                            = "http://184.171.162.251:8080/InvestHr/investhr/"              // local server
-    static let  USER_PROFILE_IMAGE_PATH                  = "http://184.171.162.251:8080/InvestHr/resources/UserImages/"
-   // static let  BASE_URL_PATH                            = "http://192.168.3.74:8080/coreflex/investhr/"              // local server
+//    ftp://ftp.investhr.biz/
+//    bizinvesthr@investhr.biz
+//    communicator@123
+//    static let  BASE_URL_PATH                            = "http://184.171.162.251:8080/InvestHr/investhr/"              // local server
+//    static let  USER_PROFILE_IMAGE_PATH                  = "http://184.171.162.251:8080/InvestHr/resources/UserImages/"
+    static let  BASE_URL_PATH                            = "http://investhr.biz/investhr/"              // local server
+    static let  USER_PROFILE_IMAGE_PATH                  = "http://investhr.biz/resources/UserImages/"
+    // static let  BASE_URL_PATH                            = "http://192.168.3.74:8080/coreflex/investhr/"              // local server
    // static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.74:8080/coreflex/resources/UserImages/"
     //static let  BASE_URL_PATH                            = "http://192.168.3.66:8080/coreflex/investhr/"              // local server
     //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.66:8080/coreflex/resources/UserImages/"

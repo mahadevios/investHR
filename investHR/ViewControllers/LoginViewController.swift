@@ -299,7 +299,17 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
    
     @IBAction func linkedInLoginButtonClicked(_ sender: Any)
     {
-        showWebView()
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            showWebView()
+
+        }
+        else
+        {
+        
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+
+        }
         
     }
 

@@ -125,15 +125,15 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
 //            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
 //            {
                 //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
-//                DispatchQueue.main.async
-//                    {
+                DispatchQueue.main.async
+                    {
                        // self.searchBarView.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.size.width, height: 50)
                         self.searchController.searchBar.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.size.width, height: 50)
                         
                         
                         
               //  }
-            //}
+            }
     
         self.collectionView.reloadData()
 
@@ -1056,8 +1056,10 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         vc.verticalId = String(verticalId)
         vc.domainType = self.domainType
         vc.jobId = String(jobId)
-        self.present(vc, animated: true, completion: nil)
+       // self.present(vc, animated: true, completion: nil)
         
+    
+        self.loadMoreData()
 //        AppPreferences.sharedPreferences().showHudWith(title: "Loading job..", detailText: "Please wait")
 
         print("You tapped cell number \(indexPath.row).")
