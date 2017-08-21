@@ -87,7 +87,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     var filterArray = [String]()
     var stateNameAndIdDic = [String:Int16]()
     var cityNameAndIdDic = [String:Int64]()
-    
+    var stateTableViewTap:UITapGestureRecognizer!
     
         override func viewDidLoad()
     {
@@ -211,9 +211,9 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         autoCompleteTableView.layer.borderWidth = 1.0
         autoCompleteTableView.layer.cornerRadius = 3.0
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(userTapped))
-        tap.delegate = self
-        self.view.addGestureRecognizer(tap)
+//        stateTableViewTap = UITapGestureRecognizer(target: self, action: #selector(userTapped))
+//        stateTableViewTap.delegate = self
+//        self.view.addGestureRecognizer(stateTableViewTap)
         
         self.automaticallyAdjustsScrollViewInsets = false
         
@@ -1519,7 +1519,10 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
         viewMoreInfoButton.isEnabled = setEnable
         
-        collapsableTableView.isUserInteractionEnabled = setEnable
+       
+            
+            self.collapsableTableView.isUserInteractionEnabled = setEnable
+
 //        if stateTextField.text != "" && setEnable == true
 //        {
 //            cityTextField.isUserInteractionEnabled = setEnable
@@ -1719,6 +1722,10 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                         
                         //cityTextField.text = nil
 
+                        stateTableViewTap = UITapGestureRecognizer(target: self, action: #selector(userTapped))
+                        stateTableViewTap.delegate = self
+                        self.view.addGestureRecognizer(stateTableViewTap)
+                        
                         if stateTextField.text != nil
                         {
                             filterArray = self.statesArray.filter { $0.localizedCaseInsensitiveContains(stateTextField.text!) }
@@ -1836,6 +1843,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     func textFieldDidEndEditing(_ textField: UITextField)
     {
     
+        self.view.removeGestureRecognizer(stateTableViewTap)
 //        if textField == self.stateTextField
 //        {
 //            if self.stateTextField.text != nil && self.stateTextField.text != ""
@@ -2943,6 +2951,8 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             }
         
         collapsableTableView.reloadSections(NSIndexSet.init(index: (gestureRecognizer.view?.tag)!) as IndexSet, with: .automatic)
+        
+        collapsableTableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int)
@@ -2999,6 +3009,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         {
             let nameLabel = cell?.viewWithTag(101) as! UILabel
             
+            nameLabel.isUserInteractionEnabled = false
             if indexPath.section == 0
             {
 //                nameLabel.text = resumeNamesArray[indexPath.row]
@@ -3069,6 +3080,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
         
     }
+    
     
     func scrollViewDidScroll(_ scrollView: UIScrollView)
     {
