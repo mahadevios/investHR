@@ -67,7 +67,9 @@ class PopUpMessageViewController: UIViewController,UIWebViewDelegate
         
            self.webView.scrollView.isScrollEnabled = false
         
+           popUpView.layer.borderColor = UIColor.appBlueColor().cgColor;
         
+           popUpView.layer.cornerRadius = 4.0
     }
     
     @IBAction func viewJobButtonClicked(_ sender: Any)

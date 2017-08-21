@@ -1056,10 +1056,10 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         vc.verticalId = String(verticalId)
         vc.domainType = self.domainType
         vc.jobId = String(jobId)
-       // self.present(vc, animated: true, completion: nil)
+        self.present(vc, animated: true, completion: nil)
         
     
-        self.loadMoreData()
+ //       self.loadMoreData()
 //        AppPreferences.sharedPreferences().showHudWith(title: "Loading job..", detailText: "Please wait")
 
         print("You tapped cell number \(indexPath.row).")

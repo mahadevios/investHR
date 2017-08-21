@@ -27,6 +27,11 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     @IBOutlet weak var cuurentRoleTextField: UITextField!
     @IBOutlet weak var currentCompanyTextField: UITextField!
     @IBOutlet weak var stateTextField: TextField!
+    
+    
+    @IBOutlet weak var moreInfoStackView: UIStackView!
+    
+    @IBOutlet weak var viewMoreInfoButton: UIButton!
     var coutryCodesArray:[String] = []
     var arrayForBool = [false,false]
     var imagedata:Any!
@@ -48,6 +53,9 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     var totalCollpsableDynamicHeight = 80
     var roleNameAndIdDic = [String:Int16]()
     var countryCodeButton:UIButton!
+    var scrollViewOriginalCOntentSize:CGSize!
+    var scrollViewModifiedContentSize:CGSize!
+
     @IBOutlet weak var visaStatusTextField: TextField!
    // @IBOutlet weak var cityTextField: TextField!
     
@@ -71,7 +79,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     
     var existingStateName = ""
     var existingCityName = ""
-
+    var isProfileFetchedAfterUpdation = false
     //@IBOutlet weak var passwordTextField: TextField!
     
     var statesArray:[String] = []
@@ -173,16 +181,31 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
         let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
         
-        if username != nil && password != nil
+        if AppPreferences.sharedPreferences().isReachable
         {
-            APIManager.getSharedAPIManager().getUserProfile(username: username!, password: password!, linkedinId:"")
+            if username != nil && password != nil
+            {
+                APIManager.getSharedAPIManager().getUserProfile(username: username!, password: password!, linkedinId:"")
+            }
+            else
+                if linkedInId != nil
+                {
+                    APIManager.getSharedAPIManager().getUserProfile(username: "", password: "", linkedinId:linkedInId!)
+                    
+            }
         }
         else
-            if linkedInId != nil
-            {
-                APIManager.getSharedAPIManager().getUserProfile(username: "", password: "", linkedinId:linkedInId!)
+        {
+            let alertController = UIAlertController(title: "No internet connection!", message: "Connect to internet & reload the page.", preferredStyle: .alert)
+            let okayAction = UIAlertAction(title: "OK", style: .cancel, handler: {act -> Void in
+            
+                self.popViewController()
                 
+            })
+            alertController.addAction(okayAction)
+            self.present(alertController, animated: true, completion: nil)
         }
+       
         
         autoCompleteTableView.layer.borderColor = UIColor.gray.cgColor
         autoCompleteTableView.layer.borderWidth = 1.0
@@ -191,10 +214,37 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         let tap = UITapGestureRecognizer(target: self, action: #selector(userTapped))
         tap.delegate = self
         self.view.addGestureRecognizer(tap)
+        
+        self.automaticallyAdjustsScrollViewInsets = false
+        
+        moreInfoStackView.isHidden = true
+        
         //uploadFIleUsingFTP()
         // Do any additional setup after loading the view.
     }
     
+    @IBAction func viewMoreInfoButtonClicked(_ sender: Any?)
+    {
+        DispatchQueue.main.async
+            {
+                if self.moreInfoStackView.isHidden
+                {
+                    self.scrollView.contentSize = self.scrollViewOriginalCOntentSize
+                    
+                    self.moreInfoStackView.isHidden = false
+                }
+                else
+                {
+                    self.scrollView.contentSize = self.scrollViewModifiedContentSize
+                    
+                    self.moreInfoStackView.isHidden = true
+                }
+                
+                
+            }
+       
+
+    }
     func userTapped()
     {
       autoCompleteTableView.isHidden = true
@@ -245,6 +295,18 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
 //        }
 
         self.autoCompleteTableView.isHidden = true
+        
+        
+        DispatchQueue.main.async
+        {
+            self.scrollViewOriginalCOntentSize = self.scrollView.contentSize
+
+            self.scrollViewModifiedContentSize = CGSize(width: self.scrollView.contentSize.width, height: self.scrollView.contentSize.height/2.3)
+            
+            self.scrollView.contentSize = self.scrollViewModifiedContentSize
+
+        }
+
         
     }
   
@@ -417,9 +479,27 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
             // addView()
             // print("Landscape")
-            outSideCircleView.layer.cornerRadius = outSideCircleView.frame.size.width/2.0
             
-            circleImageView.layer.cornerRadius = circleImageView.frame.size.width/2.0
+            
+            DispatchQueue.main.async
+                {
+                    //self.scrollViewOriginalCOntentSize = self.scrollView.contentSize
+                    
+                    self.outSideCircleView.layer.cornerRadius = self.outSideCircleView.frame.size.width/2.0
+                    
+                    self.circleImageView.layer.cornerRadius = self.circleImageView.frame.size.width/2.0
+                    
+                    if self.moreInfoStackView.isHidden == true
+                    {
+                        self.scrollView.contentSize = self.scrollViewModifiedContentSize
+                    }
+                    else
+                    {
+                        self.scrollView.contentSize = self.scrollViewOriginalCOntentSize
+                    }
+                    
+                    
+            }
             
         }
         
@@ -428,10 +508,24 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
             // addView()
             // print("Portrait")
-            outSideCircleView.layer.cornerRadius = outSideCircleView.frame.size.width/2.0
+            DispatchQueue.main.async
+                {
+                    //self.scrollViewOriginalCOntentSize = self.scrollView.contentSize
+                    
+                    self.outSideCircleView.layer.cornerRadius = self.outSideCircleView.frame.size.width/2.0
             
-            circleImageView.layer.cornerRadius = circleImageView.frame.size.width/2.0
+                    self.circleImageView.layer.cornerRadius = self.circleImageView.frame.size.width/2.0
+                    
+                    if self.moreInfoStackView.isHidden == true
+                    {
+                        self.scrollView.contentSize = self.scrollViewModifiedContentSize
+                    }
+                    else
+                    {
+                        self.scrollView.contentSize = self.scrollViewOriginalCOntentSize
+                    }
             
+            }
         }
     }
 // MARK: Notification response methods
@@ -468,6 +562,16 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             return
 
         }
+        
+        DispatchQueue.main.async
+        {
+            self.scrollView.contentSize = self.scrollViewModifiedContentSize
+            
+            self.moreInfoStackView.isHidden = true
+        }
+        
+        self.isProfileFetchedAfterUpdation = true;
+        
         let emailId = responseDic["emailId"]
         
         let linkId = responseDic["linkId"]
@@ -494,7 +598,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
         let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
         
-        AppPreferences.sharedPreferences().showAlertViewWith(title: "Profile Update", withMessage: "Profile updated successfully", withCancelText: "Ok")
+       // AppPreferences.sharedPreferences().showAlertViewWith(title: "Profile Update", withMessage: "Profile updated successfully", withCancelText: "Ok")
 
         //self.setUserInteractionEnabled(setEnable: false)
         
@@ -533,6 +637,13 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             return
         }
     
+        if isProfileFetchedAfterUpdation
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "Profile Update", withMessage: "Profile updated successfully", withCancelText: "Ok")
+            
+            self.isProfileFetchedAfterUpdation = false
+            
+        }
         let userDetailsString = dataDictionary["usermodelDetails"] as! String
         
         let userDetailsData = userDetailsString.data(using: .utf8, allowLossyConversion: true)
@@ -551,8 +662,11 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
 
         let emailId = userDetailsDict["emailId"] as? String
         
+        
         if let resumeName = userDetailsDict["resumeName"] as? String
         {
+            resumeNamesArray.removeAll()
+
             let resumeNameArrayCopy = resumeName.components(separatedBy: "#@")
             
             for name in resumeNameArrayCopy
@@ -565,6 +679,8 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         }
         if let videoName = userDetailsDict["videoName"] as? String
         {
+            videoNamesArray.removeAll()
+
             let videoNameArrayCopy = videoName.components(separatedBy: "#@")
             
             for name in videoNameArrayCopy
@@ -1400,6 +1516,10 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         currentCompanyTextField.isUserInteractionEnabled = setEnable
         // additionalPhoneTextfield.isUserInteractionEnabled = setEnable
         stateTextField.isUserInteractionEnabled = setEnable
+        
+        viewMoreInfoButton.isEnabled = setEnable
+        
+        collapsableTableView.isUserInteractionEnabled = setEnable
 //        if stateTextField.text != "" && setEnable == true
 //        {
 //            cityTextField.isUserInteractionEnabled = setEnable
@@ -2699,7 +2819,20 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
         if tableView == collapsableTableView
         {
-            return 40
+            return 35
+        }
+        else
+        {
+            return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
+    {
+        
+        if tableView == collapsableTableView
+        {
+            return 15
         }
         else
         {
@@ -2711,17 +2844,24 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     {
         if tableView == collapsableTableView
         {
-            let sectionView = UIView(frame: CGRect(x: 0, y: 0, width: self.collapsableTableView.frame.size.width, height: 50))
+            let sectionView = UIView(frame: CGRect(x: 0, y: 0, width: self.collapsableTableView.frame.size.width, height: 35))
+            
+            //sectionView.layer.cornerRadius = 4.0
+            
+            //sectionView.layer.borderColor = UIColor.init(colorLiteralRed: 245/255.0, green: 245/255.0, blue: 245/255.0, alpha: 1.0).cgColor
+            
+            //sectionView.layer.borderWidth = 1.0
             
             sectionView.tag = section
             
             let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped(gestureRecognizer:)))
             
-            let titleLabel = UILabel(frame: CGRect(x: 10, y: 10, width: 100, height: 40))
+            let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
             
             titleLabel.font = UIFont.systemFont(ofSize: 14)
             
-            titleLabel.textColor = UIColor.gray
+//            titleLabel.textColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0)
+            titleLabel.textColor = UIColor.appBlueColor()
             
             titleLabel.text = sectionTitleArray[section]
             //#selector(tapped:)
@@ -2742,7 +2882,20 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     func tapped( gestureRecognizer:UITapGestureRecognizer)
     {
      
+        
         let indexPath = IndexPath(row: 0, section: (gestureRecognizer.view?.tag)!)
+        
+        if indexPath.section == 0 && resumeNamesArray.count < 0
+        {
+             AppPreferences.sharedPreferences().showAlertViewWith(title: "No Resume Attached", withMessage: "if you wish to attached your updated resume please go to Upload Resume Menu", withCancelText: "Ok")
+            return
+        }
+        else
+        if indexPath.section == 1 && videoNamesArray.count < 0
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No Video Attached", withMessage: "if you wish to attached your updated Video please go to Upload Video Menu", withCancelText: "Ok")
+            return
+        }
         
         let collapsed = arrayForBool[indexPath.section]
         
@@ -2756,7 +2909,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             }
         }
         //var totalOpenedSection = 0
-        var totalHeight = 80
+        var totalHeight = 115
 
         for index in 0 ..< arrayForBool.count
         {
@@ -2768,6 +2921,9 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                 {
                     totalHeight = totalHeight + resumeNamesArray.count * 30
                 }
+//                if <#condition#> {
+//                    <#code#>
+//                }
             }
             else
             if index == 1
@@ -2789,6 +2945,14 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         collapsableTableView.reloadSections(NSIndexSet.init(index: (gestureRecognizer.view?.tag)!) as IndexSet, with: .automatic)
     }
     
+    func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int)
+    {
+        
+        view.tintColor = UIColor.white
+        
+        //view.backgroundColor = UIColor.white
+        
+    }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
       return 30
@@ -2837,12 +3001,16 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             
             if indexPath.section == 0
             {
-                nameLabel.text = resumeNamesArray[indexPath.row]
+//                nameLabel.text = resumeNamesArray[indexPath.row]
+
+                nameLabel.text = "Resume \(indexPath.row+1)"
 
             }
             else
             {
-                nameLabel.text = videoNamesArray[indexPath.row]
+               // nameLabel.text = videoNamesArray[indexPath.row]
+
+                nameLabel.text = "Video \(indexPath.row+1)"
 
             }
           //cell?.textLabel?.text = "\(indexPath.row)"
@@ -2855,20 +3023,36 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     {
         
         let cell = tableView.cellForRow(at: indexPath)
-        if stateTextField.isFirstResponder
+        if tableView == autoCompleteTableView
         {
-            self.stateTextField.text = cell?.textLabel?.text
-            
-            //self.cityArray.removeAll()
-            
-            self.filterArray.removeAll()
-            
-            //self.getCitiesFromState(stateName: self.stateTextField.text!)
-            
-            self.autoCompleteTableView.reloadData()
-            
-            self.autoCompleteTableView.isHidden = true
+            if stateTextField.isFirstResponder
+            {
+                self.stateTextField.text = cell?.textLabel?.text
+                
+                //self.cityArray.removeAll()
+                
+                self.filterArray.removeAll()
+                
+                //self.getCitiesFromState(stateName: self.stateTextField.text!)
+                
+                self.autoCompleteTableView.reloadData()
+                
+                self.autoCompleteTableView.isHidden = true
+            }
         }
+        else
+        {
+            if indexPath.section == 0
+            {
+                 AppPreferences.sharedPreferences().showAlertViewWith(title: "Update Resume", withMessage: "If you wish to update your  Resume please go to Upload Resume Menu and upload your updated Resume to get selected for your matching requirement", withCancelText: "Ok")
+            }
+            else
+            {
+              AppPreferences.sharedPreferences().showAlertViewWith(title: "Update Video", withMessage: "If you wish to update your  Video please go to Upload Video Menu and upload your updated Video to get selected for your matching requirement", withCancelText: "Ok")
+            }
+        
+        }
+        
 //        else
 //        {
 //            self.cityTextField.text = cell?.textLabel?.text

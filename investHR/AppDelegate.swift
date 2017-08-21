@@ -131,25 +131,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 
         if notification != nil
         {
-           //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "outside", withCancelText: "got")
-//            if let data = notification?.value(forKey: "data") as? [AnyHashable:Any]
-//            {
-//                if let notificationString = notification?["notification"] as? String
-//                {
-                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: notificationString, withCancelText: "got")
+
                     self.application(application, didReceiveRemoteNotification: notification as! [AnyHashable : Any])
 
-//                }
-//                else
-//                {
-//                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "got it 1", withCancelText: "got")
-//                }
-//            }
-//            else
-//            {
-//                AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "got it 2", withCancelText: "got")
-//            }
-            //self.application(application, didReceiveRemoteNotification: (notification?.userInfo)!)
             
         }
        // let obj = CoreDataManager.sharedManager
@@ -220,22 +204,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         {
             let notificationObject = try JSONSerialization.jsonObject(with: notificatioData!, options: .allowFragments) as! [String:Any]
             
-            // let bodyObct = try JSONSerialization.jsonObject(with: bodyData!, options: .allowFragments) as! String
-            
-            //print(bodyObct)
             let jobIDInt = notificationObject["JobId"] as! Int
             
             let message = notificationObject["Message"] as? String
             
             linkedInUrl = notificationObject["LinkedIn"] as? String
             
-
-            
             self.jobID = String(jobIDInt)
             
             print(self.jobID)
-            
-            //let alertObject = try JSONSerialization.jsonObject(with: alertData!, options: .allowFragments) as! [String:Any]
             
             let body = alertObject["body"]
             
@@ -264,7 +241,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                 
                     idMessageDic["message"]  = message
                 
-                    AppPreferences.sharedPreferences().customMessagesArray.append(idMessageDic)
+                    if application.applicationState == UIApplicationState.background
+                    {
+                        
+                        
+                    }
+                    else
+                    {
+                        AppPreferences.sharedPreferences().customMessagesArray.append(idMessageDic)
+
+                    }
 
                 }
                 else
@@ -301,18 +287,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             print(error.localizedDescription)
         }
         
-       // let obj = object["JobId"]
-        //let alert = (data["aps"] as! [String:AnyObject])["alert"] as! [String:AnyObject]
-        
-        //let jobId1 = (alert["body"] as! [String:String])["JobId"]
-        
-        //let title = alert["title"]
-
         if UIApplication.shared.applicationState == UIApplicationState.active
         {
-            //AppPreferences.sharedPreferences().showHudWith(title: "active", detailText: "")
-            //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "app is active ", withCancelText: "got")
-            // create a sound ID, in this case its the tweet sound.
+            
             let systemSoundID: SystemSoundID = 1315
             
             // to play sound
@@ -361,17 +338,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             swipeRecogniser.direction = UISwipeGestureRecognizerDirection.right
             
             swipeRecogniser.direction = UISwipeGestureRecognizerDirection.left
-
-            //tapToDismissNotif.
-//            
-//            UITapGestureRecognizer *tapToDismissNotif = [[UITapGestureRecognizer alloc] initWithTarget:self
-//                action:@selector(dismissNotifFromScreen1)];
-//            tapToDismissNotif.numberOfTapsRequired = 1;
-//            tapToDismissNotif.numberOfTouchesRequired = 1;
             
             notifView?.addGestureRecognizer(tapToDismissNotif)
+            
             notifView?.addGestureRecognizer(swipeRecogniser)
 
+            
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.3, options: .curveEaseIn, animations: {
                 
                 self.notifView?.frame = CGRect(x: 0, y: 0, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 60)
