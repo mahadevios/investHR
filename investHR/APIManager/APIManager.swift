@@ -55,7 +55,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
 
     }
@@ -75,7 +75,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -94,7 +94,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
 
         
@@ -115,7 +115,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
     }
     
@@ -137,7 +137,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -159,7 +159,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -181,7 +181,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -203,7 +203,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -224,7 +224,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -246,7 +246,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -266,7 +266,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -286,7 +286,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -306,7 +306,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -328,7 +328,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -348,7 +348,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -368,7 +368,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -388,7 +388,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -408,7 +408,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -449,7 +449,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -469,7 +469,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -489,7 +489,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -511,7 +511,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -533,7 +533,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -553,7 +553,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -575,7 +575,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -597,7 +597,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -619,7 +619,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -639,7 +639,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection", withCancelText: "Ok")
         }
         
     }
@@ -659,7 +659,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -682,7 +682,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -704,7 +704,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -726,7 +726,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -748,7 +748,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }
@@ -770,7 +770,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your inernet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
     }

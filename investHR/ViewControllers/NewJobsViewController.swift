@@ -36,6 +36,8 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
     
     var referenceLabel:UILabel!
     
+    var referenceImageView:UIImageView!
+    
     var lineView:UIView!
     
     var textField:UITextField!
@@ -1070,12 +1072,15 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         referenceLabel.text = "Referral"
         
-        referenceLabel.textColor = UIColor(colorLiteralRed: 24/255.0, green: 125/255.0, blue: 239/255.0, alpha: 1.0)
+        referenceLabel.textColor = UIColor(colorLiteralRed: 243/255.0, green: 137/255.0, blue: 84/255.0, alpha: 1.0)
         
+        referenceImageView = UIImageView(frame: CGRect(x: insideView.frame.size.width/2 - 60, y: 14, width: 17, height: 23))
+        
+        referenceImageView.image = #imageLiteral(resourceName: "Referral")
         
         lineView = UIView(frame: CGRect(x: 0, y: referenceLabel.frame.origin.y + referenceLabel.frame.size.height + 10, width: insideView.frame.size.width, height: 2))
         
-        lineView.backgroundColor = UIColor(colorLiteralRed: 24/255.0, green: 125/255.0, blue: 239/255.0, alpha: 1.0)
+        lineView.backgroundColor = UIColor(colorLiteralRed: 243/255.0, green: 137/255.0, blue: 84/255.0, alpha: 1.0)
 
         
         
@@ -1136,7 +1141,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         submitButton = UIButton(frame: CGRect(x: insideView.frame.width/2 - 50, y: textField3.frame.origin.y + textField3.frame.size.height + 20, width: 100, height: 40))
         
-        submitButton.backgroundColor = UIColor(colorLiteralRed: 24/255.0, green: 125/255.0, blue: 239/255.0, alpha: 1.0)
+        submitButton.backgroundColor = UIColor(colorLiteralRed: 243/255.0, green: 137/255.0, blue: 84/255.0, alpha: 1.0)
         
         submitButton.setTitle("Send", for: .normal)
         
@@ -1181,6 +1186,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         textField3.layer.cornerRadius = 4.0
         
         insideView.addSubview(referenceLabel)
+        insideView.addSubview(referenceImageView)
         insideView.addSubview(lineView)
         insideView.addSubview(textField)
         insideView.addSubview(textField1)
@@ -1296,6 +1302,8 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                         
                         self.referenceLabel.frame = CGRect(x: self.insideView.frame.size.width/2 - 60, y: 10, width: 120, height: 35)
                         
+                        self.referenceImageView.frame = CGRect(x: self.insideView.frame.size.width/2 - 60, y: 14, width: 17, height: 23)
+
                         self.lineView.frame = CGRect(x: 0, y: self.referenceLabel.frame.origin.y + self.referenceLabel.frame.size.height + 10, width: self.insideView.frame.size.width, height: 2)
                         
                         self.textField.frame = CGRect(x: self.insideView.frame.size.width*0.07, y: self.lineView.frame.origin.y + self.lineView.frame.size.height + 20, width: self.insideView.frame.size.width*0.86, height: 30)
@@ -1335,6 +1343,8 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                         
                         self.referenceLabel.frame = CGRect(x: self.insideView.frame.size.width/2 - 60, y: 10, width: 120, height: 35)
                         
+                        self.referenceImageView.frame = CGRect(x: self.insideView.frame.size.width/2 - 60, y: 14, width: 17, height: 23)
+
                         self.lineView.frame = CGRect(x: 0, y: self.referenceLabel.frame.origin.y + self.referenceLabel.frame.size.height + 10, width: self.insideView.frame.size.width, height: 2)
                         
                         self.textField.frame = CGRect(x: self.insideView.frame.size.width*0.07, y: self.lineView.frame.origin.y + self.lineView.frame.size.height + 20, width: self.insideView.frame.size.width*0.86, height: 30)

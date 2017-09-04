@@ -188,6 +188,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     {
         // Print notification payload data
         print("Push notification received: \(data)")
+        
+        islinkedInNotification = false
+        
+        ismessageNotification = false
+
+        
         let notificationString = data["notification"] as! String
         
         let notificatioData = notificationString.data(using: .utf8)
@@ -362,7 +368,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "app is in active ", withCancelText: "got")
             if application.applicationState == UIApplicationState.background
             {
-                
+//                if ismessageNotification == true
+//                {
+//                
+//                }
+//                else
+//                {
+//                    self.notificationTapped()
+//                }
 
             }
             else

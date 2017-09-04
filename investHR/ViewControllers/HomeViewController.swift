@@ -436,7 +436,7 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
         self.dismissPopUp()
 
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "CustomNotificationViewController") as! CustomNotificationViewController
-        vc.view.frame = CGRect(x: vc.view.frame.width*0.2, y: vc.view.frame.height*0.2, width: vc.view.frame.width*0.6, height: vc.view.frame.height*0.6)
+        vc.view.frame = CGRect(x: vc.view.frame.width*0.2, y: vc.view.frame.height*0.17, width: vc.view.frame.width*0.6, height: vc.view.frame.height*0.6)
         
         vc.modalPresentationStyle = .overCurrentContext        
         

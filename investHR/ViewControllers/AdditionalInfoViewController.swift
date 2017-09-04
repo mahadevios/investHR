@@ -45,8 +45,8 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
 
     var candidateFunctionArray : [String] = []
 //    let servicesArray : [String] = ["Services","Service 2","Service 3","Service 4","Service 5"]
-    let relocationArray = ["Not available","Yes","No","May be"]
-    let relocationDic = ["Not available":"1","Yes":"2","No":"3","May be":"4"]
+    let relocationArray = ["Not available","Yes","No","Maybe"]
+    let relocationDic = ["Not available":"1","Yes":"2","No":"3","Maybe":"4"]
 
     
     func scrollViewDidScroll(_ scrollView: UIScrollView)
@@ -372,7 +372,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         }
         
         var companiesInterViewed1:String!
-        if companiesInterViewed == "Companies interviewed in past 1 year"
+        if companiesInterViewed == "Companies interviewed in past 1 year" || companiesInterViewed == "Companies interviewed in past 1 year\n"
         {
             companiesInterViewed1 = ""
         }
@@ -382,7 +382,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         }
         
         var benefit1:String!
-        if benefits == "Benefits in current organization(401k/insurance coverage etc)\n"
+        if benefits == "Benefits in current organization(401k/insurance coverage etc)\n" || benefits == "Benefits in current organization(401k/insurance coverage etc)"  
         {
             benefit1 = ""
         }

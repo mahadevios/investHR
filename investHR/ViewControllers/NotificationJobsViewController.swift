@@ -132,17 +132,22 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
             }
             else
             {
-                for notiObj in self.commonNotificationObjectsArray!
+                if self.commonNotificationObjectsArray != nil
                 {
-                    if self.closedJobsIdsArray.contains(notiObj.jobId)
+                    for notiObj in self.commonNotificationObjectsArray!
                     {
-                        let index = self.commonNotificationObjectsArray?.index(of: notiObj)
-                        
-                        self.commonNotificationObjectsArray?.remove(at: index!)
-                        
+                        if self.closedJobsIdsArray.contains(notiObj.jobId)
+                        {
+                            let index = self.commonNotificationObjectsArray?.index(of: notiObj)
+                            
+                            self.commonNotificationObjectsArray?.remove(at: index!)
+                            
+                        }
                     }
+                    self.collectionView.reloadData()
+
                 }
-                self.collectionView.reloadData()
+               
 
                // print(closedJobsIdsArray)
             }

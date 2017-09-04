@@ -14,6 +14,9 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
     var settingsItemsArray:[String] = []
     
     @IBOutlet weak var tableView: UITableView!
+    
+    var itemImageNamesArray = ["DeleteAccount","ResetPassword"]
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -152,6 +155,11 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
         let cell:UITableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "cell") as UITableViewCell!
         
         let settingItemLabel = cell.viewWithTag(200) as! UILabel
+        
+        let itemImageView = cell.viewWithTag(201) as! UIImageView
+        
+        
+        itemImageView.image = UIImage(named: itemImageNamesArray[indexPath.row])
         
         settingItemLabel.text = settingsItemsArray[indexPath.row]
         

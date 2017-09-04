@@ -327,7 +327,7 @@ class CoreDataManager: NSObject
           print(error.localizedDescription)
         }
         
-        return true
+        return false
     }
     
     func getMaxUserId(entityName:String) -> String

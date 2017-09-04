@@ -19,6 +19,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     @IBOutlet weak var collapsableTableViewHeight: NSLayoutConstraint!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var autoCompleteTableView: UITableView!
+    @IBOutlet weak var insideView: UIView!
     @IBOutlet weak var collapsableTableView: UITableView!
     @IBOutlet weak var outSideCircleView: UIImageView!
     @IBOutlet weak var nameTextField: UITextField!
@@ -38,11 +39,11 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     var candidateFunctionArray : [String] = []
     var imagePickerController = UIImagePickerController()
     //    let servicesArray : [String] = ["Services","Service 2","Service 3","Service 4","Service 5"]
-    let relocationArray = ["Not Available","Yes","No","May be"]
+    let relocationArray = ["Not Available","Yes","No","Maybe"]
     
-    let relocationDic = ["Yes":"1","No":"2","May be":"3","Not Available":"4"]
+    let relocationDic = ["Yes":"1","No":"2","Maybe":"3","Not Available":"4"]
     
-    let visaTypesArray = ["US Citizen","Green Card Holder","UK Tier 1 Visa","Uk Tier 2 Visa","UK Citizen","UK – PR"," Canadian Citizen","TN Visa","Euro Zone Citizen","EAD card Holder","L2 EAD","H1 Visa","L1 Visa","H4 Visa","L2 Visa"]
+    let visaTypesArray = ["US Citizen","Green Card Holder","UK Tier 1 Visa","Uk Tier 2 Visa","UK Citizen","UK PR"," Canadian Citizen","TN Visa","Euro Zone Citizen","EAD card Holder","L2 EAD","H1 Visa","L1 Visa","H4 Visa","L2 Visa"]
     
     let visaTypesAndIdArray = ["US Citizen":"1","Green Card Holder":"2","UK Tier 1 Visa":"3","Uk Tier 2 Visa":"4","UK Citizen":"5","UK – PR":"6"," Canadian Citizen":"7","TN Visa":"8","Euro Zone Citizen":"9","EAD card Holder":"10","L2 EAD":"11","H1 Visa":"12","L1 Visa":"13","H4 Visa":"14","L2 Visa":"15"]
     
@@ -50,7 +51,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     
     var resumeNamesArray : [String] = []
     var videoNamesArray : [String] = []
-    var totalCollpsableDynamicHeight = 80
+    var totalCollpsableDynamicHeight = 85
     var roleNameAndIdDic = [String:Int16]()
     var countryCodeButton:UIButton!
     var scrollViewOriginalCOntentSize:CGSize!
@@ -87,7 +88,7 @@ class EditProfileViewController: UIViewController,UIPickerViewDelegate,UIPickerV
     var filterArray = [String]()
     var stateNameAndIdDic = [String:Int16]()
     var cityNameAndIdDic = [String:Int64]()
-    var stateTableViewTap:UITapGestureRecognizer!
+    var stateTableViewTap:UITapGestureRecognizer?
     
         override func viewDidLoad()
     {
@@ -498,7 +499,49 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                         self.scrollView.contentSize = self.scrollViewOriginalCOntentSize
                     }
                     
+                    let pickerView = self.view.viewWithTag(10001)
+                    if pickerView != nil
+                    {
+                     pickerView!.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 100.0, width: self.view.frame.size.width, height: 100.0)
+                        
+                    let toolBar = self.view.viewWithTag(10000)
+
+                     toolBar!.frame = CGRect(x: 0, y: pickerView!.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0)
+                    }
                     
+                    let relocationPickerView = self.view.viewWithTag(20001)
+                    if relocationPickerView != nil
+                    {
+                        relocationPickerView!.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 100.0, width: self.view.frame.size.width, height: 100.0)
+                        
+                        let toolBar = self.view.viewWithTag(20000)
+                        
+                        toolBar!.frame = CGRect(x: 0, y: relocationPickerView!.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0)
+                    }
+                    
+                    let countryCodesPickerView = self.view.viewWithTag(30001)
+                    if countryCodesPickerView != nil
+                    {
+                        countryCodesPickerView!.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 100.0, width: self.view.frame.size.width, height: 100.0)
+                        
+                        let toolBar = self.view.viewWithTag(30000)
+                        
+                        toolBar!.frame = CGRect(x: 0, y: countryCodesPickerView!.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0)
+                    }
+                    
+                    let visaTypesPickerView = self.view.viewWithTag(40001)
+                    if visaTypesPickerView != nil
+                    {
+                        visaTypesPickerView!.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 100.0, width: self.view.frame.size.width, height: 100.0)
+                        
+                        let toolBar = self.view.viewWithTag(40000)
+                        
+                        toolBar!.frame = CGRect(x: 0, y: visaTypesPickerView!.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0)
+                    }
+                    
+                    
+//                    self.insideView.frame = CGRect(x: self.insideView.frame.origin.x, y: self.insideView.frame.origin.y, width: self.view.frame.size.width, height: self.insideView.frame.size.height)
+
             }
             
         }
@@ -524,7 +567,48 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                     {
                         self.scrollView.contentSize = self.scrollViewOriginalCOntentSize
                     }
+                    
+                    let pickerView = self.view.viewWithTag(10001)
+                    if pickerView != nil
+                    {
+                        pickerView!.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
+                        
+                        let toolBar = self.view.viewWithTag(10000)
+                        
+                        toolBar!.frame = CGRect(x: 0, y: pickerView!.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0)
+                    }
+                    
+                    let relocationPickerView = self.view.viewWithTag(20001)
+                    if relocationPickerView != nil
+                    {
+                        relocationPickerView!.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
+                        
+                        let toolBar = self.view.viewWithTag(20000)
+                        
+                        toolBar!.frame = CGRect(x: 0, y: relocationPickerView!.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0)
+                    }
+                    
+                    let countryCodesPickerView = self.view.viewWithTag(30001)
+                    if countryCodesPickerView != nil
+                    {
+                        countryCodesPickerView!.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
+                        
+                        let toolBar = self.view.viewWithTag(30000)
+                        
+                        toolBar!.frame = CGRect(x: 0, y: countryCodesPickerView!.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0)
+                    }
+                    
+                    let visaTypesPickerView = self.view.viewWithTag(40001)
+                    if visaTypesPickerView != nil
+                    {
+                        visaTypesPickerView!.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
+                        
+                        let toolBar = self.view.viewWithTag(40000)
+                        
+                        toolBar!.frame = CGRect(x: 0, y: visaTypesPickerView!.frame.origin.y - 40.0, width: self.view.frame.size.width, height: 40.0)
+                    }
             
+//                    self.insideView.frame = CGRect(x: self.insideView.frame.origin.x, y: self.insideView.frame.origin.y, width: self.view.frame.size.width, height: self.insideView.frame.size.height)
             }
         }
     }
@@ -568,6 +652,13 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             self.scrollView.contentSize = self.scrollViewModifiedContentSize
             
             self.moreInfoStackView.isHidden = true
+            
+            self.arrayForBool[0] = false
+            
+            self.arrayForBool[1] = false
+            
+            self.collapsableTableView.reloadData()
+            
         }
         
         self.isProfileFetchedAfterUpdation = true;
@@ -700,8 +791,9 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
         let count2 =  videoNamesArray.count*30
         
+        self.collapsableTableViewHeight.constant = CGFloat(85)
         
-        totalCollpsableDynamicHeight = count1 + count2 + 80
+        totalCollpsableDynamicHeight = count1 + count2 + 85
 
         
         
@@ -1414,7 +1506,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         }
         
         var companiesInterViewed1:String!
-        if companiesInterViewed == "Companies interviewed in past 1 year"
+        if companiesInterViewed == "Companies interviewed in past 1 year" || companiesInterViewed == "Companies interviewed in past 1 year\n"
         {
             companiesInterViewed1 = ""
         }
@@ -1424,7 +1516,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         }
         
         var benefit1:String!
-        if benefits == "Benefits in current organization(401k/insurance coverage etc)\n"
+        if benefits == "Benefits in current organization(401k/insurance coverage etc)\n" || benefits == "Benefits in current organization(401k/insurance coverage etc)"
         {
             benefit1 = ""
         }
@@ -1723,8 +1815,8 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                         //cityTextField.text = nil
 
                         stateTableViewTap = UITapGestureRecognizer(target: self, action: #selector(userTapped))
-                        stateTableViewTap.delegate = self
-                        self.view.addGestureRecognizer(stateTableViewTap)
+                        stateTableViewTap?.delegate = self
+                        self.view.addGestureRecognizer(stateTableViewTap!)
                         
                         if stateTextField.text != nil
                         {
@@ -1843,7 +1935,11 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     func textFieldDidEndEditing(_ textField: UITextField)
     {
     
-        self.view.removeGestureRecognizer(stateTableViewTap)
+        if stateTableViewTap != nil
+        {
+            self.view.removeGestureRecognizer(stateTableViewTap!)
+
+        }
 //        if textField == self.stateTextField
 //        {
 //            if self.stateTextField.text != nil && self.stateTextField.text != ""
@@ -2291,7 +2387,16 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             
             picker.tag = 10001;
             
-            picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
+            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+            {
+                picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
+
+            }
+            else
+            {
+                picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 100.0, width: self.view.frame.size.width, height: 100.0)
+
+            }
             
             picker.delegate = self
             
@@ -2330,8 +2435,16 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             
             picker.tag = 20001;
             
-            picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
-            
+            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+            {
+                picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
+                
+            }
+            else
+            {
+                picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 100.0, width: self.view.frame.size.width, height: 100.0)
+                
+            }
             picker.delegate = self
             
             picker.dataSource = self
@@ -2368,8 +2481,16 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             
             picker.tag = 30001;
             
-            picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
-            
+            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+            {
+                picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
+                
+            }
+            else
+            {
+                picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 100.0, width: self.view.frame.size.width, height: 100.0)
+                
+            }
             picker.delegate = self
             
             picker.dataSource = self
@@ -2406,8 +2527,16 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             
             picker.tag = 40001;
             
-            picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
-            
+            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+            {
+                picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
+                
+            }
+            else
+            {
+                picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 100.0, width: self.view.frame.size.width, height: 100.0)
+                
+            }
             picker.delegate = self
             
             picker.dataSource = self
@@ -2840,7 +2969,11 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
         if tableView == collapsableTableView
         {
-            return 15
+            if section == 0
+            {
+                return 15 // to keep the space between two sections
+            }
+            return 0
         }
         else
         {
@@ -2893,13 +3026,13 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
         let indexPath = IndexPath(row: 0, section: (gestureRecognizer.view?.tag)!)
         
-        if indexPath.section == 0 && resumeNamesArray.count < 0
+        if indexPath.section == 0 && resumeNamesArray.count < 1
         {
              AppPreferences.sharedPreferences().showAlertViewWith(title: "No Resume Attached", withMessage: "if you wish to attached your updated resume please go to Upload Resume Menu", withCancelText: "Ok")
             return
         }
         else
-        if indexPath.section == 1 && videoNamesArray.count < 0
+        if indexPath.section == 1 && videoNamesArray.count < 1
         {
             AppPreferences.sharedPreferences().showAlertViewWith(title: "No Video Attached", withMessage: "if you wish to attached your updated Video please go to Upload Video Menu", withCancelText: "Ok")
             return
@@ -2917,7 +3050,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             }
         }
         //var totalOpenedSection = 0
-        var totalHeight = 115
+        var totalHeight = 85
 
         for index in 0 ..< arrayForBool.count
         {
@@ -2952,7 +3085,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
         collapsableTableView.reloadSections(NSIndexSet.init(index: (gestureRecognizer.view?.tag)!) as IndexSet, with: .automatic)
         
-        collapsableTableView.reloadData()
+        //collapsableTableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int)
@@ -3103,6 +3236,10 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
 //         autoCompleteTableView.isHidden = true
 //        }
         // self.autoCompleteTableView.isHidden = true
+        
+        if scrollView.contentOffset.x>0 || scrollView.contentOffset.x<0{
+            scrollView.contentOffset.x = 0
+        }
     }
     override func didReceiveMemoryWarning()
     {
