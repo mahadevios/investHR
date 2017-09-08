@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="15G31" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16G29" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AppliedJobs" representedClassName="AppliedJobs" syncable="YES">
         <attribute name="domainType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="jobId" optional="YES" attributeType="String" syncable="YES"/>
@@ -14,6 +14,7 @@
         <attribute name="jobId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="notificationDate1" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="notificationId" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="notificationType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="subject" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userId" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
@@ -55,7 +56,7 @@
     <elements>
         <element name="AppliedJobs" positionX="-27" positionY="54" width="128" height="90"/>
         <element name="City" positionX="-36" positionY="45" width="128" height="90"/>
-        <element name="CommonNotification" positionX="-36" positionY="45" width="128" height="120"/>
+        <element name="CommonNotification" positionX="-36" positionY="45" width="128" height="135"/>
         <element name="HorizontalDomains" positionX="-27" positionY="45" width="128" height="75"/>
         <element name="Roles" positionX="-36" positionY="36" width="128" height="75"/>
         <element name="SavedJobs" positionX="-36" positionY="45" width="128" height="90"/>

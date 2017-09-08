@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 
 @objc(CommonNotification)
-public class CommonNotification: NSManagedObject {
-
+public class CommonNotification: NSManagedObject
+{
+  
 }

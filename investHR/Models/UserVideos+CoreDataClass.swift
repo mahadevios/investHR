@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 
 @objc(UserVideos)
-public class UserVideos: NSManagedObject {
-
+public class UserVideos: NSManagedObject
+{
+    
 }

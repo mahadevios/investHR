@@ -40,8 +40,10 @@ class CoreDataManager: NSObject
         let entity = NSEntityDescription.entity(forEntityName: entity, in: appDelegate.managedObjectContext)
         let object = NSManagedObject(entity: entity!, insertInto: appDelegate.managedObjectContext)
         
-        for (key, attr) in attributes {
+        for (key, attr) in attributes
+        {
             object.setValue(attr, forKey: key)
+            
         }
         
         do
@@ -72,7 +74,7 @@ class CoreDataManager: NSObject
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: "notificationDate1", ascending: false)]
             
             fetchRequest.predicate = NSPredicate(format: "userId == %@", userId)
-
+            
         }
         else
         if entity == "User"
@@ -103,6 +105,49 @@ class CoreDataManager: NSObject
         return nil
     }
     
+    func getAllRecordsOfNotification(notificationType: String) -> [NSManagedObject]?
+    {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            
+            
+            return nil
+        }
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "CommonNotification")
+        
+        
+       
+            let userId = UserDefaults.standard.object(forKey: Constant.USERID) as! String
+            
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "notificationDate1", ascending: false)]
+            
+            fetchRequest.predicate = NSPredicate(format: "userId == %@", userId)
+            
+            let  predicate = NSPredicate(format: "userId == %@ AND notificationType == %@", argumentArray: [userId,notificationType])
+        
+            fetchRequest.predicate = predicate
+        
+        do {
+            let manageObjects = try appDelegate.managedObjectContext.fetch(fetchRequest)
+            
+            if manageObjects.count > 0
+            {
+                return manageObjects as? [NSManagedObject]
+            }
+        } catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        //        if let entities = managedObjectContext.fetch(request) as? [NSManagedObject]
+        //        {
+        //            if entities.count > 0
+        //            {
+        //                return entities
+        //            }
+        //        }
+        return nil
+    }
+   
+
     func fetchCitiesFromStateId(entity: String, stateId:Int16) -> [NSManagedObject]?
     {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {

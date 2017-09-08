@@ -3328,8 +3328,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="j4i-8T-G7S">
+                                <rect key="frame" x="20.333333333333343" y="30" width="372.33333333333337" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="NUX-mI-1oK"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="Jobs"/>
+                                    <segment title="General"/>
+                                </segments>
+                                <connections>
+                                    <action selector="notificationSegmentClicked:" destination="lMk-I6-xU9" eventType="valueChanged" id="Ufb-yO-BiM"/>
+                                </connections>
+                            </segmentedControl>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="r8h-Zi-5aB">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                <rect key="frame" x="0.0" y="106" width="414" height="630"/>
                                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ull-Ki-IFj">
                                     <size key="itemSize" width="175" height="134"/>
@@ -3408,8 +3421,8 @@
                                     <outlet property="delegate" destination="lMk-I6-xU9" id="G2i-SR-bvh"/>
                                 </connections>
                             </collectionView>
-                            <label opaque="NO" userInteractionEnabled="NO" tag="200" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Data Not Found" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jpJ-Tf-XHL">
-                                <rect key="frame" x="0.0" y="37" width="414" height="662"/>
+                            <label opaque="NO" userInteractionEnabled="NO" tag="200" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Data Not Found" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jpJ-Tf-XHL">
+                                <rect key="frame" x="147" y="358" width="120.33333333333331" height="20.333333333333314"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.094117647060000004" green="0.49019607840000001" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -3417,12 +3430,15 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="j4i-8T-G7S" firstAttribute="width" secondItem="b1V-TZ-Pao" secondAttribute="width" multiplier="0.9" id="5S7-0q-UdH"/>
                             <constraint firstItem="jpJ-Tf-XHL" firstAttribute="centerY" secondItem="b1V-TZ-Pao" secondAttribute="centerY" id="A6S-sm-Da4"/>
-                            <constraint firstItem="r8h-Zi-5aB" firstAttribute="centerY" secondItem="b1V-TZ-Pao" secondAttribute="centerY" id="Jet-eX-qXe"/>
+                            <constraint firstItem="j4i-8T-G7S" firstAttribute="top" secondItem="N0y-cj-g3x" secondAttribute="bottom" constant="10" id="A8z-jF-T74"/>
+                            <constraint firstItem="r8h-Zi-5aB" firstAttribute="centerY" secondItem="b1V-TZ-Pao" secondAttribute="centerY" constant="53" id="Jet-eX-qXe"/>
                             <constraint firstItem="r8h-Zi-5aB" firstAttribute="width" secondItem="b1V-TZ-Pao" secondAttribute="width" id="S5J-G6-wst"/>
                             <constraint firstItem="jpJ-Tf-XHL" firstAttribute="centerX" secondItem="b1V-TZ-Pao" secondAttribute="centerX" id="agC-5T-5Aq"/>
                             <constraint firstItem="r8h-Zi-5aB" firstAttribute="centerX" secondItem="b1V-TZ-Pao" secondAttribute="centerX" id="b6U-9w-PJU"/>
-                            <constraint firstItem="r8h-Zi-5aB" firstAttribute="height" secondItem="b1V-TZ-Pao" secondAttribute="height" id="pOD-Ri-mSJ"/>
+                            <constraint firstItem="j4i-8T-G7S" firstAttribute="centerX" secondItem="b1V-TZ-Pao" secondAttribute="centerX" id="gPL-14-Tit"/>
+                            <constraint firstItem="r8h-Zi-5aB" firstAttribute="height" secondItem="b1V-TZ-Pao" secondAttribute="height" constant="-106" id="pOD-Ri-mSJ"/>
                         </constraints>
                     </view>
                     <connections>

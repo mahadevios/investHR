@@ -149,6 +149,8 @@ struct Constant
 
    //  static let  NOTIFICATION_HOME_BUTTONS_DISABLED          = "disableHomeButtons"
 
+    static let Notification_Type_Job                        = 1
+    static let Notification_Type_General                    = 2
 
 
 }

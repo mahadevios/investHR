@@ -24,6 +24,17 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
     
     var appliedJobsIdsArray = [Int64]()
 
+    @IBAction func notificationSegmentClicked(_ sender: UISegmentedControl)
+    {
+        if sender.selectedSegmentIndex == 0
+        {
+            
+        }
+        else
+        {
+          
+        }
+    }
     @IBOutlet weak var dataNotFoundLabel: UILabel!
     override func viewDidLoad()
     {
@@ -98,13 +109,20 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         
         let codeString = String(describing: dataDictionary["code"]!)
         
-        self.commonNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
+        self.commonNotificationObjectsArray?.removeAll()
+        
+        self.commonNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecordsOfNotification(notificationType:String(describing:(Constant.Notification_Type_Job))) as? [CommonNotification]
         
         if codeString == "1001"
         {
             //dataNotFoundLabel.isHidden = false
-            
-            commonNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
+//            self.commonNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecordsOfNotification(notificationType:String(describing:(Constant.Notification_Type_Job))) as? [CommonNotification]
+
+            if self.commonNotificationObjectsArray?.count == 0
+            {
+                dataNotFoundLabel.isHidden = false
+            }
+            //commonNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
 
             self.collectionView.reloadData()
             
@@ -160,6 +178,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         
 
     }
+    
     
     
     func checkSaveJob(dataDic:NSNotification)
