@@ -15,6 +15,11 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
     
     var commonNotificationObjectsArray:[CommonNotification]?
     
+    var jobNotificationObjectsArray:[CommonNotification]?
+
+    var specialNotificationObjectsArray:[ZSpecialNotification]?
+
+    @IBOutlet weak var notificationSegment: UISegmentedControl!
     var indexePathArray:[IndexPath]=[]
     
     var savedJobsIdsArray = [Int64]()
@@ -28,11 +33,27 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
     {
         if sender.selectedSegmentIndex == 0
         {
+            self.jobNotificationObjectsArray?.removeAll()
+
+            self.jobNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
             
+            self.collectionView.reloadData()
+
+            //self.commonNotificationObjectsArray?.removeAll()
+            
+            //self.commonNotificationObjectsArray = self.jobNotificationObjectsArray
+
         }
         else
         {
-          
+            self.specialNotificationObjectsArray?.removeAll()
+
+            self.specialNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecordsOfSpecialNotification() as? [ZSpecialNotification]
+            
+            self.collectionView.reloadData()
+            //self.commonNotificationObjectsArray?.removeAll()
+            
+            //self.commonNotificationObjectsArray = self.specialNotificationObjectsArray
         }
     }
     @IBOutlet weak var dataNotFoundLabel: UILabel!
@@ -71,9 +92,15 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         }
         else
         {
-            commonNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
+            self.jobNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
             
-            self.collectionView.reloadData()
+            //self.specialNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "ZSpecialNotification") as? [CommonNotification]
+            
+            //self.commonNotificationObjectsArray?.removeAll()
+            
+            //self.commonNotificationObjectsArray = self.jobNotificationObjectsArray
+            
+            //self.collectionView.reloadData()
         }
         
        // self.automaticallyAdjustsScrollViewInsets = false
@@ -111,28 +138,22 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         
         self.commonNotificationObjectsArray?.removeAll()
         
-        self.commonNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecordsOfNotification(notificationType:String(describing:(Constant.Notification_Type_Job))) as? [CommonNotification]
+        self.jobNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
+        
         
         if codeString == "1001"
         {
-            //dataNotFoundLabel.isHidden = false
-//            self.commonNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecordsOfNotification(notificationType:String(describing:(Constant.Notification_Type_Job))) as? [CommonNotification]
 
             if self.commonNotificationObjectsArray?.count == 0
             {
                 dataNotFoundLabel.isHidden = false
             }
-            //commonNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
+            
 
             self.collectionView.reloadData()
             
             return
         }
-//        else
-//        {
-//            //dataNotFoundLabel.isHidden = true
-//
-//        }
         
         let closedJobIdsString = dataDictionary["deletedJobId"] as! String
         
@@ -150,19 +171,18 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
             }
             else
             {
-                if self.commonNotificationObjectsArray != nil
+                if self.jobNotificationObjectsArray != nil
                 {
-                    for notiObj in self.commonNotificationObjectsArray!
+                    for notiObj in self.jobNotificationObjectsArray!
                     {
                         if self.closedJobsIdsArray.contains(notiObj.jobId)
                         {
-                            let index = self.commonNotificationObjectsArray?.index(of: notiObj)
+                            let index = self.jobNotificationObjectsArray?.index(of: notiObj)
                             
-                            self.commonNotificationObjectsArray?.remove(at: index!)
+                            self.jobNotificationObjectsArray?.remove(at: index!)
                             
                         }
                     }
-                    self.collectionView.reloadData()
 
                 }
                
@@ -176,6 +196,11 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
             print(error.localizedDescription)
         }
         
+        
+        self.commonNotificationObjectsArray = self.jobNotificationObjectsArray
+
+        self.collectionView.reloadData()
+
 
     }
     
@@ -266,57 +291,94 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
-        savedJobsIdsArray.removeAll()
-        if let managedObjects = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "SavedJobs")
-        {
-            for savedJobObject in managedObjects as! [SavedJobs]
-            {
-                let jobId = savedJobObject.jobId
-                
-                savedJobsIdsArray.append(Int64(jobId!)!)
-            }
-        }
-        
-        //let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
-        appliedJobsIdsArray.removeAll()
-        if let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
-        {
-            for appliedJobObject in managedObjects1 as! [AppliedJobs]
-            {
-                let jobId = appliedJobObject.jobId
-                
-                appliedJobsIdsArray.append(Int64(jobId!)!)
-            }
-        }
+//        savedJobsIdsArray.removeAll()
+//        if let managedObjects = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "SavedJobs")
+//        {
+//            for savedJobObject in managedObjects as! [SavedJobs]
+//            {
+//                let jobId = savedJobObject.jobId
+//                
+//                savedJobsIdsArray.append(Int64(jobId!)!)
+//            }
+//        }
+//        
+//        //let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
+//        appliedJobsIdsArray.removeAll()
+//        if let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
+//        {
+//            for appliedJobObject in managedObjects1 as! [AppliedJobs]
+//            {
+//                let jobId = appliedJobObject.jobId
+//                
+//                appliedJobsIdsArray.append(Int64(jobId!)!)
+//            }
+//        }
 
-        if commonNotificationObjectsArray != nil
+        if notificationSegment.selectedSegmentIndex == 0
         {
-            if commonNotificationObjectsArray?.count == 0
+            if jobNotificationObjectsArray != nil
             {
-                dataNotFoundLabel.isHidden = false
+                if jobNotificationObjectsArray?.count == 0
+                {
+                    dataNotFoundLabel.isHidden = false
+                }
+                else
+                {
+                    dataNotFoundLabel.isHidden = true
+                    
+                }
+                
+                return jobNotificationObjectsArray!.count
             }
             else
             {
-                dataNotFoundLabel.isHidden = true
-
+                if jobNotificationObjectsArray?.count == 0
+                {
+                    dataNotFoundLabel.isHidden = false
+                }
+                else
+                {
+                    dataNotFoundLabel.isHidden = true
+                    
+                }
+                
+                return 0
             }
-            
-            return commonNotificationObjectsArray!.count
+
         }
         else
         {
-            if commonNotificationObjectsArray?.count == 0
+            if specialNotificationObjectsArray != nil
             {
-                dataNotFoundLabel.isHidden = false
+                if specialNotificationObjectsArray?.count == 0
+                {
+                    dataNotFoundLabel.isHidden = false
+                }
+                else
+                {
+                    dataNotFoundLabel.isHidden = true
+                    
+                }
+                
+                return specialNotificationObjectsArray!.count
             }
             else
             {
-                dataNotFoundLabel.isHidden = true
+                if specialNotificationObjectsArray?.count == 0
+                {
+                    dataNotFoundLabel.isHidden = false
+                }
+                else
+                {
+                    dataNotFoundLabel.isHidden = true
+                    
+                }
                 
+                return 0
             }
 
-            return 0
         }
+        
     }
     
     // make a cell for each cell index path
@@ -344,17 +406,33 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
 
         let dateLabel = cell.viewWithTag(105) as! UILabel
 
-        let notificationObject = commonNotificationObjectsArray![indexPath.row]
         
-        subjectLabel.text = notificationObject.subject!
+        if notificationSegment.selectedSegmentIndex == 0
+        {
+            let notificationObject = jobNotificationObjectsArray![indexPath.row]
+            
+            subjectLabel.text = notificationObject.subject!
+            
+            let date = String(describing: notificationObject.notificationDate1!).components(separatedBy: " ")[0] as! String
+            
+            dateLabel.text = date
+        }
+        else
+        {
+            
+            let notificationObject = specialNotificationObjectsArray![indexPath.row]
+
+            subjectLabel.text = notificationObject.subject!
+            
+            let date = String(describing: notificationObject.notificationDate!).components(separatedBy: " ")[0] as! String
+            
+            dateLabel.text = date
+        }
         
-        let date = String(describing: notificationObject.notificationDate1!).components(separatedBy: " ")[0] as! String
-        
-        dateLabel.text = date
 
         
         
-        let jobId = notificationObject.jobId
+  //      let jobId = notificationObject.jobId
         
 //        if appliedJobsIdsArray.contains(jobId)
 //        {

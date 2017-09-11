@@ -775,6 +775,28 @@ class APIManager: NSObject
         
     }
     
+    func getMassNotiData(username:String, password:String, linkedinId:String, notificationId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            AppPreferences.sharedPreferences().showHudWith(title: "Sending Referral", detailText: "Please wait..")
+            
+            let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","notificationId=\(notificationId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.MASS_NOTI_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.MASS_NOTI_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+        }
+        
+    }
+    
     func createRegistrationRequestAndSend(dict:Any, imageData:Data?)
     {
         var request:NSURLRequest!

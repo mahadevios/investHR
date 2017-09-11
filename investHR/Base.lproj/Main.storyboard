@@ -3444,6 +3444,7 @@
                     <connections>
                         <outlet property="collectionView" destination="r8h-Zi-5aB" id="aDd-hj-bIy"/>
                         <outlet property="dataNotFoundLabel" destination="jpJ-Tf-XHL" id="3Fv-IP-tkz"/>
+                        <outlet property="notificationSegment" destination="j4i-8T-G7S" id="LYt-zJ-8CT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NWC-cX-SSO" userLabel="First Responder" sceneMemberID="firstResponder"/>

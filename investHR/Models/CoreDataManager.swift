@@ -137,16 +137,44 @@ class CoreDataManager: NSObject
         {
             print(error.localizedDescription)
         }
-        //        if let entities = managedObjectContext.fetch(request) as? [NSManagedObject]
-        //        {
-        //            if entities.count > 0
-        //            {
-        //                return entities
-        //            }
-        //        }
         return nil
     }
    
+
+    func getAllRecordsOfSpecialNotification() -> [NSManagedObject]?
+    {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            
+            
+            return nil
+        }
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ZSpecialNotification")
+        
+        
+        
+        let userId = UserDefaults.standard.object(forKey: Constant.USERID) as! String
+        
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "notificationDate", ascending: false)]
+        
+        fetchRequest.predicate = NSPredicate(format: "userId == %@", userId)
+        
+        let  predicate = NSPredicate(format: "userId == %@", argumentArray: [userId])
+        
+        fetchRequest.predicate = predicate
+        
+        do {
+            let manageObjects = try appDelegate.managedObjectContext.fetch(fetchRequest)
+            
+            if manageObjects.count > 0
+            {
+                return manageObjects as? [NSManagedObject]
+            }
+        } catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        return nil
+    }
 
     func fetchCitiesFromStateId(entity: String, stateId:Int16) -> [NSManagedObject]?
     {

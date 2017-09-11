@@ -52,9 +52,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     var messageString:String?
     var linkedInUrl:String?
 
-    var ismessageNotification:Bool!
+    var isMessageNotification:Bool!
 
     var islinkedInNotification:Bool!
+    
+    var isMassNotification:Bool!
+
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
@@ -191,7 +194,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         
         islinkedInNotification = false
         
-        ismessageNotification = false
+        isMessageNotification = false
 
         
         let notificationString = data["notification"] as! String
@@ -210,11 +213,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         {
             let notificationObject = try JSONSerialization.jsonObject(with: notificatioData!, options: .allowFragments) as! [String:Any]
             
-            let jobIDInt = notificationObject["JobId"] as! Int
-            
+//            let jobIDInt = notificationObject["JobId"] as! Int
+
+            let jobIDInt = 3
+
             let message = notificationObject["Message"] as? String
             
             linkedInUrl = notificationObject["LinkedIn"] as? String
+            
+            let massNotification = notificationObject["MassNotification"] as? String
+
             
             self.jobID = String(jobIDInt)
             
@@ -233,11 +241,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             }
             else
             {
-                islinkedInNotification = false
+                islinkedInNotification = false  // not a linkedin noti...1
                 
                 if message != nil
                 {
-                    ismessageNotification = true
+                    isMessageNotification = true
                 
                     self.messageString = message!
                 
@@ -261,27 +269,56 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                 }
                 else
                 {
-                    self.ismessageNotification = false
-
-                    let jobIdExist = CoreDataManager.getSharedCoreDataManager().idExists(aToken: String(jobIDInt), entityName: "CommonNotification")
-                
-                    let date = Date().getLocalDateWithouTimeInString()
-
-                    if !jobIdExist
+                    self.islinkedInNotification = false // not a linkedin noti..
+                    
+                    self.isMessageNotification = false // not a message noti...2
+                    
+                    if massNotification != nil
                     {
-                        let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
+                        self.isMassNotification = true
                         
-                        CoreDataManager.getSharedCoreDataManager().save(entity: "CommonNotification", ["jobId":jobIDInt,"subject":body,"notificationDate1":date, "userId":userId!, "notificationType":Constant.Notification_Type_Job])
+                        
+                            let date = Date().getLocalDateWithouTimeInString()
+                        
+                        
+                            let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
+                        
+                            let notificationId = notificationObject["NotificationId"] as! Int
+
+                            CoreDataManager.getSharedCoreDataManager().save(entity: "ZSpecialNotification", ["NotificationId1":notificationId,"subject":body,"notificationDate":date, "userId":userId!, "notificationType":Constant.Notification_Type_Job])
+                        
+                        
                     }
                     else
                     {
-                        let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
-                    
-                        CoreDataManager.getSharedCoreDataManager().updateNotificationJob(entityName: "CommonNotification", jobId: jobIDInt, subject: body!, notificationDate: date, userId: userId!)
+                        self.islinkedInNotification = false // not a linkedin noti..
+                        
+                        self.isMessageNotification = false // not a message noti.
+                        
+                        self.isMassNotification = false  // not a mass noti....3
+                        
+                        
+                        let jobIdExist = CoreDataManager.getSharedCoreDataManager().idExists(aToken: String(jobIDInt), entityName: "CommonNotification")
+                        
+                        let date = Date().getLocalDateWithouTimeInString()
+                        
+                        if !jobIdExist
+                        {
+                            let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
+                            
+                            CoreDataManager.getSharedCoreDataManager().save(entity: "CommonNotification", ["jobId":jobIDInt,"subject":body,"notificationDate1":date, "userId":userId!, "notificationType":Constant.Notification_Type_Job])
+                        }
+                        else
+                        {
+                            let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
+                            
+                            CoreDataManager.getSharedCoreDataManager().updateNotificationJob(entityName: "CommonNotification", jobId: jobIDInt, subject: body!, notificationDate: date, userId: userId!)
+                        }
+                        
                     }
-                
-                }
 
+                }
+                
             }
 
             
@@ -314,10 +351,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 
             }
             else
-            if ismessageNotification == true
+            if isMessageNotification == true
             {
                 label.text = "New Message"
 
+            }
+            else
+            if isMessageNotification == true
+            {
+                label.text = "New Activity"
             }
             else
             {
@@ -409,7 +451,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         }
         else
         {
-            if ismessageNotification == true
+            if isMessageNotification == true
             {
                 if let vc1 = UIApplication.shared.keyWindow?.rootViewController?.presentedViewController
                 {
@@ -464,6 +506,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                 DispatchQueue.main.async {
                     appDelegate.window?.rootViewController?.present(vc, animated: true, completion: nil)
                 }
+            }
+            else
+            if self.isMassNotification == true
+            {
+                
+                
             }
             else
             {
@@ -879,7 +927,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             var dict = [NSMigratePersistentStoresAutomaticallyOption:true,NSInferMappingModelAutomaticallyOption:true]
            // dict.setValue(true, forKey: NSMigratePersistentStoresAutomaticallyOption)
            // dict.setValue(true, forKey: NSInferMappingModelAutomaticallyOption)
-
+            
             try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: dict)
         } catch {
             // Report any error we got.

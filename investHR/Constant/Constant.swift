@@ -46,12 +46,12 @@ struct Constant
 //    communicator@123
 //    static let  BASE_URL_PATH                            = "http://184.171.162.251:8080/InvestHr/investhr/"              // local server
 //    static let  USER_PROFILE_IMAGE_PATH                  = "http://184.171.162.251:8080/InvestHr/resources/UserImages/"
-    static let  BASE_URL_PATH                            = "https://investhr.biz/investhr/"              // local server
-    static let  USER_PROFILE_IMAGE_PATH                  = "https://investhr.biz/resources/UserImages/"
+    //static let  BASE_URL_PATH                            = "https://investhr.biz/investhr/"              // local server
+    //static let  USER_PROFILE_IMAGE_PATH                  = "https://investhr.biz/resources/UserImages/"
    //  static let  BASE_URL_PATH                            = "http://192.168.3.75:9090/coreflex/investhr/"              // local server
     //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.75:9090/coreflex/resources/UserImages/"
-    //static let  BASE_URL_PATH                            = "http://192.168.3.66:8080/coreflex/investhr/"              // local server
-    //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.66:8080/coreflex/resources/UserImages/"
+    static let  BASE_URL_PATH                            = "http://192.168.3.66:8080/coreflex/investhr/"              // local server
+    static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.66:8080/coreflex/resources/UserImages/"
     // static let  BASE_URL_PATH                            = "http://192.168.3.74:8080/coreflex/investhr/"              // local server
     // static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.74:8080/coreflex/resources/UserImages/"
     //static let  BASE_URL_PATH                            = "http://192.168.3.67:9090/coreflex/investhr/"              // sable sarkar
@@ -106,7 +106,8 @@ struct Constant
     static let  LOGOUT_API                               = "login/logout"
     static let  DELETE_ACCOUNT_API                       = "login/deleteAccount"
     static let  REFER_FRIEND_API                         = "login/mobileReferedJob"
-    static let  CLOSED_JOBIDS_API                         = "login/mobileCloseJob"
+    static let  CLOSED_JOBIDS_API                        = "login/mobileCloseJob"
+    static let  MASS_NOTI_API                            = "login/mobileMassNofification"
 
 
     
@@ -146,6 +147,7 @@ struct Constant
     static let  NOTIFICATION_DELETE_ACCOUNT                 = "deleteAccount"
     static let  NOTIFICATION_REFER_FRIEND                   = "referFriend"
     static let  NOTIFICATION_CLOSED_JOBIDS                  = "closedJobIds"
+    static let  NOTIFICATION_MASS_NOTI                      = "massNoti"
 
    //  static let  NOTIFICATION_HOME_BUTTONS_DISABLED          = "disableHomeButtons"
 

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		840B9F471F66B7E5007A21F7 /* ZSpecialNotification+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840B9F451F66B7E5007A21F7 /* ZSpecialNotification+CoreDataClass.swift */; };
+		840B9F481F66B7E5007A21F7 /* ZSpecialNotification+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840B9F461F66B7E5007A21F7 /* ZSpecialNotification+CoreDataProperties.swift */; };
 		8414925C1EF004CA007133D0 /* City+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8414925A1EF004CA007133D0 /* City+CoreDataClass.swift */; };
 		8414925D1EF004CA007133D0 /* City+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8414925B1EF004CA007133D0 /* City+CoreDataProperties.swift */; };
 		841492681EF005D6007133D0 /* State+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841492661EF005D6007133D0 /* State+CoreDataClass.swift */; };
@@ -108,6 +110,8 @@
 		090579246A9D10601667A174 /* Pods-investHRTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-investHRTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-investHRTests/Pods-investHRTests.debug.xcconfig"; sourceTree = "<group>"; };
 		33A1F246F586B35A47C60808 /* Pods-investHRUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-investHRUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-investHRUITests/Pods-investHRUITests.release.xcconfig"; sourceTree = "<group>"; };
 		7EB4DA99D60A83D450E70BF7 /* Pods-investHRUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-investHRUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-investHRUITests/Pods-investHRUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		840B9F451F66B7E5007A21F7 /* ZSpecialNotification+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ZSpecialNotification+CoreDataClass.swift"; sourceTree = "<group>"; };
+		840B9F461F66B7E5007A21F7 /* ZSpecialNotification+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ZSpecialNotification+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8414925A1EF004CA007133D0 /* City+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "City+CoreDataClass.swift"; sourceTree = "<group>"; };
 		8414925B1EF004CA007133D0 /* City+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "City+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		841492661EF005D6007133D0 /* State+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "State+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -295,6 +299,8 @@
 		8449B6041EE578EB0072A8DD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				840B9F451F66B7E5007A21F7 /* ZSpecialNotification+CoreDataClass.swift */,
+				840B9F461F66B7E5007A21F7 /* ZSpecialNotification+CoreDataProperties.swift */,
 				846075C01F14D6A0006FF071 /* UserVideos+CoreDataClass.swift */,
 				846075C11F14D6A0006FF071 /* UserVideos+CoreDataProperties.swift */,
 				8440D9981F0CAEF6002EF023 /* CommonNotification+CoreDataClass.swift */,
@@ -805,6 +811,7 @@
 				842BAFC91EF2A27C005327B0 /* HorizontalDomains+CoreDataProperties.swift in Sources */,
 				8414926D1EF0060D007133D0 /* User+CoreDataProperties.swift in Sources */,
 				842B32F81EDD7A97000088D1 /* SettingsViewController.swift in Sources */,
+				840B9F471F66B7E5007A21F7 /* ZSpecialNotification+CoreDataClass.swift in Sources */,
 				84F690FA1EFBE45D0000B768 /* SavedJobs+CoreDataClass.swift in Sources */,
 				842BAFCC1EF2A368005327B0 /* Roles+CoreDataClass.swift in Sources */,
 				846075C21F14D6A0006FF071 /* UserVideos+CoreDataClass.swift in Sources */,
@@ -821,6 +828,7 @@
 				8443BA691F22278F00D93C13 /* ChangePasswordViewController.swift in Sources */,
 				84EB8F431EDFEB8600014DA4 /* Constant.swift in Sources */,
 				8439DFD71F038C5400F21C79 /* PlayVideoViewController.swift in Sources */,
+				840B9F481F66B7E5007A21F7 /* ZSpecialNotification+CoreDataProperties.swift in Sources */,
 				844E5B2A1EEED4CF00E69646 /* LinkedInLoginViewController.swift in Sources */,
 				8414925D1EF004CA007133D0 /* City+CoreDataProperties.swift in Sources */,
 				842BAFC81EF2A27C005327B0 /* HorizontalDomains+CoreDataClass.swift in Sources */,
