@@ -380,6 +380,12 @@ class CoreDataManager: NSObject
 
         }
         else
+        if entityName == "ZSpecialNotification"
+        {
+            predicate = NSPredicate(format: "notificationId1 == %d", argumentArray: [Int(aToken)!])
+            
+        }
+        else
         {
             predicate = NSPredicate(format: "userId == %@", argumentArray: [aToken])
         }
@@ -393,6 +399,10 @@ class CoreDataManager: NSObject
             
             if count == 0 {
                 return false
+            }
+            else
+            {
+                return true
             }
         }
         catch let error as NSError

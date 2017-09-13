@@ -779,7 +779,7 @@ class APIManager: NSObject
     {
         if AppPreferences.sharedPreferences().isReachable
         {
-            AppPreferences.sharedPreferences().showHudWith(title: "Sending Referral", detailText: "Please wait..")
+            AppPreferences.sharedPreferences().showHudWith(title: "Loading Data", detailText: "Please wait..")
             
             let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)","notificationId=\(notificationId)"]
             

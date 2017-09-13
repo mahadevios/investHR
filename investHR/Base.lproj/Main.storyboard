@@ -3574,6 +3574,91 @@
             </objects>
             <point key="canvasLocation" x="3935.625" y="803.75"/>
         </scene>
+        <!--Mass Notification View Controller-->
+        <scene sceneID="E67-g3-0Nd">
+            <objects>
+                <viewController storyboardIdentifier="MassNotificationViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zG8-oj-dGi" customClass="MassNotificationViewController" customModule="investHR" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="LT4-1W-uYg"/>
+                        <viewControllerLayoutGuide type="bottom" id="coA-cZ-Ej5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="0Uu-uk-F8H">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kWC-3M-Svz">
+                                <rect key="frame" x="0.0" y="4" width="414" height="70"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BackButton" translatesAutoresizingMaskIntoConstraints="NO" id="ZuX-1T-5nI">
+                                        <rect key="frame" x="15" y="25" width="18" height="19"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="18" id="W5Y-aE-j1c"/>
+                                            <constraint firstAttribute="height" constant="19" id="hD8-ae-pDI"/>
+                                        </constraints>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qzm-Fk-b7K">
+                                        <rect key="frame" x="0.0" y="0.0" width="60" height="70"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="60" id="iLR-ej-Oa7"/>
+                                        </constraints>
+                                        <connections>
+                                            <action selector="backButtonClicked:" destination="zG8-oj-dGi" eventType="touchUpInside" id="1eZ-Vf-NC4"/>
+                                            <action selector="backButtonPressed:" destination="aR0-2c-lPG" eventType="touchUpInside" id="mGE-Nt-nFj"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Description" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3xS-eo-2hz">
+                                        <rect key="frame" x="83" y="24" width="248" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.1137254902" green="0.4823529412" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i33-ai-jvi">
+                                        <rect key="frame" x="0.0" y="65" width="414" height="1"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="Cob-dt-UFf"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="3xS-eo-2hz" firstAttribute="centerX" secondItem="kWC-3M-Svz" secondAttribute="centerX" id="24o-yX-Ucr"/>
+                                    <constraint firstItem="i33-ai-jvi" firstAttribute="width" secondItem="kWC-3M-Svz" secondAttribute="width" id="5iK-OZ-Dzp"/>
+                                    <constraint firstAttribute="height" constant="70" id="MXO-3G-b4T"/>
+                                    <constraint firstItem="i33-ai-jvi" firstAttribute="centerX" secondItem="kWC-3M-Svz" secondAttribute="centerX" id="Y8n-jh-dPh"/>
+                                    <constraint firstItem="Qzm-Fk-b7K" firstAttribute="height" secondItem="kWC-3M-Svz" secondAttribute="height" id="fh2-RK-mra"/>
+                                    <constraint firstItem="Qzm-Fk-b7K" firstAttribute="centerY" secondItem="kWC-3M-Svz" secondAttribute="centerY" id="gBr-yK-pKY"/>
+                                    <constraint firstItem="3xS-eo-2hz" firstAttribute="centerY" secondItem="kWC-3M-Svz" secondAttribute="centerY" id="gWZ-XO-7zP"/>
+                                    <constraint firstAttribute="bottom" secondItem="i33-ai-jvi" secondAttribute="bottom" constant="4" id="gb3-Jj-Bj8"/>
+                                    <constraint firstItem="ZuX-1T-5nI" firstAttribute="centerY" secondItem="kWC-3M-Svz" secondAttribute="centerY" id="i8A-QV-kFV"/>
+                                    <constraint firstItem="ZuX-1T-5nI" firstAttribute="leading" secondItem="kWC-3M-Svz" secondAttribute="leading" constant="15" id="rMV-1m-L2V"/>
+                                    <constraint firstItem="Qzm-Fk-b7K" firstAttribute="leading" secondItem="kWC-3M-Svz" secondAttribute="leading" id="rS1-v9-Q8T"/>
+                                </constraints>
+                            </view>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yqu-AO-bnZ">
+                                <rect key="frame" x="0.0" y="70" width="414" height="666"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="kWC-3M-Svz" firstAttribute="top" secondItem="LT4-1W-uYg" secondAttribute="bottom" constant="-16" id="3m1-7f-2lS"/>
+                            <constraint firstItem="Yqu-AO-bnZ" firstAttribute="height" secondItem="0Uu-uk-F8H" secondAttribute="height" constant="-70" id="DVU-ca-aVN"/>
+                            <constraint firstItem="Yqu-AO-bnZ" firstAttribute="width" secondItem="0Uu-uk-F8H" secondAttribute="width" id="HoI-d5-4qQ"/>
+                            <constraint firstItem="kWC-3M-Svz" firstAttribute="centerX" secondItem="0Uu-uk-F8H" secondAttribute="centerX" id="Vk2-eQ-KNV"/>
+                            <constraint firstItem="Yqu-AO-bnZ" firstAttribute="centerX" secondItem="0Uu-uk-F8H" secondAttribute="centerX" id="eaW-ea-asZ"/>
+                            <constraint firstItem="kWC-3M-Svz" firstAttribute="width" secondItem="0Uu-uk-F8H" secondAttribute="width" id="gVm-wC-p2f"/>
+                            <constraint firstItem="Yqu-AO-bnZ" firstAttribute="centerY" secondItem="0Uu-uk-F8H" secondAttribute="centerY" constant="35" id="xrg-tG-rpU"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="massDetailsWebView" destination="Yqu-AO-bnZ" id="AI3-YL-NdS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cxE-Kq-Or0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2161" y="1492"/>
+        </scene>
         <!--Applied Jobs View Controller-->
         <scene sceneID="Rwx-8z-7xy">
             <objects>

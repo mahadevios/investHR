@@ -42,6 +42,10 @@ import AVFoundation
 //doc picker and metadata query  https://developer.xamarin.com/guides/ios/platform_features/introduction_to_the_document_picker/
 
 // auth 0 https://auth0.com/docs/quickstart/native/ios-objc/00-login#hybrid-objective-c-swift
+
+// sqlite  => without shm and wal https://stackoverflow.com/questions/29598830/read-through-my-apps-core-data-files-sqlite-sqlite-wal
+//https://developer.apple.com/library/content/qa/qa1809/_index.html
+//https://stackoverflow.com/questions/25667447/how-to-turn-off-core-data-write-ahead-logging-in-swift-using-options-dictionary
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate
 {
@@ -49,6 +53,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     var window: UIWindow?
     var notifView: UIView?
     var jobID:String!
+    var massNotificationId:String!
+    
     var messageString:String?
     var linkedInUrl:String?
 
@@ -165,7 +171,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                 {
                     APIManager.getSharedAPIManager().updateDeviceToken(username: "", password: "",linkedinId:linkedInId!, deviceToken: AppPreferences.sharedPreferences().firebaseInstanceId)
                     
-            }
+                }
 
         }
 
@@ -213,9 +219,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         {
             let notificationObject = try JSONSerialization.jsonObject(with: notificatioData!, options: .allowFragments) as! [String:Any]
             
-//            let jobIDInt = notificationObject["JobId"] as! Int
-
-            let jobIDInt = 3
+            let jobIDInt = notificationObject["JobId"] as! Int
 
             let message = notificationObject["Message"] as? String
             
@@ -284,9 +288,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                             let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
                         
                             let notificationId = notificationObject["NotificationId"] as! Int
-
-                            CoreDataManager.getSharedCoreDataManager().save(entity: "ZSpecialNotification", ["NotificationId1":notificationId,"subject":body,"notificationDate":date, "userId":userId!, "notificationType":Constant.Notification_Type_Job])
                         
+                            self.massNotificationId = String(describing:notificationId)
+                        
+                            let jobIdExist = CoreDataManager.getSharedCoreDataManager().idExists(aToken: self.massNotificationId, entityName: "ZSpecialNotification")
+
+                            if !jobIdExist
+                            {
+
+                             CoreDataManager.getSharedCoreDataManager().save(entity: "ZSpecialNotification", ["NotificationId1":notificationId,"subject":body,"notificationDate":date, "userId":userId!, "notificationType":Constant.Notification_Type_Job])
+                                
+                              NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil, userInfo: nil)
+                            }
                         
                     }
                     else
@@ -307,12 +320,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                             let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
                             
                             CoreDataManager.getSharedCoreDataManager().save(entity: "CommonNotification", ["jobId":jobIDInt,"subject":body,"notificationDate1":date, "userId":userId!, "notificationType":Constant.Notification_Type_Job])
+                            
+                            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil, userInfo: nil)
                         }
                         else
                         {
                             let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
                             
                             CoreDataManager.getSharedCoreDataManager().updateNotificationJob(entityName: "CommonNotification", jobId: jobIDInt, subject: body!, notificationDate: date, userId: userId!)
+                            
+                            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil, userInfo: nil)
                         }
                         
                     }
@@ -510,7 +527,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             else
             if self.isMassNotification == true
             {
+                if let vc1 = UIApplication.shared.keyWindow?.rootViewController?.presentedViewController
+                {
+                    if vc1.classForCoder == MassNotificationViewController.classForCoder()
+                    {
+                        UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
+                        print("presented = " + "\(vc1.classForCoder)")
+                        
+                    }
+                    
+                    
+                }
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
                 
+                //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "\(appDelegate.window?.rootViewController)", withCancelText: "got")
+                
+                self.notifView?.frame = CGRect(x: 0, y: -70, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 60)
+                
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyboard.instantiateViewController(withIdentifier: "MassNotificationViewController") as! MassNotificationViewController
+                
+                vc.notificationId = self.massNotificationId
+                
+                //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "\(vc.jobId)" + "\(vc)", withCancelText: "got")
+                //  UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
+                DispatchQueue.main.async {
+                    appDelegate.window?.rootViewController?.present(vc, animated: true, completion: nil)
+                }
                 
             }
             else
@@ -910,8 +953,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         print(path)
         // Load the existing database
         if !FileManager.default.fileExists(atPath: url.path) {
-            let sourceSqliteURLs = [Bundle.main.url(forResource: "investHR", withExtension: "sqlite")!, Bundle.main.url(forResource: "investHR", withExtension: "sqlite-wal")!, Bundle.main.url(forResource: "investHR", withExtension: "sqlite-shm")!]
-            let destSqliteURLs = [self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite"), self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite-wal"), self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite-shm")]
+//            let sourceSqliteURLs = [Bundle.main.url(forResource: "investHR", withExtension: "sqlite")!, Bundle.main.url(forResource: "investHR", withExtension: "sqlite-wal")!, Bundle.main.url(forResource: "investHR", withExtension: "sqlite-shm")!]
+//            let destSqliteURLs = [self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite"), self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite-wal"), self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite-shm")]
+            let sourceSqliteURLs = [Bundle.main.url(forResource: "investHR", withExtension: "sqlite")!]
+            let destSqliteURLs = [self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite")]
             
             for index in 0 ..< sourceSqliteURLs.count {
                 do {
@@ -924,7 +969,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         
         var failureReason = "There was an error creating or loading the application's saved data."
         do {
-            var dict = [NSMigratePersistentStoresAutomaticallyOption:true,NSInferMappingModelAutomaticallyOption:true]
+            var dict = [NSMigratePersistentStoresAutomaticallyOption:true,NSInferMappingModelAutomaticallyOption:true, "journal_mode":"DELETE"] as [String : Any]
            // dict.setValue(true, forKey: NSMigratePersistentStoresAutomaticallyOption)
            // dict.setValue(true, forKey: NSInferMappingModelAutomaticallyOption)
             

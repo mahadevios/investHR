@@ -13,7 +13,6 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
 
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var commonNotificationObjectsArray:[CommonNotification]?
     
     var jobNotificationObjectsArray:[CommonNotification]?
 
@@ -31,23 +30,30 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
 
     @IBAction func notificationSegmentClicked(_ sender: UISegmentedControl)
     {
+        self.getDataOfSegmennt(sender: sender)
+    }
+    
+    func getDataOfSegmennt(sender: UISegmentedControl)
+    {
         if sender.selectedSegmentIndex == 0
         {
             self.jobNotificationObjectsArray?.removeAll()
-
+            
             self.jobNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
             
+            self.removeClosedJobs()
+            
             self.collectionView.reloadData()
-
+            
             //self.commonNotificationObjectsArray?.removeAll()
             
             //self.commonNotificationObjectsArray = self.jobNotificationObjectsArray
-
+            
         }
         else
         {
             self.specialNotificationObjectsArray?.removeAll()
-
+            
             self.specialNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecordsOfSpecialNotification() as? [ZSpecialNotification]
             
             self.collectionView.reloadData()
@@ -100,7 +106,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
             
             //self.commonNotificationObjectsArray = self.jobNotificationObjectsArray
             
-            //self.collectionView.reloadData()
+            self.collectionView.reloadData()
         }
         
        // self.automaticallyAdjustsScrollViewInsets = false
@@ -114,6 +120,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
 //        self.navigationItem.rightBarButtonItem = rightBarButtonItem
         
         
+
         // Do any additional setup after loading the view.
     }
     
@@ -125,8 +132,16 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkSaveJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVE_JOB), object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(newNotiAdded(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        
     }
     
+    func newNotiAdded(dataDic:Notification)
+    {
+        self.getDataOfSegmennt(sender: self.notificationSegment)
+    }
     func checkClosedJobList(dataDic:Notification)
     {
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
@@ -136,7 +151,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         
         let codeString = String(describing: dataDictionary["code"]!)
         
-        self.commonNotificationObjectsArray?.removeAll()
+        self.jobNotificationObjectsArray?.removeAll()
         
         self.jobNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
         
@@ -144,7 +159,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         if codeString == "1001"
         {
 
-            if self.commonNotificationObjectsArray?.count == 0
+            if self.jobNotificationObjectsArray?.count == 0
             {
                 dataNotFoundLabel.isHidden = false
             }
@@ -163,33 +178,8 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         {
             self.closedJobsIdsArray = try JSONSerialization.jsonObject(with: closedJobIdsData!, options: .allowFragments) as! [Int64]
             
-            if self.closedJobsIdsArray.count < 1
-            {
-                dataNotFoundLabel.isHidden = false
-
-                self.collectionView.reloadData()
-            }
-            else
-            {
-                if self.jobNotificationObjectsArray != nil
-                {
-                    for notiObj in self.jobNotificationObjectsArray!
-                    {
-                        if self.closedJobsIdsArray.contains(notiObj.jobId)
-                        {
-                            let index = self.jobNotificationObjectsArray?.index(of: notiObj)
-                            
-                            self.jobNotificationObjectsArray?.remove(at: index!)
-                            
-                        }
-                    }
-
-                }
-               
-
-               // print(closedJobsIdsArray)
-            }
-           
+            self.removeClosedJobs()
+            
 
         } catch let error as NSError
         {
@@ -197,14 +187,43 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         }
         
         
-        self.commonNotificationObjectsArray = self.jobNotificationObjectsArray
+//        self.jobNotificationObjectsArray = self.jobNotificationObjectsArray
 
         self.collectionView.reloadData()
 
 
     }
     
-    
+    func removeClosedJobs()
+    {
+        if self.closedJobsIdsArray.count < 1
+        {
+            dataNotFoundLabel.isHidden = false
+            
+            self.collectionView.reloadData()
+        }
+        else
+        {
+            if self.jobNotificationObjectsArray != nil
+            {
+                for notiObj in self.jobNotificationObjectsArray!
+                {
+                    if self.closedJobsIdsArray.contains(notiObj.jobId)
+                    {
+                        let index = self.jobNotificationObjectsArray?.index(of: notiObj)
+                        
+                        self.jobNotificationObjectsArray?.remove(at: index!)
+                        
+                    }
+                }
+                
+            }
+            
+            
+            // print(closedJobsIdsArray)
+        }
+
+    }
     
     func checkSaveJob(dataDic:NSNotification)
     {
@@ -332,15 +351,9 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
             }
             else
             {
-                if jobNotificationObjectsArray?.count == 0
-                {
+                
                     dataNotFoundLabel.isHidden = false
-                }
-                else
-                {
-                    dataNotFoundLabel.isHidden = true
-                    
-                }
+                
                 
                 return 0
             }
@@ -364,15 +377,9 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
             }
             else
             {
-                if specialNotificationObjectsArray?.count == 0
-                {
-                    dataNotFoundLabel.isHidden = false
-                }
-                else
-                {
-                    dataNotFoundLabel.isHidden = true
-                    
-                }
+                
+                dataNotFoundLabel.isHidden = false
+                
                 
                 return 0
             }
@@ -474,6 +481,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         return cell
     }
     
+
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize
@@ -485,71 +493,95 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
         // handle tap events
-        let notificationObj = commonNotificationObjectsArray?[indexPath.row]
-        let jobId = notificationObj?.jobId
         
         
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "NewJobsViewController") as! NewJobsViewController
-        if savedJobsIdsArray.contains(jobId!)
+        if notificationSegment.selectedSegmentIndex == 0
         {
-            vc.saved = true
+            let notificationObj = jobNotificationObjectsArray?[indexPath.row]
+            let jobId = notificationObj?.jobId
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "NewJobsViewController") as! NewJobsViewController
+            if savedJobsIdsArray.contains(jobId!)
+            {
+                vc.saved = true
+            }
+            if appliedJobsIdsArray.contains(jobId!)
+            {
+                vc.applied = true
+            }
+            vc.verticalId = String(0)
+            vc.domainType = "vertical"
+            let jobId1 = String(describing: jobId!)
+            vc.jobId = jobId1
+            self.present(vc, animated: true, completion: nil)
+  
         }
-        if appliedJobsIdsArray.contains(jobId!)
+        else
         {
-            vc.applied = true
+            
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MassNotificationViewController") as! MassNotificationViewController
+            
+            let notificationObj = specialNotificationObjectsArray?[indexPath.row]
+            
+            let notificationId = notificationObj?.notificationId1
+            
+            vc.notificationId = String(describing:notificationId!)
+            
+            self.present(vc, animated: true, completion: nil)
+
+
         }
-        vc.verticalId = String(0)
-        vc.domainType = "vertical"
-        let jobId1 = String(describing: jobId!)
-        vc.jobId = jobId1
-        self.present(vc, animated: true, completion: nil)
+        
         print("You selected cell #\(indexPath.item)!")
         
     }
     
-    func saveJobButtonClicked(_ sender: subclassedUIButton)
+//    func saveJobButtonClicked(_ sender: subclassedUIButton)
+//    {
+//        AppPreferences.sharedPreferences().showHudWith(title: "Saving Job", detailText: "Please wait..")
+//        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+//        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+//        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+//        
+//        indexePathArray.append(IndexPath.init(row: sender.indexPath, section: 0))
+//
+//        if username != nil && password != nil
+//        {
+//            APIManager.getSharedAPIManager().saveJob(username: username!, password: password!, linkedinId: "", jobId: String(describing: sender.jobId!))
+//        }
+//        else
+//            if linkedInId != nil
+//            {
+//                APIManager.getSharedAPIManager().saveJob(username: "", password: "", linkedinId: linkedInId!, jobId: String(describing: sender.jobId!))
+//        }
+//        
+//    }
+//    func applyJobButtonClicked(_ sender: subclassedUIButton)
+//    {
+//        AppPreferences.sharedPreferences().showHudWith(title: "Applying for job", detailText: "Please wait..")
+//        
+//        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+//        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+//        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+//        
+//        indexePathArray.append(IndexPath.init(row: sender.indexPath, section: 0))
+//
+//        if username != nil && password != nil
+//        {
+//            APIManager.getSharedAPIManager().applyJob(username: username!, password: password!, linkedinId: "", jobId: String(describing: sender.jobId!))
+//        }
+//        else
+//            if linkedInId != nil
+//            {
+//                APIManager.getSharedAPIManager().applyJob(username: "", password: "", linkedinId: linkedInId!, jobId: String(describing: sender.jobId!))
+//        }
+//        
+//        //self.collectionView.reloadData()
+//    }
+
+    func deviceRotated()
     {
-        AppPreferences.sharedPreferences().showHudWith(title: "Saving Job", detailText: "Please wait..")
-        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-        
-        indexePathArray.append(IndexPath.init(row: sender.indexPath, section: 0))
-
-        if username != nil && password != nil
-        {
-            APIManager.getSharedAPIManager().saveJob(username: username!, password: password!, linkedinId: "", jobId: String(describing: sender.jobId!))
-        }
-        else
-            if linkedInId != nil
-            {
-                APIManager.getSharedAPIManager().saveJob(username: "", password: "", linkedinId: linkedInId!, jobId: String(describing: sender.jobId!))
-        }
-        
+       self.collectionView.reloadData()
     }
-    func applyJobButtonClicked(_ sender: subclassedUIButton)
-    {
-        AppPreferences.sharedPreferences().showHudWith(title: "Applying for job", detailText: "Please wait..")
-        
-        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-        
-        indexePathArray.append(IndexPath.init(row: sender.indexPath, section: 0))
-
-        if username != nil && password != nil
-        {
-            APIManager.getSharedAPIManager().applyJob(username: username!, password: password!, linkedinId: "", jobId: String(describing: sender.jobId!))
-        }
-        else
-            if linkedInId != nil
-            {
-                APIManager.getSharedAPIManager().applyJob(username: "", password: "", linkedinId: linkedInId!, jobId: String(describing: sender.jobId!))
-        }
-        
-        //self.collectionView.reloadData()
-    }
-
     override func didReceiveMemoryWarning()
     {
         super.didReceiveMemoryWarning()
