@@ -48,7 +48,7 @@ class ChangePasswordViewController: UIViewController
                     return
                 }
         
-                print(responseDic)
+                //print(responseDic)
                 guard let code = responseDic["code"] else {
         
                     return

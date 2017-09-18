@@ -73,7 +73,7 @@ class AppPreferences: NSObject,UIAlertViewDelegate
             
         } catch let error as NSError
         {
-            print(error.localizedDescription)
+           // print(error.localizedDescription)
         }
         
     

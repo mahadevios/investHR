@@ -193,8 +193,8 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // handle tap events
-        print("You selected cell #\(indexPath.item)!")
-        print("You selected cell #\(indexPath.item)!")
+        //print("You selected cell #\(indexPath.item)!")
+        //print("You selected cell #\(indexPath.item)!")
         let jobDic = verticalJobListArray[indexPath.row] as! [String:AnyObject]
         let jobId = jobDic["jobId"] as! Int
         let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String

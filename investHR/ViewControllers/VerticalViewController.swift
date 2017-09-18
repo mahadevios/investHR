@@ -119,7 +119,7 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
                     }
         } catch let error as NSError
         {
-            print(error.localizedDescription)
+//            print(error.localizedDescription)
         }
         
         
@@ -184,7 +184,7 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
 //        AppPreferences.sharedPreferences().showHudWith(title: "Loading jobs..", detailText: "Please wait")
 
         
-            print("You tapped cell number \(indexPath.row).")
+//            print("You tapped cell number \(indexPath.row).")
     }
 
     override func didReceiveMemoryWarning()

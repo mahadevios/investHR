@@ -145,7 +145,7 @@ extension FTPImageUpload
         guard let ftpWriteStream = ftpWriteStream(forFileName: fileName) else { return false }
         
         if CFWriteStreamOpen(ftpWriteStream) == false {
-            print("Could not open stream")
+//            print("Could not open stream")
             return false
         }
         
@@ -163,15 +163,15 @@ extension FTPImageUpload
             if bytesWritten > 0 {
                 offset += bytesWritten.littleEndian
                 dataToSendSize -= bytesWritten
-                print(bytesWritten)
+//                print(bytesWritten)
                 continue
             } else if bytesWritten < 0 {
                 // ERROR
-                print("ERROR ERROR ERROR")
+//                print("ERROR ERROR ERROR")
                 break
             } else if bytesWritten == 0 {
                 // SUCCESS
-                print("Completed!!")
+//                print("Completed!!")
                 break
             }
             
@@ -250,15 +250,15 @@ extension FTPImageUpload
         // get C-String from CFStringRef
         let ret = CFURLGetFileSystemRepresentation(downloadUrl! as CFURL!, true, legIntPtr, P_MAX)
         
-        print(ret)
+//        print(ret)
         if (!CFURLGetFileSystemRepresentation(downloadUrl! as CFURL!, true, legIntPtr, P_MAX))
         {
             // error
-            print("error occured")
+//            print("error occured")
         }
         else
         {
-          print("seccuess")
+//          print("seccuess")
         }
         let leg = UnsafeMutablePointer<Int32>.allocate(capacity: 255)
 

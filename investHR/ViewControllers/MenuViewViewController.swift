@@ -460,7 +460,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
             
         }
-        print("You tapped cell number \(indexPath.row).")
+//        print("You tapped cell number \(indexPath.row).")
     }
     
     func showData() -> Void
@@ -471,7 +471,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         {
             menuItemsArray.removeAll()
             
-            menuItemsArray = ["Profile","Notification","Saved Jobs","Applied Jobs","Upload Resume","Upload Video","Refer a Friend","Contact Us","Log Out"]
+            menuItemsArray = ["Profile","Notification","Saved Jobs","Applied Jobs","Upload Resume","Upload Video","Refer A Friend","Contact Us","Log Out"]
             
             menuImageNamesArray = ["SideMenuProfile","SideMenuNoti","SideMenuSavedJob","SideMenuAppliedJob","SideMenuUploadResume","SideMenuUploadVideo","SideMenuReferFriend","SideMenuContactUs","SideMenuLogout"]
         }
@@ -511,7 +511,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
                 
                 DispatchQueue.global(qos: .background).async
                     {
-                    print("This is run on the background queue")
+//                    print("This is run on the background queue")
                         if let pictureUrlString = pictureUrlString
                         {
                             let pictureUrl = URL(string: Constant.USER_PROFILE_IMAGE_PATH + pictureUrlString)
@@ -539,7 +539,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
                                         {
                                             self.circleImageView.image = UIImage(named:"InsideDefaultCircle")
                                     }
-                                    print(error.localizedDescription)
+//                                    print(error.localizedDescription)
                                 }
                             }
                             else
@@ -559,7 +559,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
         } catch let error as NSError
         {
-            print(error.localizedDescription)
+//            print(error.localizedDescription)
         }
         
        

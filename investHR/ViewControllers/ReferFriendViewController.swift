@@ -27,7 +27,7 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource,MFMailCom
         
         self.navigationItem.leftBarButtonItem = barButtonItem
         
-        self.navigationItem.title = "Refer a friend"
+        self.navigationItem.title = "Refer A friend"
         
         self.automaticallyAdjustsScrollViewInsets = false
 
@@ -76,16 +76,16 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource,MFMailCom
     func mailComposeController(_ controller:MFMailComposeViewController, didFinishWith result:MFMailComposeResult, error:Error?) {
         switch result {
         case MFMailComposeResult.cancelled:
-            print("Mail cancelled")
+//            print("Mail cancelled")
             break
         case MFMailComposeResult.saved:
-            print("Mail saved")
+//            print("Mail saved")
             break
         case MFMailComposeResult.sent:
-            print("Mail sent")
+//            print("Mail sent")
             break
         case MFMailComposeResult.failed:
-            print("Mail sent failure: \(error?.localizedDescription)")
+//            print("Mail sent failure: \(error?.localizedDescription)")
             break
         default:
             break
@@ -246,7 +246,7 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource,MFMailCom
     func metadataQueryDidFinishGathering( notification:AnyObject)
     {
      
-        print("metadata value is", notification)
+//        print("metadata value is", notification)
         
         let query: NSMetadataQuery = notification.object as! NSMetadataQuery
         
@@ -265,7 +265,7 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource,MFMailCom
             let resultURL = query.value(ofAttribute: NSMetadataItemURLKey,
                                         forResultAt: 0) as! URL
             
-            print("resultURL", resultURL)
+//            print("resultURL", resultURL)
 //            document = MyDocument(fileURL: resultURL as URL)
 //            
 //            document?.open(completionHandler: {(success: Bool) -> Void in

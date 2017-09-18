@@ -57,7 +57,6 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
     {
         super.viewDidLoad()
         
-        print(visaStatus)
         //let candidateFunctionPickerView = UIPickerView(frame: CGRect(x: 15, y: 0, width: candidateFunctionTextField.frame.size.width * 0.80, height: 35))
         //candidateFunctionPickerView.dataSource = self
         //candidateFunctionPickerView.delegate = self
@@ -248,7 +247,6 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         
         let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
         
-        print(currentRootVC)
         
         let className = String(describing: type(of: currentRootVC))
         
@@ -421,7 +419,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
             
             let decoded = try JSONSerialization.jsonObject(with: jsonData, options: [])
             
-            print(decoded)
+            //print(decoded)
 
                // APIManager.getSharedAPIManager().registerUser(dict: decoded)
             let data = imageData as? Data
@@ -448,7 +446,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
                 // use dictFromJSON
             }
         } catch {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
 //        APIManager.getSharedAPIManager().registerUser(dict: dict)
         
@@ -495,7 +493,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
             
         } catch let error as NSError
         {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
         
         

@@ -92,7 +92,8 @@ class CustomNotificationViewController: UIViewController,UITableViewDelegate,UIT
         return cell!
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+    {
         
         
         let idMessageDic = AppPreferences.sharedPreferences().customMessagesArray[indexPath.row] as! [String:Any]

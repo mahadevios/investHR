@@ -287,8 +287,8 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
                 
             }
             
-            print("count = " + "\(self.uploadedVideoNamesArray.count)")
-            print("deleting row =" + "\(self.uploadingOrDownloadingRow)")
+//            print("count = " + "\(self.uploadedVideoNamesArray.count)")
+//            print("deleting row =" + "\(self.uploadingOrDownloadingRow)")
             self.uploadedVideoNamesArray.remove(at: self.uploadingOrDownloadingRow!)
 
             //recordedVideoNamesArray.remove(at: uploadingOrDownloadingRow)
@@ -339,7 +339,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         }
         catch let error as NSError
         {
-            print("Ooops! Something went wrong: \(error)")
+//            print("Ooops! Something went wrong: \(error)")
         }
     }
     
@@ -351,7 +351,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
     {
         let data = NSData(contentsOf: url)
         
-        print(url.pathExtension)
+//        print(url.pathExtension)
         
         let imageView = self.view.viewWithTag(101) as! UIImageView
         
@@ -402,7 +402,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
                 do
                 {
                     try imgData.write(to: URL(fileURLWithPath: unCompressedFilePath))
-                    print("uncompressed kb - \(imgData.count / (1024))")
+//                    print("uncompressed kb - \(imgData.count / (1024))")
 
                     let url = URL(fileURLWithPath: unCompressedFilePath)
                     recordedVideoNamesArray.append(uniqueImageName)
@@ -416,13 +416,13 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
                     
                 } catch let error as NSError
                 {
-                    print(error.localizedDescription)
+//                    print(error.localizedDescription)
                 }
                 
                 
             } catch let error as NSError
             {
-                print(error.localizedDescription)
+//                print(error.localizedDescription)
             }
             
         }
@@ -458,7 +458,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
                 DispatchQueue.main.async( execute: {
                     do {
                         let videoData = try NSData(contentsOf: savePathUrl as URL, options: NSData.ReadingOptions())
-                        print("KB - \(videoData.length / (1024))")
+//                        print("KB - \(videoData.length / (1024))")
                         DispatchQueue.main.async {
                             self.collectionView.reloadData()
                             AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
@@ -466,7 +466,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
 
                         }
                     } catch {
-                        print(error)
+//                        print(error)
                     }
                     
                 })
@@ -477,7 +477,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
                     self.dismiss(animated: true, completion: nil)
                     
                 }
-                print("failed \(assetExport.error)")
+//                print("failed \(assetExport.error)")
             case AVAssetExportSessionStatus.cancelled:
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
@@ -485,7 +485,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
                     self.dismiss(animated: true, completion: nil)
                     
                 }
-                print("cancelled \(assetExport.error)")
+//                print("cancelled \(assetExport.error)")
             default:
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
@@ -493,7 +493,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
                     self.dismiss(animated: true, completion: nil)
                     
                 }
-                print("complete")
+//                print("complete")
             }
         }
         
@@ -552,7 +552,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         }
         catch let error as NSError
         {
-            print("Image generation failed with error \(error)")
+//            print("Image generation failed with error \(error)")
             return nil
         }
     }
@@ -1080,7 +1080,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?)
     {
-        print(error?.localizedDescription)
+//        print(error?.localizedDescription)
     }
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL)
@@ -1130,20 +1130,20 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
             
         } catch let error as Error
         {
-            print(error.localizedDescription)
+//            print(error.localizedDescription)
         }
         
         
-        print(location)
+//        print(location)
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64)
     {
-        print(totalBytesSent)
+//        print(totalBytesSent)
     }
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64)
     {
-        print(bytesWritten)
+//        print(bytesWritten)
     }
 
     override func didReceiveMemoryWarning()

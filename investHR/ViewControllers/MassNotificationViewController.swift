@@ -80,8 +80,8 @@ class MassNotificationViewController: UIViewController,UIWebViewDelegate
         //self.collectionView.reloadData()
         
         
-        print("webview h = \(webViewHeit)")
-        print("webview w = \(webViewWidth)")
+//        print("webview h = \(webViewHeit)")
+//        print("webview w = \(webViewWidth)")
         
         //self.refreshWebView(webView: webView)
         

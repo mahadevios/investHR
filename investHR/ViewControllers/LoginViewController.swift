@@ -72,7 +72,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
             return
         }
         
-        print(linkedInLoginCircleButton.frame.size)
+//        print(linkedInLoginCircleButton.frame.size)
         let managedObjectContext1 = appDelegate.managedObjectContext
         
         
@@ -904,7 +904,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
         
-        print(currentRootVC)
+//        print(currentRootVC)
         
         let className = String(describing: type(of: currentRootVC))
         
@@ -1058,7 +1058,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
         
-        print(currentRootVC)
+//        print(currentRootVC)
         
         let className = String(describing: type(of: currentRootVC))
         
@@ -1095,8 +1095,8 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
             let dic = dataDic.object as! [String:AnyObject]
             let accessToken = dic["access_token"] as! String
             
-            print(dataDic)
-            print(accessToken ?? "")
+//            print(dataDic)
+//            print(accessToken ?? "")
             
             
             
@@ -1129,7 +1129,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                                     
                                     let coreDataManager = CoreDataManager.getSharedCoreDataManager()
                                     
-                                    print(dataDictionary)
+//                                    print(dataDictionary)
                                     
                                     guard let userId = dataDictionary["id"] as? String else
                                     {
@@ -1250,7 +1250,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                                         }
                                     } catch
                                     {
-                                        print("Unable to load data: \(error)")
+//                                        print("Unable to load data: \(error)")
                                     }
                                     
                                     let linkedInDict = ["firstName":firstName,"lastName":lastName,"userId":userId,"occupation":occupation,"emailAddress":emailAddress,"pictureUrl":pictureUrlString,"profileUrl":publicProfileUrl,"linkedInId":userId] as [String : Any]
@@ -1289,7 +1289,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                             
                         }
                         catch {
-                            print("Could not convert JSON data into a dictionary.")
+//                            print("Could not convert JSON data into a dictionary.")
                         }
                     }
                     else
@@ -1302,7 +1302,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                             //print(profileURLString)
                         }
                         catch {
-                            print("Could not convert JSON data into a dictionary.")
+//                            print("Could not convert JSON data into a dictionary.")
                         }
                     }
                     
@@ -1313,7 +1313,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
             //}
         }
         catch {
-            print("Could not convert JSON data into a dictionary.")
+//            print("Could not convert JSON data into a dictionary.")
         }
     }
     
@@ -1332,7 +1332,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
             
             let decoded = try JSONSerialization.jsonObject(with: jsonData, options: [])
             
-            print(decoded)
+//            print(decoded)
             // here "decoded" is of type `Any`, decoded from JSON data
             
             //            if AppPreferences.sharedPreferences().isReachable
@@ -1346,7 +1346,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                 // use dictFromJSON
             }
         } catch {
-            print(error.localizedDescription)
+//            print(error.localizedDescription)
         }
 
      
@@ -1694,22 +1694,22 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                                             do {
                                                 try managedObjectContext.save()
                     
-                                                print("inserting city num:",(index))
+//                                                print("inserting city num:",(index))
                                                 
                                             } catch let error as NSError {
-                                                print(error.localizedDescription)
+//                                                print(error.localizedDescription)
                                             }
                                         }
                     
                 }
                 catch let error as NSError
                 {
-                    print(error.localizedDescription)
+//                    print(error.localizedDescription)
                 }
             }
             else
             {
-                print(error?.localizedDescription)
+//                print(error?.localizedDescription)
             }
             
             

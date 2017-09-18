@@ -274,7 +274,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         {
             return
         }
-        print("not coming")
+//        print("not coming")
 
         var verticalJobListString = dataDictionary["verticalJobList"] as? String
 
@@ -701,7 +701,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
             self.collectionView.reloadData()
         
-            print("resultArray = " + "\(resultArray)")
+//            print("resultArray = " + "\(resultArray)")
         }
 
         
@@ -1037,7 +1037,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // handle tap events
-        print("You selected cell #\(indexPath.item)!")
+//        print("You selected cell #\(indexPath.item)!")
         
         
         let jobDic = verticalJobListArray[indexPath.row] as! [String:AnyObject]
@@ -1062,7 +1062,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
  //       self.loadMoreData()
 //        AppPreferences.sharedPreferences().showHudWith(title: "Loading job..", detailText: "Please wait")
 
-        print("You tapped cell number \(indexPath.row).")
+//        print("You tapped cell number \(indexPath.row).")
         
     }
     

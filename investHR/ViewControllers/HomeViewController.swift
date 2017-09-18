@@ -60,23 +60,23 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
         definesPresentationContext = true
         
 
-        if AppPreferences.sharedPreferences().gotMessages == false
-        {
-            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-            
-            if username != nil && password != nil
-            {
-                APIManager.getSharedAPIManager().getCustomMessages(username: username!, password: password!, linkedinId: "")
-            }
-            else
-                if linkedInId != nil
-                {
-                    APIManager.getSharedAPIManager().getCustomMessages(username: "", password: "", linkedinId: linkedInId!)
-                    
-            }
-        }
+//        if AppPreferences.sharedPreferences().gotMessages == false
+//        {
+//            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+//            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+//            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+//            
+//            if username != nil && password != nil
+//            {
+//                APIManager.getSharedAPIManager().getCustomMessages(username: username!, password: password!, linkedinId: "")
+//            }
+//            else
+//                if linkedInId != nil
+//                {
+//                    APIManager.getSharedAPIManager().getCustomMessages(username: "", password: "", linkedinId: linkedInId!)
+//                    
+//            }
+//        }
 //        let alert2 = MyAlert.showAlert(ofType: MyAlertType.invalidLogin, handler: { (UIAlertAction) in
 //            
 //            print("cancel pressed")
@@ -129,7 +129,7 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
             
            let messagesArray = try JSONSerialization.jsonObject(with: messageData!, options: .allowFragments) as! [Any]
             
-            print(messagesArray)
+//            print(messagesArray)
             
             AppPreferences.sharedPreferences().customMessagesArray.removeAll()
             
@@ -173,23 +173,23 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
         NotificationCenter.default.addObserver(self, selector: #selector(checkCustomMessagesList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_CUSTOM_MESSAGES), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(dismissPopUp), name: NSNotification.Name(Constant.NOTIFICATION_DISMISS_SUGGESTION_POPUP), object: nil)
         
-//        if AppPreferences.sharedPreferences().gotMessages == false
-//        {
-//            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-//            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-//            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-//            
-//            if username != nil && password != nil
-//            {
-//                APIManager.getSharedAPIManager().getCustomMessages(username: username!, password: password!, linkedinId: "")
-//            }
-//            else
-//                if linkedInId != nil
-//                {
-//                    APIManager.getSharedAPIManager().getCustomMessages(username: "", password: "", linkedinId: linkedInId!)
-//                    
-//            }
-//        }
+        if AppPreferences.sharedPreferences().gotMessages == false
+        {
+            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            
+            if username != nil && password != nil
+            {
+                APIManager.getSharedAPIManager().getCustomMessages(username: username!, password: password!, linkedinId: "")
+            }
+            else
+                if linkedInId != nil
+                {
+                    APIManager.getSharedAPIManager().getCustomMessages(username: "", password: "", linkedinId: linkedInId!)
+                    
+            }
+        }
        
         
         
@@ -323,7 +323,7 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
 
        // let buf2    = UnsafeRawPointer(data.bytes)
         ///let buf3    = UnsafeRawPointer(data.bytes)
-        print(data1?.length)
+//        print(data1?.length)
         
         var leftOverSize        = data1?.length
         var bytesFile           = data1?.length
@@ -344,14 +344,14 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
         var cfstatus    = CFWriteStreamOpen(stream) as Bool
         // connection fail
         if cfstatus == false {
-            print("Not connected")
+//            print("Not connected")
         }
         
         repeat{
             // Write the data to the write stream
-            print(String(describing: stream))
+//            print(String(describing: stream))
             bytesWritten = CFWriteStreamWrite(stream, buf, leftOverSize!)
-            print("bytesWritten: \(bytesWritten)")
+//            print("bytesWritten: \(bytesWritten)")
             if (bytesWritten > 0) {
                 totalBytesWritten += bytesWritten
                 // Store leftover data until kCFStreamEventCanAcceptBytes event occurs again
@@ -363,7 +363,7 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
                 }
                 
             }else{
-                print("CFWriteStreamWrite returned \(bytesWritten)")
+//                print("CFWriteStreamWrite returned \(bytesWritten)")
                 break
             }
             
@@ -372,7 +372,7 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
             }
         }while((totalBytesWritten < bytesFile!))
         
-        print("totalBytesWritten: \(totalBytesWritten)")
+//        print("totalBytesWritten: \(totalBytesWritten)")
         
         CFWriteStreamClose(stream)
             

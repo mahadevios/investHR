@@ -609,8 +609,8 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         self.collectionView.reloadData()
         
         
-        print("webview h = \(webViewHeit)")
-        print("webview w = \(webViewWidth)")
+//        print("webview h = \(webViewHeit)")
+//        print("webview w = \(webViewWidth)")
 
         //self.refreshWebView(webView: webView)
 
@@ -788,7 +788,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             
             descriptionWebView1.tag = 120
 
-            print("subject = " + "\(subject)")
+//            print("subject = " + "\(subject)")
         }
 
        // descriptionWebView1.scrollView.contentSize = CGSize(width: self.webViewWidth, height: self.webViewHeight)
@@ -829,7 +829,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                
                 let ht = descriptionWebView1.stringByEvaluatingJavaScript(from: "document.height")
 
-                print(ht)
+//                print(ht)
                 //descriptionWebView.loadHTMLString(discription, baseURL: nil)
 
             }
@@ -962,8 +962,8 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             height1 = height2
         }
         
-        print("location height = " + "\(height)")
-        print("subject height = " + "\(height1)")
+//        print("location height = " + "\(height)")
+//        print("subject height = " + "\(height1)")
 
         return CGSize(width: self.view.frame.size.width, height: height+height1+webViewHeight+200)
     }
@@ -1002,7 +1002,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // handle tap events
-        print("You selected cell #\(indexPath.item)!")
+//        print("You selected cell #\(indexPath.item)!")
     }
     func checkSaveJob(dataDic:NSNotification)
     {
@@ -1325,7 +1325,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                 }
                 
                 
-                print("Landscape")
+//                print("Landscape")
             }
             
             if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
@@ -1363,7 +1363,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                         
 
                 }
-                print("Portrait")
+//                print("Portrait")
             }
 
         }
@@ -1589,7 +1589,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             return
         }
         
-        print(responseDic)
+//        print(responseDic)
         guard let code = responseDic["code"] else {
             
             return

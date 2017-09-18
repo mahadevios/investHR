@@ -183,7 +183,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
 
         } catch let error as NSError
         {
-            print(error.localizedDescription)
+//            print(error.localizedDescription)
         }
         
         
@@ -531,7 +531,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
 
         }
         
-        print("You selected cell #\(indexPath.item)!")
+//        print("You selected cell #\(indexPath.item)!")
         
     }
     

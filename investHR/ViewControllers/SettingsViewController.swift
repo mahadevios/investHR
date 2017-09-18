@@ -70,7 +70,7 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
             return
         }
         
-        print(responseDic)
+//        print(responseDic)
         guard let code = responseDic["code"] else {
             
             return

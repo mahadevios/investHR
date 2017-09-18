@@ -86,7 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         
-        print(urls[urls.count-1] as URL)
+        //print(urls[urls.count-1] as URL)
         
 //        if GIDSignIn.sharedInstance().hasAuthInKeychain()
 //        {
@@ -184,10 +184,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         
         if let refreshedToken = FIRInstanceID.instanceID().token()
         {
-            print("InstanceID token: \(refreshedToken)")
+            //print("InstanceID token: \(refreshedToken)")
         }
         // Print it to console
-        print("APNs device token: \(deviceTokenString)")
+        //print("APNs device token: \(deviceTokenString)")
         
         // Persist it in your backend in case it's new
     }
@@ -196,7 +196,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     func application(_ application: UIApplication, didReceiveRemoteNotification data: [AnyHashable : Any])
     {
         // Print notification payload data
-        print("Push notification received: \(data)")
+        //print("Push notification received: \(data)")
         
         islinkedInNotification = false
         
@@ -230,7 +230,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             
             self.jobID = String(jobIDInt)
             
-            print(self.jobID)
+           // print(self.jobID)
             
             let body = alertObject["body"]
             
@@ -240,7 +240,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             {
                 islinkedInNotification = true
                 
-                print(linkedInUrl ?? "nil")
+                //print(linkedInUrl ?? "nil")
 
             }
             else
@@ -343,7 +343,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             
         } catch let error as NSError
         {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
         
         if UIApplication.shared.applicationState == UIApplicationState.active
@@ -475,7 +475,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                     if vc1.classForCoder == PopUpMessageViewController.classForCoder()
                     {
                         UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
-                        print("presented = " + "\(vc1.classForCoder)")
+                       //print("presented = " + "\(vc1.classForCoder)")
                         
                     }
                     
@@ -500,7 +500,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                 
                 let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
                 
-                print(currentRootVC)
+               // print(currentRootVC)
                 
                 let className = String(describing: type(of: currentRootVC))
                 
@@ -532,7 +532,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                     if vc1.classForCoder == MassNotificationViewController.classForCoder()
                     {
                         UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
-                        print("presented = " + "\(vc1.classForCoder)")
+                        //print("presented = " + "\(vc1.classForCoder)")
                         
                     }
                     
@@ -563,7 +563,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                     if vc1.classForCoder == NewJobsViewController.classForCoder()
                     {
                         UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
-                        print("presented = " + "\(vc1.classForCoder)")
+                        //print("presented = " + "\(vc1.classForCoder)")
                         
                     }
                     
@@ -628,7 +628,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     // Called when APNs failed to register the device for push notifications
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         // Print the error to console (you should alert the user that registration failed)
-        print("APNs registration failed: \(error)")
+        //print("APNs registration failed: \(error)")
     }
 //    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool
 //    {

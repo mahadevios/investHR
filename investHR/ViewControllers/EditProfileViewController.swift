@@ -1019,7 +1019,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
         DispatchQueue.global(qos: .background).async
             {
-                print("This is run on the background queue")
+                //print("This is run on the background queue")
                 //                        if let pictureUrlString = Constant.USER_PROFILE_IMAGE_PATH + pictureUrlString!
                 //                        {
                 let pictureUrl = URL(string: Constant.USER_PROFILE_IMAGE_PATH + pictureUrlString)
@@ -1042,7 +1042,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                                             
                                             self.circleImageView.image = userImage
                                             
-                                            print("got in main queue")
+                                            //print("got in main queue")
                                             
                                             
                                     }
@@ -1058,7 +1058,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                             {
                                 self.circleImageView.image = UIImage(named:"InsideDefaultCircle")
                             }
-                        print(error.localizedDescription)
+                        //print(error.localizedDescription)
                         }
                     
                     
@@ -1078,7 +1078,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         }
         catch let error as NSError
         {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
         
         resignAllResponsders()
@@ -1553,7 +1553,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             
             let decoded = try JSONSerialization.jsonObject(with: jsonData, options: [])
             
-            print(decoded)
+            //print(decoded)
             
             self.autoCompleteTableView.isHidden = true
             // APIManager.getSharedAPIManager().registerUser(dict: decoded)
@@ -1573,7 +1573,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                 // use dictFromJSON
             }
         } catch {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
         //        APIManager.getSharedAPIManager().registerUser(dict: dict)
     }
@@ -2157,7 +2157,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             
         } catch let error as NSError
         {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
         
         
@@ -2190,7 +2190,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             
         } catch let error as NSError
         {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
         
         
@@ -2288,7 +2288,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
         let height = userImage?.size.height
 
-        print("width = \(width)" + "height = \(height)")
+       // print("width = \(width)" + "height = \(height)")
 //        UIImage *imageToDisplay =
 //            [UIImage imageWithCGImage:[originalImage CGImage]
 //                scale:[originalImage scale]
@@ -2302,7 +2302,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
         let height1 = image.size.height
         
-        print("width1 = \(width1)" + "height = \(height1)")
+        //print("width1 = \(width1)" + "height = \(height1)")
         
         //imagedata    = UIImagePNGRepresentation(image) as Data!
         imagedata = UIImageJPEGRepresentation(image, 0.01)!
@@ -2311,7 +2311,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             let result = PHAsset.fetchAssets(withALAssetURLs: [imageURL], options: nil)
             let asset = result.firstObject
             imageName = asset?.value(forKey: "filename") as! String!
-            print(asset?.value(forKey: "filename") ?? "nil")
+            //print(asset?.value(forKey: "filename") ?? "nil")
             
         }
         circleImageView.image = userImage
@@ -2322,7 +2322,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
         let uniqueImageName = String(Date().millisecondsSince1970)
         
-        print(uniqueImageName)
+        //print(uniqueImageName)
 
         hideBarButtonItems(hide: "Save")
         
@@ -2858,8 +2858,8 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             let nsString = textField.text as NSString?
             let newString = nsString?.replacingCharacters(in: range, with: string)
            // let newString = newString1?.lowercased()
-            print("ol1dString = \(nsString)")
-            print("newString = \(newString)")
+           // print("ol1dString = \(nsString)")
+           // print("newString = \(newString)")
             
             if newString == ""
             {

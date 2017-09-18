@@ -114,11 +114,11 @@ class PopUpMessageViewController: UIViewController,UIWebViewDelegate
         self.webView.frame.size.height = webViewHeit
         
         self.insideView.frame.size.height = webViewHeit
-        print("webview h = \(webViewHeit)")
+//        print("webview h = \(webViewHeit)")
         
-        print("webview height = " + "\(self.webView.frame.size.height)")
+//        print("webview height = " + "\(self.webView.frame.size.height)")
         
-        print("insideview height = " + "\(self.insideView.frame.size.height)")
+//        print("insideview height = " + "\(self.insideView.frame.size.height)")
         
         let heightConstraint = NSLayoutConstraint(item: self.webView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: webViewHeit)
 

@@ -51,7 +51,7 @@ class CoreDataManager: NSObject
             try appDelegate.managedObjectContext.save()
             
         } catch let error as NSError {
-            print(error.localizedDescription)
+            //////print(error.localizedDescription)
         }
         
         return object
@@ -93,7 +93,7 @@ class CoreDataManager: NSObject
                 }
         } catch let error as NSError
         {
-            print(error.localizedDescription)
+            ////print(error.localizedDescription)
         }
 //        if let entities = managedObjectContext.fetch(request) as? [NSManagedObject]
 //        {
@@ -135,7 +135,7 @@ class CoreDataManager: NSObject
             }
         } catch let error as NSError
         {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
         return nil
     }
@@ -171,7 +171,7 @@ class CoreDataManager: NSObject
             }
         } catch let error as NSError
         {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
         return nil
     }
@@ -197,7 +197,7 @@ class CoreDataManager: NSObject
             }
         } catch let error as NSError
         {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
         //        if let entities = managedObjectContext.fetch(request) as? [NSManagedObject]
         //        {
@@ -225,7 +225,7 @@ class CoreDataManager: NSObject
                 
             } catch let error as NSError
             {
-                print(error.localizedDescription)
+                //print(error.localizedDescription)
             }
             
             return true
@@ -255,7 +255,7 @@ class CoreDataManager: NSObject
         }
         catch let error as NSError
         {
-         print(error.localizedDescription)
+         //print(error.localizedDescription)
         }
             
         do
@@ -264,7 +264,7 @@ class CoreDataManager: NSObject
             
         } catch let error as NSError
         {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
 
     
@@ -297,7 +297,7 @@ class CoreDataManager: NSObject
             }
         } catch let error as NSError
         {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
         //        if let entities = managedObjectContext.fetch(request) as? [NSManagedObject]
         //        {
@@ -358,7 +358,7 @@ class CoreDataManager: NSObject
                 
             } catch let error as NSError
             {
-                print(error.localizedDescription)
+                //print(error.localizedDescription)
             }
             
             return true
@@ -407,7 +407,7 @@ class CoreDataManager: NSObject
         }
         catch let error as NSError
         {
-          print(error.localizedDescription)
+          //print(error.localizedDescription)
         }
         
         return false
@@ -442,7 +442,7 @@ class CoreDataManager: NSObject
         }
         catch let error as NSError
         {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
         return "0"
     }
@@ -501,7 +501,7 @@ class CoreDataManager: NSObject
         }
         catch let error as NSError
         {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
         return 0
     }
@@ -547,7 +547,7 @@ class CoreDataManager: NSObject
         }
         catch let error as NSError
         {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
         
         return true
@@ -581,7 +581,7 @@ class CoreDataManager: NSObject
         }
         catch let error as NSError
         {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
         
         return true
@@ -614,7 +614,7 @@ class CoreDataManager: NSObject
         }
         catch let error as NSError
         {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
         
     }
@@ -644,7 +644,7 @@ class CoreDataManager: NSObject
         }
         catch let error as NSError
         {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
         
         do
@@ -653,7 +653,7 @@ class CoreDataManager: NSObject
             
         } catch let error as NSError
         {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
         
         
@@ -686,7 +686,7 @@ class CoreDataManager: NSObject
         }
         catch let error as NSError
         {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
 
     }
@@ -715,7 +715,7 @@ class CoreDataManager: NSObject
             }
         } catch let error as NSError
         {
-            print(error.localizedDescription)
+            //print(error.localizedDescription)
         }
         //        if let entities = managedObjectContext.fetch(request) as? [NSManagedObject]
         //        {

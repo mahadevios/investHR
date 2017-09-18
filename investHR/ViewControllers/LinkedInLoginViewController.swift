@@ -37,7 +37,7 @@ class LinkedInLoginViewController: UIViewController,UIWebViewDelegate
 
             //let accessToken = dic["access_token"]
             
-            print(dataDictionary)
+//            print(dataDictionary)
             print(accessToken ?? "")
             
             UserDefaults.standard.set(expiresIn, forKey: Constant.LINKEDIN_ACCESS_TOKEN_EXPIRES_IN)
@@ -74,7 +74,7 @@ class LinkedInLoginViewController: UIViewController,UIWebViewDelegate
                             
                             let profileURLString = dataDictionary["publicProfileUrl"] as! String
                             
-                            print(profileURLString)
+//                            print(profileURLString)
                             
                             DispatchQueue.main.async
                                 {
@@ -83,7 +83,7 @@ class LinkedInLoginViewController: UIViewController,UIWebViewDelegate
                                     
                                     let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
                                     
-                                    print(currentRootVC)
+//                                    print(currentRootVC)
                                     
                                     let className = String(describing: type(of: currentRootVC))
                                     
@@ -106,7 +106,7 @@ class LinkedInLoginViewController: UIViewController,UIWebViewDelegate
                             
                         }
                         catch {
-                            print("Could not convert JSON data into a dictionary.")
+//                            print("Could not convert JSON data into a dictionary.")
                         }
                     }
                     else
@@ -116,10 +116,10 @@ class LinkedInLoginViewController: UIViewController,UIWebViewDelegate
                             
                             let profileURLString = dataDictionary["publicProfileUrl"] as! String
                             
-                            print(profileURLString)
+//                            print(profileURLString)
                         }
                         catch {
-                            print("Could not convert JSON data into a dictionary.")
+//                            print("Could not convert JSON data into a dictionary.")
                         }
                     }
                     
@@ -130,7 +130,7 @@ class LinkedInLoginViewController: UIViewController,UIWebViewDelegate
             }
         }
         catch {
-            print("Could not convert JSON data into a dictionary.")
+//            print("Could not convert JSON data into a dictionary.")
         }
     }
 
@@ -170,8 +170,8 @@ class LinkedInLoginViewController: UIViewController,UIWebViewDelegate
         authorizationURL += "state=\(state)&"
         authorizationURL += "scope=\(scope)"
         
-        print("1=",authorizationURL)
-        print("2=",authUrl)
+//        print("1=",authorizationURL)
+//        print("2=",authUrl)
         
         //        let authUrl = "https://www.linkedin.com/oauth/v2/authorization?response_type=code&redirect_uri=http%3A%2F%2Fwww.example.com%2Fauth%2Flinkedin&state=987654321&scope=r_basicprofile&client_id=F27W4sBvOjnfRKXZNGiL2V18uttDvQZu"
         //https://investhr.auth0.com/ios/com.xanadutec.investHR/callback
@@ -194,7 +194,7 @@ class LinkedInLoginViewController: UIViewController,UIWebViewDelegate
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool
     {
         let url = request.url!
-        print(url)
+//        print(url)
         
         if url.host == "www.example.com"
         {
@@ -350,7 +350,7 @@ class LinkedInLoginViewController: UIViewController,UIWebViewDelegate
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error)
     {
-        print(error)
+//        print(error)
     }
     
 

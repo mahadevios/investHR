@@ -295,7 +295,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         
         let currentRootVC = (appDelegate.window?.rootViewController)! as UIViewController
         
-        print(currentRootVC)
+//        print(currentRootVC)
         
         let className = String(describing: type(of: currentRootVC))
         
@@ -351,7 +351,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             
         } catch let error as NSError
         {
-            print(error.localizedDescription)
+//            print(error.localizedDescription)
         }
 
         
@@ -377,7 +377,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             
         } catch let error as NSError
         {
-            print(error.localizedDescription)
+//            print(error.localizedDescription)
         }
 
     }
@@ -542,7 +542,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             return
         }
         
-        print(visaStatus)
+//        print(visaStatus)
         
         
         
@@ -555,7 +555,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             
             let decoded = try JSONSerialization.jsonObject(with: jsonData, options: [])
             
-            print(decoded)
+//            print(decoded)
             // here "decoded" is of type `Any`, decoded from JSON data
             
             //            if AppPreferences.sharedPreferences().isReachable
@@ -575,7 +575,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             hud.detailsLabel.text = "Please wait"
            
         } catch {
-            print(error.localizedDescription)
+//            print(error.localizedDescription)
         }
 
         
@@ -691,14 +691,14 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         {
             //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
             
-            print("Landscape")
+//            print("Landscape")
         }
         
         if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
         {
             //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
             
-            print("Portrait")
+//            print("Portrait")
         }
     }
 
@@ -1061,8 +1061,8 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             let nsString = textField.text as NSString?
             let newString = nsString?.replacingCharacters(in: range, with: string)
             // let newString = newString1?.lowercased()
-            print("ol1dString = \(nsString)")
-            print("newString = \(newString)")
+//            print("ol1dString = \(nsString)")
+//            print("newString = \(newString)")
             
             if newString == ""
             {

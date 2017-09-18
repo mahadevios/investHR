@@ -168,7 +168,7 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
             
             self.tableView.reloadData()
             
-            print("resultArray = " + "\(resultArray)")
+//            print("resultArray = " + "\(resultArray)")
         }
         
         
@@ -389,7 +389,7 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
             
         } catch let error as NSError
         {
-            print(error.localizedDescription)
+//            print(error.localizedDescription)
         }
         
         

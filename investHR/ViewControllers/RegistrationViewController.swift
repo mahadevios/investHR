@@ -237,7 +237,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
             let result = PHAsset.fetchAssets(withALAssetURLs: [imageURL], options: nil)
             let asset = result.firstObject
             imageName = asset?.value(forKey: "filename") as! String!
-            print(asset?.value(forKey: "filename") ?? "nil")
+//            print(asset?.value(forKey: "filename") ?? "nil")
             
         }
         circleImageView.image = nil

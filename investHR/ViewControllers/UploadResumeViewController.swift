@@ -42,7 +42,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
 //            }
 //        }
 
-        print(url.pathExtension)
+//        print(url.pathExtension)
         
         let alertController = UIAlertController(title: "Upload File", message: "Are you sure to upload this file?", preferredStyle: UIAlertControllerStyle.alert)
         
@@ -379,7 +379,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?)
     {
-        print(error?.localizedDescription)
+//        print(error?.localizedDescription)
     }
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL)
@@ -425,7 +425,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         }
         
         
-        print(location)
+//        print(location)
     }
 
     func deleteButtonCLicked(sender: subclassedUIButton)

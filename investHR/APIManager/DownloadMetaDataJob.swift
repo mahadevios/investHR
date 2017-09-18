@@ -94,8 +94,8 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
             
             //request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             
-            print(postData ?? "nil")
-            print(request.httpBody ?? "nil")
+            //print(postData ?? "nil")
+            //print(request.httpBody ?? "nil")
 
             //request.addValue("application/x-www-form-urlencoded;", forHTTPHeaderField: "Content-Type")
         }
@@ -104,7 +104,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         
         let urlConnection = NSURLConnection.init(request: request as URLRequest, delegate: self)
         
-        print(urlConnection ?? "urlConnection = nil")
+        //print(urlConnection ?? "urlConnection = nil")
 
         //let url = NSURL.init(string: webservicePath.addingPercentEncoding(withAllowedCharacters: CharacterSet)
         
@@ -114,7 +114,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
     {
         let urlConnection = NSURLConnection.init(request: request as URLRequest, delegate: self)
         
-        print(urlConnection ?? "urlConnection = nil")
+        //print(urlConnection ?? "urlConnection = nil")
 
     }
     
@@ -1010,7 +1010,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         catch let error as NSError
         {
             UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
-            print("in catch block" + error.localizedDescription)
+            //print("in catch block" + error.localizedDescription)
            // AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "Something went wrong!, please try again", withCancelText: "Ok")
 
         }
@@ -1067,7 +1067,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
     }
     func connection(_ connection: NSURLConnection, didFailWithError error: Error)
     {
-        print(error)
+       // print(error)
         if self.downLoadEntityJobName == Constant.NEW_USER_LOGIN_API
         {
            
@@ -1119,7 +1119,7 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
         
         statusCode = httpResponse.statusCode
         
-        print(statusCode)
+        //print(statusCode)
         
     }
     
