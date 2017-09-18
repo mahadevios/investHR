@@ -628,6 +628,8 @@ class APIManager: NSObject
     {
         if AppPreferences.sharedPreferences().isReachable
         {
+            //AppPreferences.sharedPreferences().showHudWith(title: "Loading Messages", detailText: "Please wait..")
+
             let params = ["username=\(username)","password=\(password)","linkedinId=\(linkedinId)"]
             
             let dic = [Constant.REQUEST_PARAMETER:params]
@@ -639,6 +641,8 @@ class APIManager: NSObject
         }
         else
         {
+            AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
             AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection", withCancelText: "Ok")
         }
         
@@ -682,6 +686,8 @@ class APIManager: NSObject
         }
         else
         {
+            AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
             AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
@@ -704,6 +710,8 @@ class APIManager: NSObject
         }
         else
         {
+            AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
             AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
@@ -726,6 +734,8 @@ class APIManager: NSObject
         }
         else
         {
+            AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
             AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
@@ -748,6 +758,8 @@ class APIManager: NSObject
         }
         else
         {
+            AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
             AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
@@ -770,6 +782,8 @@ class APIManager: NSObject
         }
         else
         {
+            AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
             AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
@@ -792,6 +806,8 @@ class APIManager: NSObject
         }
         else
         {
+            AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
+
             AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         

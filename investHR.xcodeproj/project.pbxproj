@@ -31,7 +31,6 @@
 		842BAFCC1EF2A368005327B0 /* Roles+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842BAFCA1EF2A368005327B0 /* Roles+CoreDataClass.swift */; };
 		842BAFCD1EF2A368005327B0 /* Roles+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842BAFCB1EF2A368005327B0 /* Roles+CoreDataProperties.swift */; };
 		842DFA541F161190001782F4 /* investHR.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 842DFA511F161190001782F4 /* investHR.sqlite */; };
-		8431B5C21EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8431B5C01EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld */; };
 		843425C41EE7D80500282419 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843425C31EE7D80400282419 /* UserNotifications.framework */; };
 		8439DFD71F038C5400F21C79 /* PlayVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439DFD61F038C5400F21C79 /* PlayVideoViewController.swift */; };
 		8439E04E1EC5F3C000FC2A12 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */; };
@@ -136,7 +135,6 @@
 		842BAFCA1EF2A368005327B0 /* Roles+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Roles+CoreDataClass.swift"; sourceTree = "<group>"; };
 		842BAFCB1EF2A368005327B0 /* Roles+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Roles+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		842DFA511F161190001782F4 /* investHR.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = investHR.sqlite; sourceTree = "<group>"; };
-		8431B5C11EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataDemo.xcdatamodel; sourceTree = "<group>"; };
 		843425C31EE7D80400282419 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		8439DFD61F038C5400F21C79 /* PlayVideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayVideoViewController.swift; sourceTree = "<group>"; };
 		8439E04D1EC5F3C000FC2A12 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -288,7 +286,6 @@
 		8431B5BF1EEFE28F0015C7E1 /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				8431B5C01EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld */,
 				84AD18371EF000140049675A /* investHR.xcdatamodeld */,
 			);
 			path = Database;
@@ -802,7 +799,6 @@
 				8424ED1E1EF14C6000E68B3D /* TextField.swift in Sources */,
 				8424ED201EF14C8800E68B3D /* SearchTextField.swift in Sources */,
 				841492701EF00639007133D0 /* VertcalDomains+CoreDataClass.swift in Sources */,
-				8431B5C21EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld in Sources */,
 				84DAD4111ED822200008BB09 /* JobsViewController.swift in Sources */,
 				842BAFC91EF2A27C005327B0 /* HorizontalDomains+CoreDataProperties.swift in Sources */,
 				8414926D1EF0060D007133D0 /* User+CoreDataProperties.swift in Sources */,
@@ -1140,16 +1136,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		8431B5C01EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				8431B5C11EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodel */,
-			);
-			currentVersion = 8431B5C11EEFE2A80015C7E1 /* CoreDataDemo.xcdatamodel */;
-			path = CoreDataDemo.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
 		84AD18371EF000140049675A /* investHR.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (

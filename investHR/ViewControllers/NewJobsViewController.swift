@@ -515,39 +515,56 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
     }
     func saveJobButtonClicked(_ sender: subclassedUIButton)
     {
-        AppPreferences.sharedPreferences().showHudWith(title: "Saving job..", detailText: "Please wait")
-
-        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-        
-        if username != nil && password != nil
+        if AppPreferences.sharedPreferences().isReachable
         {
-            APIManager.getSharedAPIManager().saveJob(username: username!, password: password!, linkedinId: "", jobId: String(describing: sender.jobId!))
-        }
-        else
+
+            AppPreferences.sharedPreferences().showHudWith(title: "Saving job..", detailText: "Please wait")
+
+            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+            if username != nil && password != nil
+            {
+                APIManager.getSharedAPIManager().saveJob(username: username!, password: password!, linkedinId: "", jobId: String(describing: sender.jobId!))
+            }
+            else
             if linkedInId != nil
             {
                 APIManager.getSharedAPIManager().saveJob(username: "", password: "", linkedinId: linkedInId!, jobId: String(describing: sender.jobId!))
             }
         
+        }
+        else
+        {
+        AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+        }
+    
     }
     func applyJobButtonClicked(_ sender: subclassedUIButton)
     {
-        AppPreferences.sharedPreferences().showHudWith(title: "Applying for job..", detailText: "Please wait")
-
-        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-        
-        if username != nil && password != nil
+        if AppPreferences.sharedPreferences().isReachable
         {
-            APIManager.getSharedAPIManager().applyJob(username: username!, password: password!, linkedinId: "", jobId: String(describing: sender.jobId!))
+            AppPreferences.sharedPreferences().showHudWith(title: "Applying for job..", detailText: "Please wait")
+            
+            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            
+            if username != nil && password != nil
+            {
+                APIManager.getSharedAPIManager().applyJob(username: username!, password: password!, linkedinId: "", jobId: String(describing: sender.jobId!))
+            }
+            else
+                if linkedInId != nil
+                {
+                    APIManager.getSharedAPIManager().applyJob(username: "", password: "", linkedinId: linkedInId!, jobId: String(describing: sender.jobId!))
+            }
+
         }
         else
-            if linkedInId != nil
-            {
-                APIManager.getSharedAPIManager().applyJob(username: "", password: "", linkedinId: linkedInId!, jobId: String(describing: sender.jobId!))
+        {
+          AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
         //self.collectionView.reloadData()

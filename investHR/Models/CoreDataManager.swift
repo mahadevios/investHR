@@ -32,6 +32,36 @@ class CoreDataManager: NSObject
 //        return sharedManager;
 //    }
     
+    func checkUserAlreadyExistWithUserId(userId:String?) -> Bool
+    {
+        var predicate:NSPredicate!
+        
+        predicate = NSPredicate(format: "userId == %@", argumentArray: [userId!])
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+        
+        request.predicate = predicate
+        
+        
+        do
+        {
+            let count = try appDelegate.managedObjectContext.count(for: request)
+            
+            if count == 0 {
+                return false
+            }
+        }
+        catch let error as NSError
+        {
+            //print(error.localizedDescription)
+        }
+        
+        return true
+    }
+    
+
     func save(entity: String, _ attributes: [String: Any]) -> NSManagedObject?
     {
         //let sharedManager = CoreDataManager.sharedManager // to initialize managedObjectContext
@@ -95,13 +125,6 @@ class CoreDataManager: NSObject
         {
             ////print(error.localizedDescription)
         }
-//        if let entities = managedObjectContext.fetch(request) as? [NSManagedObject]
-//        {
-//            if entities.count > 0
-//            {
-//                return entities
-//            }
-//        }
         return nil
     }
     
@@ -185,7 +208,7 @@ class CoreDataManager: NSObject
         }
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
         
-        print(stateId)
+        //print(stateId)
         fetchRequest.predicate = NSPredicate(format: "stateId == %d", stateId)
 
         do {
@@ -199,13 +222,7 @@ class CoreDataManager: NSObject
         {
             //print(error.localizedDescription)
         }
-        //        if let entities = managedObjectContext.fetch(request) as? [NSManagedObject]
-        //        {
-        //            if entities.count > 0
-        //            {
-        //                return entities
-        //            }
-        //        }
+        
         return nil
     }
     func delete(entity: String, index: Int) -> Bool
@@ -280,14 +297,17 @@ class CoreDataManager: NSObject
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
         
         
-        
-            //let userId = UserDefaults.standard.object(forKey: Constant.USERID) as! String
-              //  let date = Date()
-        //
-                //let dateToDelete = date.addingTimeInterval(-2*24*60*60)
-        
+        if entity == "CommonNotification"
+        {
             fetchRequest.predicate = NSPredicate(format: "notificationDate1 < %@", date as CVarArg)
-            
+
+        }
+        else
+        {
+            fetchRequest.predicate = NSPredicate(format: "notificationDate < %@", date as CVarArg)
+
+        }
+        
             do {
             let manageObjects = try appDelegate.managedObjectContext.fetch(fetchRequest)
             
@@ -299,70 +319,83 @@ class CoreDataManager: NSObject
         {
             //print(error.localizedDescription)
         }
-        //        if let entities = managedObjectContext.fetch(request) as? [NSManagedObject]
-        //        {
-        //            if entities.count > 0
-        //            {
-        //                return entities
-        //            }
-        //        }
+        
         return nil
     }
 
-    func deleteOldNotifications(entity: String) -> Bool
+    func deleteOldNotifications(entity: String!) -> Bool
     {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        
-//        let date = Date()
-//        
-//        let dateToDelete = date.addingTimeInterval(-10*24*60*60)
         
         
         
         var dayComponent = DateComponents()
-        dayComponent.day = 0
         
+        dayComponent.day = -9
+        //dayComponent.day = 2
+
         let theCalendar = Calendar.current
-        //    NSDate *nextDate = [theCalendar dateByAddingComponents:dayComponent toDate:[NSDate date] options:0];
-//        NSDate *nextDate = [theCalendar dateByAddingComponents:dayComponent toDate:[NSDate date] options:0];
+
         let formatter = DateFormatter()
         
         let nextDate = theCalendar.date(byAdding: dayComponent, to: Date())
         
-        //NSLog(@"nextDate: %@ ...", nextDate);
-        // NSDate *purgeDataDate = [[NSDate date] dateByAddingTimeInterval:-5*24*60*60];
-        
-        
-        formatter.dateFormat = "MM-dd-yyyy"
-        
+        formatter.dateFormat = "MM-dd-yyyy hh:mm:ss"
+
         let newDate = formatter.string(from: nextDate!)
         
-        let notifObj = getNotiRecordsTodelete(entity: "CommonNotification", date:newDate) as? [CommonNotification]
-
-        //NSString *query3=[NSString stringWithFormat:@"Select RecordItemName,TransferDate from CubeData Where TransferStatus = 1 and DeleteStatus = 0 and TransferDate < '%@'",newDate];
-
-        if notifObj != nil
+        if entity == "CommonNotification"
         {
-            //appDelegate.managedObjectContext.delete(data![index])
-            
-            //data!.remove(at: index)
-            
-            for obj in notifObj!
-            {
-                appDelegate.managedObjectContext.delete(obj)
-            }
-            do
+            let notifObj = getNotiRecordsTodelete(entity: entity, date:newDate) as? [CommonNotification]
+
+            if notifObj != nil
             {
                 
-                try appDelegate.managedObjectContext.save()
+                for obj in notifObj!
+                {
+                    appDelegate.managedObjectContext.delete(obj)
+                }
+                do
+                {
+                    
+                    try appDelegate.managedObjectContext.save()
+                    
+                } catch let error as NSError
+                {
+                    //print(error.localizedDescription)
+                }
                 
-            } catch let error as NSError
-            {
-                //print(error.localizedDescription)
+                return true
             }
-            
-            return true
         }
+        else
+        {
+            let notifObj = getNotiRecordsTodelete(entity: entity, date:newDate) as? [ZSpecialNotification]
+
+            if notifObj != nil
+            {
+                
+                for obj in notifObj!
+                {
+                    appDelegate.managedObjectContext.delete(obj)
+                }
+                do
+                {
+                    
+                    try appDelegate.managedObjectContext.save()
+                    
+                } catch let error as NSError
+                {
+                    //print(error.localizedDescription)
+                }
+                
+                return true
+            }
+        }
+
+      
+
+        
         
         return false
     }
@@ -422,8 +455,6 @@ class CoreDataManager: NSObject
         
         fetchRequest.fetchLimit = 1
         
-        //let predicate = NSPredicate(format: "userId == %@", argumentArray: [aToken])
-
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "userId", ascending: false)]
         
         do
@@ -463,25 +494,17 @@ class CoreDataManager: NSObject
             if let emailId = email
             {
                 predicate = NSPredicate(format: "email == %@", argumentArray: [emailId])
+                
                 fetchRequest.predicate = predicate
 
-                //            predicate = NSPredicate(format: "email == %@ OR linkedInId == %@", argumentArray: [email,linkledInId])
             }
             else
                 if let linkledInId = linkledInId
                 {
                     predicate = NSPredicate(format: "linkledInId == %@", argumentArray: [linkledInId])
                     fetchRequest.predicate = predicate
+                }
 
-                    //            predicate = NSPredicate(format: "email == %@ OR linkedInId == %@", argumentArray: [email,linkledInId])
-        }
-
-        
-        
-        //fetchRequest.fetchLimit = 1
-        
-        //let predicate = NSPredicate(format: "userId == %@", argumentArray: [aToken])
-        
         
         do
         {
@@ -491,7 +514,6 @@ class CoreDataManager: NSObject
             
             if manageObjects.count > 0
             {
-               // return (manageObjects as? [NSManagedObject])!
                 let user = manageObjects[0] as! User
                 
                 return Int(user.userId!)!
@@ -506,87 +528,6 @@ class CoreDataManager: NSObject
         return 0
     }
     
-    func checkUserAlreadyExistWithEmail(email:String?, linkledInId:String?) -> Bool
-    {
-        var predicate:NSPredicate!
-        if let emailId = email, let linkedIn = linkledInId
-        {
-            predicate = NSPredicate(format: "emailAddress == %@ AND linkedInId == %@", argumentArray: [emailId,linkedIn])
-        }
-        else
-        if let emailId = email
-        {
-            predicate = NSPredicate(format: "email == %@", argumentArray: [emailId])
-
-//            predicate = NSPredicate(format: "email == %@ OR linkedInId == %@", argumentArray: [email,linkledInId])
-        }
-        else
-        if let linkledInId = linkledInId
-        {
-            predicate = NSPredicate(format: "linkledInId == %@", argumentArray: [linkledInId])
-                
-                //            predicate = NSPredicate(format: "email == %@ OR linkedInId == %@", argumentArray: [email,linkledInId])
-        }
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
-        
-        
-        //let predicate1 = NSPredicate(format: "linkedInId == %@", argumentArray: [linkledInId])
-
-        request.predicate = predicate
-        
-        
-        do
-        {
-            let count = try appDelegate.managedObjectContext.count(for: request)
-            
-            if count == 0 {
-                return false
-            }
-        }
-        catch let error as NSError
-        {
-            //print(error.localizedDescription)
-        }
-        
-        return true
-    }
-    
-    func checkUserAlreadyExistWithUserId(userId:String?) -> Bool
-    {
-        var predicate:NSPredicate!
-        
-        predicate = NSPredicate(format: "userId == %@", argumentArray: [userId!])
-                    
-                    //            predicate = NSPredicate(format: "email == %@ OR linkedInId == %@", argumentArray: [email,linkledInId])
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
-        
-        
-        //let predicate1 = NSPredicate(format: "linkedInId == %@", argumentArray: [linkledInId])
-        
-        request.predicate = predicate
-        
-        
-        do
-        {
-            let count = try appDelegate.managedObjectContext.count(for: request)
-            
-            if count == 0 {
-                return false
-            }
-        }
-        catch let error as NSError
-        {
-            //print(error.localizedDescription)
-        }
-        
-        return true
-    }
-
     func updateUser(pictureUrl: String)
     {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -619,45 +560,6 @@ class CoreDataManager: NSObject
         
     }
     
-    func deleteUserVideos(entity:String, videoName:String)
-    {
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
-        
-        fetchRequest.entity = NSEntityDescription.entity(forEntityName: entity, in: appDelegate.managedObjectContext)
-
-        let predicate = NSPredicate(format: "videoName == %@", argumentArray: [videoName])
-        
-        fetchRequest.predicate = predicate
-
-        do
-        {
-            let results = try appDelegate.managedObjectContext.fetch(fetchRequest) as? [NSManagedObject]
-            
-            for result in results!
-            {
-                appDelegate.managedObjectContext.delete(result)
-            }
-            
-        }
-        catch let error as NSError
-        {
-            //print(error.localizedDescription)
-        }
-        
-        do
-        {
-            try appDelegate.managedObjectContext.save()
-            
-        } catch let error as NSError
-        {
-            //print(error.localizedDescription)
-        }
-        
-        
-    }
     func updateNotificationJob(entityName:String, jobId:Int, subject:String, notificationDate:String!, userId:String)
     {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -691,7 +593,46 @@ class CoreDataManager: NSObject
 
     }
 
-    
+    func deleteUserVideos(entity:String, videoName:String)
+    {
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        
+        fetchRequest.entity = NSEntityDescription.entity(forEntityName: entity, in: appDelegate.managedObjectContext)
+        
+        let predicate = NSPredicate(format: "videoName == %@", argumentArray: [videoName])
+        
+        fetchRequest.predicate = predicate
+        
+        do
+        {
+            let results = try appDelegate.managedObjectContext.fetch(fetchRequest) as? [NSManagedObject]
+            
+            for result in results!
+            {
+                appDelegate.managedObjectContext.delete(result)
+            }
+            
+        }
+        catch let error as NSError
+        {
+            //print(error.localizedDescription)
+        }
+        
+        do
+        {
+            try appDelegate.managedObjectContext.save()
+            
+        } catch let error as NSError
+        {
+            //print(error.localizedDescription)
+        }
+        
+        
+    }
+
     func getRecordedVideoNames(entity: String, userId: String) -> [NSManagedObject]?
     {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
@@ -717,14 +658,74 @@ class CoreDataManager: NSObject
         {
             //print(error.localizedDescription)
         }
-        //        if let entities = managedObjectContext.fetch(request) as? [NSManagedObject]
-        //        {
-        //            if entities.count > 0
-        //            {
-        //                return entities
-        //            }
-        //        }
-        return nil
+                return nil
     }
+
+    func checkUserAlreadyExistWithEmail(email:String?, linkledInId:String?) -> Bool
+    {
+        var predicate:NSPredicate!
+        if let emailId = email, let linkedIn = linkledInId
+        {
+            predicate = NSPredicate(format: "emailAddress == %@ AND linkedInId == %@", argumentArray: [emailId,linkedIn])
+        }
+        else
+            if let emailId = email
+            {
+                predicate = NSPredicate(format: "email == %@", argumentArray: [emailId])
+                
+            }
+            else
+                if let linkledInId = linkledInId
+                {
+                    predicate = NSPredicate(format: "linkledInId == %@", argumentArray: [linkledInId])
+                    
+        }
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+        
+        request.predicate = predicate
+        
+        
+        do
+        {
+            let count = try appDelegate.managedObjectContext.count(for: request)
+            
+            if count == 0 {
+                return false
+            }
+        }
+        catch let error as NSError
+        {
+            //print(error.localizedDescription)
+        }
+        
+        return true
+    }
+    
+    
+    func getUnreadNotiCount(entity: String) -> Int
+    {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            
+            
+            return 0
+        }
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        
+        fetchRequest.predicate = NSPredicate(format: "readStatus == %d", 0)
+        
+        do {
+            let manageObjects = try appDelegate.managedObjectContext.fetch(fetchRequest)
+            
+            return manageObjects.count
+        } catch let error as NSError
+        {
+            //print(error.localizedDescription)
+        }
+        
+        return 0
+    }
+
 
 }

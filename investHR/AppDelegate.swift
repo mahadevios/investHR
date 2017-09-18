@@ -148,7 +148,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate
        // let obj = CoreDataManager.sharedManager
         
         CoreDataManager.getSharedCoreDataManager().deleteOldNotifications(entity: "CommonNotification")
-        
+        CoreDataManager.getSharedCoreDataManager().deleteOldNotifications(entity: "ZSpecialNotification")
+
         return true
     }
     
@@ -282,8 +283,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                         self.isMassNotification = true
                         
                         
-                            let date = Date().getLocalDateWithouTimeInString()
-                        
+                            //let date = Date().getLocalDateWithouTimeInString()
+                            let date = Date().getLocalDateTimeInString()
+
                         
                             let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
                         
@@ -296,7 +298,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                             if !jobIdExist
                             {
 
-                             CoreDataManager.getSharedCoreDataManager().save(entity: "ZSpecialNotification", ["NotificationId1":notificationId,"subject":body,"notificationDate":date, "userId":userId!, "notificationType":Constant.Notification_Type_Job])
+                             CoreDataManager.getSharedCoreDataManager().save(entity: "ZSpecialNotification", ["NotificationId1":notificationId,"subject":body,"notificationDate":date, "userId":userId!, "notificationType":Constant.Notification_Type_Job,"readStatus":0])
                                 
                               NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil, userInfo: nil)
                             }
@@ -313,13 +315,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                         
                         let jobIdExist = CoreDataManager.getSharedCoreDataManager().idExists(aToken: String(jobIDInt), entityName: "CommonNotification")
                         
-                        let date = Date().getLocalDateWithouTimeInString()
-                        
+                        //let date = Date().getLocalDateWithouTimeInString()
+                        let date = Date().getLocalDateTimeInString()
+
                         if !jobIdExist
                         {
                             let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
                             
-                            CoreDataManager.getSharedCoreDataManager().save(entity: "CommonNotification", ["jobId":jobIDInt,"subject":body,"notificationDate1":date, "userId":userId!, "notificationType":Constant.Notification_Type_Job])
+                            CoreDataManager.getSharedCoreDataManager().save(entity: "CommonNotification", ["jobId":jobIDInt,"subject":body,"notificationDate1":date, "userId":userId!, "notificationType":Constant.Notification_Type_Job,"readStatus":0])
                             
                             NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil, userInfo: nil)
                         }

@@ -114,9 +114,12 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
 
         self.menuTableView.reloadData()
         
-        
+        let commonNotiCount = CoreDataManager.getSharedCoreDataManager().getUnreadNotiCount(entity: "CommonNotification")
 
+        let specialNotiCount = CoreDataManager.getSharedCoreDataManager().getUnreadNotiCount(entity: "ZSpecialNotification")
         
+        print("count =  \(commonNotiCount+specialNotiCount)")
+
     }
     override func viewWillDisappear(_ animated: Bool)
     {

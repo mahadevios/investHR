@@ -1137,7 +1137,7 @@
                                                     <constraint firstAttribute="height" constant="1" id="gj4-n3-IOT"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Refer a friend to download the InvestHR App and enhance his/her career." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gJ2-xN-AzX">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Refer a friend to download the InvestHR App and enhance his/her career." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gJ2-xN-AzX">
                                                 <rect key="frame" x="93.666666666666686" y="298" width="298.66666666666663" height="36"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                 <nil key="textColor"/>
@@ -2414,8 +2414,8 @@
                                                         <constraint firstAttribute="height" constant="16" id="dOS-xG-aRP"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Messages" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gy4-SR-xrT">
-                                                    <rect key="frame" x="0.0" y="-1" width="224" height="44"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Messages" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gy4-SR-xrT">
+                                                    <rect key="frame" x="106.33333333333331" y="12" width="77.666666666666686" height="20.333333333333336"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.94121724370000004" green="0.5383221507" blue="0.33621883390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -2471,16 +2471,22 @@
                                     <outlet property="delegate" destination="vih-ej-rG6" id="zPI-hJ-hKU"/>
                                 </connections>
                             </tableView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="BgZ-Dp-B2t">
+                                <rect key="frame" x="217.66666666666666" y="281" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="BgZ-Dp-B2t" firstAttribute="centerX" secondItem="Rkq-82-af0" secondAttribute="centerX" id="Hj2-JK-3c2"/>
                             <constraint firstItem="Rkq-82-af0" firstAttribute="top" secondItem="NLR-Ci-kCh" secondAttribute="bottom" constant="50" id="OOc-ql-9uI"/>
+                            <constraint firstItem="BgZ-Dp-B2t" firstAttribute="centerY" secondItem="Rkq-82-af0" secondAttribute="centerY" id="ght-uq-DTb"/>
                             <constraint firstItem="Rkq-82-af0" firstAttribute="height" secondItem="NNp-gH-kKm" secondAttribute="height" multiplier="0.6" id="gwa-Yk-jkW"/>
                             <constraint firstItem="Rkq-82-af0" firstAttribute="centerX" secondItem="NNp-gH-kKm" secondAttribute="centerX" multiplier="1.1" id="pxK-aZ-1fT"/>
                             <constraint firstItem="Rkq-82-af0" firstAttribute="width" secondItem="NNp-gH-kKm" secondAttribute="width" multiplier="0.7" id="qcc-6C-OCj"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="indicator" destination="BgZ-Dp-B2t" id="0XI-Xj-TX6"/>
                         <outlet property="tableView" destination="Rkq-82-af0" id="puk-n9-lyG"/>
                     </connections>
                 </viewController>

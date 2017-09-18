@@ -1039,7 +1039,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         // handle tap events
 //        print("You selected cell #\(indexPath.item)!")
         
-        
+    if AppPreferences.sharedPreferences().isReachable
+    {
         let jobDic = verticalJobListArray[indexPath.row] as! [String:AnyObject]
         let jobId = jobDic["jobid"] as! Int
 
@@ -1058,6 +1059,11 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         vc.jobId = String(jobId)
         self.present(vc, animated: true, completion: nil)
         
+    }
+    else
+    {
+    AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+    }
     
  //       self.loadMoreData()
 //        AppPreferences.sharedPreferences().showHudWith(title: "Loading job..", detailText: "Please wait")

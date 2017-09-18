@@ -12,8 +12,14 @@ class CustomNotificationViewController: UIViewController,UITableViewDelegate,UIT
 {
 
     @IBOutlet weak var tableView: UITableView!
+    
+    //var indicator = UIActivityIndicatorView()
+
+    @IBOutlet weak var indicator: UIActivityIndicatorView!
     @IBAction func backButtonClicked(_ sender: Any)
     {
+        NotificationCenter.default.removeObserver(self)
+        
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -22,11 +28,43 @@ class CustomNotificationViewController: UIViewController,UITableViewDelegate,UIT
         super.viewWillAppear(true)
         self.view.frame = CGRect(x: self.view.frame.width*0.2, y: self.view.frame.height*0.2, width: self.view.frame.width*0.6, height: self.view.frame.height*0.6)
         
+//        self.indicator = UIActivityIndicatorView(frame: CGRect(x: self.view.frame.width*0.5-40, y: self.view.frame.height*0.5-40, width: 40, height: 40))
+//        //self.indicator = UIActivityIndicatorView(frame: CGRect(x: 12, y: 12, width: 40, height: 40))
+//
+//        self.indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+//        self.view.addSubview(self.indicator)
+        self.indicator.startAnimating()
+//        self.indicator.backgroundColor = UIColor.white
+        
+        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+        if username != nil && password != nil
+        {
+            APIManager.getSharedAPIManager().getCustomMessages(username: username!, password: password!, linkedinId: "")
+        }
+        else
+            if linkedInId != nil
+            {
+                APIManager.getSharedAPIManager().getCustomMessages(username: "", password: "", linkedinId: linkedInId!)
+                
+        }
         self.tableView.backgroundView = nil
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool)
+    {
+        
+        
     }
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(checkCustomMessagesList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_CUSTOM_MESSAGES), object: nil)
+
 
         let tapToDismissNotif = UITapGestureRecognizer(target: self, action: #selector(tapped))
 
@@ -35,9 +73,98 @@ class CustomNotificationViewController: UIViewController,UITableViewDelegate,UIT
         tapToDismissNotif.delegate = self
         
         self.tableView.layer.cornerRadius = 4.0
+        
+//        if AppPreferences.sharedPreferences().gotMessages == false
+//        {
+        
+        
+        
+        
+        
+        
+        
+//        }
+
         // Do any additional setup after loading the view.
     }
 
+    
+    func checkCustomMessagesList(dataDic:Notification)
+    {
+        guard let notiObj = dataDic.object as? [String:Any] else
+        {
+            return
+        }
+        
+        let messagesString = notiObj["NotificationMessage"] as! String
+        
+        if messagesString == "\("[ ]")" || messagesString == "null"
+        {
+            return
+        }
+        else
+        {
+            let messageData = messagesString.data(using: .utf8)
+            
+            do
+            {
+                AppPreferences.sharedPreferences().gotMessages = true
+                
+                let messagesArray = try JSONSerialization.jsonObject(with: messageData!, options: .allowFragments) as! [Any]
+                
+                //            print(messagesArray)
+                
+                AppPreferences.sharedPreferences().customMessagesArray.removeAll()
+                
+                for index in messagesArray
+                {
+                    var idMessageDic = [String:Any]()
+                    
+                    let messageDic = index as! [String:Any]
+                    
+                    guard let id = messageDic["jobId"] as? Int else
+                    {
+                        break
+                    }
+                    idMessageDic["jobId"]  = id
+                    
+                    guard let message = messageDic["message"] as? String else
+                    {
+                        break
+                    }
+                    idMessageDic["message"]  = message
+                    
+                    
+                    
+                    
+                    AppPreferences.sharedPreferences().customMessagesArray.append(idMessageDic)
+                    
+                }
+                DispatchQueue.main.async
+                    {
+                self.indicator.stopAnimating()
+                self.indicator.hidesWhenStopped = true
+                }
+                self.tableView.reloadData()
+
+                
+                
+            } catch let error as NSError
+            {
+                
+            }
+        }
+        
+    }
+
+//    func activityIndicator()
+//    {
+//        indicator = UIActivityIndicatorView(frame: CGRect(x: 40, y: 40, width: 40, height: 40))
+//        indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+//        indicator.center = self.view.center
+//        self.tableView.addSubview(indicator)
+//    }
+    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool
     {
         if touch.view == self.view

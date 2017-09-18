@@ -106,90 +106,90 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
 
     }
     
-    func checkCustomMessagesList(dataDic:Notification)
-    {
-        guard let notiObj = dataDic.object as? [String:Any] else
-        {
-            return
-        }
-        
-        let messagesString = notiObj["NotificationMessage"] as! String
-        
-        if messagesString == "\("[ ]")" || messagesString == "null"
-        {
-            return
-        }
-        else
-        {
-        let messageData = messagesString.data(using: .utf8)
-        
-        do
-        {
-            AppPreferences.sharedPreferences().gotMessages = true
-            
-           let messagesArray = try JSONSerialization.jsonObject(with: messageData!, options: .allowFragments) as! [Any]
-            
-//            print(messagesArray)
-            
-            AppPreferences.sharedPreferences().customMessagesArray.removeAll()
-            
-            for index in messagesArray
-            {
-                var idMessageDic = [String:Any]()
-
-                let messageDic = index as! [String:Any]
-
-                guard let id = messageDic["jobId"] as? Int else
-                {
-                  break
-                }
-                idMessageDic["jobId"]  = id
-                
-                guard let message = messageDic["message"] as? String else
-                {
-                  break
-                }
-                idMessageDic["message"]  = message
-
-                
-
-                
-                AppPreferences.sharedPreferences().customMessagesArray.append(idMessageDic)
-                
-            }
-            
-
-        } catch let error as NSError
-        {
-            
-        }
-        }
-        
-    }
+//    func checkCustomMessagesList(dataDic:Notification)
+//    {
+//        guard let notiObj = dataDic.object as? [String:Any] else
+//        {
+//            return
+//        }
+//        
+//        let messagesString = notiObj["NotificationMessage"] as! String
+//        
+//        if messagesString == "\("[ ]")" || messagesString == "null"
+//        {
+//            return
+//        }
+//        else
+//        {
+//        let messageData = messagesString.data(using: .utf8)
+//        
+//        do
+//        {
+//            AppPreferences.sharedPreferences().gotMessages = true
+//            
+//           let messagesArray = try JSONSerialization.jsonObject(with: messageData!, options: .allowFragments) as! [Any]
+//            
+////            print(messagesArray)
+//            
+//            AppPreferences.sharedPreferences().customMessagesArray.removeAll()
+//            
+//            for index in messagesArray
+//            {
+//                var idMessageDic = [String:Any]()
+//
+//                let messageDic = index as! [String:Any]
+//
+//                guard let id = messageDic["jobId"] as? Int else
+//                {
+//                  break
+//                }
+//                idMessageDic["jobId"]  = id
+//                
+//                guard let message = messageDic["message"] as? String else
+//                {
+//                  break
+//                }
+//                idMessageDic["message"]  = message
+//
+//                
+//
+//                
+//                AppPreferences.sharedPreferences().customMessagesArray.append(idMessageDic)
+//                
+//            }
+//            
+//
+//        } catch let error as NSError
+//        {
+//            
+//        }
+//        }
+//        
+//    }
     
     override func viewWillAppear(_ animated: Bool)
     {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
-        NotificationCenter.default.addObserver(self, selector: #selector(checkCustomMessagesList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_CUSTOM_MESSAGES), object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(checkCustomMessagesList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_CUSTOM_MESSAGES), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(dismissPopUp), name: NSNotification.Name(Constant.NOTIFICATION_DISMISS_SUGGESTION_POPUP), object: nil)
         
-        if AppPreferences.sharedPreferences().gotMessages == false
-        {
-            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-            
-            if username != nil && password != nil
-            {
-                APIManager.getSharedAPIManager().getCustomMessages(username: username!, password: password!, linkedinId: "")
-            }
-            else
-                if linkedInId != nil
-                {
-                    APIManager.getSharedAPIManager().getCustomMessages(username: "", password: "", linkedinId: linkedInId!)
-                    
-            }
-        }
+//        if AppPreferences.sharedPreferences().gotMessages == false
+//        {
+//            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+//            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+//            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+//            
+//            if username != nil && password != nil
+//            {
+//                APIManager.getSharedAPIManager().getCustomMessages(username: username!, password: password!, linkedinId: "")
+//            }
+//            else
+//                if linkedInId != nil
+//                {
+//                    APIManager.getSharedAPIManager().getCustomMessages(username: "", password: "", linkedinId: linkedInId!)
+//                    
+//            }
+//        }
        
         
         

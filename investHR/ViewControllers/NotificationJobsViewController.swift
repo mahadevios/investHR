@@ -494,41 +494,48 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
     {
         // handle tap events
         
-        
-        if notificationSegment.selectedSegmentIndex == 0
+        if AppPreferences.sharedPreferences().isReachable
         {
-            let notificationObj = jobNotificationObjectsArray?[indexPath.row]
-            let jobId = notificationObj?.jobId
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "NewJobsViewController") as! NewJobsViewController
-            if savedJobsIdsArray.contains(jobId!)
+            if notificationSegment.selectedSegmentIndex == 0
             {
-                vc.saved = true
+                let notificationObj = jobNotificationObjectsArray?[indexPath.row]
+                let jobId = notificationObj?.jobId
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "NewJobsViewController") as! NewJobsViewController
+                if savedJobsIdsArray.contains(jobId!)
+                {
+                    vc.saved = true
+                }
+                if appliedJobsIdsArray.contains(jobId!)
+                {
+                    vc.applied = true
+                }
+                vc.verticalId = String(0)
+                vc.domainType = "vertical"
+                let jobId1 = String(describing: jobId!)
+                vc.jobId = jobId1
+                self.present(vc, animated: true, completion: nil)
+                
             }
-            if appliedJobsIdsArray.contains(jobId!)
+            else
             {
-                vc.applied = true
+                
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "MassNotificationViewController") as! MassNotificationViewController
+                
+                let notificationObj = specialNotificationObjectsArray?[indexPath.row]
+                
+                let notificationId = notificationObj?.notificationId1
+                
+                vc.notificationId = String(describing:notificationId!)
+                
+                self.present(vc, animated: true, completion: nil)
+                
+                
             }
-            vc.verticalId = String(0)
-            vc.domainType = "vertical"
-            let jobId1 = String(describing: jobId!)
-            vc.jobId = jobId1
-            self.present(vc, animated: true, completion: nil)
-  
+
         }
         else
         {
-            
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "MassNotificationViewController") as! MassNotificationViewController
-            
-            let notificationObj = specialNotificationObjectsArray?[indexPath.row]
-            
-            let notificationId = notificationObj?.notificationId1
-            
-            vc.notificationId = String(describing:notificationId!)
-            
-            self.present(vc, animated: true, completion: nil)
-
-
+          AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
         }
         
 //        print("You selected cell #\(indexPath.item)!")
