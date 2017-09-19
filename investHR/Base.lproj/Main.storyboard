@@ -2613,14 +2613,14 @@
                                                     <color key="textColor" red="0.50588235290000005" green="0.5450980392" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MPHASIS (a HP Company)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BqA-ud-mhu">
-                                                    <rect key="frame" x="18" y="28" width="105" height="23"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MPHASIS (a HP Company)" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BqA-ud-mhu">
+                                                    <rect key="frame" x="18" y="28" width="105" height="36"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.38823529411764707" green="0.49411764705882355" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" tag="103" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oVc-5n-Fvn" customClass="subclassedUIButton" customModule="investHR" customModuleProvider="target">
-                                                    <rect key="frame" x="97" y="29" width="60" height="25"/>
+                                                    <rect key="frame" x="97" y="35.666666666666664" width="60" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="60" id="C5d-vg-7px"/>
                                                         <constraint firstAttribute="height" constant="25" id="scF-Ur-4pZ"/>
@@ -3370,14 +3370,14 @@
                                                     <color key="textColor" red="0.50588235290000005" green="0.5450980392" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MPHASIS (a HP Company)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pft-cJ-Vxu">
-                                                    <rect key="frame" x="18" y="28" width="152.66666666666666" height="23"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MPHASIS (a HP Company)" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pft-cJ-Vxu">
+                                                    <rect key="frame" x="18" y="28" width="152.66666666666666" height="36"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.38823529410000002" green="0.4941176471" blue="0.54901960780000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" tag="102" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9j2-2A-Eho" customClass="subclassedUIButton" customModule="investHR" customModuleProvider="target">
-                                                    <rect key="frame" x="97" y="27" width="60" height="25"/>
+                                                    <rect key="frame" x="97" y="33.666666666666664" width="60" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="60" id="oYV-B9-2dm"/>
                                                         <constraint firstAttribute="height" constant="25" id="rby-dv-24v"/>
@@ -3390,14 +3390,14 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </button>
                                                 <button opaque="NO" tag="103" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JhL-wZ-uZw" customClass="subclassedUIButton" customModule="investHR" customModuleProvider="target">
-                                                    <rect key="frame" x="111" y="62" width="46" height="30"/>
+                                                    <rect key="frame" x="111" y="68.666666666666671" width="46" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="46" id="0Ny-WE-F0t"/>
                                                         <constraint firstAttribute="height" constant="30" id="qKO-JX-O0E"/>
                                                     </constraints>
                                                 </button>
                                                 <imageView userInteractionEnabled="NO" tag="104" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SavedUnselected" translatesAutoresizingMaskIntoConstraints="NO" id="GhW-bo-eEu">
-                                                    <rect key="frame" x="136" y="67" width="21" height="19"/>
+                                                    <rect key="frame" x="136" y="73.666666666666671" width="21" height="19"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="21" id="Ebb-8t-eAi"/>
                                                         <constraint firstAttribute="height" constant="19" id="kRF-N8-Oe5"/>

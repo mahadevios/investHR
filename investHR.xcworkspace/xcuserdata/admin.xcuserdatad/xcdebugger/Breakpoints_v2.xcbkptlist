@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "investHR/AppDelegate.swift"
-            timestampString = "527422767.943349"
+            timestampString = "527525489.024408"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "611"
-            endingLineNumber = "611"
+            startingLineNumber = "622"
+            endingLineNumber = "622"
             landmarkName = "dismissNotifFromScreen1()"
             landmarkType = "7">
          </BreakpointContent>
@@ -490,11 +490,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "investHR/ViewControllers/MenuViewViewController.swift"
-            timestampString = "527435012.423007"
+            timestampString = "527517584.979899"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "453"
-            endingLineNumber = "453"
+            startingLineNumber = "516"
+            endingLineNumber = "516"
             landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -682,11 +682,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "investHR/AppDelegate.swift"
-            timestampString = "527422767.943349"
+            timestampString = "527525489.024408"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "840"
-            endingLineNumber = "840"
+            startingLineNumber = "851"
+            endingLineNumber = "851"
             landmarkName = "AppDelegate"
             landmarkType = "3">
          </BreakpointContent>
@@ -698,11 +698,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "investHR/ViewControllers/MenuViewViewController.swift"
-            timestampString = "527435012.423007"
+            timestampString = "527517584.979899"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "401"
-            endingLineNumber = "401"
+            startingLineNumber = "464"
+            endingLineNumber = "464"
             landmarkName = "tableView(_:didSelectRowAt:)"
             landmarkType = "7">
             <Locations>
@@ -954,7 +954,7 @@
                   moduleName = "investHR"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Work/investHR/investHR/ViewControllers/HomeViewController.swift"
-                  timestampString = "527435025.592966"
+                  timestampString = "527525966.984692"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "312"
@@ -969,7 +969,7 @@
                   moduleName = "investHR"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Work/investHR/investHR/ViewControllers/HomeViewController.swift"
-                  timestampString = "527435025.595766"
+                  timestampString = "527525966.986476"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "313"
@@ -1360,6 +1360,22 @@
             startingLineNumber = "311"
             endingLineNumber = "311"
             landmarkName = "getNotiRecordsTodelete(entity:date:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "investHR/Models/CoreDataManager.swift"
+            timestampString = "527521976.762872"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "766"
+            endingLineNumber = "766"
+            landmarkName = "updateNotificationReadStatus(entityName:notificationID:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -108,7 +108,8 @@ struct Constant
     static let  REFER_FRIEND_API                         = "login/mobileReferedJob"
     static let  CLOSED_JOBIDS_API                        = "login/mobileCloseJob"
     static let  MASS_NOTI_API                            = "login/mobileMassNotification"
-
+    static let  NO_INTERNER_CONNECTION_MSG               = "Please turn on your internet connection to access this feature"
+    static let  NO_INTERNER_CONNECTION_TITLE             = "No internet connection!"
 
     
     static let  NOTIFICATION_LIACCESSTOKEN_FETCHED          = "LIAccessTokenFetched"

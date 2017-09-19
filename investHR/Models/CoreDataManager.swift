@@ -727,5 +727,45 @@ class CoreDataManager: NSObject
         return 0
     }
 
+    func updateNotificationReadStatus(entityName:String, notificationID:Int)
+    {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        var context: NSManagedObjectContext = appDelegate.managedObjectContext
+        var predicate:NSPredicate!
+        
+        var fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        if entityName == "CommonNotification"
+        {
+            predicate = NSPredicate(format: "notificationId == %d", argumentArray: [notificationID])
+
+        }
+        else
+        {
+            predicate = NSPredicate(format: "notificationId1 == %d", argumentArray: [notificationID])
+
+        }
+        fetchRequest.predicate = predicate
+        do
+        {
+            if let fetchResults = try appDelegate.managedObjectContext.fetch(fetchRequest) as? [NSManagedObject] {
+                if fetchResults.count != 0{
+                    
+                    var managedObject = fetchResults[0]
+                    managedObject.setValue(1, forKey: "readStatus")
+                    
+                    try appDelegate.managedObjectContext.save()
+                    
+                    
+                }
+            }
+            
+            
+        }
+        catch let error as NSError
+        {
+            print(error.localizedDescription)
+        }
+        
+    }
 
 }

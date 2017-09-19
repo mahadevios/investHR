@@ -120,6 +120,13 @@ extension UIColor
         // ... some code
         return UIColor(colorLiteralRed: 29/255.0, green: 123/255.0, blue:231/255.0, alpha: 1.0)
     }
+    
+    class func appOrangeColor() -> UIColor
+    {
+        // create color from string
+        // ... some code
+        return UIColor(colorLiteralRed: 243/255.0, green: 137/255.0, blue:86/255.0, alpha: 1.0)
+    }
    
 }
 

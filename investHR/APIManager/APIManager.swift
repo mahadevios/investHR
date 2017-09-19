@@ -55,7 +55,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
 
     }
@@ -75,7 +75,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -94,7 +94,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
 
         
@@ -115,7 +115,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
     }
     
@@ -137,7 +137,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -159,7 +159,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -181,7 +181,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -203,7 +203,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -224,7 +224,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -246,7 +246,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -266,7 +266,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -286,7 +286,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -306,7 +306,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -328,7 +328,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -348,7 +348,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -368,7 +368,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -388,7 +388,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -408,7 +408,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -429,7 +429,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Connect to internet & reload the page.", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: "Connect to internet & reload the page.", withCancelText: "Ok")
         }
         
     }
@@ -449,7 +449,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -469,7 +469,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -489,7 +489,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -511,7 +511,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -533,7 +533,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -553,7 +553,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -575,7 +575,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -597,7 +597,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -619,7 +619,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -643,7 +643,7 @@ class APIManager: NSObject
         {
             AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: "Please turn on your internet connection", withCancelText: "Ok")
         }
         
     }
@@ -663,7 +663,7 @@ class APIManager: NSObject
         }
         else
         {
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -688,7 +688,7 @@ class APIManager: NSObject
         {
             AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -712,7 +712,7 @@ class APIManager: NSObject
         {
             AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -736,7 +736,7 @@ class APIManager: NSObject
         {
             AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -760,7 +760,7 @@ class APIManager: NSObject
         {
             AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -784,7 +784,7 @@ class APIManager: NSObject
         {
             AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }
@@ -808,7 +808,7 @@ class APIManager: NSObject
         {
             AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
-            AppPreferences.sharedPreferences().showAlertViewWith(title: "No internet connection!", withMessage: "Please turn on your internet connection to access this feature", withCancelText: "Ok")
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
         }
         
     }

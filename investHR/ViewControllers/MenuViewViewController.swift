@@ -114,11 +114,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
 
         self.menuTableView.reloadData()
         
-        let commonNotiCount = CoreDataManager.getSharedCoreDataManager().getUnreadNotiCount(entity: "CommonNotification")
-
-        let specialNotiCount = CoreDataManager.getSharedCoreDataManager().getUnreadNotiCount(entity: "ZSpecialNotification")
-        
-        print("count =  \(commonNotiCount+specialNotiCount)")
+       
 
     }
     override func viewWillDisappear(_ animated: Bool)
@@ -132,6 +128,18 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
     {
         self.setUserInteractionEnabled(setEnable: false)
 
+    }
+    
+    func getUnreadNotificationCount() -> Int
+    {
+        let commonNotiCount = CoreDataManager.getSharedCoreDataManager().getUnreadNotiCount(entity: "CommonNotification")
+        
+        let specialNotiCount = CoreDataManager.getSharedCoreDataManager().getUnreadNotiCount(entity: "ZSpecialNotification")
+        
+        print("count =  \(commonNotiCount+specialNotiCount)")
+        
+        return commonNotiCount+specialNotiCount
+    
     }
     func setUserInteractionEnabled(setEnable:Bool)
     {
@@ -189,6 +197,61 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         let menuNameLabel = cell.viewWithTag(102) as! UILabel
             menuNameLabel.text = menuItemsArray[indexPath.row]
         
+        if let bgView = cell.viewWithTag(203)
+        {
+            cell.viewWithTag(203)?.removeFromSuperview()
+        }
+        
+        if menuItemsArray[indexPath.row] == "Notification"
+        {
+            if let bgView = cell.viewWithTag(203)
+            {
+                let notiCountLabel = bgView.viewWithTag(204) as! UILabel
+                
+                notiCountLabel.text = "\(self.getUnreadNotificationCount())"
+
+            }
+            else
+            {
+                let countBGView = UIView(frame: CGRect(x: cell.frame.size.width-41, y: cell.frame.size.height/2 - 12, width: 35, height: 24))
+                
+                countBGView.layer.cornerRadius = 4.0
+                
+                countBGView.backgroundColor = UIColor.appOrangeColor()
+                
+                countBGView.tag = 203
+                
+//                let notiCountLabel = UILabel(frame: CGRect(x: countBGView.frame.size.width-15, y: countBGView.frame.size.height/2 - 7, width: 15, height: 15))
+                let notiCountLabel = UILabel(frame: CGRect(x: 2.5, y: 2, width: 30, height: 20))
+
+                notiCountLabel.tag = 204
+
+                notiCountLabel.font = UIFont.systemFont(ofSize: 12)
+                //notiCountLabel.center = countBGView.center
+                
+                notiCountLabel.textAlignment = NSTextAlignment.center
+                
+                notiCountLabel.text = "\(self.getUnreadNotificationCount())"
+                
+                notiCountLabel.textColor = UIColor.white
+                
+                countBGView.addSubview(notiCountLabel)
+                
+                cell.addSubview(countBGView)
+
+            }
+          
+            
+            
+            
+        }
+//        else
+//        {
+//            if let bgView = cell.viewWithTag(203)
+//            {
+//                bgView.removeFromSuperview()
+//            }
+//        }
         
         
         

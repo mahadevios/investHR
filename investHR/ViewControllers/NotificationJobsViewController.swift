@@ -100,11 +100,6 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         {
             self.jobNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
             
-            //self.specialNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "ZSpecialNotification") as? [CommonNotification]
-            
-            //self.commonNotificationObjectsArray?.removeAll()
-            
-            //self.commonNotificationObjectsArray = self.jobNotificationObjectsArray
             
             self.collectionView.reloadData()
         }
@@ -420,6 +415,15 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
             
             subjectLabel.text = notificationObject.subject!
             
+            if notificationObject.readStatus == 0
+            {
+                subjectLabel.textColor = UIColor.black
+            }
+            else
+            {
+                subjectLabel.textColor = UIColor(red: 99/255.0, green: 126/255.0, blue: 140/255.0, alpha: 1.0)
+            }
+            
             let date = String(describing: notificationObject.notificationDate1!).components(separatedBy: " ")[0] as! String
             
             dateLabel.text = date
@@ -430,6 +434,15 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
             let notificationObject = specialNotificationObjectsArray![indexPath.row]
 
             subjectLabel.text = notificationObject.subject!
+            
+            if notificationObject.readStatus == 0
+            {
+                subjectLabel.textColor = UIColor.black
+            }
+            else
+            {
+                subjectLabel.textColor = UIColor(red: 99/255.0, green: 126/255.0, blue: 140/255.0, alpha: 1.0)
+            }
             
             let date = String(describing: notificationObject.notificationDate!).components(separatedBy: " ")[0] as! String
             
@@ -509,6 +522,9 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
                 {
                     vc.applied = true
                 }
+                
+                CoreDataManager.getSharedCoreDataManager().updateNotificationReadStatus(entityName: "CommonNotification", notificationID: Int((notificationObj?.notificationId)!))
+                
                 vc.verticalId = String(0)
                 vc.domainType = "vertical"
                 let jobId1 = String(describing: jobId!)
@@ -527,6 +543,8 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
                 
                 vc.notificationId = String(describing:notificationId!)
                 
+                CoreDataManager.getSharedCoreDataManager().updateNotificationReadStatus(entityName: "ZSpecialNotification", notificationID: Int((notificationObj?.notificationId1)!))
+
                 self.present(vc, animated: true, completion: nil)
                 
                 
