@@ -91,6 +91,11 @@ class CustomNotificationViewController: UIViewController,UITableViewDelegate,UIT
     
     func checkCustomMessagesList(dataDic:Notification)
     {
+        DispatchQueue.main.async
+            {
+                self.indicator.stopAnimating()
+                self.indicator.hidesWhenStopped = true
+        }
         guard let notiObj = dataDic.object as? [String:Any] else
         {
             return
@@ -140,11 +145,7 @@ class CustomNotificationViewController: UIViewController,UITableViewDelegate,UIT
                     AppPreferences.sharedPreferences().customMessagesArray.append(idMessageDic)
                     
                 }
-                DispatchQueue.main.async
-                    {
-                self.indicator.stopAnimating()
-                self.indicator.hidesWhenStopped = true
-                }
+                
                 self.tableView.reloadData()
 
                 

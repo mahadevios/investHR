@@ -1010,8 +1010,10 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             return
          }
         
-        CoreDataManager.getSharedCoreDataManager().updateUser(pictureUrl: imageName!)
+        //CoreDataManager.getSharedCoreDataManager().updateUser(pictureUrl: imageName!)
 
+        Database.sharedDatabse().updateUserProfileUrl(profileUrl: imageName!)
+        
         NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil, userInfo: nil)
 
         do
@@ -2140,21 +2142,33 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     
     func getCandidateRoles()
     {
-        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
+        //let coreDataManager = CoreDataManager.getSharedCoreDataManager()
         
         
         do
         {
-            var managedObjects:[NSManagedObject]?
+//            var managedObjects:[NSManagedObject]?
+//            
+//            managedObjects = coreDataManager.getAllRecords(entity: "Roles")
+//            for userObject in managedObjects as! [Roles]
+//            {
+//                candidateFunctionArray.append(userObject.roleName!)
+//                roleNameAndIdDic[userObject.roleName!] = userObject.roleId
+//                
+//            }
+
+            var managedObjects:[Role]?
             
-            managedObjects = coreDataManager.getAllRecords(entity: "Roles")
-            for userObject in managedObjects as! [Roles]
+            
+            managedObjects = Database.sharedDatabse().getRolesVerticalHorizontal(type: "ZROLES")
+            
+            for userObject in managedObjects!
             {
                 candidateFunctionArray.append(userObject.roleName!)
                 roleNameAndIdDic[userObject.roleName!] = userObject.roleId
                 
             }
-            
+
         } catch let error as NSError
         {
             //print(error.localizedDescription)
@@ -2165,28 +2179,39 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
 
     func getState()
     {
-        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
+        //let coreDataManager = CoreDataManager.getSharedCoreDataManager()
         
         
         do
         {
-            var managedObjects:[NSManagedObject]?
+//            var managedObjects:[NSManagedObject]?
+//            
+//            managedObjects = coreDataManager.getAllRecords(entity: "State")
+//            for userObject in managedObjects as! [State]
+//            {
+//                statesArray.append(userObject.stateName!)
+//                
+//                stateNameAndIdDic[userObject.stateName!] = userObject.id
+//                
+//            }
+
+            var managedObjects:[Role]?
             
-            managedObjects = coreDataManager.getAllRecords(entity: "State")
-            for userObject in managedObjects as! [State]
+            managedObjects = Database.sharedDatabse().getRolesVerticalHorizontal(type: "ZSTATE")
+            
+            for userObject in managedObjects!
             {
-                statesArray.append(userObject.stateName!)
+                statesArray.append(userObject.roleName!)
                 
-                stateNameAndIdDic[userObject.stateName!] = userObject.id
+                stateNameAndIdDic[userObject.roleName!] = userObject.roleId
                 
             }
-            
-            let index = statesArray.index(of: "asda")
-            
-            if index != nil
-            {
-                statesArray.remove(at: index!)
-            }
+//            let index = statesArray.index(of: "asda")
+//            
+//            if index != nil
+//            {
+//                statesArray.remove(at: index!)
+//            }
             
         } catch let error as NSError
         {

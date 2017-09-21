@@ -39,6 +39,8 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
 //        let rightBarButtonItem = UIBarButtonItem(customView: numberOfJobsLabel)
 //        
 //        self.navigationItem.rightBarButtonItem = rightBarButtonItem
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+
         let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
         let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
@@ -58,6 +60,10 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
         NotificationCenter.default.addObserver(self, selector: #selector(checkSAvedJobList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVED_JOB_LIST), object: nil)
 
         // Do any additional setup after loading the view.
+    }
+    func deviceRotated()
+    {
+        self.collectionView.reloadData()
     }
     override func viewWillAppear(_ animated: Bool)
     {
@@ -155,7 +161,12 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
         
         let appliedJobId = dataDictionary["jobId"] as! String
         
-        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":appliedJobId,"userId":"1"])
+        //let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":appliedJobId,"userId":"1"])
+        
+        let job = Job()
+        job.jobId = String(appliedJobId)
+        job.userId = String(1)
+        Database.sharedDatabse().insertIntoAppliedJobs(job: job)
         
         appliedJobsIdsArray.removeAll()
         
@@ -184,15 +195,26 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
-        if let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
+//        if let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
+//        {
+//            for appliedJobObject in managedObjects1 as! [AppliedJobs]
+//            {
+//                let jobId = appliedJobObject.jobId
+//                
+//                appliedJobsIdsArray.append(Int(jobId!)!)
+//            }
+//        }
+        
+        if let managedObjects = Database.sharedDatabse().getSavedJobs(type: "ZAPPLIEDJOBS")
         {
-            for appliedJobObject in managedObjects1 as! [AppliedJobs]
+            for appliedJobObject in managedObjects
             {
                 let jobId = appliedJobObject.jobId
                 
                 appliedJobsIdsArray.append(Int(jobId!)!)
             }
         }
+
         return verticalJobListArray.count
     }
     

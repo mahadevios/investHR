@@ -562,13 +562,19 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         let savedJobId = dataDictionary["jobId"] as! String
         
-        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":savedJobId,"userId":"1"])
+        //let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":savedJobId,"userId":"1"])
 
-        savedJobsIdsArray.removeAll()
+        let job = Job()
+        job.jobId = String(savedJobId)
+        job.userId = String(1)
+        Database.sharedDatabse().insertIntoSavedJobs(job: job)
         
-        if let managedObjects = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "SavedJobs")
+        savedJobsIdsArray.removeAll()
+        //if let managedObjects = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "SavedJobs")
+
+        if let managedObjects = Database.sharedDatabse().getSavedJobs(type: "ZSAVEDJOBS")
         {
-            for savedJobObject in managedObjects as! [SavedJobs]
+            for savedJobObject in managedObjects
             {
                 let jobId = savedJobObject.jobId
                 
@@ -593,13 +599,19 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         let appliedJobId = dataDictionary["jobId"] as! String
         
-        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":appliedJobId,"userId":"1"])
+        //let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":appliedJobId,"userId":"1"])
+        let job = Job()
+        job.jobId = String(appliedJobId)
+        job.userId = String(1)
+        Database.sharedDatabse().insertIntoAppliedJobs(job: job)
 
         appliedJobsIdsArray.removeAll()
         
-        if let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
+        //if let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
+
+        if let managedObjects = Database.sharedDatabse().getSavedJobs(type: "ZAPPLIEDJOBS")
         {
-            for appliedJobObject in managedObjects1 as! [AppliedJobs]
+            for appliedJobObject in managedObjects
             {
                 let jobId = appliedJobObject.jobId
                 
@@ -771,9 +783,19 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
         savedJobsIdsArray.removeAll()
-        if let managedObjects = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "SavedJobs")
+//        if let managedObjects = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "SavedJobs")
+//        {
+//            for savedJobObject in managedObjects as! [SavedJobs]
+//            {
+//                let jobId = savedJobObject.jobId
+//                
+//                savedJobsIdsArray.append(Int(jobId!)!)
+//            }
+//        }
+        
+        if let managedObjects = Database.sharedDatabse().getSavedJobs(type: "ZSAVEDJOBS")
         {
-            for savedJobObject in managedObjects as! [SavedJobs]
+            for savedJobObject in managedObjects
             {
                 let jobId = savedJobObject.jobId
                 
@@ -783,16 +805,25 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         //let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
         appliedJobsIdsArray.removeAll()
-        if let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
+//        if let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
+//        {
+//            for appliedJobObject in managedObjects1 as! [AppliedJobs]
+//            {
+//                let jobId = appliedJobObject.jobId
+//                
+//                appliedJobsIdsArray.append(Int(jobId!)!)
+//            }
+//        }
+        
+        if let managedObjects = Database.sharedDatabse().getSavedJobs(type: "ZAPPLIEDJOBS")
         {
-            for appliedJobObject in managedObjects1 as! [AppliedJobs]
+            for appliedJobObject in managedObjects
             {
                 let jobId = appliedJobObject.jobId
                 
                 appliedJobsIdsArray.append(Int(jobId!)!)
             }
         }
-        
         return verticalJobListArray.count
     }
 

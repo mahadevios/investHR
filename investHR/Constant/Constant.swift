@@ -110,6 +110,7 @@ struct Constant
     static let  MASS_NOTI_API                            = "login/mobileMassNotification"
     static let  NO_INTERNER_CONNECTION_MSG               = "Please turn on your internet connection to access this feature"
     static let  NO_INTERNER_CONNECTION_TITLE             = "No internet connection!"
+    //static let  NEW_NOTI_ADDED                           = "newNotificationAdded"
 
     
     static let  NOTIFICATION_LIACCESSTOKEN_FETCHED          = "LIAccessTokenFetched"

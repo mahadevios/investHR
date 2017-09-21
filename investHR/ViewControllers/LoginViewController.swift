@@ -73,7 +73,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         }
         
 //        print(linkedInLoginCircleButton.frame.size)
-        let managedObjectContext1 = appDelegate.managedObjectContext
+        //let managedObjectContext1 = appDelegate.managedObjectContext
         
         
 
@@ -149,7 +149,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
     {
         super.viewWillAppear(true)
         
-        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
+        //let coreDataManager = CoreDataManager.getSharedCoreDataManager()
         
         emailTextField.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
@@ -799,15 +799,19 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         var linkedInId = responseDic["linkId"] as? String
         
+        var userId = responseDic["UserId"] as! Int
+
                 let savedJobListString = responseDic["savedJobList"] as? String
         
                 let appliedJobListString = responseDic["appliedJobList"] as? String
         
-        
+        let database = Database.sharedDatabse()
+
                 if let savedJobListData = savedJobListString?.data(using: .utf8, allowLossyConversion: true)
                 {
-                    CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
-        
+//                    CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
+                    database.truncateTable(tableName: "ZSAVEDJOBS")
+                    
                     var savedJobListArray:[Any]!
                     do
                     {
@@ -823,8 +827,13 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
                         let jobId = savedJobListDict["jobId"] as! Int
         
-                        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
-        
+                        let job = Job()
+                        job.jobId = String(jobId)
+                        job.userId = String(userId)
+                        database.insertIntoSavedJobs(job: job)
+
+//                        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
+//        
                     }
         
         
@@ -832,8 +841,9 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
                 if let appliedJobListData = appliedJobListString?.data(using: .utf8, allowLossyConversion: true)
                 {
-                    CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
-        
+                    //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
+                    database.truncateTable(tableName: "ZAPPLIEDJOBS")
+
                     var appliedJobListArray:[Any]!
                     do
                     {
@@ -849,7 +859,11 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                         
                         let jobId = appliedJobListDict["jobId"] as! Int
                         
-                        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
+                        let job = Job()
+                        job.jobId = String(jobId)
+                        job.userId = String(userId)
+                        database.insertIntoAppliedJobs(job: job)
+                        //let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
                     }
                     
                 }
@@ -863,22 +877,35 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         {
             linkedInId = "nil"
         }
+        
+        let user = User1()
+        
+        user.userId = String(userId)
+        
+        user.name = name
+        user.username = self.emailTextField.text!
+        user.password = self.passwordTextField.text!
+        user.pictureUrl = imageName
+        user.emailAddress = emailId
+        user.linkedInId = linkedInId
+        user.occupation = ""
+        
+        database.insertIntoUser(user: user)
         //var userId = 0
-        var userId = responseDic["UserId"] as! Int
 
         //let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithEmail(email: emailId, linkledInId: linkedInId)
-        let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithUserId(userId: String(describing: userId))
-
-        if !available
-        {
-            if emailId == ""
-            {
-                emailId = "nil"
-            }
-            if linkedInId == ""
-            {
-                linkedInId = "nil"
-            }
+//        let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithUserId(userId: String(describing: userId))
+//
+//        if !available
+//        {
+//            if emailId == ""
+//            {
+//                emailId = "nil"
+//            }
+//            if linkedInId == ""
+//            {
+//                linkedInId = "nil"
+//            }
             //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
 //            let userIdString = CoreDataManager.getSharedCoreDataManager().getMaxUserId(entityName: "User")
 //            
@@ -887,14 +914,14 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
 //            userId = userId + 1
             //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
             
-            let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["userId":"\(userId)", "name":name! ,"username":self.emailTextField.text!,"password":self.passwordTextField.text!,"pictureUrl":imageName!,"emailAddress":emailId,"linkedInId":linkedInId])
-        }
-        
-        else
-        {
-            //userId = CoreDataManager.getSharedCoreDataManager().getUserId(email: emailId, linkledInId: linkedInId)
-            
-        }
+//            let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["userId":"\(userId)", "name":name! ,"username":self.emailTextField.text!,"password":self.passwordTextField.text!,"pictureUrl":imageName!,"emailAddress":emailId,"linkedInId":linkedInId])
+//        }
+//        
+//        else
+//        {
+//            //userId = CoreDataManager.getSharedCoreDataManager().getUserId(email: emailId, linkledInId: linkedInId)
+//            
+//        }
         
         //UserDefaults.standard.set(self.email!, forKey: Constant.USERNAME)
         //UserDefaults.standard.set(self.password!, forKey: Constant.PASSWORD)
@@ -960,11 +987,13 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
                 let appliedJobListString = responseDic["appliedJobList"] as! String
         
-        
+        let database = Database.sharedDatabse()
+
                 if let savedJobListData = savedJobListString.data(using: .utf8, allowLossyConversion: true)
                 {
-                    CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
-        
+                    //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
+                    database.truncateTable(tableName: "ZSAVEDJOBS")
+                    
                     var savedJobListArray:[Any]!
                     do
                     {
@@ -982,7 +1011,12 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
                         let jobId = savedJobListDict["jobId"] as! Int
         
-                        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
+                        let job = Job()
+                        job.jobId = String(jobId)
+                        job.userId = String(userId)
+                        database.insertIntoSavedJobs(job: job)
+                        
+                        //let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":String(userId)])
         
                         //            savedJobIdsArray.append(jobId)
                     }
@@ -992,8 +1026,9 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
                 if let appliedJobListData = appliedJobListString.data(using: .utf8, allowLossyConversion: true)
                 {
-                    CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
-        
+                    //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
+                    database.truncateTable(tableName: "ZAPPLIEDJOBS")
+
                     var appliedJobListArray:[Any]!
                     do
                     {
@@ -1009,7 +1044,11 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                         
                         let jobId = appliedJobListDict["jobId"] as! Int
                         
-                        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
+                        let job = Job()
+                        job.jobId = String(jobId)
+                        job.userId = String(userId)
+                        database.insertIntoAppliedJobs(job: job)
+                        //let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":String(userId)])
                         //appliedJobIdsArray.append(jobId)
                     }
                     
@@ -1026,11 +1065,27 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         //var userId = 0
         //let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithEmail(email: emailId, linkledInId: linkedInId)
-        let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithUserId(userId: String(describing: userId))
+        
+        
+        let user = User1()
+        
+        user.userId = String(userId)
+        
+        user.name = name
+        user.username = self.emailTextField.text!
+        user.password = self.passwordTextField.text!
+        user.pictureUrl = imageName
+        user.emailAddress = emailId
+        user.linkedInId = linkedInId
+        user.occupation = ""
+        
+        database.insertIntoUser(user: user)
 
-        if !available
-        {
-            
+        //let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithUserId(userId: String(describing: userId))
+
+//        if !available
+//        {
+        
             //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
             //let userIdString = CoreDataManager.getSharedCoreDataManager().getMaxUserId(entityName: "User")
             
@@ -1039,13 +1094,14 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
            // userId = userId + 1
             //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
             
-            let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["userId":"\(userId)", "name":name ,"username":self.emailTextField.text!,"password":self.passwordTextField.text!,"pictureUrl":imageName,"emailAddress":emailId,"linkedInId":linkedInId])
-        }
-        else
-        {
-           // userId = CoreDataManager.getSharedCoreDataManager().getUserId(email: emailId, linkledInId: linkedInId)
             
-        }
+//            let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["userId":"\(userId)", "name":name ,"username":self.emailTextField.text!,"password":self.passwordTextField.text!,"pictureUrl":imageName,"emailAddress":emailId,"linkedInId":linkedInId])
+//        }
+//        else
+//        {
+//           // userId = CoreDataManager.getSharedCoreDataManager().getUserId(email: emailId, linkledInId: linkedInId)
+//            
+//        }
 
 
         UserDefaults.standard.set(self.emailTextField.text!, forKey: Constant.USERNAME)
@@ -1127,7 +1183,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                             DispatchQueue.main.async
                                 {
                                     
-                                    let coreDataManager = CoreDataManager.getSharedCoreDataManager()
+                                    //let coreDataManager = CoreDataManager.getSharedCoreDataManager()
                                     
 //                                    print(dataDictionary)
                                     
@@ -1537,12 +1593,12 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         // let coreDataManager = CoreDataManager.sharedManager
         //let managedObjectContext = (UIApplication.shared.delegate as? AppDelegate)?.managedObjectContext
         
-        let managedObjectContext = appDelegate.managedObjectContext
+       // let managedObjectContext = appDelegate.managedObjectContext
         
         //let entity = NSEntityDescription.entity(forEntityName: "Roles", in: managedObjectContext)!
         
         //let entity1 = NSEntityDescription.entity(forEntityName: "HorizontalDomains", in: managedObjectContext)!
-        let entity1 = NSEntityDescription.entity(forEntityName: "City", in: managedObjectContext)!
+       // let entity1 = NSEntityDescription.entity(forEntityName: "City", in: managedObjectContext)!
         //let entity2 = NSEntityDescription.entity(forEntityName: "VertcalDomains", in: managedObjectContext)!
         
         
@@ -1683,22 +1739,22 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                     
                                             //let stateName = stateIdNameDic["state_Name"]
                     
-                                            let cityObject = NSManagedObject(entity: entity1, insertInto: managedObjectContext) as! City
-                    
-                                            cityObject.id = Int64(cityId)
-                    
-                                            cityObject.stateId = Int16(stateId)
-                    
-                                            cityObject.cityName = cityName
-                    
-                                            do {
-                                                try managedObjectContext.save()
-                    
-//                                                print("inserting city num:",(index))
-                                                
-                                            } catch let error as NSError {
-//                                                print(error.localizedDescription)
-                                            }
+//                                            let cityObject = NSManagedObject(entity: entity1, insertInto: managedObjectContext) as! City
+//                    
+//                                            cityObject.id = Int64(cityId)
+//                    
+//                                            cityObject.stateId = Int16(stateId)
+//                    
+//                                            cityObject.cityName = cityName
+//                    
+//                                            do {
+//                                                try managedObjectContext.save()
+//                    
+////                                                print("inserting city num:",(index))
+//                                                
+//                                            } catch let error as NSError {
+////                                                print(error.localizedDescription)
+//                                            }
                                         }
                     
                 }

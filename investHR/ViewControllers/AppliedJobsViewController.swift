@@ -24,6 +24,8 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
         
         let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
         
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        
         self.navigationItem.leftBarButtonItem = barButtonItem
         
         
@@ -54,6 +56,10 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
         // Do any additional setup after loading the view.
     }
     
+    func deviceRotated()
+    {
+        self.collectionView.reloadData()
+    }
     override func viewWillAppear(_ animated: Bool)
     {
         self.navigationItem.title = "Applied Jobs"

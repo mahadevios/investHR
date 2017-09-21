@@ -81,7 +81,7 @@ extension Date
         // NSDate *purgeDataDate = [[NSDate date] dateByAddingTimeInterval:-5*24*60*60];
         
         
-        formatter.dateFormat = "MM-dd-yyyy hh:mm:ss"
+        formatter.dateFormat = "MM-dd-yyyy HH:mm:ss"
         
         let newDate = formatter.string(from: nextDate!)
         

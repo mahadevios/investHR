@@ -14,9 +14,11 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
     @IBOutlet weak var collectionView: UICollectionView!
     
     
-    var jobNotificationObjectsArray:[CommonNotification]?
+//    var jobNotificationObjectsArray:[CommonNotification]?
+    var jobNotificationObjectsArray:[JobsNotification]?
 
-    var specialNotificationObjectsArray:[ZSpecialNotification]?
+//    var specialNotificationObjectsArray:[ZSpecialNotification]?
+    var specialNotificationObjectsArray:[GeneralNotification]?
 
     @IBOutlet weak var notificationSegment: UISegmentedControl!
     var indexePathArray:[IndexPath]=[]
@@ -28,6 +30,11 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
     
     var appliedJobsIdsArray = [Int64]()
 
+    lazy var database =
+    {
+    
+            return Database.sharedDatabse()
+    }
     @IBAction func notificationSegmentClicked(_ sender: UISegmentedControl)
     {
         self.getDataOfSegmennt(sender: sender)
@@ -39,27 +46,43 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         {
             self.jobNotificationObjectsArray?.removeAll()
             
-            self.jobNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
+            //let database = Database.sharedDatabse()
+            
+            self.jobNotificationObjectsArray = database().getJobsNotification()
+            
+            //self.jobNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
             
             self.removeClosedJobs()
             
             self.collectionView.reloadData()
             
-            //self.commonNotificationObjectsArray?.removeAll()
             
-            //self.commonNotificationObjectsArray = self.jobNotificationObjectsArray
             
         }
         else
         {
             self.specialNotificationObjectsArray?.removeAll()
             
-            self.specialNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecordsOfSpecialNotification() as? [ZSpecialNotification]
+//            self.specialNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecordsOfSpecialNotification() as? [ZSpecialNotification]
+            self.specialNotificationObjectsArray = database().getGeneralNotification()
             
+            //let specialNotiCount = CoreDataManager.getSharedCoreDataManager().getUnreadNotiCount(entity: "ZSpecialNotification")
+            
+            let specialNotiCount = database().getUnreadNotiCount(tableName: "SpecialNotification")
+
+            
+            if specialNotiCount > 0
+            {
+                self.notificationSegment.setTitle("General(\(specialNotiCount))", forSegmentAt: 1)
+                
+            }
+            else
+            {
+                self.notificationSegment.setTitle("General", forSegmentAt: 1)
+                
+            }
             self.collectionView.reloadData()
-            //self.commonNotificationObjectsArray?.removeAll()
             
-            //self.commonNotificationObjectsArray = self.specialNotificationObjectsArray
         }
     }
     @IBOutlet weak var dataNotFoundLabel: UILabel!
@@ -98,7 +121,9 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         }
         else
         {
-            self.jobNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
+            self.jobNotificationObjectsArray = database().getJobsNotification()
+
+//            self.jobNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
             
             
             self.collectionView.reloadData()
@@ -123,9 +148,9 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
     {
       
         
-        NotificationCenter.default.addObserver(self, selector: #selector(checkApplyJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_APPLY_JOB), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(checkApplyJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_APPLY_JOB), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(checkSaveJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVE_JOB), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(checkSaveJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVE_JOB), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(newNotiAdded(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil)
         
@@ -148,7 +173,9 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         
         self.jobNotificationObjectsArray?.removeAll()
         
-        self.jobNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
+        self.jobNotificationObjectsArray = database().getJobsNotification()
+
+//        self.jobNotificationObjectsArray = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "CommonNotification") as? [CommonNotification]
         
         
         if codeString == "1001"
@@ -203,7 +230,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
             {
                 for notiObj in self.jobNotificationObjectsArray!
                 {
-                    if self.closedJobsIdsArray.contains(notiObj.jobId)
+                    if self.closedJobsIdsArray.contains(notiObj.jobId!)
                     {
                         let index = self.jobNotificationObjectsArray?.index(of: notiObj)
                         
@@ -217,80 +244,38 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
             
             // print(closedJobsIdsArray)
         }
+        
+        //let commonNotiCount = CoreDataManager.getSharedCoreDataManager().getUnreadNotiCount(entity: "CommonNotification")
+        let commonNotiCount = database().getUnreadNotiCount(tableName: "CommonNotification")
+
+        
+        if commonNotiCount > 0
+        {
+            self.notificationSegment.setTitle("Jobs(\(commonNotiCount))", forSegmentAt: 0)
+
+        }
+        else
+        {
+            self.notificationSegment.setTitle("Jobs", forSegmentAt: 0)
+
+        }
+        
+        //let specialNotiCount = CoreDataManager.getSharedCoreDataManager().getUnreadNotiCount(entity: "ZSpecialNotification")
+        let specialNotiCount = database().getUnreadNotiCount(tableName: "SpecialNotification")
+
+        if specialNotiCount > 0
+        {
+            self.notificationSegment.setTitle("General(\(specialNotiCount))", forSegmentAt: 1)
+            
+        }
+        else
+        {
+            self.notificationSegment.setTitle("General", forSegmentAt: 1)
+            
+        }
 
     }
     
-    func checkSaveJob(dataDic:NSNotification)
-    {
-        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
-        
-        guard let dataDictionary = dataDic.object as? [String:AnyObject] else
-        {
-            return
-        }
-        
-        let codeString = dataDictionary["code"] as! String
-        
-        if codeString == "1000"
-        {
-            
-        }
-        
-        let savedJobId = dataDictionary["jobId"] as! String
-        
-        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":savedJobId,"userId":"1"])
-        
-        savedJobsIdsArray.removeAll()
-        
-        if let managedObjects = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "SavedJobs")
-        {
-            for savedJobObject in managedObjects as! [SavedJobs]
-            {
-                let jobId = savedJobObject.jobId
-                
-                savedJobsIdsArray.append(Int64(jobId!)!)
-            }
-        }
-        //self.collectionView.reloadData()
-        
-        self.collectionView.reloadItems(at: indexePathArray)
-        
-        indexePathArray.removeAll()
-    }
-    
-    func checkApplyJob(dataDic:NSNotification)
-    {
-        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
-        
-        guard let dataDictionary = dataDic.object as? [String:AnyObject] else
-        {
-            return
-        }
-        
-        let appliedJobId = dataDictionary["jobId"] as! String
-        
-        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":appliedJobId,"userId":"1"])
-        
-        appliedJobsIdsArray.removeAll()
-        
-        if let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
-        {
-            for appliedJobObject in managedObjects1 as! [AppliedJobs]
-            {
-                let jobId = appliedJobObject.jobId
-                
-                appliedJobsIdsArray.append(Int64(jobId!)!)
-            }
-        }
-        
-        self.collectionView.reloadItems(at: indexePathArray)
-        
-        indexePathArray.removeAll()
-        
-        //self.collectionView.reloadData()
-        
-        
-    }
 
     override func viewWillDisappear(_ animated: Bool)
     {
@@ -305,28 +290,6 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
-//        savedJobsIdsArray.removeAll()
-//        if let managedObjects = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "SavedJobs")
-//        {
-//            for savedJobObject in managedObjects as! [SavedJobs]
-//            {
-//                let jobId = savedJobObject.jobId
-//                
-//                savedJobsIdsArray.append(Int64(jobId!)!)
-//            }
-//        }
-//        
-//        //let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
-//        appliedJobsIdsArray.removeAll()
-//        if let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
-//        {
-//            for appliedJobObject in managedObjects1 as! [AppliedJobs]
-//            {
-//                let jobId = appliedJobObject.jobId
-//                
-//                appliedJobsIdsArray.append(Int64(jobId!)!)
-//            }
-//        }
 
         if notificationSegment.selectedSegmentIndex == 0
         {
@@ -449,47 +412,6 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
             dateLabel.text = date
         }
         
-
-        
-        
-  //      let jobId = notificationObject.jobId
-        
-//        if appliedJobsIdsArray.contains(jobId)
-//        {
-//            applyButton.setTitle("Applied", for: .normal)
-//            applyButton.setTitleColor(UIColor.white, for: .normal)
-//            applyButton.backgroundColor = UIColor.appliedJobGreenColor()
-//            applyButton.isUserInteractionEnabled = false
-//        }
-//        else
-//        {
-//            applyButton.setTitle("Apply", for: .normal)
-//            applyButton.setTitleColor(UIColor.white, for: .normal)
-//            applyButton.backgroundColor = UIColor.appBlueColor()
-//            applyButton.isUserInteractionEnabled = true
-//        }
-//        if savedJobsIdsArray.contains(jobId)
-//        {
-//            saveImageView.image = UIImage(named: "SideMenuSavedJob")
-//            saveButton.isUserInteractionEnabled = false
-//            
-//        }
-//        else
-//        {
-//            saveImageView.image = UIImage(named: "SavedUnselected")
-//            saveButton.isUserInteractionEnabled = true
-//            
-//        }
-//
-//        saveButton.jobId = notificationObject.jobId
-//        applyButton.jobId = notificationObject.jobId
-//        
-//        //applyButton.tag = jobId as! Int
-//        saveButton.indexPath = indexPath.row
-//        applyButton.indexPath = indexPath.row
-//        
-//        saveButton.addTarget(self, action: #selector(saveJobButtonClicked), for: UIControlEvents.touchUpInside)
-//        applyButton.addTarget(self, action: #selector(applyJobButtonClicked), for: UIControlEvents.touchUpInside)
         
         return cell
     }
@@ -523,12 +445,21 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
                     vc.applied = true
                 }
                 
-                CoreDataManager.getSharedCoreDataManager().updateNotificationReadStatus(entityName: "CommonNotification", notificationID: Int((notificationObj?.notificationId)!))
+                if notificationObj?.readStatus == 0
+                {
+                    //CoreDataManager.getSharedCoreDataManager().updateNotificationReadStatus(entityName: "CommonNotification", notificationID: Int((notificationObj?.notificationId)!))
+                    DispatchQueue.main.async
+                    {
+                        self.database().updateReadStatus(tableName: "CommonNotification", notificationId: Int((notificationObj?.notificationId)!))
+                    }
+                }
+                
                 
                 vc.verticalId = String(0)
                 vc.domainType = "vertical"
                 let jobId1 = String(describing: jobId!)
                 vc.jobId = jobId1
+                vc.presentingVC = self
                 self.present(vc, animated: true, completion: nil)
                 
             }
@@ -543,7 +474,16 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
                 
                 vc.notificationId = String(describing:notificationId!)
                 
-                CoreDataManager.getSharedCoreDataManager().updateNotificationReadStatus(entityName: "ZSpecialNotification", notificationID: Int((notificationObj?.notificationId1)!))
+                if notificationObj?.readStatus == 0
+                {
+                    DispatchQueue.main.async
+                        {
+                            //CoreDataManager.getSharedCoreDataManager().updateNotificationReadStatus(entityName: "ZSpecialNotification", notificationID: Int((notificationObj?.notificationId1)!))
+
+                            self.database().updateReadStatus(tableName: "SpecialNotification", notificationId: Int((notificationObj?.notificationId1)!))
+                        }
+                }
+                vc.presentingVC = self
 
                 self.present(vc, animated: true, completion: nil)
                 

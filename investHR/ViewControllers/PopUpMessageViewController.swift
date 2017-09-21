@@ -32,9 +32,29 @@ class PopUpMessageViewController: UIViewController,UIWebViewDelegate
     {
         super.viewDidLoad()
 
-        if let managedObjects = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "SavedJobs")
+//        if let managedObjects = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "SavedJobs")
+//        {
+//            for savedJobObject in managedObjects as! [SavedJobs]
+//            {
+//                let jobId = savedJobObject.jobId
+//                
+//                savedJobsIdsArray.append(Int64(jobId!)!)
+//            }
+//        }
+//        
+//        if let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
+//        {
+//            for appliedJobObject in managedObjects1 as! [AppliedJobs]
+//            {
+//                let jobId = appliedJobObject.jobId
+//                
+//                appliedJobsIdsArray.append(Int64(jobId!)!)
+//            }
+//        }
+        
+        if let managedObjects = Database.sharedDatabse().getSavedJobs(type: "ZSAVEDJOBS")
         {
-            for savedJobObject in managedObjects as! [SavedJobs]
+            for savedJobObject in managedObjects
             {
                 let jobId = savedJobObject.jobId
                 
@@ -42,15 +62,28 @@ class PopUpMessageViewController: UIViewController,UIWebViewDelegate
             }
         }
         
-        if let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
+        //let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
+        appliedJobsIdsArray.removeAll()
+        //        if let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
+        //        {
+        //            for appliedJobObject in managedObjects1 as! [AppliedJobs]
+        //            {
+        //                let jobId = appliedJobObject.jobId
+        //
+        //                appliedJobsIdsArray.append(Int(jobId!)!)
+        //            }
+        //        }
+        
+        if let managedObjects = Database.sharedDatabse().getSavedJobs(type: "ZAPPLIEDJOBS")
         {
-            for appliedJobObject in managedObjects1 as! [AppliedJobs]
+            for appliedJobObject in managedObjects
             {
                 let jobId = appliedJobObject.jobId
                 
                 appliedJobsIdsArray.append(Int64(jobId!)!)
             }
         }
+
         // Do any additional setup after loading the view.
     }
     

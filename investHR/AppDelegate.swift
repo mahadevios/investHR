@@ -68,6 +68,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
         
+        let url = self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite")
+
+        if !FileManager.default.fileExists(atPath: url.path) {
+            //            let sourceSqliteURLs = [Bundle.main.url(forResource: "investHR", withExtension: "sqlite")!, Bundle.main.url(forResource: "investHR", withExtension: "sqlite-wal")!, Bundle.main.url(forResource: "investHR", withExtension: "sqlite-shm")!]
+            //            let destSqliteURLs = [self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite"), self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite-wal"), self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite-shm")]
+            let sourceSqliteURLs = [Bundle.main.url(forResource: "investHR", withExtension: "sqlite")!]
+            let destSqliteURLs = [self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite")]
+            
+            for index in 0 ..< sourceSqliteURLs.count {
+                do {
+                    try FileManager.default.copyItem(at: sourceSqliteURLs[index], to: destSqliteURLs[index])
+                } catch {
+                    print(error)
+                }
+            }
+        }
+
         let notification = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary
         
         
@@ -147,12 +164,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         }
        // let obj = CoreDataManager.sharedManager
         
-        CoreDataManager.getSharedCoreDataManager().deleteOldNotifications(entity: "CommonNotification")
-        CoreDataManager.getSharedCoreDataManager().deleteOldNotifications(entity: "ZSpecialNotification")
+        //CoreDataManager.getSharedCoreDataManager().deleteOldNotifications(entity: "CommonNotification")
+        //CoreDataManager.getSharedCoreDataManager().deleteOldNotifications(entity: "ZSpecialNotification")
+
+        let database = Database.sharedDatabse()
+        
+        database.deleteOldNotification(tableName: "SPECIALNOTIFICATION")
+        database.deleteOldNotification(tableName: "COMMONNOTIFICATION")
 
         return true
     }
     
+    lazy var applicationDocumentsDirectory: URL = {
+        // The directory the application uses to store the Core Data store file. This code uses a directory named "com.appcoda.CoreDataDemo" in the application's documents Application Support directory.
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return urls[urls.count-1]
+    }()
+
     func tokenRefreshNotification( notification:Notification)
     {
         if let refreshedToken = FIRInstanceID.instanceID().token()
@@ -260,16 +288,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                 
                     idMessageDic["message"]  = message
                 
-                    if application.applicationState == UIApplicationState.background
-                    {
-                        
-                        
-                    }
-                    else
-                    {
-                        AppPreferences.sharedPreferences().customMessagesArray.append(idMessageDic)
-
-                    }
+//                    if application.applicationState == UIApplicationState.background
+//                    {
+//                        
+//                        
+//                    }
+//                    else
+//                    {
+//                        //AppPreferences.sharedPreferences().customMessagesArray.append(idMessageDic)
+//
+//                    }
 
                 }
                 else
@@ -293,15 +321,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                         
                             self.massNotificationId = String(describing:notificationId)
                         
-                            let jobIdExist = CoreDataManager.getSharedCoreDataManager().idExists(aToken: self.massNotificationId, entityName: "ZSpecialNotification")
+//                            let jobIdExist = CoreDataManager.getSharedCoreDataManager().idExists(aToken: self.massNotificationId, entityName: "ZSpecialNotification")
+//
+//                            if !jobIdExist
+//                            {
 
-                            if !jobIdExist
-                            {
-
-                             CoreDataManager.getSharedCoreDataManager().save(entity: "ZSpecialNotification", ["NotificationId1":notificationId,"subject":body,"notificationDate":date, "userId":userId!, "notificationType":Constant.Notification_Type_Job,"readStatus":0])
+                                DispatchQueue.main.async
+                                    {
+//                                        CoreDataManager.getSharedCoreDataManager().save(entity: "ZSpecialNotification", ["NotificationId1":notificationId,"subject":body,"notificationDate":date, "userId":userId!, "notificationType":Constant.Notification_Type_Job,"readStatus":0])
                                 
-                              NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil, userInfo: nil)
-                            }
+                                        let database = Database.sharedDatabse()
+                                        
+                                        let notiObj = GeneralNotification()
+                                        notiObj.subject = body
+                                        notiObj.notificationDate = date
+                                        notiObj.userId = userId!
+                                        notiObj.notificationType = Int16(Constant.Notification_Type_General)
+                                        notiObj.notificationId1 = Int16(notificationId)
+                                        notiObj.readStatus = 0
+                                        database.insertIntoGeneralNotification(notiObj: notiObj)
+                                        NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil, userInfo: nil)
+                                }
+                             
+                            //}
                         
                     }
                     else
@@ -313,29 +355,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                         self.isMassNotification = false  // not a mass noti....3
                         
                         
-                        let jobIdExist = CoreDataManager.getSharedCoreDataManager().idExists(aToken: String(jobIDInt), entityName: "CommonNotification")
+                        //let jobIdExist = CoreDataManager.getSharedCoreDataManager().idExists(aToken: String(jobIDInt), entityName: "CommonNotification")
                         
                         let notificationId = notificationObject["JobId"] as! Int // we have inserted jobId as notificationId
 
                         //let date = Date().getLocalDateWithouTimeInString()
                         let date = Date().getLocalDateTimeInString()
 
-                        if !jobIdExist
-                        {
+//                        if !jobIdExist
+//                        {
                             let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
                             
-                            CoreDataManager.getSharedCoreDataManager().save(entity: "CommonNotification", ["jobId":jobIDInt,"subject":body,"notificationDate1":date, "userId":userId!, "notificationType":Constant.Notification_Type_Job, "notificationId":notificationId,"readStatus":0])
-                            
-                            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil, userInfo: nil)
-                        }
-                        else
-                        {
-                            let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
-                            
-                            CoreDataManager.getSharedCoreDataManager().updateNotificationJob(entityName: "CommonNotification", jobId: jobIDInt, subject: body!, notificationDate: date, userId: userId!)
-                            
-                            NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil, userInfo: nil)
-                        }
+                            DispatchQueue.main.async
+                            {
+//                                CoreDataManager.getSharedCoreDataManager().save(entity: "CommonNotification", ["jobId":jobIDInt,"subject":body,"notificationDate1":date, "userId":userId!, "notificationType":Constant.Notification_Type_Job, "notificationId":notificationId,"readStatus":0])
+                                
+                                let database = Database.sharedDatabse()
+                                
+                                let notiObj = JobsNotification()
+                                notiObj.jobId = Int64(jobIDInt)
+                                notiObj.subject = body
+                                notiObj.notificationDate1 = date
+                                notiObj.userId = userId!
+                                notiObj.notificationType = Int16(Constant.Notification_Type_Job)
+                                notiObj.notificationId = Int16(jobIDInt)
+                                notiObj.readStatus = 0
+                                database.insertIntoJobsNotification(notiObj: notiObj)
+
+                                 NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil, userInfo: nil)
+                            }
+                           
+//                        }
+//                        else
+//                        {
+//                            let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
+//                            
+//                            DispatchQueue.main.async
+//                            {
+//                                CoreDataManager.getSharedCoreDataManager().updateNotificationJob(entityName: "CommonNotification", jobId: jobIDInt, subject: body!, notificationDate: date, userId: userId!)
+//                                
+//                                NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil, userInfo: nil)
+//                            }
+//                            
+//                        }
                         
                     }
 
@@ -516,7 +578,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                         let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
                         let rootViewController = mainStoryBoard.instantiateViewController(withIdentifier: "SWRevealViewController") as! SWRevealViewController
                         
-                        DispatchQueue.main.async {
+                        DispatchQueue.main.async
+                            {
                             appDelegate.window?.rootViewController?.present(vc, animated: true, completion: nil)
                         }
                         
@@ -536,7 +599,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                     {
                         if let vc1 = UIApplication.shared.keyWindow?.rootViewController?.presentedViewController
                         {
-                            if vc1.classForCoder == MassNotificationViewController.classForCoder()
+                            if vc1.classForCoder == MassNotificationViewController.classForCoder() || vc1.classForCoder == NewJobsViewController.classForCoder()
                             {
                                 UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
                                 //print("presented = " + "\(vc1.classForCoder)")
@@ -556,18 +619,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                         
                         vc.notificationId = self.massNotificationId
                         
-                        //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "\(vc.jobId)" + "\(vc)", withCancelText: "got")
-                        //  UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
-                        DispatchQueue.main.async {
+                        DispatchQueue.main.async
+                        {
+                            Database.sharedDatabse().updateReadStatus(tableName: "SpecialNotification", notificationId: Int(self.massNotificationId)!)
+                            //CoreDataManager.getSharedCoreDataManager().updateNotificationReadStatus(entityName: "ZSpecialNotification", notificationID: Int(self.massNotificationId)!) // to reflect readstatus count on menu and noti.
+                             NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil, userInfo: nil)
+                            
                             appDelegate.window?.rootViewController?.present(vc, animated: true, completion: nil)
                         }
+
+                       
+
+                        //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "\(vc.jobId)" + "\(vc)", withCancelText: "got")
+                        //  UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
                         
                     }
                     else
                     {
                         if let vc1 = UIApplication.shared.keyWindow?.rootViewController?.presentedViewController
                         {
-                            if vc1.classForCoder == NewJobsViewController.classForCoder()
+                            if vc1.classForCoder == MassNotificationViewController.classForCoder() || vc1.classForCoder == NewJobsViewController.classForCoder()
                             {
                                 UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
                                 //print("presented = " + "\(vc1.classForCoder)")
@@ -589,11 +660,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                         vc.domainType = "horizontal"
                         vc.jobId = self.jobID
                         
+                        DispatchQueue.main.async
+                        {
+                            Database.sharedDatabse().updateReadStatus(tableName: "CommonNotification", notificationId: Int(self.jobID)!)
+
+                                //CoreDataManager.getSharedCoreDataManager().updateNotificationReadStatus(entityName: "CommonNotification", notificationID: Int(self.jobID)!)
+                            
+                             NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil, userInfo: nil)// to reflect readstatus count on menu and noti.
+                            
+                             appDelegate.window?.rootViewController?.present(vc, animated: true, completion: nil)
+
+                        }
+                        
+                       
+
                         //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "\(vc.jobId)" + "\(vc)", withCancelText: "got")
                         //  UIApplication.shared.keyWindow?.rootViewController?.present(vc, animated: true, completion: nil)
-                        DispatchQueue.main.async {
-                            appDelegate.window?.rootViewController?.present(vc, animated: true, completion: nil)
-                        }
+                       
                         
                 }
                 
@@ -901,117 +984,135 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-        self.saveContext()
+        //self.saveContext()
     }
 
     // MARK: - Core Data stack
 
-    lazy var persistentContainer: NSPersistentContainer =
-        {
-                let container = NSPersistentContainer(name: "investHR")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                 
-                /*
-                 Typical reasons for an error here include:
-                 * The parent directory does not exist, cannot be created, or disallows writing.
-                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
-                 * The device is out of space.
-                 * The store could not be migrated to the current model version.
-                 Check the error message to determine what the actual problem was.
-                 */
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
+//    lazy var persistentContainer: NSPersistentContainer =
+//        {
+//                let container = NSPersistentContainer(name: "investHR")
+//        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+//            if let error = error as NSError? {
+//                // Replace this implementation with code to handle the error appropriately.
+//                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+//                 
+//                /*
+//                 Typical reasons for an error here include:
+//                 * The parent directory does not exist, cannot be created, or disallows writing.
+//                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
+//                 * The device is out of space.
+//                 * The store could not be migrated to the current model version.
+//                 Check the error message to determine what the actual problem was.
+//                 */
+//                fatalError("Unresolved error \(error), \(error.userInfo)")
+//            }
+//        })
+//        return container
+//    }()
 
     // MARK: - Core Data Saving support
-
-    func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
-    }
-
-    lazy var applicationDocumentsDirectory: URL = {
-        // The directory the application uses to store the Core Data store file. This code uses a directory named "com.appcoda.CoreDataDemo" in the application's documents Application Support directory.
-        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return urls[urls.count-1]
-    }()
+//    lazy var managedObjectContext: NSManagedObjectContext = {
+//        // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
+//        let coordinator = self.persistentStoreCoordinator
+//        var managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+//        managedObjectContext.persistentStoreCoordinator = coordinator
+//        return managedObjectContext
+//    }()
+//    func saveContext () {
+//        let context = persistentContainer.viewContext
+//        if context.hasChanges {
+//            do {
+//                try context.save()
+//            } catch {
+//                // Replace this implementation with code to handle the error appropriately.
+//                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+//                let nserror = error as NSError
+//                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+//            }
+//        }
+//    }
+//
+//    lazy var applicationDocumentsDirectory: URL = {
+//        // The directory the application uses to store the Core Data store file. This code uses a directory named "com.appcoda.CoreDataDemo" in the application's documents Application Support directory.
+//        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+//        return urls[urls.count-1]
+//    }()
+//    
+//    lazy var managedObjectModel: NSManagedObjectModel = {
+//        // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
+//        let modelURL = Bundle.main.url(forResource: "investHR", withExtension: "momd")!
+//        return NSManagedObjectModel(contentsOf: modelURL)!
+//    }()
     
-    lazy var managedObjectModel: NSManagedObjectModel = {
-        // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
-        let modelURL = Bundle.main.url(forResource: "investHR", withExtension: "momd")!
-        return NSManagedObjectModel(contentsOf: modelURL)!
-    }()
+//    lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
+//        // The persistent store coordinator for the application. This implementation creates and returns a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
+//        // Create the coordinator and store
+//        let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
+//        let url = self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite")
+//        //let url1 = self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite-shm")
+//        //let url2 = self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite-wal")
+//
+//        let bundle = Bundle.main
+//        let path = bundle.path(forResource: "info", ofType: "plist")
+//        print(path)
+////        do {
+////            try FileManager.default.removeItem(at: url1)
+////
+////        } catch {
+////            print(error)
+////        }
+////        
+////        do {
+////            try FileManager.default.removeItem(at: url2)
+////            
+////        } catch {
+////            print(error)
+////        }
+//        // Load the existing database
+//        if !FileManager.default.fileExists(atPath: url.path) {
+////            let sourceSqliteURLs = [Bundle.main.url(forResource: "investHR", withExtension: "sqlite")!, Bundle.main.url(forResource: "investHR", withExtension: "sqlite-wal")!, Bundle.main.url(forResource: "investHR", withExtension: "sqlite-shm")!]
+////            let destSqliteURLs = [self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite"), self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite-wal"), self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite-shm")]
+//            let sourceSqliteURLs = [Bundle.main.url(forResource: "investHR", withExtension: "sqlite")!]
+//            let destSqliteURLs = [self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite")]
+//            
+//            for index in 0 ..< sourceSqliteURLs.count {
+//                do {
+//                    try FileManager.default.copyItem(at: sourceSqliteURLs[index], to: destSqliteURLs[index])
+//                } catch {
+//                    print(error)
+//                }
+//            }
+//        }
+//        
+//        var failureReason = "There was an error creating or loading the application's saved data."
+////        do {
+////            
+////            var dict = [NSMigratePersistentStoresAutomaticallyOption:true,NSInferMappingModelAutomaticallyOption:true, NSSQLitePragmasOption:["journal_mode":"DELETE"]] as [String : Any]
+//////            var dict = [NSMigratePersistentStoresAutomaticallyOption:true,NSInferMappingModelAutomaticallyOption:true, NSSQLitePragmasOption:"journal_mode = DELETE"] as [String : Any]
+////
+////           // dict.setValue(true, forKey: NSMigratePersistentStoresAutomaticallyOption)
+////           // dict.setValue(true, forKey: NSInferMappingModelAutomaticallyOption)
+////            
+////            try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: dict)
+////        } catch {
+////            // Report any error we got.
+////            var dict = [String: AnyObject]()
+////            dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data" as AnyObject?
+////            dict[NSLocalizedFailureReasonErrorKey] = failureReason as AnyObject?
+////            
+////            dict[NSUnderlyingErrorKey] = error as NSError
+////            let wrappedError = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
+////            // Replace this with code to handle the error appropriately.
+////            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+////            NSLog("Unresolved error \(wrappedError), \(wrappedError.userInfo)")
+////            abort()
+// //       }
+//        
+//        return coordinator
+//    }()
     
-    lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
-        // The persistent store coordinator for the application. This implementation creates and returns a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
-        // Create the coordinator and store
-        let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-        let url = self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite")
-        
-        let bundle = Bundle.main
-        let path = bundle.path(forResource: "info", ofType: "plist")
-        print(path)
-        // Load the existing database
-        if !FileManager.default.fileExists(atPath: url.path) {
-//            let sourceSqliteURLs = [Bundle.main.url(forResource: "investHR", withExtension: "sqlite")!, Bundle.main.url(forResource: "investHR", withExtension: "sqlite-wal")!, Bundle.main.url(forResource: "investHR", withExtension: "sqlite-shm")!]
-//            let destSqliteURLs = [self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite"), self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite-wal"), self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite-shm")]
-            let sourceSqliteURLs = [Bundle.main.url(forResource: "investHR", withExtension: "sqlite")!]
-            let destSqliteURLs = [self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite")]
-            
-            for index in 0 ..< sourceSqliteURLs.count {
-                do {
-                    try FileManager.default.copyItem(at: sourceSqliteURLs[index], to: destSqliteURLs[index])
-                } catch {
-                    print(error)
-                }
-            }
-        }
-        
-        var failureReason = "There was an error creating or loading the application's saved data."
-        do {
-            var dict = [NSMigratePersistentStoresAutomaticallyOption:true,NSInferMappingModelAutomaticallyOption:true, NSSQLitePragmasOption:["journal_mode":"DELETE"]] as [String : Any]
-           // dict.setValue(true, forKey: NSMigratePersistentStoresAutomaticallyOption)
-           // dict.setValue(true, forKey: NSInferMappingModelAutomaticallyOption)
-            
-            try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: dict)
-        } catch {
-            // Report any error we got.
-            var dict = [String: AnyObject]()
-            dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data" as AnyObject?
-            dict[NSLocalizedFailureReasonErrorKey] = failureReason as AnyObject?
-            
-            dict[NSUnderlyingErrorKey] = error as NSError
-            let wrappedError = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
-            // Replace this with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-            NSLog("Unresolved error \(wrappedError), \(wrappedError.userInfo)")
-            abort()
-        }
-        
-        return coordinator
-    }()
-    
-    lazy var managedObjectContext: NSManagedObjectContext = {
-        // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
-        let coordinator = self.persistentStoreCoordinator
-        var managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        managedObjectContext.persistentStoreCoordinator = coordinator
-        return managedObjectContext
-    }()
+   
 //
 //    // MARK: - Core Data Saving support
 //    

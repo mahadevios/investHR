@@ -168,7 +168,9 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         
         let userId = UserDefaults.standard.object(forKey: Constant.USERID) as! String
         
-        if let managedObjects = CoreDataManager.getSharedCoreDataManager().getRecordedVideoNames(entity: "UserVideos", userId: userId as! String) as? [UserVideos]
+//        if let managedObjects = CoreDataManager.getSharedCoreDataManager().getRecordedVideoNames(entity: "UserVideos", userId: userId as! String) as? [UserVideos]
+
+        if let managedObjects = Database.sharedDatabse().getUserVideos(userId: userId)
         {
             for index in managedObjects
             {
@@ -181,22 +183,6 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
                 }
                 
             }
-//            do
-//            {
-//                let storedVideosArray = try fileManager.contentsOfDirectory(atPath: videoPath)
-//                for videoName in storedVideosArray
-//                {
-//                    if !self.uploadedVideoNamesArray.contains(videoName)
-//                    {
-//                        recordedVideoNamesArray.append(videoName)
-//                    }
-//                }
-//            }
-//            catch let error as NSError
-//            {
-//                
-//            }
-
         
         }
         
@@ -274,8 +260,8 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
             {
                 do
                 {
-                    CoreDataManager.getSharedCoreDataManager().deleteUserVideos(entity: "UserVideos", videoName: videoName)
-
+                    //CoreDataManager.getSharedCoreDataManager().deleteUserVideos(entity: "UserVideos", videoName: videoName)
+                    Database.sharedDatabse().deleteVideo(videoName: String(videoName))
                     try fileManager.removeItem(atPath: savePath)
                     
                     
@@ -389,8 +375,13 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         
         let userId = UserDefaults.standard.object(forKey: Constant.USERID) as! String
         
-        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "UserVideos", ["userId":userId ,"videoName":uniqueImageName])
+        //let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "UserVideos", ["userId":userId ,"videoName":uniqueImageName])
 
+        let videoObj = Videos()
+        videoObj.userId = userId
+        videoObj.videoName = uniqueImageName
+        
+        Database.sharedDatabse().insertIntoVideos(videoObj: videoObj)
         if mediaType == "public.movie"
         {
             let mediaUrl = info[UIImagePickerControllerMediaURL] as! URL
@@ -918,7 +909,9 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
                     {
                         recordedVideoNamesArray.remove(at: index)
                         
-                        CoreDataManager.getSharedCoreDataManager().deleteUserVideos(entity: "UserVideos", videoName: videoName)
+                        Database.sharedDatabse().deleteVideo(videoName: String(videoName))
+
+                       // CoreDataManager.getSharedCoreDataManager().deleteUserVideos(entity: "UserVideos", videoName: videoName)
                     }
                     
                     self.collectionView.deleteItems(at: [indexpath!])

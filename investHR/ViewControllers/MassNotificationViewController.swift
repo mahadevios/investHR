@@ -15,8 +15,16 @@ class MassNotificationViewController: UIViewController,UIWebViewDelegate
     
     var notificationId = "0"
     
+    var presentingVC: UIViewController?
+
     @IBAction func backButtonClicked(_ sender: Any)
     {
+        if self.presentingVC?.classForCoder == NotificationJobsViewController.classForCoder()
+        {
+            let vc = self.presentingVC as! NotificationJobsViewController
+            
+            vc.notificationSegmentClicked(vc.notificationSegment)
+        }
         self.dismiss(animated: true, completion: nil)
     }
     override func viewDidLoad()

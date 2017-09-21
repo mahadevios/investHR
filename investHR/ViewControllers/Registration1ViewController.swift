@@ -264,11 +264,11 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
             linkedInId = "nil"
         }
         //let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithEmail(email: emailId, linkledInId: linkedInId)
-        let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithUserId(userId: String(describing: userId))
-
-        if !available
-        {
-           
+//        let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithUserId(userId: String(describing: userId))
+//
+//        if !available
+//        {
+        
             //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
            // let userIdString = CoreDataManager.getSharedCoreDataManager().getMaxUserId(entityName: "User")
             
@@ -277,13 +277,29 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
            // userId = userId + 1
             //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
             
-            let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["userId":"\(userId)", "name":name! ,"username":emailId,"password":self.password!,"pictureUrl":imageName!,"emailAddress":emailId,"linkedInId":linkedInId])
-        }
-        else
-        {
-            //userId = CoreDataManager.getSharedCoreDataManager().getUserId(email: emailId, linkledInId: linkedInId)
-        
-        }
+            let database = Database.sharedDatabse()
+            
+            let user = User1()
+            
+            user.userId = String(userId)
+            
+            user.name = name
+            user.username = emailId
+            user.password = self.password!
+            user.pictureUrl = imageName
+            user.emailAddress = emailId
+            user.linkedInId = linkedInId
+            user.occupation = ""
+            
+            database.insertIntoUser(user: user)
+            
+            //let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["userId":"\(userId)", "name":name! ,"username":emailId,"password":self.password!,"pictureUrl":imageName!,"emailAddress":emailId,"linkedInId":linkedInId])
+//        }
+//        else
+//        {
+//            //userId = CoreDataManager.getSharedCoreDataManager().getUserId(email: emailId, linkledInId: linkedInId)
+//        
+//        }
         
         UserDefaults.standard.set(self.email!, forKey: Constant.USERNAME)
         UserDefaults.standard.set(self.password!, forKey: Constant.PASSWORD)
@@ -326,28 +342,42 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
 
     func getState()
     {
-        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
+        //let coreDataManager = CoreDataManager.getSharedCoreDataManager()
         
         
         do
         {
-            var managedObjects:[NSManagedObject]?
+//            var managedObjects:[NSManagedObject]?
+//            
+//            managedObjects = coreDataManager.getAllRecords(entity: "State")
+//            for userObject in managedObjects as! [State]
+//            {
+//                statesArray.append(userObject.stateName!)
+//                
+//                stateNameAndIdDic[userObject.stateName!] = userObject.id
+//                
+//            }
             
-            managedObjects = coreDataManager.getAllRecords(entity: "State")
-            for userObject in managedObjects as! [State]
+            var managedObjects:[Role]?
+            
+            //managedObjects = coreDataManager.getAllRecords(entity: type)
+            
+            managedObjects = Database.sharedDatabse().getRolesVerticalHorizontal(type: "ZSTATE")
+            
+            for userObject in managedObjects!
             {
-                statesArray.append(userObject.stateName!)
+                //domainNameArray.append(userObject.roleName!)
                 
-                stateNameAndIdDic[userObject.stateName!] = userObject.id
+                //domainNameAndIdDic[userObject.roleName!] = userObject.roleId
+                
+                statesArray.append(userObject.roleName!)
+                
+                stateNameAndIdDic[userObject.roleName!] = userObject.roleId
+                
                 
             }
+
             
-            let index = statesArray.index(of: "asda")
-            
-            if index != nil
-            {
-                statesArray.remove(at: index!)
-            }
             
         } catch let error as NSError
         {
@@ -359,26 +389,26 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
     
     func getCitiesFromState( stateName:String)
     {
-        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
-
-        do
-        {
-            var managedObjects:[NSManagedObject]?
-            
-            managedObjects = coreDataManager.fetchCitiesFromStateId(entity: "City", stateId: Int16(stateNameAndIdDic[stateName]!))
-            for userObject in managedObjects as! [City]
-            {
-                cityArray.append(userObject.cityName!)
-                
-                cityNameAndIdDic[userObject.cityName!] = userObject.id
-                //stateNameAndIdDic[userObject.stateName!] = userObject.id as AnyObject?
-                
-            }
-            
-        } catch let error as NSError
-        {
-//            print(error.localizedDescription)
-        }
+//        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
+//
+//        do
+//        {
+//            var managedObjects:[NSManagedObject]?
+//            
+//            managedObjects = coreDataManager.fetchCitiesFromStateId(entity: "City", stateId: Int16(stateNameAndIdDic[stateName]!))
+//            for userObject in managedObjects as! [City]
+//            {
+//                cityArray.append(userObject.cityName!)
+//                
+//                cityNameAndIdDic[userObject.cityName!] = userObject.id
+//                //stateNameAndIdDic[userObject.stateName!] = userObject.id as AnyObject?
+//                
+//            }
+//            
+//        } catch let error as NSError
+//        {
+////            print(error.localizedDescription)
+//        }
 
     }
     

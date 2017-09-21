@@ -39,7 +39,7 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
             //domainNameArray = ["Banking & Financial Serivces","Insurance(P&C and Life & Annuity)","Healthcare Insurance","Healthcare Provider(Hospitals)","Pharma & Biotech","Life Sciences","Media & Entertainment & Gaming","Travel & Transportation & Hospitality","Manufacturing","Retail","Consumer Product Goods(CPG)","High Tech & ISV","Communication & Telecom","Aerospace","Oil and Gas","Utilities & Energy","Semi-Conductor","Logistics","Defence","Government & Public Sector","Education","Publishing","Medical Devices"]
             
             self.navigationItem.title = "Vertical"
-            getdomainNames(type: "VertcalDomains")
+            getdomainNames(type: "ZVERTCALDOMAINS")
         }
         else
             if self.domainType == "roles"
@@ -48,7 +48,7 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
                 
                 self.navigationItem.title = "Roles"
 
-                getdomainNames(type: "Roles")
+                getdomainNames(type: "ZROLES")
 
             }
             else
@@ -58,7 +58,7 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
                     
                     self.navigationItem.title = "Horizontal"
 
-                    getdomainNames(type: "HorizontalDomains")
+                    getdomainNames(type: "ZHORIZONTALDOMAINS")
 
                 }
         
@@ -73,49 +73,51 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
     
     func getdomainNames( type:String)
     {
-        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
+        //let coreDataManager = CoreDataManager.getSharedCoreDataManager()
         
         
         do
         {
-            var managedObjects:[NSManagedObject]?
+            //var managedObjects:[NSManagedObject]?
+            var managedObjects:[Role]?
+
+            //managedObjects = coreDataManager.getAllRecords(entity: type)
             
-            managedObjects = coreDataManager.getAllRecords(entity: type)
+            managedObjects = Database.sharedDatabse().getRolesVerticalHorizontal(type: type)
             
-            if type == "VertcalDomains"
+            if type == "ZVERTCALDOMAINS"
             {
-                for userObject in managedObjects as! [VertcalDomains]
+                for userObject in managedObjects!
                 {
-                    domainNameArray.append(userObject.verticalName!)
+                    domainNameArray.append(userObject.roleName!)
                     
-                    domainNameAndIdDic[userObject.verticalName!] = userObject.verticalId
+                    domainNameAndIdDic[userObject.roleName!] = userObject.roleId
                     
                 }
 
             }
             else
-                if type == "HorizontalDomains"
+                if type == "ZHORIZONTALDOMAINS"
                 {
-                    for userObject in managedObjects as! [HorizontalDomains]
+                    for userObject in managedObjects!
                     {
-                        domainNameArray.append(userObject.horizontalName!)
+                        domainNameArray.append(userObject.roleName!)
                         
-                        domainNameAndIdDic[userObject.horizontalName!] = userObject.horizontalId
+                        domainNameAndIdDic[userObject.roleName!] = userObject.roleId
                         
                     }
                     
                 }
             else
-                    if type == "Roles"
+                    if type == "ZROLES"
                     {
-                        for userObject in managedObjects as! [Roles]
+                        for userObject in managedObjects!
                         {
                             domainNameArray.append(userObject.roleName!)
                             
                             domainNameAndIdDic[userObject.roleName!] = userObject.roleId
                             
                         }
-                        
                     }
         } catch let error as NSError
         {

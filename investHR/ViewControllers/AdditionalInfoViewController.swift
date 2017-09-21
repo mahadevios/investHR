@@ -135,11 +135,11 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         }
         //let code = responseDic["code"]
         
-        let name = responseDic["name"]
+        let name = responseDic["name"] as! String
         
         let message = responseDic["Message"]
         
-        let imageName = responseDic["ImageName"]
+        let imageName = responseDic["ImageName"] as! String
         
         let savedJobListString = responseDic["savedJobList"] as? String
         
@@ -151,60 +151,60 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
 
         var userId = responseDic["UserId"] as! Int
 
-        if let savedJobListData = savedJobListString?.data(using: .utf8, allowLossyConversion: true)
-        {
-            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
-            
-            var savedJobListArray:[Any]!
-            do
-            {
-                savedJobListArray = try JSONSerialization.jsonObject(with: savedJobListData, options: .allowFragments) as! [Any]
-            } catch let error as NSError
-            {
-                
-            }
-            //var savedJobIdsArray = [Any]()
-            //var appliedJobIdsArray = [Any]()
-            
-            for index in 0 ..< savedJobListArray.count
-            {
-                let savedJobListDict = savedJobListArray[index] as! [String:AnyObject]
-                
-                let jobId = savedJobListDict["jobId"] as! Int
-                
-                let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
-                
-                //            savedJobIdsArray.append(jobId)
-            }
-            
-            
-        }
+//        if let savedJobListData = savedJobListString?.data(using: .utf8, allowLossyConversion: true)
+//        {
+//            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
+//            
+//            var savedJobListArray:[Any]!
+//            do
+//            {
+//                savedJobListArray = try JSONSerialization.jsonObject(with: savedJobListData, options: .allowFragments) as! [Any]
+//            } catch let error as NSError
+//            {
+//                
+//            }
+//            //var savedJobIdsArray = [Any]()
+//            //var appliedJobIdsArray = [Any]()
+//            
+//            for index in 0 ..< savedJobListArray.count
+//            {
+//                let savedJobListDict = savedJobListArray[index] as! [String:AnyObject]
+//                
+//                let jobId = savedJobListDict["jobId"] as! Int
+//                
+//                let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
+//                
+//                //            savedJobIdsArray.append(jobId)
+//            }
+//            
+//            
+//        }
         
-        if let appliedJobListData = appliedJobListString?.data(using: .utf8, allowLossyConversion: true)
-        {
-            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
-            
-            var appliedJobListArray:[Any]!
-            do
-            {
-                appliedJobListArray = try JSONSerialization.jsonObject(with: appliedJobListData, options: .allowFragments) as! [Any]
-            } catch let error as NSError
-            {
-                
-            }
-            
-            for index in 0 ..< appliedJobListArray.count
-            {
-                let appliedJobListDict = appliedJobListArray[index] as! [String:AnyObject]
-                
-                let jobId = appliedJobListDict["jobId"] as! Int
-                
-                let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
-                //appliedJobIdsArray.append(jobId)
-            }
-            
-        }
-        
+//        if let appliedJobListData = appliedJobListString?.data(using: .utf8, allowLossyConversion: true)
+//        {
+//            CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
+//            
+//            var appliedJobListArray:[Any]!
+//            do
+//            {
+//                appliedJobListArray = try JSONSerialization.jsonObject(with: appliedJobListData, options: .allowFragments) as! [Any]
+//            } catch let error as NSError
+//            {
+//                
+//            }
+//            
+//            for index in 0 ..< appliedJobListArray.count
+//            {
+//                let appliedJobListDict = appliedJobListArray[index] as! [String:AnyObject]
+//                
+//                let jobId = appliedJobListDict["jobId"] as! Int
+//                
+//                let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":String(jobId),"userId":"1"])
+//                //appliedJobIdsArray.append(jobId)
+//            }
+//            
+//        }
+//        
        // CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
 
         if emailId == ""
@@ -216,11 +216,11 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
             linkedInId = "nil"
         }
         //let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithEmail(email: emailId, linkledInId: linkedInId)
-        let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithUserId(userId: String(describing: userId))
-
-        if !available
-        {
-            
+//        let available = CoreDataManager.getSharedCoreDataManager().checkUserAlreadyExistWithUserId(userId: String(describing: userId))
+//
+//        if !available
+//        {
+        
             //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
 //            let userIdString = CoreDataManager.getSharedCoreDataManager().getMaxUserId(entityName: "User")
 //            
@@ -229,13 +229,28 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
 //            userId = userId + 1
             //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
             
-            let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["userId":"\(userId)", "name":name! ,"username":emailId,"password":self.password!,"pictureUrl":imageName!,"emailAddress":emailId,"linkedInId":linkedInId])
-        }
-        else
-        {
-           // userId = CoreDataManager.getSharedCoreDataManager().getUserId(email: emailId, linkledInId: linkedInId)
+            let database = Database.sharedDatabse()
             
-        }
+            let user = User1()
+            
+            user.userId = String(userId)
+            
+            user.name = name
+            user.username = emailId
+            user.password = self.password!
+            user.pictureUrl = imageName
+            user.emailAddress = emailId
+            user.linkedInId = linkedInId
+            user.occupation = ""
+            
+            database.insertIntoUser(user: user)
+           // let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "User", ["userId":"\(userId)", "name":name! ,"username":emailId,"password":self.password!,"pictureUrl":imageName!,"emailAddress":emailId,"linkedInId":linkedInId])
+//        }
+//        else
+//        {
+//           // userId = CoreDataManager.getSharedCoreDataManager().getUserId(email: emailId, linkledInId: linkedInId)
+//            
+//        }
         
         UserDefaults.standard.set(self.email!, forKey: Constant.USERNAME)
         UserDefaults.standard.set(self.password!, forKey: Constant.PASSWORD)
@@ -476,15 +491,20 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
     
     func getCandidateRoles()
     {
-        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
+        //let coreDataManager = CoreDataManager.getSharedCoreDataManager()
         
         
         do
         {
-            var managedObjects:[NSManagedObject]?
+//            var managedObjects:[NSManagedObject]?
+            var managedObjects:[Role]?
             
-            managedObjects = coreDataManager.getAllRecords(entity: "Roles")
-            for userObject in managedObjects as! [Roles]
+            //managedObjects = coreDataManager.getAllRecords(entity: type)
+            
+            managedObjects = Database.sharedDatabse().getRolesVerticalHorizontal(type: "ZROLES")
+
+            //managedObjects = coreDataManager.getAllRecords(entity: "Roles")
+            for userObject in managedObjects!
             {
                 candidateFunctionArray.append(userObject.roleName!)
                 roleNameAndIdDic[userObject.roleName!] = userObject.roleId

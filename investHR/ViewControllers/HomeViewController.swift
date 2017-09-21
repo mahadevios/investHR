@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseAuth
 
+
 //import FBSDKLoginKit
 
 import Firebase
@@ -190,7 +191,9 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
 //                    
 //            }
 //        }
-       
+        
+
+        
         
         
     }
@@ -202,6 +205,28 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
            self.perform(#selector(showPopUp), with: nil, afterDelay: 0.2)
            //self.showPopUp()
            AppPreferences.sharedPreferences().popUpShown = true
+            
+            if let refreshedToken = FIRInstanceID.instanceID().token()
+            {
+                AppPreferences.sharedPreferences().firebaseInstanceId = refreshedToken
+                
+                let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+                let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+                let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+                
+                if username != nil && password != nil
+                {
+                    APIManager.getSharedAPIManager().updateDeviceToken(username: username!, password: password!,linkedinId:"", deviceToken: AppPreferences.sharedPreferences().firebaseInstanceId)
+                }
+                else
+                    if linkedInId != nil
+                    {
+                        APIManager.getSharedAPIManager().updateDeviceToken(username: "", password: "",linkedinId:linkedInId!, deviceToken: AppPreferences.sharedPreferences().firebaseInstanceId)
+                        
+                }
+                
+            }
+
         }
         
         //print("Total windows = " + "\(UIApplication.shared.windows)")

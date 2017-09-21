@@ -362,24 +362,47 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
     
     func getState()
     {
-        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
+        //let coreDataManager = CoreDataManager.getSharedCoreDataManager()
         
         
         do
         {
-            var managedObjects:[NSManagedObject]?
+//            var managedObjects:[NSManagedObject]?
+//            
+//            managedObjects = coreDataManager.getAllRecords(entity: "State")
+//            for userObject in managedObjects as! [State]
+//            {
+//                statesArray.append(userObject.stateName!)
+//                
+//                stateNameAndIdDic[userObject.stateName!] = userObject.id
+//                
+//                statesCopyForPredicateArray.append(userObject.stateName!)
+//                
+//            }
             
-            managedObjects = coreDataManager.getAllRecords(entity: "State")
-            for userObject in managedObjects as! [State]
-            {
-                statesArray.append(userObject.stateName!)
-                
-                stateNameAndIdDic[userObject.stateName!] = userObject.id
-                
-                statesCopyForPredicateArray.append(userObject.stateName!)
-                
-            }
             
+            var managedObjects:[Role]?
+            
+            //managedObjects = coreDataManager.getAllRecords(entity: type)
+            
+            managedObjects = Database.sharedDatabse().getRolesVerticalHorizontal(type: "ZSTATE")
+            
+                for userObject in managedObjects!
+                {
+                    //domainNameArray.append(userObject.roleName!)
+                    
+                    //domainNameAndIdDic[userObject.roleName!] = userObject.roleId
+                    
+                    statesArray.append(userObject.roleName!)
+                    
+                    stateNameAndIdDic[userObject.roleName!] = userObject.roleId
+                    
+                    statesCopyForPredicateArray.append(userObject.roleName!)
+                    
+                }
+                
+            
+
 //            let index = statesArray.index(of: "asda")
 //            
 //            if index != nil

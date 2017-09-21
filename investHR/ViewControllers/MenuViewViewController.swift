@@ -52,6 +52,8 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         NotificationCenter.default.addObserver(self, selector: #selector(upadateUserData), name: NSNotification.Name(Constant.NOTIFICATION_USER_CHANGED), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(loggedOut), name: NSNotification.Name(Constant.NOTIFICATION_LOGOUT), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(newNotiAdded), name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil)
         // Do any additional setup after loading the view.
     }
     
@@ -60,6 +62,10 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
        showData()
     }
     
+    func newNotiAdded()
+    {
+        self.menuTableView.reloadData()
+    }
     func loggedOut(dataDic:Notification)
     {
         DispatchQueue.main.async
@@ -94,8 +100,14 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
 
         
         //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "User")
-        CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
-        CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
+        let database = Database.sharedDatabse()
+        
+
+        database.truncateTable(tableName: "ZSAVEDJOBS")
+        database.truncateTable(tableName: "ZAPPLIEDJOBS")
+
+        //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "SavedJobs")
+        //CoreDataManager.getSharedCoreDataManager().deleteAllRecords(entity: "AppliedJobs")
         
         if AppPreferences.sharedPreferences().logoutFromPasswordReset == true
         {
@@ -132,9 +144,13 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
     
     func getUnreadNotificationCount() -> Int
     {
-        let commonNotiCount = CoreDataManager.getSharedCoreDataManager().getUnreadNotiCount(entity: "CommonNotification")
-        
-        let specialNotiCount = CoreDataManager.getSharedCoreDataManager().getUnreadNotiCount(entity: "ZSpecialNotification")
+        let specialNotiCount = Database.sharedDatabse().getUnreadNotiCount(tableName: "SpecialNotification")
+
+        let commonNotiCount = Database.sharedDatabse().getUnreadNotiCount(tableName: "CommonNotification")
+
+//        let commonNotiCount = CoreDataManager.getSharedCoreDataManager().getUnreadNotiCount(entity: "CommonNotification")
+//        
+//        let specialNotiCount = CoreDataManager.getSharedCoreDataManager().getUnreadNotiCount(entity: "ZSpecialNotification")
         
         print("count =  \(commonNotiCount+specialNotiCount)")
         
@@ -208,7 +224,19 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             {
                 let notiCountLabel = bgView.viewWithTag(204) as! UILabel
                 
-                notiCountLabel.text = "\(self.getUnreadNotificationCount())"
+                let notiCount = self.getUnreadNotificationCount()
+
+                if notiCount < 1
+                {
+                    bgView.isHidden = true
+                }
+                else
+                {
+                    bgView.isHidden = false
+                    
+                    notiCountLabel.text = "\(self.getUnreadNotificationCount())"
+
+                }
 
             }
             else
@@ -231,13 +259,25 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
                 
                 notiCountLabel.textAlignment = NSTextAlignment.center
                 
-                notiCountLabel.text = "\(self.getUnreadNotificationCount())"
+                let notiCount = self.getUnreadNotificationCount()
                 
-                notiCountLabel.textColor = UIColor.white
-                
-                countBGView.addSubview(notiCountLabel)
-                
-                cell.addSubview(countBGView)
+                if notiCount < 1
+                {
+                  countBGView.isHidden = true
+                }
+                else
+                {
+                    countBGView.isHidden = false
+
+                    notiCountLabel.text = "\(notiCount)"
+                    
+                    notiCountLabel.textColor = UIColor.white
+                    
+                    countBGView.addSubview(notiCountLabel)
+                    
+                    cell.addSubview(countBGView)
+                }
+               
 
             }
           
@@ -552,16 +592,20 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         
         self.menuTableView.reloadData()
         
-        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
+        let database = Database.sharedDatabse()
+        
+        let userObject = database.getUserData() as User1
+        
+        //let coreDataManager = CoreDataManager.getSharedCoreDataManager()
         
         
         do
         {
-            var managedObjects:[NSManagedObject]?
+            //var managedObjects:[NSManagedObject]?
             
-            managedObjects = coreDataManager.getAllRecords(entity: "User")
-            for userObject in (managedObjects as? [User])!
-            {
+           // managedObjects = coreDataManager.getAllRecords(entity: "User")
+//            for userObject1 in (managedObjects as? [User])!
+//            {
                 let firstName = userObject.name
                 //let pictureUrlString1 = Constant.USER_PROFILE_IMAGE_PATH + userObject.pictureUrl
                 
@@ -621,7 +665,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
                 
                 
     
-            }
+            //}
             
         } catch let error as NSError
         {

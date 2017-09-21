@@ -53,13 +53,22 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
     var coutryCodesArray:[String] = []
 
     //var browseButton:UIButton!
+    var presentingVC: UIViewController?
 
     var submitButton:UIButton!
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBAction func backButtonPressed(_ sender: Any)
     {
+        if self.presentingVC?.classForCoder == NotificationJobsViewController.classForCoder()
+        {
+            let vc = self.presentingVC as! NotificationJobsViewController
+            
+            vc.notificationSegmentClicked(vc.notificationSegment)
+        }
         self.dismiss(animated: true, completion: nil)
+        
+        
     }
     @IBAction func shareFriendButtonClicked(_ sender: Any)
     {
@@ -92,9 +101,9 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         }
         
         savedJobsIdsArray.removeAll()
-        if let managedObjects = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "SavedJobs")
+        if let managedObjects = Database.sharedDatabse().getSavedJobs(type: "ZSAVEDJOBS")
         {
-            for savedJobObject in managedObjects as! [SavedJobs]
+            for savedJobObject in managedObjects
             {
                 let jobId = savedJobObject.jobId
                 
@@ -104,16 +113,15 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         //let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
         appliedJobsIdsArray.removeAll()
-        if let managedObjects1 = CoreDataManager.getSharedCoreDataManager().getAllRecords(entity: "AppliedJobs")
+        if let managedObjects = Database.sharedDatabse().getSavedJobs(type: "ZAPPLIEDJOBS")
         {
-            for appliedJobObject in managedObjects1 as! [AppliedJobs]
+            for appliedJobObject in managedObjects
             {
                 let jobId = appliedJobObject.jobId
                 
                 appliedJobsIdsArray.append(Int(jobId!)!)
             }
         }
-        
         
         NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
         
@@ -218,72 +226,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                     
                 }
             }
-            //for index0 in 0 ..< uniqueStateArray.count
-//            {
-//                var stateAdded = false
-//                var firstTime = true
-//                
-//                
-//                for index in 0 ..< cityStateArray!.count
-//                {
-//                    let cityStateDic = cityStateArray![index] as? [String:AnyObject]
-//                    
-//                    let state = cityStateDic?["state"] as! String
-//                    
-//                    
-//                    if state == uniqueStateArray[index0]
-//                    {
-//                        let optionalCity = cityStateDic?["city"]
-//                        
-//                        var city = ""
-//                        
-//                        if optionalCity is NSNull
-//                        {
-//                            city = ""
-//                            if !stateAdded
-//                            {
-//                                //                                jobLocationArray.append("\(state)\(":")\(city)")
-//                                jobLocationArray.append("\(state)")
-//                                
-//                                stateAdded = true
-//                            }
-//                            else
-//                            {
-//                                //jobLocationArray.append("\(",")\(city)")
-//                            }
-//                        }
-//                        else
-//                        {
-//                            city = optionalCity! as! String
-//                            
-//                            if !stateAdded
-//                            {
-//                                jobLocationArray.append("\(state)\(":")\(city)")
-//                                stateAdded = true
-//                                firstTime = false
-//                                
-//                            }
-//                            else
-//                            {
-//                                if firstTime == true
-//                                {
-//                                    jobLocationArray.append("\(":")\(city)")
-//                                    firstTime = false
-//                                    
-//                                }
-//                                else
-//                                {
-//                                    jobLocationArray.append("\(",")\(city)")
-//                                    
-//                                }
-//                                
-//                            }
-//                        }
-//                    }
-//                }
-//                jobLocationArray.append("\n")
-//            }
-            
+
             
         } catch let error as NSError
         {
@@ -379,30 +322,10 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                 {
                     uniqueStateArray.append(state)
                 }
-                //                let optionalCity = cityStateDic?["city"]
-                //
-                //                var city = ""
-                //
-                //                if optionalCity is NSNull
-                //                {
-                //                    city = ""
-                //                }
-                //                else
-                //                {
-                //                 city = optionalCity! as! String
-                //                }
-                //                jobLocationArray.append("\(state)\(" ")\(city)")
                 
             }
             jobLocationArray.removeAll()
             
-//            for uniqueStateName in uniqueStateArray
-//            {
-//                jobLocationArray.append(uniqueStateName)
-//                
-//                jobLocationArray.append(",")
-//
-//            }
             
             for index in 0 ..< uniqueStateArray.count
             {
@@ -419,73 +342,6 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                 }
             }
             
-
-           // for 0..< u
-            //for index0 in 0 ..< uniqueStateArray.count
-//            {
-//                var stateAdded = false
-//                var firstTime = true
-//
-//                
-//                for index in 0 ..< cityStateArray!.count
-//                {
-//                    let cityStateDic = cityStateArray![index] as? [String:AnyObject]
-//                    
-//                    let state = cityStateDic?["state"] as! String
-//                    
-//                    
-//                    if state == uniqueStateArray[index0]
-//                    {
-//                        let optionalCity = cityStateDic?["city"]
-//                        
-//                        var city = ""
-//                        
-//                        if optionalCity is NSNull
-//                        {
-//                            city = ""
-//                            if !stateAdded
-//                            {
-//                                //                                jobLocationArray.append("\(state)\(":")\(city)")
-//                                jobLocationArray.append("\(state)")
-//                                
-//                                stateAdded = true
-//                            }
-//                            else
-//                            {
-//                                //jobLocationArray.append("\(",")\(city)")
-//                            }
-//                        }
-//                        else
-//                        {
-//                            city = optionalCity! as! String
-//                            
-//                            if !stateAdded
-//                            {
-//                                jobLocationArray.append("\(state)\(":")\(city)")
-//                                stateAdded = true
-//                                firstTime = false
-//
-//                            }
-//                            else
-//                            {
-//                                if firstTime == true
-//                                {
-//                                    jobLocationArray.append("\(":")\(city)")
-//                                    firstTime = false
-//
-//                                }
-//                                else
-//                                {
-//                                    jobLocationArray.append("\(",")\(city)")
-//
-//                                }
-//
-//                            }
-//                        }
-//                    }
-//                }
-//                jobLocationArray.append("\n")
-//            }
             
             
         } catch let error as NSError
@@ -505,7 +361,13 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         let appliedJobId = dataDictionary["jobId"] as! String
         
-        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":appliedJobId,"userId":"1"])
+        
+        //let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "AppliedJobs", ["domainType":"" ,"jobId":appliedJobId,"userId":"1"])
+        
+        let job = Job()
+        job.jobId = String(appliedJobId)
+        job.userId = String(1)
+        Database.sharedDatabse().insertIntoAppliedJobs(job: job)
         
         self.applied = true
         
@@ -1037,8 +899,11 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         let savedJobId = dataDictionary["jobId"] as! String
         
-        let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":savedJobId,"userId":"1"])
-        
+        //let managedObject = CoreDataManager.getSharedCoreDataManager().save(entity: "SavedJobs", ["domainType":"" ,"jobId":savedJobId,"userId":"1"])
+        let job = Job()
+        job.jobId = String(savedJobId)
+        job.userId = String(1)
+        Database.sharedDatabse().insertIntoSavedJobs(job: job)
         self.saved = true
         
         self.collectionView.reloadData()
@@ -1442,6 +1307,15 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
     {
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.1, options: .transitionCurlUp, animations: {
             
+            
+            if let view = self.view.viewWithTag(10000)
+            {
+               view.removeFromSuperview()
+            }
+            if let view1 = self.view.viewWithTag(10001)
+            {
+                view1.removeFromSuperview()
+            }
             self.scrollView.frame = CGRect(x: -self.view.frame.size.width, y: -self.view.frame.size.height*0.09, width: self.view.frame.size.width*0.8, height: self.view.frame.size.height*0.73)
             
             
