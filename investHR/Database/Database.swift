@@ -296,7 +296,7 @@ public class Database:NSObject
             }
             else
             {
-                print("deleted successfully")
+                //print("deleted successfully")
             }
             
             if sqlite3_finalize(statement) != SQLITE_OK {
@@ -373,7 +373,7 @@ public class Database:NSObject
             }
             else
             {
-                print("deleted successfully")
+                //print("deleted successfully")
             }
             
             if sqlite3_finalize(statement) != SQLITE_OK {
@@ -421,7 +421,7 @@ public class Database:NSObject
                 {
                     let email = String(cString: cString)
                     user.emailAddress = email
-                    print("name = \(email)")
+                    //print("name = \(email)")
                 }
                 else
                 {
@@ -432,7 +432,7 @@ public class Database:NSObject
                 {
                     let linkedInId = String(cString: cString)
                     user.linkedInId = linkedInId
-                    print("name = \(linkedInId)")
+                    //print("name = \(linkedInId)")
                 }
                 else
                 {
@@ -443,7 +443,7 @@ public class Database:NSObject
                 {
                     let name = String(cString: cString)
                     user.name = name
-                    print("name = \(name)")
+                    //print("name = \(name)")
                 }
                 else
                 {
@@ -454,7 +454,7 @@ public class Database:NSObject
                 {
                     let password = String(cString: cString)
                     user.password = password
-                    print("password = \(password)")
+                    //print("password = \(password)")
                 }
                 else
                 {
@@ -465,7 +465,7 @@ public class Database:NSObject
                 {
                     let pictureUrl = String(cString: cString)
                     user.pictureUrl = pictureUrl
-                    print("pictureUrl = \(pictureUrl)")
+                    //print("pictureUrl = \(pictureUrl)")
                 }
                 else
                 {
@@ -476,7 +476,7 @@ public class Database:NSObject
                 {
                     let userId = String(cString: cString)
                     user.userId = userId
-                    print("userId = \(userId)")
+                    //print("userId = \(userId)")
                 }
                 else
                 {
@@ -487,7 +487,7 @@ public class Database:NSObject
                 {
                     let username = String(cString: cString)
                     user.username = username
-                    print("username = \(username)")
+                    //print("username = \(username)")
                 }
                 else
                 {
@@ -561,7 +561,7 @@ public class Database:NSObject
                 {
                     let notificationDate = String(cString: cString)
                     jobNotiObj.notificationDate1 = notificationDate
-                    print("notificationDate = \(notificationDate)")
+                    //print("notificationDate = \(notificationDate)")
                 }
                 else
                 {
@@ -572,7 +572,7 @@ public class Database:NSObject
                 {
                     let subject = String(cString: cString)
                     jobNotiObj.subject = subject
-                    print("subject = \(subject)")
+                    //print("subject = \(subject)")
                 }
                 else
                 {
@@ -583,7 +583,7 @@ public class Database:NSObject
                 {
                     let userId = String(cString: cString)
                     jobNotiObj.userId = userId
-                    print("userId = \(userId)")
+                    //print("userId = \(userId)")
                 }
                 else
                 {
@@ -661,7 +661,7 @@ public class Database:NSObject
                 {
                     let notificationDate = String(cString: cString)
                     jobNotiObj.notificationDate = notificationDate
-                    print("notificationDate = \(notificationDate)")
+                    //print("notificationDate = \(notificationDate)")
                 }
                 else
                 {
@@ -672,7 +672,7 @@ public class Database:NSObject
                 {
                     let subject = String(cString: cString)
                     jobNotiObj.subject = subject
-                    print("subject = \(subject)")
+                    //print("subject = \(subject)")
                 }
                 else
                 {
@@ -683,7 +683,7 @@ public class Database:NSObject
                 {
                     let userId = String(cString: cString)
                     jobNotiObj.userId = userId
-                    print("userId = \(userId)")
+                    //print("userId = \(userId)")
                 }
                 else
                 {
@@ -731,7 +731,7 @@ public class Database:NSObject
             
             let userId = UserDefaults.standard.object(forKey: Constant.USERID) as! String
             
-            if sqlite3_prepare_v2(db, "select Count(*) from \(tableName) where READSTATUS = 0", -1, &statement, nil) != SQLITE_OK
+            if sqlite3_prepare_v2(db, "select Count(*) from \(tableName) where READSTATUS = 0 and USERID = \(userId)", -1, &statement, nil) != SQLITE_OK
             {
                 let errmsg = String(cString: sqlite3_errmsg(db)!)
                 print("error preparing select: \(errmsg)")
@@ -796,7 +796,7 @@ public class Database:NSObject
             }
             else
             {
-                print("updated successfully")
+                //print("updated successfully")
             }
             
             if sqlite3_finalize(statement) != SQLITE_OK {
@@ -1008,7 +1008,7 @@ public class Database:NSObject
                 {
                     let roleName = String(cString: cString)
                     roleObj.roleName = roleName
-                    print("roleName = \(roleName)")
+//                    print("roleName = \(roleName)")
                 }
                 else
                 {
@@ -1147,7 +1147,7 @@ public class Database:NSObject
             }
             else
             {
-                print("updated successfully")
+                //print("updated successfully")
             }
             
             if sqlite3_finalize(statement) != SQLITE_OK {

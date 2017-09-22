@@ -227,10 +227,83 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
                 
             }
 
+            DispatchQueue.global().async
+            {
+                let available = self.appUpdateAvailable()
+                
+                
+                if available == true
+                {
+                    let alertController = UIAlertController(title: "Update available for InvestHR", message: "", preferredStyle: UIAlertControllerStyle.alert)
+                    
+                    let okAction = UIAlertAction(title: "Update", style: UIAlertActionStyle.default, handler:
+                    { act -> Void in
+                        
+                        let appString = "itms://itunes.com/apps/InvestHR"
+                        //let appString = "http://itunes.com/apps/Cubedictate"
+                        
+                        UIApplication.shared.open(NSURL.init(string: appString)! as URL)
+                        //UIApplication.shared.open(URL.init(string: appString1)!, options: , completionHandler: nil)
+                        
+                    }
+                    )
+                    let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: {act -> Void in
+                        
+                        alertController.dismiss(animated: true, completion: nil)
+                        
+                    })
+                    
+                    alertController.addAction(okAction)
+                    alertController.addAction(cancelAction)
+                    
+                    self.present(alertController, animated: true, completion: nil)
+                }
+
+            }
+            
         }
         
         //print("Total windows = " + "\(UIApplication.shared.windows)")
     }
+    
+    func appUpdateAvailable() -> Bool
+    {
+        let bundle1 = Bundle.main.infoDictionary
+        var appID = bundle1?["CFBundleIdentifier"] as! String
+        //appID = "com.coreFlexSolutions.CubeDictate"
+        let storeInfoURL: String = "http://itunes.apple.com/lookup?bundleId=\(appID)"
+        var upgradeAvailable = false
+        // Get the main bundle of the app so that we can determine the app's version number
+        let bundle = Bundle.main
+        if let infoDictionary = bundle.infoDictionary {
+            // The URL for this app on the iTunes store uses the Apple ID for the  This never changes, so it is a constant
+            let urlOnAppStore = NSURL(string: storeInfoURL)
+            
+            if let dataInJSON = NSData.init(contentsOf: urlOnAppStore! as URL) {
+                // Try to deserialize the JSON that we got
+                if let dict: NSDictionary = try? JSONSerialization.jsonObject(with: dataInJSON as Data, options: JSONSerialization.ReadingOptions.allowFragments) as! [String: AnyObject] as NSDictionary {
+                    let results:NSArray = (dict["results"] as? NSArray)!
+                        
+                    if results.count > 0
+                    {
+                        if let version = (results[0] as! [String:AnyObject])["version"] as? String {
+                            // Get the version number of the current version installed on device
+                            if let currentVersion = infoDictionary["CFBundleShortVersionString"] as? String {
+                                // Check if they are the same. If not, an upgrade is available.
+                                print("\(version)")
+                                if version != currentVersion {
+                                    upgradeAvailable = true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return upgradeAvailable
+    }
+    
+    
     func showPopUp()
     {
         

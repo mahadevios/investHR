@@ -152,7 +152,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
 //        
 //        let specialNotiCount = CoreDataManager.getSharedCoreDataManager().getUnreadNotiCount(entity: "ZSpecialNotification")
         
-        print("count =  \(commonNotiCount+specialNotiCount)")
+        //print("count =  \(commonNotiCount+specialNotiCount)")
         
         return commonNotiCount+specialNotiCount
     

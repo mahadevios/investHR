@@ -780,6 +780,15 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     }
     // MARK: - UICollectionViewDelegate protocol
   
+//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath)
+//    {
+//        let lastElement = jobsArray.count - 1
+//        if !isLoading && indexPath.row == lastElement {
+//            self.collectionView.collectionViewLayout.invalidateLayout()
+//            isLoading = true
+//            loadMoreData()
+//        }
+//    }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
         savedJobsIdsArray.removeAll()

@@ -159,7 +159,7 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource,MFMailCom
 //        let cancelAction = UIAlertAction(title: "Delete", style: UIAlertActionStyle.default, handler: { act -> Void in})
         
 //        let url = NSURL(string:"itms://itunes.com/apps/CubeDictate")
-        let url = NSURL(string:"itms://itunes.com/apps/investhr/idapp@investhr.com")
+        let url = NSURL(string:"http://itunes.com/apps/investhr/idapp@investhr.com")
 //        let url = NSURL(string:"itms://itunes.com/apps/cubedictate/idappledeveloper@coreflexsolutions.com")
         
         let alertController = UIActivityViewController(activityItems:[self], applicationActivities: nil)
@@ -180,14 +180,14 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource,MFMailCom
     func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any
     {
         
-        return NSURL(string:"itms://itunes.com/apps/investhr/idapp@investhr.com") ?? "investHR"
+        return NSURL(string:"http://itunes.com/apps/investhr/idapp@investhr.com") ?? "investHR"
     }
     
     
     func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType) -> Any?
     {
 
-            return NSURL(string:"itms://itunes.com/apps/investhr/idapp@investhr.com") ?? "investHR"
+            return NSURL(string:"http://itunes.com/apps/investhr/idapp@investhr.com") ?? "investHR"
 
     }
     

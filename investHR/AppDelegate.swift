@@ -70,16 +70,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         
         let url = self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite")
 
-        if !FileManager.default.fileExists(atPath: url.path) {
-            //            let sourceSqliteURLs = [Bundle.main.url(forResource: "investHR", withExtension: "sqlite")!, Bundle.main.url(forResource: "investHR", withExtension: "sqlite-wal")!, Bundle.main.url(forResource: "investHR", withExtension: "sqlite-shm")!]
-            //            let destSqliteURLs = [self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite"), self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite-wal"), self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite-shm")]
+        if !FileManager.default.fileExists(atPath: url.path)
+        {
             let sourceSqliteURLs = [Bundle.main.url(forResource: "investHR", withExtension: "sqlite")!]
+            
             let destSqliteURLs = [self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite")]
             
-            for index in 0 ..< sourceSqliteURLs.count {
-                do {
+            for index in 0 ..< sourceSqliteURLs.count
+            {
+                do
+                {
                     try FileManager.default.copyItem(at: sourceSqliteURLs[index], to: destSqliteURLs[index])
-                } catch {
+                }
+                catch {
                     print(error)
                 }
             }
@@ -441,7 +444,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 
             }
             else
-            if isMessageNotification == true
+            if isMassNotification == true
             {
                 label.text = "New Activity"
             }

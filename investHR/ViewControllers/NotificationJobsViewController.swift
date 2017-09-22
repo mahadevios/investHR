@@ -42,6 +42,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
     
     func getDataOfSegmennt(sender: UISegmentedControl)
     {
+        
         if sender.selectedSegmentIndex == 0
         {
             self.jobNotificationObjectsArray?.removeAll()
@@ -68,22 +69,57 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
             
             //let specialNotiCount = CoreDataManager.getSharedCoreDataManager().getUnreadNotiCount(entity: "ZSpecialNotification")
             
-            let specialNotiCount = database().getUnreadNotiCount(tableName: "SpecialNotification")
-
-            
-            if specialNotiCount > 0
-            {
-                self.notificationSegment.setTitle("General(\(specialNotiCount))", forSegmentAt: 1)
-                
-            }
-            else
-            {
-                self.notificationSegment.setTitle("General", forSegmentAt: 1)
-                
-            }
+//            let specialNotiCount = database().getUnreadNotiCount(tableName: "SpecialNotification")
+//
+//            
+//            if specialNotiCount > 0
+//            {
+//                self.notificationSegment.setTitle("General(\(specialNotiCount))", forSegmentAt: 1)
+//                
+//            }
+//            else
+//            {
+//                self.notificationSegment.setTitle("General", forSegmentAt: 1)
+//                
+//            }
             self.collectionView.reloadData()
             
         }
+        
+        self.displayNotificationCount()
+
+    }
+    
+    func displayNotificationCount()
+    {
+        let commonNotiCount = database().getUnreadNotiCount(tableName: "CommonNotification")
+        
+        
+        if commonNotiCount > 0
+        {
+            self.notificationSegment.setTitle("Jobs(\(commonNotiCount))", forSegmentAt: 0)
+            
+        }
+        else
+        {
+            self.notificationSegment.setTitle("Jobs", forSegmentAt: 0)
+            
+        }
+        
+        //let specialNotiCount = CoreDataManager.getSharedCoreDataManager().getUnreadNotiCount(entity: "ZSpecialNotification")
+        let specialNotiCount = database().getUnreadNotiCount(tableName: "SpecialNotification")
+        
+        if specialNotiCount > 0
+        {
+            self.notificationSegment.setTitle("General(\(specialNotiCount))", forSegmentAt: 1)
+            
+        }
+        else
+        {
+            self.notificationSegment.setTitle("General", forSegmentAt: 1)
+            
+        }
+    
     }
     @IBOutlet weak var dataNotFoundLabel: UILabel!
     override func viewDidLoad()
@@ -166,6 +202,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
     {
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
+            
             return
         }
         
@@ -186,6 +223,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
                 dataNotFoundLabel.isHidden = false
             }
             
+            self.removeClosedJobs()
 
             self.collectionView.reloadData()
             
@@ -200,7 +238,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         {
             self.closedJobsIdsArray = try JSONSerialization.jsonObject(with: closedJobIdsData!, options: .allowFragments) as! [Int64]
             
-            self.removeClosedJobs()
+            
             
 
         } catch let error as NSError
@@ -211,6 +249,8 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         
 //        self.jobNotificationObjectsArray = self.jobNotificationObjectsArray
 
+        self.removeClosedJobs()
+        
         self.collectionView.reloadData()
 
 
@@ -245,35 +285,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
             // print(closedJobsIdsArray)
         }
         
-        //let commonNotiCount = CoreDataManager.getSharedCoreDataManager().getUnreadNotiCount(entity: "CommonNotification")
-        let commonNotiCount = database().getUnreadNotiCount(tableName: "CommonNotification")
-
-        
-        if commonNotiCount > 0
-        {
-            self.notificationSegment.setTitle("Jobs(\(commonNotiCount))", forSegmentAt: 0)
-
-        }
-        else
-        {
-            self.notificationSegment.setTitle("Jobs", forSegmentAt: 0)
-
-        }
-        
-        //let specialNotiCount = CoreDataManager.getSharedCoreDataManager().getUnreadNotiCount(entity: "ZSpecialNotification")
-        let specialNotiCount = database().getUnreadNotiCount(tableName: "SpecialNotification")
-
-        if specialNotiCount > 0
-        {
-            self.notificationSegment.setTitle("General(\(specialNotiCount))", forSegmentAt: 1)
-            
-        }
-        else
-        {
-            self.notificationSegment.setTitle("General", forSegmentAt: 1)
-            
-        }
-
+        self.displayNotificationCount()
     }
     
 
