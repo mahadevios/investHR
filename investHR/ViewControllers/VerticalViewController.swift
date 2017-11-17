@@ -62,6 +62,7 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
 
                 }
         
+        NotificationCenter.default.addObserver(self, selector: #selector(getItemList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_VERTICAL_ITEMS), object: nil)
     }
 
 //    override func viewWillAppear(_ animated: Bool)
@@ -69,64 +70,159 @@ class VerticalViewController: UIViewController,UITableViewDataSource,UITableView
 //        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
 //
 //    }
-    
+    func getItemList(dataDic:NSNotification)
+    {
+        guard let dataDictionary = dataDic.object as? [String:AnyObject] else
+        {
+            return
+        }
+        
+        let codeString = String(describing: dataDictionary["code"]!)
+        
+        if codeString == "1001"
+        {
+           // dataNotFoundLabel.isHidden = false
+            
+            return
+        }
+        
+        let itemType = dataDictionary["type"] as! String
+
+        
+        let itemListString = dataDictionary["itemList"] as! String
+        
+        let itemListData = itemListString.data(using: .utf8, allowLossyConversion: true)
+        
+        do
+        {
+            let itemListArray =  try JSONSerialization.jsonObject(with: itemListData as Data!, options: .allowFragments) as! [AnyObject]
+            
+            var itemIdKeyName = ""
+
+            var itemKeyName = ""
+
+            if itemType == "vertical"
+            {
+                itemIdKeyName = "vertical_id"
+                itemKeyName = "vertical_name"
+            }
+            else
+            if itemType == "horizontal"
+            {
+                itemIdKeyName = "horizontal_id"
+                itemKeyName = "horizontal_name"
+
+            }
+            else
+            if itemType == "roles"
+            {
+                itemIdKeyName = "role_id"
+                itemKeyName = "role_name"
+                    
+            }
+            for itemDic in itemListArray as! [NSDictionary]
+            {
+                let itemId = itemDic[itemIdKeyName] as! Int16
+                
+                let itemName = itemDic[itemKeyName] as! String
+                
+                domainNameArray.append(itemName)
+                
+                domainNameAndIdDic[itemName] = itemId
+            }
+            
+            self.domainTableView.reloadData()
+        }
+        catch let error as NSError
+        {
+            
+        }
+        
+        //domainNameArray.append(userObject.roleName!)
+        
+       // domainNameAndIdDic[userObject.roleName!] = userObject.roleId
+    }
     
     func getdomainNames( type:String)
     {
         //let coreDataManager = CoreDataManager.getSharedCoreDataManager()
         
-        
-        do
-        {
-            //var managedObjects:[NSManagedObject]?
-            var managedObjects:[Role]?
+        self.getItems()
 
-            //managedObjects = coreDataManager.getAllRecords(entity: type)
-            
-            managedObjects = Database.sharedDatabse().getRolesVerticalHorizontal(type: type)
-            
-            if type == "ZVERTCALDOMAINS"
-            {
-                for userObject in managedObjects!
-                {
-                    domainNameArray.append(userObject.roleName!)
-                    
-                    domainNameAndIdDic[userObject.roleName!] = userObject.roleId
-                    
-                }
-
-            }
-            else
-                if type == "ZHORIZONTALDOMAINS"
-                {
-                    for userObject in managedObjects!
-                    {
-                        domainNameArray.append(userObject.roleName!)
-                        
-                        domainNameAndIdDic[userObject.roleName!] = userObject.roleId
-                        
-                    }
-                    
-                }
-            else
-                    if type == "ZROLES"
-                    {
-                        for userObject in managedObjects!
-                        {
-                            domainNameArray.append(userObject.roleName!)
-                            
-                            domainNameAndIdDic[userObject.roleName!] = userObject.roleId
-                            
-                        }
-                    }
-        } catch let error as NSError
-        {
-//            print(error.localizedDescription)
-        }
-        
+//        do
+//        {
+//            //var managedObjects:[NSManagedObject]?
+//            var managedObjects:[Role]?
+//
+//
+//            //managedObjects = coreDataManager.getAllRecords(entity: type)
+//            //self.getItems()
+//
+//            managedObjects = Database.sharedDatabse().getRolesVerticalHorizontal(type: type)
+//
+//            if type == "ZVERTCALDOMAINS"
+//            {
+//
+//                for userObject in managedObjects!
+//                {
+//                    domainNameArray.append(userObject.roleName!)
+//
+//                    domainNameAndIdDic[userObject.roleName!] = userObject.roleId
+//
+//                }
+//
+//            }
+//            else
+//                if type == "ZHORIZONTALDOMAINS"
+//                {
+//                    for userObject in managedObjects!
+//                    {
+//                        domainNameArray.append(userObject.roleName!)
+//
+//                        domainNameAndIdDic[userObject.roleName!] = userObject.roleId
+//
+//                    }
+//
+//                }
+//            else
+//                    if type == "ZROLES"
+//                    {
+//                        for userObject in managedObjects!
+//                        {
+//                            domainNameArray.append(userObject.roleName!)
+//
+//                            domainNameAndIdDic[userObject.roleName!] = userObject.roleId
+//
+//                        }
+//                    }
+//        } catch let error as NSError
+//        {
+////            print(error.localizedDescription)
+//        }
+//
         
     }
 
+    
+    func getItems()
+    {
+        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+        if username != nil && password != nil
+        {
+            APIManager.getSharedAPIManager().getVerticalItems(username: username!, password: password!, itemName: self.domainType, linkedinId: "")
+        }
+        else
+            if linkedInId != nil
+            {
+                APIManager.getSharedAPIManager().getVerticalItems(username: "", password: "", itemName: self.domainType, linkedinId: linkedInId!)
+                
+        }
+        
+    }
+    
     func popViewController() -> Void
     {
        // self.revealViewController().revealToggle(animated: true)

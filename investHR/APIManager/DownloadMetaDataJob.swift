@@ -310,6 +310,39 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
                 }
                 break
                 
+                
+            case Constant.VERTICAL_ITEMS_API:
+                
+                guard let dictFromJSON = response else
+                {
+                    return
+                }
+                if String(describing: dictFromJSON["code"]!) == Constant.SUCCESS
+                {
+                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                    NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_VERTICAL_ITEMS), object: dictFromJSON, userInfo: nil)
+                    
+                }
+                else
+                {
+                    UIApplication.shared.keyWindow?.viewWithTag(789)?.removeFromSuperview()
+                    
+                   // NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_VERTICAL_JOB_LIST), object: dictFromJSON, userInfo: nil)
+                    
+                    //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: dictFromJSON["Message"]!, withCancelText: "Ok")
+                    
+                }
+                break
+            
+                
+           
+                
+            
+                
+                
             case Constant.SAVED_JOBS_API:
                 
                 guard let dictFromJSON = response else

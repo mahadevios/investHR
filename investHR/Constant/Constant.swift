@@ -46,14 +46,14 @@ struct Constant
 //    communicator@123
 //    static let  BASE_URL_PATH                            = "http://184.171.162.251:8080/InvestHr/investhr/"              // local server
 //    static let  USER_PROFILE_IMAGE_PATH                  = "http://184.171.162.251:8080/InvestHr/resources/UserImages/"
-    static let  BASE_URL_PATH                            = "https://investhr.biz/investhr/"              // local server
-    static let  USER_PROFILE_IMAGE_PATH                  = "https://investhr.biz/resources/UserImages/"
+    //static let  BASE_URL_PATH                            = "https://investhr.biz/investhr/"              // local server
+    //static let  USER_PROFILE_IMAGE_PATH                  = "https://investhr.biz/resources/UserImages/"
    //  static let  BASE_URL_PATH                            = "http://192.168.3.75:9090/coreflex/investhr/"              // local server
     //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.75:9090/coreflex/resources/UserImages/"
     //static let  BASE_URL_PATH                            = "http://192.168.3.66:8080/coreflex/investhr/"              // local server
      //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.66:8080/coreflex/resources/UserImages/"
-     //static let  BASE_URL_PATH                            = "http://192.168.3.74:8080/coreflex/investhr/"              // local server
-    // static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.74:8080/coreflex/resources/UserImages/"
+     static let  BASE_URL_PATH                            = "http://192.168.3.74:8080/coreflex/investhr/"              // local server
+     static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.74:8080/coreflex/resources/UserImages/"
     //static let  BASE_URL_PATH                            = "http://192.168.3.67:9090/coreflex/investhr/"              // sable sarkar
     //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.67:9090/coreflex/resources/UserImages/"
 
@@ -99,6 +99,9 @@ struct Constant
     static let  CUSTOM_MESSAGES_API                      = "login/mobileGetNotificationMessageDetails"
     static let  UPDATE_DEVICE_TOKEN_API                  = "login/UpdateDeviceToken"
     static let  LOCATION_WISE_JOB_API                    = "login/mobileLocationWiseJob"
+
+    static let  VERTICAL_ITEMS_API                       = "login/mobileItemList"
+    
 
     static let  FORGOT_PASSWORD_API                      = "login/forgotPassword"
     static let  RESET_PASSWORD_API                       = "login/resetpassword"
@@ -151,6 +154,8 @@ struct Constant
     static let  NOTIFICATION_CLOSED_JOBIDS                  = "closedJobIds"
     static let  NOTIFICATION_MASS_NOTI                      = "massNoti"
     static let  NOTIFICATION_NOTI_DATA_ADDED                = "notiDataAdded"
+    static let  NOTIFICATION_VERTICAL_ITEMS                 = "verticalItems"
+   
 
    //  static let  NOTIFICATION_HOME_BUTTONS_DISABLED          = "disableHomeButtons"
 

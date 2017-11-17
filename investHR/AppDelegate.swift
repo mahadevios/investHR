@@ -47,7 +47,7 @@ import AVFoundation
 //https://developer.apple.com/library/content/qa/qa1809/_index.html
 //https://stackoverflow.com/questions/25667447/how-to-turn-off-core-data-write-ahead-logging-in-swift-using-options-dictionary
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate
 {
 
     var window: UIWindow?
@@ -175,6 +175,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         database.deleteOldNotification(tableName: "SPECIALNOTIFICATION")
         database.deleteOldNotification(tableName: "COMMONNOTIFICATION")
 
+        //UNUserNotificationCenter.current().delegate = self
+
         return true
     }
     
@@ -224,77 +226,72 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         // Persist it in your backend in case it's new
     }
     
+//    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void)
+//    {
+//
+//    }
     
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+//
+//        completionHandler(.alert)
+//    }
     func application(_ application: UIApplication, didReceiveRemoteNotification data: [AnyHashable : Any])
     {
-        // Print notification payload data
-        //print("Push notification received: \(data)")
         
         islinkedInNotification = false
-        
+
         isMessageNotification = false
 
-        
         let notificationString = data["notification"] as! String
-        
+
         let notificatioData = notificationString.data(using: .utf8)
-        
-        
+
         let apsDic = data["aps"] as! [String:Any]
-        
-        
+
         let alertObject = apsDic["alert"] as! [String:String]
-        
-        //let alertData = alertString.data(using: .utf8)
-        
+
         do
         {
             let notificationObject = try JSONSerialization.jsonObject(with: notificatioData!, options: .allowFragments) as! [String:Any]
-            
+
             let jobIDInt = notificationObject["JobId"] as! Int
 
             let message = notificationObject["Message"] as? String
-            
+
             linkedInUrl = notificationObject["LinkedIn"] as? String
-            
+
             let massNotification = notificationObject["MassNotification"] as? String
 
-            
             self.jobID = String(jobIDInt)
-            
-           // print(self.jobID)
-            
+
             let body = alertObject["body"]
-            
-            let title = alertObject["title"]
-            
+
+            //let title = alertObject["title"]
+
             if linkedInUrl != nil
             {
                 islinkedInNotification = true
-                
-                //print(linkedInUrl ?? "nil")
-
             }
             else
             {
                 islinkedInNotification = false  // not a linkedin noti...1
-                
+
                 if message != nil
                 {
                     isMessageNotification = true
-                
+
                     self.messageString = message!
-                
+
                     var idMessageDic = [String:Any]()
-                
+
                     idMessageDic["jobId"]  = jobIDInt
-                
+
                     idMessageDic["message"]  = message
-                
+
 //                    if application.applicationState == UIApplicationState.background
 //                    {
-//                        
-//                        
+//
+//
 //                    }
 //                    else
 //                    {
@@ -306,24 +303,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                 else
                 {
                     self.islinkedInNotification = false // not a linkedin noti..
-                    
+
                     self.isMessageNotification = false // not a message noti...2
-                    
+
                     if massNotification != nil
                     {
                         self.isMassNotification = true
-                        
-                        
+
+
                             //let date = Date().getLocalDateWithouTimeInString()
                             let date = Date().getLocalDateTimeInString()
 
-                        
+
                             let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
-                        
+
                             let notificationId = notificationObject["NotificationId"] as! Int
-                        
+
                             self.massNotificationId = String(describing:notificationId)
-                        
+
 //                            let jobIdExist = CoreDataManager.getSharedCoreDataManager().idExists(aToken: self.massNotificationId, entityName: "ZSpecialNotification")
 //
 //                            if !jobIdExist
@@ -332,9 +329,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                                 DispatchQueue.main.async
                                     {
 //                                        CoreDataManager.getSharedCoreDataManager().save(entity: "ZSpecialNotification", ["NotificationId1":notificationId,"subject":body,"notificationDate":date, "userId":userId!, "notificationType":Constant.Notification_Type_Job,"readStatus":0])
-                                
+
                                         let database = Database.sharedDatabse()
-                                        
+
                                         let notiObj = GeneralNotification()
                                         notiObj.subject = body
                                         notiObj.notificationDate = date
@@ -345,21 +342,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                                         database.insertIntoGeneralNotification(notiObj: notiObj)
                                         NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil, userInfo: nil)
                                 }
-                             
+
                             //}
-                        
+
                     }
                     else
                     {
                         self.islinkedInNotification = false // not a linkedin noti..
-                        
+
                         self.isMessageNotification = false // not a message noti.
-                        
+
                         self.isMassNotification = false  // not a mass noti....3
-                        
-                        
+
+
                         //let jobIdExist = CoreDataManager.getSharedCoreDataManager().idExists(aToken: String(jobIDInt), entityName: "CommonNotification")
-                        
+
                         let notificationId = notificationObject["JobId"] as! Int // we have inserted jobId as notificationId
 
                         //let date = Date().getLocalDateWithouTimeInString()
@@ -368,13 +365,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 //                        if !jobIdExist
 //                        {
                             let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
-                            
+
                             DispatchQueue.main.async
                             {
 //                                CoreDataManager.getSharedCoreDataManager().save(entity: "CommonNotification", ["jobId":jobIDInt,"subject":body,"notificationDate1":date, "userId":userId!, "notificationType":Constant.Notification_Type_Job, "notificationId":notificationId,"readStatus":0])
-                                
+
                                 let database = Database.sharedDatabse()
-                                
+
                                 let notiObj = JobsNotification()
                                 notiObj.jobId = Int64(jobIDInt)
                                 notiObj.subject = body
@@ -387,43 +384,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 
                                  NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil, userInfo: nil)
                             }
-                           
-//                        }
-//                        else
-//                        {
-//                            let userId = UserDefaults.standard.object(forKey: Constant.USERID) as? String
-//                            
-//                            DispatchQueue.main.async
-//                            {
-//                                CoreDataManager.getSharedCoreDataManager().updateNotificationJob(entityName: "CommonNotification", jobId: jobIDInt, subject: body!, notificationDate: date, userId: userId!)
-//                                
-//                                NotificationCenter.default.post(name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil, userInfo: nil)
-//                            }
-//                            
-//                        }
-                        
+
+
+
                     }
 
                 }
-                
+
             }
 
-            
-            
-            
+
+
+
         } catch let error as NSError
         {
             //print(error.localizedDescription)
         }
-        
+
         if UIApplication.shared.applicationState == UIApplicationState.active
         {
-            
+
             let systemSoundID: SystemSoundID = 1315
-            
+
             // to play sound
             AudioServicesPlaySystemSound (systemSoundID)
-            
+
             notifView?.removeFromSuperview() //If already existing
             notifView = UIView(frame: CGRect(x: 0, y: -70, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 80))
             notifView?.backgroundColor = UIColor.appBlueColor()
@@ -431,7 +416,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             imageView.image = UIImage(named: "AppIcon40x40")
             let label = UILabel(frame: CGRect(x: 60, y: 15, width: (UIApplication.shared.keyWindow?.frame.size.width)! - 100, height: 30))
             label.font = UIFont.systemFont(ofSize: 12)
-            
+
             if islinkedInNotification == true
             {
                 label.text = "New Linkedin Job"
@@ -453,39 +438,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate
                 label.text = "New Job"
 
             }
-            
+
             label.textColor = UIColor.white
             label.numberOfLines = 0
-            
+
             notifView?.alpha = 0.95
-            
+
             notifView?.addSubview(imageView)
-            
+
             notifView?.addSubview(label)
-            
+
             UIApplication.shared.keyWindow?.addSubview(notifView!)
 
             let tapToDismissNotif = UITapGestureRecognizer(target: self, action: #selector(notificationTapped))
 
             let swipeRecogniser = UISwipeGestureRecognizer(target: self, action: #selector(dismissNotifFromScreen1))
-            
+
             swipeRecogniser.direction = UISwipeGestureRecognizerDirection.right
-            
+
             swipeRecogniser.direction = UISwipeGestureRecognizerDirection.left
-            
+
             notifView?.addGestureRecognizer(tapToDismissNotif)
-            
+
             notifView?.addGestureRecognizer(swipeRecogniser)
 
-            
+
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.3, options: .curveEaseIn, animations: {
-                
+
                 self.notifView?.frame = CGRect(x: 0, y: 0, width: (UIApplication.shared.keyWindow?.frame.size.width)!, height: 60)
-                
+
             }) { (bo) in
-                
-                
-                
+
+
+
             }
             self.perform(#selector(dismissNotifFromScreen1), with: nil, afterDelay: 4.0)
 
@@ -498,7 +483,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             {
 //                if ismessageNotification == true
 //                {
-//                
+//
 //                }
 //                else
 //                {
@@ -510,11 +495,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             {
                self.notificationTapped()
             }
-            
+
         }
-        
+
         
     }
+    
     
     func notificationTapped()
     {

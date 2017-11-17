@@ -119,7 +119,29 @@ class APIManager: NSObject
         }
     }
     
+    func getVerticalItems(username:String, password:String, itemName:String, linkedinId:String) -> Void
+    {
+        if AppPreferences.sharedPreferences().isReachable
+        {
+            AppPreferences.sharedPreferences().showHudWith(title: "Loading jobs", detailText: "Please wait..")
+            
+            let params = ["username=\(username)","password=\(password)","itemName=\(itemName)","linkedinId=\(linkedinId)"]
+            
+            let dic = [Constant.REQUEST_PARAMETER:params]
+            
+            let downloadmetadatajob = DownloadMetaDataJob().initWithdownLoadEntityJobName(jobName: Constant.VERTICAL_ITEMS_API, withRequestParameter: dic as AnyObject, withResourcePath: Constant.VERTICAL_ITEMS_API, withHttpMethd: Constant.POST)
+            
+            downloadmetadatajob.startMetaDataDownLoad()
+            
+        }
+        else
+        {
+            AppPreferences.sharedPreferences().showAlertViewWith(title: Constant.NO_INTERNER_CONNECTION_TITLE, withMessage: Constant.NO_INTERNER_CONNECTION_MSG, withCancelText: "Ok")
+        }
+        
+    }
     
+   
     func getVerticalJobs(username:String, password:String, varticalId:String, linkedinId:String) -> Void
     {
         if AppPreferences.sharedPreferences().isReachable

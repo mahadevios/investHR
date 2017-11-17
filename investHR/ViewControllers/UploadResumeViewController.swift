@@ -164,6 +164,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         
         self.navigationItem.title = "Upload Resume"
         
+        print("frame = \(self.navigationItem.titleView?.frame)")
         //interactionController!.delegate = self
 
 //        let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 25))
@@ -173,7 +174,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
 //        let rightBarButtonItem = UIBarButtonItem(customView: numberOfJobsLabel)
 //        
 //        self.navigationItem.rightBarButtonItem = rightBarButtonItem
-        let editProfileView = UIView(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
+        let editProfileView = UIView(frame: CGRect(x: 10, y: 0, width: 70, height: 50))
         //editProfileView.backgroundColor = UIColor.red
         
         let attachmentButton = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
@@ -182,7 +183,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         attachmentButton.setTitleColor(UIColor.init(colorLiteralRed: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1), for: UIControlState.normal)
         //attachmentButton.backgroundColor = UIColor.blue
         
-        let attachMentImageView = UIImageView(frame: CGRect(x: editProfileView.frame.size.width-16, y: 25, width: 16, height: 18))
+        let attachMentImageView = UIImageView(frame: CGRect(x: editProfileView.frame.size.width-16, y: 14, width: 16, height: 18))
         attachMentImageView.image = UIImage(named: "Attachment")
         
         
@@ -497,6 +498,10 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         
         self.uploadingOrDownloadingRow = indexpath!.row
         
+//        let path = Bundle.main.path(forResource: "sample", ofType: "doc")
+//        let path1 = Bundle.main.path(forResource: "MyFile4", ofType: "doc")
+//        let path2 = Bundle.main.path(forResource: "test", ofType: "doc")
+
         var savePath:String = self.UserResumeFolderPath() + "/" + videoName
         
         //let videoURL = URL(fileURLWithPath: savePath)
@@ -508,6 +513,8 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         interactionController!.delegate = self
 
         interactionController!.presentPreview(animated: true)
+        //interactionController?.presentOpenInMenu(from: CGRect.zero, in: self.view, animated: true)
+        //interactionController?.presentOptionsMenu(from: CGRect.zero, in: self.view, animated: true)
     }
     func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
         return self

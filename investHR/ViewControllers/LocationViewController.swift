@@ -45,10 +45,14 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
         self.navigationItem.title = "Location"
         
         //self.cityArray.removeAll()
+        NotificationCenter.default.addObserver(self, selector: #selector(getItemList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_VERTICAL_ITEMS), object: nil)
         
         self.getState()
 
         self.setSearchController()
+        
+        
+
         //self.getCitiesFromState(stateName: statesArray[0] as! String)
 
         // Do any additional setup after loading the view.
@@ -360,64 +364,144 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
         
     }
     
+    
+    func getItemList(dataDic:NSNotification)
+    {
+        guard let dataDictionary = dataDic.object as? [String:AnyObject] else
+        {
+            return
+        }
+        
+        let codeString = String(describing: dataDictionary["code"]!)
+        
+        if codeString == "1001"
+        {
+            // dataNotFoundLabel.isHidden = false
+            
+            return
+        }
+        
+        let itemType = dataDictionary["type"] as! String
+        
+        
+        let itemListString = dataDictionary["itemList"] as! String
+        
+        let itemListData = itemListString.data(using: .utf8, allowLossyConversion: true)
+        
+        do
+        {
+            let itemListArray =  try JSONSerialization.jsonObject(with: itemListData as Data!, options: .allowFragments) as! [AnyObject]
+            
+//            var itemIdKeyName = ""
+//
+//            var itemKeyName = ""
+//
+//            if itemType == "vertical"
+//            {
+//                itemIdKeyName = "vertical_id"
+//                itemKeyName = "vertical_name"
+//            }
+//            else
+//                if itemType == "horizontal"
+//                {
+//                    itemIdKeyName = "horizontal_id"
+//                    itemKeyName = "horizontal_name"
+//
+//                }
+//                else
+//                    if itemType == "roles"
+//                    {
+//                        itemIdKeyName = "role_id"
+//                        itemKeyName = "role_name"
+//
+//            }
+            for itemDic in itemListArray as! [NSDictionary]
+            {
+                let itemId = itemDic["id"] as! Int16
+                
+                let itemName = itemDic["state_Name"] as! String
+                
+//                domainNameArray.append(itemName)
+//
+//                domainNameAndIdDic[itemName] = itemId
+                
+                statesArray.append(itemName)
+                
+                stateNameAndIdDic[itemName] = itemId
+                
+                statesCopyForPredicateArray.append(itemName)
+            }
+            
+            self.tableView.reloadData()
+        }
+        catch let error as NSError
+        {
+            
+        }
+        
+        //domainNameArray.append(userObject.roleName!)
+        
+        // domainNameAndIdDic[userObject.roleName!] = userObject.roleId
+    }
     func getState()
     {
         //let coreDataManager = CoreDataManager.getSharedCoreDataManager()
         
+        self.getLocations()
         
-        do
-        {
-//            var managedObjects:[NSManagedObject]?
-//            
-//            managedObjects = coreDataManager.getAllRecords(entity: "State")
-//            for userObject in managedObjects as! [State]
-//            {
-//                statesArray.append(userObject.stateName!)
-//                
-//                stateNameAndIdDic[userObject.stateName!] = userObject.id
-//                
-//                statesCopyForPredicateArray.append(userObject.stateName!)
-//                
-//            }
-            
-            
-            var managedObjects:[Role]?
-            
-            //managedObjects = coreDataManager.getAllRecords(entity: type)
-            
-            managedObjects = Database.sharedDatabse().getRolesVerticalHorizontal(type: "ZSTATE")
-            
-                for userObject in managedObjects!
-                {
-                    //domainNameArray.append(userObject.roleName!)
-                    
-                    //domainNameAndIdDic[userObject.roleName!] = userObject.roleId
-                    
-                    statesArray.append(userObject.roleName!)
-                    
-                    stateNameAndIdDic[userObject.roleName!] = userObject.roleId
-                    
-                    statesCopyForPredicateArray.append(userObject.roleName!)
-                    
-                }
-                
-            
-
-//            let index = statesArray.index(of: "asda")
-//            
-//            if index != nil
-//            {
-//                statesArray.remove(at: index!)
-//            }
-            
-        } catch let error as NSError
-        {
-//            print(error.localizedDescription)
-        }
-        
+//        do
+//        {
+//
+//
+//            var managedObjects:[Role]?
+//
+//            //managedObjects = coreDataManager.getAllRecords(entity: type)
+//
+//            managedObjects = Database.sharedDatabse().getRolesVerticalHorizontal(type: "ZSTATE")
+//
+//                for userObject in managedObjects!
+//                {
+//
+//
+//                    statesArray.append(userObject.roleName!)
+//
+//                    stateNameAndIdDic[userObject.roleName!] = userObject.roleId
+//
+//                    statesCopyForPredicateArray.append(userObject.roleName!)
+//
+//                }
+//
+//
+//
+//
+//
+//        } catch let error as NSError
+//        {
+////            print(error.localizedDescription)
+//        }
+//
         
     }
     
+    
+    func getLocations()
+    {
+        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        
+        if username != nil && password != nil
+        {
+            APIManager.getSharedAPIManager().getVerticalItems(username: username!, password: password!, itemName: "location", linkedinId: "")
+        }
+        else
+            if linkedInId != nil
+            {
+                APIManager.getSharedAPIManager().getVerticalItems(username: "", password: "", itemName: "location", linkedinId: linkedInId!)
+                
+        }
+        
+    }
 //    func getCitiesFromState( stateName:String)
 //    {
 //        let coreDataManager = CoreDataManager.getSharedCoreDataManager()
