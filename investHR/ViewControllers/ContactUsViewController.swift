@@ -17,14 +17,14 @@ class ContactUsViewController: UIViewController {
 
         
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
+        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItem.Style.done, target: self, action: #selector(popViewController))
         
         self.navigationItem.leftBarButtonItem = barButtonItem
         
         self.navigationItem.title = "Contact Us"
         // Do any additional setup after loading the view.
     }
-    func popViewController() -> Void
+    @objc func popViewController() -> Void
     {
         self.revealViewController().revealToggle(animated: true)
         

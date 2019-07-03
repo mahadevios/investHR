@@ -24,7 +24,7 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
         
         
         
-        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
+        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItem.Style.done, target: self, action: #selector(popViewController))
         
         self.navigationItem.leftBarButtonItem = barButtonItem
         
@@ -39,7 +39,7 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
 //        let rightBarButtonItem = UIBarButtonItem(customView: numberOfJobsLabel)
 //        
 //        self.navigationItem.rightBarButtonItem = rightBarButtonItem
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
 
         let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
@@ -61,7 +61,7 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
 
         // Do any additional setup after loading the view.
     }
-    func deviceRotated()
+    @objc func deviceRotated()
     {
         self.collectionView.reloadData()
     }
@@ -77,7 +77,7 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
     {
         NotificationCenter.default.removeObserver(self)
     }
-    func checkSAvedJobList(dataDic:Notification)
+    @objc func checkSAvedJobList(dataDic:Notification)
     {
         
         let appliedJobsDict = dataDic.object as! [String:AnyObject]
@@ -113,7 +113,8 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
                 {
                     
                     let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 90, height: 25))
-                    numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
+//                    numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
+                    numberOfJobsLabel.textColor = UIColor(displayP3Red: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
                     numberOfJobsLabel.text = "\(appliedJobsNumber!) job"
                     numberOfJobsLabel.textAlignment = NSTextAlignment.right
                     let rightBarButtonItem = UIBarButtonItem(customView: numberOfJobsLabel)
@@ -123,7 +124,8 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
                 else
                 {
                     let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 90, height: 25))
-                    numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
+//                    numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
+                    numberOfJobsLabel.textColor = UIColor(displayP3Red: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
                     numberOfJobsLabel.text = "\(appliedJobsNumber!) jobs"
                     numberOfJobsLabel.textAlignment = NSTextAlignment.right
                     let rightBarButtonItem = UIBarButtonItem(customView: numberOfJobsLabel)
@@ -152,7 +154,7 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
         }
 
     }
-    func checkApplyJob(dataDic:NSNotification)
+    @objc func checkApplyJob(dataDic:NSNotification)
     {
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
@@ -184,7 +186,7 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
         
     }
 
-    func popViewController() -> Void
+    @objc func popViewController() -> Void
     {
         NotificationCenter.default.removeObserver(self)
         
@@ -269,7 +271,7 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
         
         applyButton.jobId = Int64(jobId)
 
-        applyButton.addTarget(self, action: #selector(applyJobButtonClicked), for: UIControlEvents.touchUpInside)
+        applyButton.addTarget(self, action: #selector(applyJobButtonClicked), for: UIControl.Event.touchUpInside)
 
         //        applyButton.layer.cornerRadius = 3.0
         
@@ -320,7 +322,7 @@ class SavedJobsViewController: UIViewController,UICollectionViewDataSource,UICol
 
     }
 
-    func applyJobButtonClicked(_ sender: subclassedUIButton)
+    @objc func applyJobButtonClicked(_ sender: subclassedUIButton)
     {
         let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String

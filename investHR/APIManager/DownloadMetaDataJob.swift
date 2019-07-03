@@ -58,9 +58,12 @@ class DownloadMetaDataJob: NSObject,NSURLConnectionDelegate,NSURLConnectionDataD
 
         }
         
-        let url = NSURL(string: webservicePath.addingPercentEscapes(using: String.Encoding.utf8)!)
-        
-        let request = NSMutableURLRequest(url: url as! URL, cachePolicy: NSURLRequest.CachePolicy.useProtocolCachePolicy, timeoutInterval: 120)
+//        let url = NSURL(string: webservicePath.addingPercentEscapes(using: String.Encoding.utf8)!)
+
+        let url = NSURL(string: webservicePath.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!)
+
+
+        let request = NSMutableURLRequest(url: url! as URL, cachePolicy: NSURLRequest.CachePolicy.useProtocolCachePolicy, timeoutInterval: 120)
 
         for param in paramArray
         {

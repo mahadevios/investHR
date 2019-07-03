@@ -37,7 +37,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         
         self.navigationItem.hidesBackButton = true;
         
-        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
+        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItem.Style.done, target: self, action: #selector(popViewController))
         
         self.navigationItem.title = "Upload Video"
         
@@ -78,7 +78,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkDeletedVideoListResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_DELETE_VIDEO), object: nil)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
 
         if AppPreferences.sharedPreferences().isReachable
         {
@@ -121,13 +121,13 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
     }
 // MARK: - Notification response methods
    
-    func deviceRotated()
+    @objc func deviceRotated()
     {
         self.collectionView.reloadData()
     }
     
     
-    func checkUploadedVideoListResponse(dataDic:Notification)
+    @objc func checkUploadedVideoListResponse(dataDic:Notification)
     {
         guard let responseDic = dataDic.object as? [String:String] else
         {
@@ -187,7 +187,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         }
         
     }
-    func checkUploadVideoResponse(dataDic:Notification)
+    @objc func checkUploadVideoResponse(dataDic:Notification)
     {
         guard let responseDic = dataDic.object as? [String:String] else
         {
@@ -237,7 +237,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         
     }
     
-    func checkDeletedVideoListResponse(dataDic:Notification)
+    @objc func checkDeletedVideoListResponse(dataDic:Notification)
     {
         guard let responseDic = dataDic.object as? [String:String] else
         {
@@ -296,7 +296,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
    
 // MARK: - Bar button Methods
     
-    func popViewController() -> Void
+    @objc func popViewController() -> Void
     {
         //deleteAllFiles()
         NotificationCenter.default.removeObserver(self)
@@ -345,7 +345,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any])
     {
 
         let fileManager = FileManager.default
@@ -371,7 +371,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         
         var savePath:String = folderpath + "/" + uniqueImageName
 
-        let mediaType = info[UIImagePickerControllerMediaType] as! String
+        let mediaType = info[UIImagePickerController.InfoKey.originalImage] as! String
         
         let userId = UserDefaults.standard.object(forKey: Constant.USERID) as! String
         
@@ -384,7 +384,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         Database.sharedDatabse().insertIntoVideos(videoObj: videoObj)
         if mediaType == "public.movie"
         {
-            let mediaUrl = info[UIImagePickerControllerMediaURL] as! URL
+            let mediaUrl = info[UIImagePickerController.InfoKey.mediaURL] as! URL
             
             do
             {
@@ -440,7 +440,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         let sourceAsset = AVURLAsset(url: fromUrl as URL, options: nil)
         
         let assetExport: AVAssetExportSession = AVAssetExportSession(asset: sourceAsset, presetName: AVAssetExportPresetMediumQuality)!
-        assetExport.outputFileType = AVFileTypeQuickTimeMovie
+        assetExport.outputFileType = AVFileType.mov
         assetExport.outputURL = savePathUrl as URL
         assetExport.exportAsynchronously { () -> Void in
             
@@ -600,11 +600,11 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
     
     func actionLaunchCamera()
     {
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera)
         {
             imagePicker = UIImagePickerController()
             imagePicker.delegate = self
-            imagePicker.sourceType = UIImagePickerControllerSourceType.camera
+            imagePicker.sourceType = UIImagePickerController.SourceType.camera
             imagePicker.allowsEditing = true
             imagePicker.mediaTypes = ["public.movie"]
             imagePicker.videoMaximumDuration = 60
@@ -613,7 +613,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
         }
         else
         {
-            let alert:UIAlertController = UIAlertController(title: "Camera Unavailable", message: "Unable to find a camera on this device", preferredStyle: UIAlertControllerStyle.alert)
+            let alert:UIAlertController = UIAlertController(title: "Camera Unavailable", message: "Unable to find a camera on this device", preferredStyle: UIAlertController.Style.alert)
             self.present(alert, animated: true, completion: nil)
         }
     }
@@ -806,17 +806,17 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
 //        return 20.0
 //    }
    
-    func uploadButtonCLicked( sender: subclassedUIButton)
+    @objc func uploadButtonCLicked( sender: subclassedUIButton)
     {
         self.startUploading(sender: sender)
         
     }
     
-    func deleteButtonCLicked( sender: subclassedUIButton)
+    @objc func deleteButtonCLicked( sender: subclassedUIButton)
     {
-        let alertController = UIAlertController(title: "Remove File", message: "Are you sure to remove this file?", preferredStyle: UIAlertControllerStyle.alert)
+        let alertController = UIAlertController(title: "Remove File", message: "Are you sure to remove this file?", preferredStyle: UIAlertController.Style.alert)
         
-        let okAction = UIAlertAction(title: "Remove", style: UIAlertActionStyle.destructive, handler: { act -> Void in
+        let okAction = UIAlertAction(title: "Remove", style: UIAlertAction.Style.destructive, handler: { act -> Void in
             
             
            // let videoName = self.recordedVideoNamesArray[sender.indexPath]
@@ -863,7 +863,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
             
         })
           
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: {act -> Void in
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: {act -> Void in
             
             alertController.dismiss(animated: true, completion: nil)
             
@@ -967,9 +967,9 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
                 
             }
             
-            let alertController = UIAlertController(title: "Upload File", message: "Are you sure to upload this video?", preferredStyle: UIAlertControllerStyle.alert)
+            let alertController = UIAlertController(title: "Upload File", message: "Are you sure to upload this video?", preferredStyle: UIAlertController.Style.alert)
             
-            let okAction = UIAlertAction(title: "Upload", style: UIAlertActionStyle.default, handler:
+            let okAction = UIAlertAction(title: "Upload", style: UIAlertAction.Style.default, handler:
                 
             { act -> Void in
                 
@@ -1014,7 +1014,7 @@ class UploadVideoViewController: UIViewController,UIDocumentPickerDelegate,UIIma
                 }
             })
             
-            let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler:
+            let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler:
             {act -> Void in
                 
                 alertController.dismiss(animated: true, completion: nil)

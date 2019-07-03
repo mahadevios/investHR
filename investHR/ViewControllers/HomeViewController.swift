@@ -200,33 +200,39 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
     
     override func viewDidAppear(_ animated: Bool)
     {
+        let available = self.appUpdateAvailable()
         if AppPreferences.sharedPreferences().popUpShown == false
         {
            self.perform(#selector(showPopUp), with: nil, afterDelay: 0.2)
            //self.showPopUp()
            AppPreferences.sharedPreferences().popUpShown = true
             
-            if let refreshedToken = FIRInstanceID.instanceID().token()
-            {
-                AppPreferences.sharedPreferences().firebaseInstanceId = refreshedToken
-                
-                let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-                let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-                let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-                
-                if username != nil && password != nil
+            InstanceID.instanceID().instanceID { (result, error) in
+                if let error = error {
+                    print("Error fetching remote instange ID: \(error)")
+                } else if let result = result
                 {
-                    APIManager.getSharedAPIManager().updateDeviceToken(username: username!, password: password!,linkedinId:"", deviceToken: AppPreferences.sharedPreferences().firebaseInstanceId)
-                }
-                else
-                    if linkedInId != nil
+                    AppPreferences.sharedPreferences().firebaseInstanceId = result.token
+                    
+                    let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+                    let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+                    let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+                    
+                    if username != nil && password != nil
                     {
-                        APIManager.getSharedAPIManager().updateDeviceToken(username: "", password: "",linkedinId:linkedInId!, deviceToken: AppPreferences.sharedPreferences().firebaseInstanceId)
-                        
+                        APIManager.getSharedAPIManager().updateDeviceToken(username: username!, password: password!,linkedinId:"", deviceToken: AppPreferences.sharedPreferences().firebaseInstanceId)
+                    }
+                    else
+                        if linkedInId != nil
+                        {
+                            APIManager.getSharedAPIManager().updateDeviceToken(username: "", password: "",linkedinId:linkedInId!, deviceToken: AppPreferences.sharedPreferences().firebaseInstanceId)
+                            
+                    }
                 }
-                
             }
-
+            
+            
+            
             DispatchQueue.global().async
             {
                 let available = self.appUpdateAvailable()
@@ -234,9 +240,9 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
                 
                 if available == true
                 {
-                    let alertController = UIAlertController(title: "Update available for InvestHR", message: "", preferredStyle: UIAlertControllerStyle.alert)
+                    let alertController = UIAlertController(title: "Update available for InvestHR", message: "", preferredStyle: UIAlertController.Style.alert)
                     
-                    let okAction = UIAlertAction(title: "Update", style: UIAlertActionStyle.default, handler:
+                    let okAction = UIAlertAction(title: "Update", style: UIAlertAction.Style.default, handler:
                     { act -> Void in
                         
                         let appString = "itms://itunes.com/apps/InvestHR"
@@ -247,7 +253,7 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
                         
                     }
                     )
-                    let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: {act -> Void in
+                    let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: {act -> Void in
                         
                         alertController.dismiss(animated: true, completion: nil)
                         
@@ -271,7 +277,7 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
         let bundle1 = Bundle.main.infoDictionary
         var appID = bundle1?["CFBundleIdentifier"] as! String
         //appID = "com.coreFlexSolutions.CubeDictate"
-        let storeInfoURL: String = "http://itunes.apple.com/lookup?bundleId=\(appID)"
+        let storeInfoURL: String = "https://itunes.apple.com/lookup?bundleId=\(appID)"
         var upgradeAvailable = false
         // Get the main bundle of the app so that we can determine the app's version number
         let bundle = Bundle.main
@@ -304,7 +310,7 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
     }
     
     
-    func showPopUp()
+    @objc func showPopUp()
     {
         
         let messageString = "Please select from one of the below quadrants to search and apply for a desirable role"
@@ -342,7 +348,7 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
         self.perform(#selector(dismissPopUp), with: nil, afterDelay: 5.0)
     }
 
-    func dismissPopUp()
+    @objc func dismissPopUp()
     {
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.3, options: .curveEaseIn, animations: {
             
@@ -402,11 +408,11 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
 //    }
     func uploadFtp()
     {
-        let data1    = UIImagePNGRepresentation(UIImage(named:"Cross")!) as NSData!
+        let data1    = UIImage(named:"Cross")!.pngData() as NSData?
        // let data    = NSData(contentsOfFile: "example.txt")! as Data
 
         //let data = UIImagePNGRepresentation(UIImage(named:"Cross")!) as NSData?
-        let data    = UIImagePNGRepresentation(UIImage(named:"Cross")!) as Data!
+        let data    = UIImage(named:"Cross")!.pngData() as Data?
         data?.withUnsafeBytes { (u8Ptr: UnsafePointer<UInt8>) in
             var buf = UnsafePointer(u8Ptr)
             
@@ -560,7 +566,7 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
     {
         //GIDSignIn.sharedInstance().signOut()
         
-        try! FIRAuth.auth()!.signOut()
+        try! Auth.auth().signOut()
         
         //let loginManager = FBSDKLoginManager()
         

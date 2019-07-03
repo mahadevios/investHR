@@ -64,8 +64,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     var isMassNotification:Bool!
 
+    var isApplicationDidBecomeInactive:Bool!
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
+    var isApplicationResignedActive:Bool!
+
+
+    internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
     {
         
         let url = self.applicationDocumentsDirectory.appendingPathComponent("investHR.sqlite")
@@ -88,7 +92,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
 
-        let notification = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary
+        let notification = launchOptions?[UIApplication.LaunchOptionsKey.remoteNotification] as? NSDictionary
         
         
         var configureError: NSError?
@@ -96,7 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         //GGLContext.sharedInstance().configureWithError(&configureError)
         
-        FIRApp.configure()
+        FirebaseApp.configure()
         
         //FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
@@ -149,14 +153,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         connectToFcm()
         
         
-        if let refreshedToken = FIRInstanceID.instanceID().token()
-        {
-            AppPreferences.sharedPreferences().firebaseInstanceId = refreshedToken
-        }
+//        if let refreshedToken = InstanceID.instanceID().token()
+//        {
+//            AppPreferences.sharedPreferences().firebaseInstanceId = refreshedToken
+//        }
         
+        InstanceID.instanceID().instanceID { (result, error) in
+            if let error = error {
+                print("Error fetching remote instange ID: \(error)")
+            } else if let result = result {
+                AppPreferences.sharedPreferences().firebaseInstanceId = result.token
+//                print("Remote instance ID token: \(result.token)")
+            }
+        }
         self.loadAccount()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(tokenRefreshNotification), name:NSNotification.Name.firInstanceIDTokenRefresh, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(tokenRefreshNotification), name:NSNotification.Name.InstanceIDTokenRefresh, object: nil)
 
         if notification != nil
         {
@@ -186,28 +198,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return urls[urls.count-1]
     }()
 
-    func tokenRefreshNotification( notification:Notification)
+    @objc func tokenRefreshNotification( notification:Notification)
     {
-        if let refreshedToken = FIRInstanceID.instanceID().token()
-        {
-            AppPreferences.sharedPreferences().firebaseInstanceId = refreshedToken
-            
-            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
-            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-            
-            if username != nil && password != nil
+        InstanceID.instanceID().instanceID { (result, error) in
+            if let error = error {
+                print("Error fetching remote instange ID: \(error)")
+            } else if let result = result
             {
-                APIManager.getSharedAPIManager().updateDeviceToken(username: username!, password: password!,linkedinId:"", deviceToken: AppPreferences.sharedPreferences().firebaseInstanceId)
-            }
-            else
-                if linkedInId != nil
+                AppPreferences.sharedPreferences().firebaseInstanceId = result.token;
+                
+                let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
+                let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
+                let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+                
+                if username != nil && password != nil
                 {
-                    APIManager.getSharedAPIManager().updateDeviceToken(username: "", password: "",linkedinId:linkedInId!, deviceToken: AppPreferences.sharedPreferences().firebaseInstanceId)
-                    
+                    APIManager.getSharedAPIManager().updateDeviceToken(username: username!, password: password!,linkedinId:"", deviceToken: AppPreferences.sharedPreferences().firebaseInstanceId)
                 }
-
+                else
+                    if linkedInId != nil
+                    {
+                        APIManager.getSharedAPIManager().updateDeviceToken(username: "", password: "",linkedinId:linkedInId!, deviceToken: AppPreferences.sharedPreferences().firebaseInstanceId)
+                        
+                }
+            }
         }
+       
 
     }
     
@@ -216,10 +232,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Convert token to string
         let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
         
-        if let refreshedToken = FIRInstanceID.instanceID().token()
-        {
-            //print("InstanceID token: \(refreshedToken)")
-        }
+//        if let refreshedToken = InstanceID.instanceID().token()
+//        {
+//            //print("InstanceID token: \(refreshedToken)")
+//        }
         // Print it to console
         //print("APNs device token: \(deviceTokenString)")
         
@@ -401,9 +417,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             //print(error.localizedDescription)
         }
 
-        if UIApplication.shared.applicationState == UIApplicationState.active
+        if UIApplication.shared.applicationState == UIApplication.State.active && isApplicationDidBecomeInactive == false
         {
 
+            
             let systemSoundID: SystemSoundID = 1315
 
             // to play sound
@@ -454,9 +471,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
             let swipeRecogniser = UISwipeGestureRecognizer(target: self, action: #selector(dismissNotifFromScreen1))
 
-            swipeRecogniser.direction = UISwipeGestureRecognizerDirection.right
+            swipeRecogniser.direction = UISwipeGestureRecognizer.Direction.right
 
-            swipeRecogniser.direction = UISwipeGestureRecognizerDirection.left
+            swipeRecogniser.direction = UISwipeGestureRecognizer.Direction.left
 
             notifView?.addGestureRecognizer(tapToDismissNotif)
 
@@ -476,10 +493,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         }
         else
+            if UIApplication.shared.applicationState == UIApplication.State.active && isApplicationDidBecomeInactive == true
         {
             //AppPreferences.sharedPreferences().showHudWith(title: "inacti", detailText: "")
             //AppPreferences.sharedPreferences().showAlertViewWith(title: "Alert", withMessage: "app is in active ", withCancelText: "got")
-            if application.applicationState == UIApplicationState.background
+            if application.applicationState == UIApplication.State.background
             {
 //                if ismessageNotification == true
 //                {
@@ -497,12 +515,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
 
         }
+        else
+        {
+            self.notificationTapped()
+        }
 
         
     }
     
     
-    func notificationTapped()
+    @objc func notificationTapped()
     {
         
 //        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1, options: .curveEaseIn, animations: {
@@ -684,7 +706,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
     }
     
-    func dismissNotifFromScreen1()
+    @objc func dismissNotifFromScreen1()
     {
        
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1, options: .curveEaseIn, animations: {
@@ -955,19 +977,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+        isApplicationResignedActive = true
     }
 
-    func applicationDidEnterBackground(_ application: UIApplication) {
+    func applicationDidEnterBackground(_ application: UIApplication)
+    {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        isApplicationResignedActive = false
+        
     }
 
-    func applicationWillEnterForeground(_ application: UIApplication) {
+    func applicationWillEnterForeground(_ application: UIApplication)
+    {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        isApplicationResignedActive = false
     }
 
-    func applicationDidBecomeActive(_ application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication)
+    {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        if isApplicationResignedActive == true
+        {
+            isApplicationDidBecomeInactive = true
+
+        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -1122,7 +1156,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func connectToFcm()
     {
-        FIRMessaging.messaging()
+        Messaging.messaging()
     }
     
     

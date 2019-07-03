@@ -130,7 +130,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         
         
         
-        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
+        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItem.Style.done, target: self, action: #selector(popViewController))
         
         self.navigationItem.leftBarButtonItem = barButtonItem
         
@@ -190,15 +190,15 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
         
         NotificationCenter.default.addObserver(self, selector: #selector(newNotiAdded(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_NOTI_DATA_ADDED), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
         
     }
     
-    func newNotiAdded(dataDic:Notification)
+    @objc func newNotiAdded(dataDic:Notification)
     {
         self.getDataOfSegmennt(sender: self.notificationSegment)
     }
-    func checkClosedJobList(dataDic:Notification)
+    @objc func checkClosedJobList(dataDic:Notification)
     {
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
@@ -293,7 +293,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
     {
         NotificationCenter.default.removeObserver(self)
     }
-    func popViewController() -> Void
+    @objc func popViewController() -> Void
     {
         self.revealViewController().revealToggle(animated: true)
         
@@ -555,7 +555,7 @@ class NotificationJobsViewController: UIViewController,UICollectionViewDataSourc
 //        //self.collectionView.reloadData()
 //    }
 
-    func deviceRotated()
+    @objc func deviceRotated()
     {
        self.collectionView.reloadData()
     }

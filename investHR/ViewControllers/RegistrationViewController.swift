@@ -37,7 +37,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     {
         
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
        // coutryCodesArray = ["+90","+91","+92","+93","+94","+95","+96"]
         
         coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+672","+64","+1 268","+54","+374","+297","+247","+61","+43","+994","+1 242","+973","+880","+1 246","+375","+32","+501","+229","+1 441","+975","+591","+387","+267","+55","+1 284","+673","+359","+226","+95","+257","+855","+237","+238","+1 345","+236","+235","+56","+86","+61","+57","+269","+242","+682","+506","+385","+53","+357","+420","+243","+45","+246","+253","+1 767","+1 809","+1 829","+1, 849","+593","+20","+503","+240","+291","+372","+251","+500","+298","+679","+358","+33","+594","+689","+241","+220","+995","+49","+233","+350","+30","+299","+1 473","+590","+1 671","+502","+224","+245","+592","+509","+39","+504","+852","+36","+354","+91","+62","+98","+964","+353","+44","+972","+225","+1 876","+81","+962","+7","+254","+686","+965","+996","+856","+371","+961","+266","+231","+218","+423","+370","+352","+853","+389","+261","+265","+60","+960","+223","+356","+692","+596","+222","+230","+262","+52","+691","+373","+377","+976","+382","+1 664","+212","+258","+264","+674","+977","+31","+599","+687","+64","+505","+227","+234","+683","+672","+850","+1 670","+47","+968","+92","+680","+970","+507","+595","+51","+63","+870","+48","+351","+1 787","+1 939","+974","+242","+262","+40","+250","+590","+290","+1 869","+1 758","+508","+1 784","+685","+378","+239","+966","+221","+381","+248","+232","+65","+1 721","+421","+386","+677","+252","+27","+82","+211","+34","+94","+249","+597","+47","+268","+46","+41","+963","+886","+992","+255","+66","+670","+228","+690","+676","+1 868","+216","+90","+993","+1 649","+688","+256","+380","+971","+598","+1 340","+998","+678","+58","+84","+681","+212","+967","+260","+263"]
@@ -69,7 +69,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         leftView.addSubview(countryCodeButton)
        // leftView.addSubview(countryCodePickerView)
         mobileNumberTextField.leftView = leftView
-        mobileNumberTextField.leftViewMode = UITextFieldViewMode.always
+        mobileNumberTextField.leftViewMode = UITextField.ViewMode.always
         
         
         
@@ -90,7 +90,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         //self.addView()
         // Do any additional setup after loading the view.
     }
-    func countryCodeButtonClicekd(sender:UIButton)
+    @objc func countryCodeButtonClicekd(sender:UIButton)
     {
         resignAllResponders()
         self.addPickerToolBarForCountryCodes()
@@ -115,8 +115,8 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         
        // LISDKSessionManager.clearSession()
         
-          NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-          NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 
         
     }
@@ -200,7 +200,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])
+    internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any])
     {
         DispatchQueue.main.async
             {
@@ -213,7 +213,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         
         //let refURL = info[UIImagePickerControllerReferenceURL]
         
-        let userImage = info[UIImagePickerControllerOriginalImage] as? UIImage
+        let userImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
         
         let width = userImage?.size.width
         
@@ -224,19 +224,19 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         
         imagedata = nil
         
-        imagedata = UIImageJPEGRepresentation(userImage!, 0.01)!
+//        imagedata = UIImageJPEGRepresentation(userImage!, 0.01)!
 
-        
+        imagedata = userImage?.jpegData(compressionQuality: 0.01)
         //imagedata    = UIImagePNGRepresentation(image) as Data!
         let compressedImage = UIImage(data: imagedata as! Data)
         
         let image = imageResize(image: compressedImage!,sizeChange: size)
 
         var imageName:String!
-        if let imageURL = info[UIImagePickerControllerReferenceURL] as? URL {
+        if let imageURL = info[UIImagePickerController.InfoKey.referenceURL] as? URL {
             let result = PHAsset.fetchAssets(withALAssetURLs: [imageURL], options: nil)
             let asset = result.firstObject
-            imageName = asset?.value(forKey: "filename") as! String!
+            imageName = asset?.value(forKey: "filename") as! String?
 //            print(asset?.value(forKey: "filename") ?? "nil")
             
         }
@@ -286,7 +286,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     }
     
     
-    func addView() -> Void
+    @objc func addView() -> Void
     {
         outSideCircleView.layer.cornerRadius = outSideCircleView.frame.size.width/2.0
         
@@ -302,9 +302,9 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
 
     }
     
-    func deviceRotated() -> Void
+    @objc func deviceRotated() -> Void
     {
-        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+        if UIDevice.current.orientation.isLandscape
         {
             //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
            // addView()
@@ -315,7 +315,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
 
         }
         
-        if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+        if UIDevice.current.orientation.isPortrait
         {
             //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
            // addView()
@@ -327,7 +327,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
         }
     }
     
-    func keyboardWillShow()
+    @objc func keyboardWillShow()
     {
             // Animate the current view out of the way
         if self.view.frame.origin.y >= 0
@@ -361,7 +361,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
 //            }
     }
     
-    func keyboardWillHide()
+    @objc func keyboardWillHide()
     {
         if self.view.frame.origin.y > 0
         {
@@ -379,7 +379,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     {
         var localOffset = offset
         
-        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+        if UIDevice.current.orientation.isLandscape
         {
             if (movedUpBy == "email" || movedUpBy == "password")
             {
@@ -494,7 +494,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView{
         
-        var label = view as! UILabel!
+        var label = view as! UILabel?
         if label == nil {
             label = UILabel()
         }
@@ -567,7 +567,7 @@ class RegistrationViewController: UIViewController,UIPickerViewDataSource,UIPick
     }
     
     
-    func pickerDoneButtonPressed()
+    @objc func pickerDoneButtonPressed()
     {
         removePickerToolBar()
     }

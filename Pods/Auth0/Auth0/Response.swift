@@ -22,10 +22,9 @@
 
 import Foundation
 
-func json<T>(_ data: Data?) -> T? {
+func json(_ data: Data?) -> Any? {
     guard let data = data else { return nil }
-    let object = try? JSONSerialization.jsonObject(with: data, options: [])
-    return object as? T
+    return try? JSONSerialization.jsonObject(with: data, options: [])
 }
 
 func string(_ data: Data?) -> String? {
@@ -42,18 +41,18 @@ struct Response<E: Auth0Error> {
         guard error == nil else { throw error! }
         guard let response = self.response as? HTTPURLResponse else { throw E(string: nil, statusCode: 0) }
         guard (200...300).contains(response.statusCode) else {
-            if let json: [String: Any] = json(data) {
+            if let json = json(data) as? [String: Any] {
                 throw E(info: json, statusCode: response.statusCode)
             }
             throw E(string: string(data), statusCode: response.statusCode)
         }
-        guard let data = self.data else {
+        guard let data = self.data, !data.isEmpty else {
             if response.statusCode == 204 {
                 return nil
             }
             throw E(string: nil, statusCode: response.statusCode)
         }
-        if let json: Any = json(data) {
+        if let json = json(data) {
             return json
         }
         // This piece of code is dedicated to our friends the backend devs :)

@@ -163,18 +163,19 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         experienceTextField.delegate = self
         joiningTimeTextFIeld.delegate = self
         expectedCompanyTextField.delegate = self
-        benefitsTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        benefitsTextView.layer.borderColor = UIColor.init(red: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
-        nonCompeteTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        
+        nonCompeteTextView.layer.borderColor = UIColor.init(red: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
 
-        companiesInterviewedTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        companiesInterviewedTextView.layer.borderColor = UIColor.init(red: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
 
         NotificationCenter.default.addObserver(self, selector: #selector(checkUpdateProfileResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_SAVE_EDITED_PROFILE), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkGetProfileResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_GET_USER_PROFILE), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
 
         setUserInteractionEnabled(setEnable: false)
 
@@ -246,7 +247,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
        
 
     }
-    func userTapped()
+    @objc func userTapped()
     {
       autoCompleteTableView.isHidden = true
     
@@ -349,7 +350,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         leftView.addSubview(countryCodeButton)
         
         mobileNumberTextField.leftView = leftView
-        mobileNumberTextField.leftViewMode = UITextFieldViewMode.always
+        mobileNumberTextField.leftViewMode = UITextField.ViewMode.always
         
         
         
@@ -388,7 +389,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
     }
     
-    func countryCodeButtonClicekd(sender:UIButton)
+    @objc func countryCodeButtonClicekd(sender:UIButton)
     {
         self.resignAllResponsders()
         
@@ -396,7 +397,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
 
     }
     
-    func addView() -> Void
+    @objc func addView() -> Void
     {
         outSideCircleView.layer.cornerRadius = outSideCircleView.frame.size.width/2.0
         
@@ -473,9 +474,9 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     
     }
     
-    func deviceRotated() -> Void
+    @objc func deviceRotated() -> Void
     {
-        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+        if UIDevice.current.orientation.isLandscape
         {
             //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
             // addView()
@@ -546,7 +547,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             
         }
         
-        if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+        if UIDevice.current.orientation.isPortrait
         {
             //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
             // addView()
@@ -614,7 +615,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     }
 // MARK: Notification response methods
     
-    func checkUpdateProfileResponse(dataDic:Notification)
+    @objc func checkUpdateProfileResponse(dataDic:Notification)
     {
         guard let responseDic = dataDic.object as? [String:String] else
         {
@@ -714,7 +715,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     
     
     
-    func checkGetProfileResponse(dataDic:Notification)
+    @objc func checkGetProfileResponse(dataDic:Notification)
     {
         self.setTextFieldsTextColor(color: UIColor.lightGray)
 
@@ -1091,7 +1092,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
    
        func fixOrientation(img:UIImage) -> UIImage {
         
-        if (img.imageOrientation == UIImageOrientation.up) {
+        if (img.imageOrientation == UIImage.Orientation.up) {
             return img;
         }
         
@@ -1106,7 +1107,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     }
 // MARK: Navigation bar methods
     
-    func popViewController() -> Void
+    @objc func popViewController() -> Void
     {
         NotificationCenter.default.removeObserver(self)
         
@@ -1140,20 +1141,20 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     func setLeftBarButtonItem()
     {
         self.navigationItem.hidesBackButton = true;
-        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
+        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItem.Style.done, target: self, action: #selector(popViewController))
         self.navigationItem.leftBarButtonItem = barButtonItem
         self.navigationItem.title = "Profile"
     }
     func setRightBarButtonItemEdit()
     {
         let editProfileButton = UIButton(frame: CGRect(x: 75, y: 0, width: 50, height: 50))
-        editProfileButton.setTitle("Edit", for: UIControlState.normal)
-        editProfileButton.addTarget(self, action: #selector(rightbarButtonClickedEdit), for: UIControlEvents.touchUpInside)
+        editProfileButton.setTitle("Edit", for: UIControl.State.normal)
+        editProfileButton.addTarget(self, action: #selector(rightbarButtonClickedEdit), for: UIControl.Event.touchUpInside)
         editProfileButton.titleLabel?.textAlignment = NSTextAlignment.center
-        editProfileButton.setTitleColor(UIColor.init(colorLiteralRed: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1), for: UIControlState.normal)
+        editProfileButton.setTitleColor(UIColor.init(red: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1), for: UIControl.State.normal)
         
         let lineView = UIView(frame: CGRect(x: 65, y: 2, width: 1, height: 40))
-        lineView.backgroundColor = UIColor.init(colorLiteralRed: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1)
+        lineView.backgroundColor = UIColor.init(red: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1)
         
         let editProfileView = UIView(frame: CGRect(x: 0, y: 0, width: 120, height: 50))
         //editProfileView.backgroundColor = UIColor.red
@@ -1167,13 +1168,13 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     func setRightBarButtonItemSave()
     {
         let editProfileButton = UIButton(frame: CGRect(x: 75, y: 0, width: 50, height: 50))
-        editProfileButton.setTitle("Save", for: UIControlState.normal)
-        editProfileButton.addTarget(self, action: #selector(rightbarButtonClickedSave), for: UIControlEvents.touchUpInside)
+        editProfileButton.setTitle("Save", for: UIControl.State.normal)
+        editProfileButton.addTarget(self, action: #selector(rightbarButtonClickedSave), for: UIControl.Event.touchUpInside)
         editProfileButton.titleLabel?.textAlignment = NSTextAlignment.center
-        editProfileButton.setTitleColor(UIColor.init(colorLiteralRed: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1), for: UIControlState.normal)
+        editProfileButton.setTitleColor(UIColor.init(red: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1), for: UIControl.State.normal)
         
         let lineView = UIView(frame: CGRect(x: 65, y: 2, width: 1, height: 40))
-        lineView.backgroundColor = UIColor.init(colorLiteralRed: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1)
+        lineView.backgroundColor = UIColor.init(red: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1)
         
         let editProfileView = UIView(frame: CGRect(x: 0, y: 0, width: 120, height: 50))
         //editProfileView.backgroundColor = UIColor.red
@@ -1188,13 +1189,13 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     {
         let editProfileButton = UIButton(frame: CGRect(x: 55, y: 0, width: 80, height: 50))
         
-        editProfileButton.setTitle("Cancel", for: UIControlState.normal)
+        editProfileButton.setTitle("Cancel", for: UIControl.State.normal)
         
-        editProfileButton.addTarget(self, action: #selector(rightbarButtonClickedCancel), for: UIControlEvents.touchUpInside)
+        editProfileButton.addTarget(self, action: #selector(rightbarButtonClickedCancel), for: UIControl.Event.touchUpInside)
         
         editProfileButton.titleLabel?.textAlignment = NSTextAlignment.center
         
-        editProfileButton.setTitleColor(UIColor.init(colorLiteralRed: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1), for: UIControlState.normal)
+        editProfileButton.setTitleColor(UIColor.init(red: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1), for: UIControl.State.normal)
         
         let editProfileView = UIView(frame: CGRect(x: 0, y: 0, width: 120, height: 50))
         //editProfileView.backgroundColor = UIColor.red
@@ -1206,7 +1207,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
     }
     
-    func rightbarButtonClickedEdit()
+    @objc func rightbarButtonClickedEdit()
     {
         setUserInteractionEnabled(setEnable: true)
         
@@ -1251,7 +1252,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
 //        }
 
     }
-    func rightbarButtonClickedSave()
+    @objc func rightbarButtonClickedSave()
     {
         setUserInteractionEnabled(setEnable: false)
 
@@ -1580,17 +1581,17 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         //        APIManager.getSharedAPIManager().registerUser(dict: dict)
     }
 
-    func rightbarButtonClickedCancel()
+    @objc func rightbarButtonClickedCancel()
     {
         self.view.viewWithTag(1000)?.removeFromSuperview()
         
-        let vcArray = self.childViewControllers
+        let vcArray = self.children
         
         for vc in vcArray
         {
             if vc.isKind(of: UIImagePickerController.classForCoder())
             {
-                vc.removeFromParentViewController()
+                vc.removeFromParent()
             }
         }
         
@@ -1732,7 +1733,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     {
         if textView == companiesInterviewedTextView
         {
-            if companiesInterviewedTextView.text!.characters.count == 0
+            if companiesInterviewedTextView.text!.count == 0
             {
                 //companiesInterviewedTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
                 //companiesInterviewedTextView.text = "Companies interviewed in past 1 year";
@@ -1741,7 +1742,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         else
             if textView == benefitsTextView
             {
-                if benefitsTextView.text!.characters.count == 0
+                if benefitsTextView.text!.count == 0
                 {
                    // benefitsTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
                     //benefitsTextView.text = "Benefits in current organization(401k/insurance coverage etc)";
@@ -1750,7 +1751,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             else
                 if textView == nonCompeteTextView
                 {
-                    if nonCompeteTextView.text!.characters.count == 0
+                    if nonCompeteTextView.text!.count == 0
                     {
                         //nonCompeteTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
                         //nonCompeteTextView.text = "Any non-compete that will prevent you from managing a specific client OR Not join any specific organization";
@@ -2002,27 +2003,27 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     {
         if textView == companiesInterviewedTextView
         {
-            if companiesInterviewedTextView.text!.characters.count == 0
+            if companiesInterviewedTextView.text!.count == 0
             {
-                companiesInterviewedTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
+                companiesInterviewedTextView.textColor = UIColor(red: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
                 companiesInterviewedTextView.text = "Companies interviewed in past 1 year";
             }
         }
         else
             if textView == benefitsTextView
             {
-                if benefitsTextView.text!.characters.count == 0
+                if benefitsTextView.text!.count == 0
                 {
-                     benefitsTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
+                     benefitsTextView.textColor = UIColor(red: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
                     benefitsTextView.text = "Benefits in current organization(401k/insurance coverage etc)";
                 }
             }
             else
                 if textView == nonCompeteTextView
                 {
-                    if nonCompeteTextView.text!.characters.count == 0
+                    if nonCompeteTextView.text!.count == 0
                     {
-                        nonCompeteTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
+                        nonCompeteTextView.textColor = UIColor(red: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
                         nonCompeteTextView.text = "Any non-compete that will prevent you from managing a specific client OR Not join any specific organization";
                     }
                 }
@@ -2289,25 +2290,25 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
         imagePickerController.sourceType = .photoLibrary
         
-        self.addChildViewController(imagePickerController)
+        self.addChild(imagePickerController)
         
-        imagePickerController.didMove(toParentViewController: self)
+        imagePickerController.didMove(toParent: self)
         
         self.view.addSubview(imagePickerController.view)
         
         hideBarButtonItems(hide: "Cancel")
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
-        let chosenImage = info[UIImagePickerControllerOriginalImage]
+        let chosenImage = info[UIImagePickerController.InfoKey.originalImage]
         
-        let chosenImageName = info[UIImagePickerControllerOriginalImage]
+        let chosenImageName = info[UIImagePickerController.InfoKey.originalImage]
         
         
-        let refURL = info[UIImagePickerControllerReferenceURL]
+        let refURL = info[UIImagePickerController.InfoKey.referenceURL]
         
-        let userImage = info[UIImagePickerControllerOriginalImage] as? UIImage
+        let userImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
         
         let width = userImage?.size.width
         
@@ -2330,22 +2331,21 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         //print("width1 = \(width1)" + "height = \(height1)")
         
         //imagedata    = UIImagePNGRepresentation(image) as Data!
-        imagedata = UIImageJPEGRepresentation(image, 0.01)!
-        var imageName:String!
-        if let imageURL = info[UIImagePickerControllerReferenceURL] as? URL {
-            let result = PHAsset.fetchAssets(withALAssetURLs: [imageURL], options: nil)
-            let asset = result.firstObject
-            imageName = asset?.value(forKey: "filename") as! String!
-            //print(asset?.value(forKey: "filename") ?? "nil")
-            
-        }
+        imagedata = image.jpegData(compressionQuality: 0.01)
+        
+//        if let imageURL = info[UIImagePickerController.InfoKey.referenceURL] as? URL {
+//            let result = PHAsset.fetchAssets(withALAssetURLs: [imageURL], options: nil)
+//            let asset = result.firstObject
+//            imageName = asset?.value(forKey: "filename") as! String?
+//            //print(asset?.value(forKey: "filename") ?? "nil")
+//            
+//        }
         circleImageView.image = userImage
         
         picker.view!.removeFromSuperview()
         
-        picker.removeFromParentViewController()
+        picker.removeFromParent()
         
-        let uniqueImageName = String(Date().millisecondsSince1970)
         
         //print(uniqueImageName)
 
@@ -2412,7 +2412,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             
             picker.tag = 10001;
             
-            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+            if UIDevice.current.orientation.isPortrait
             {
                 picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
 
@@ -2460,7 +2460,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             
             picker.tag = 20001;
             
-            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+            if UIDevice.current.orientation.isPortrait
             {
                 picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
                 
@@ -2506,7 +2506,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             
             picker.tag = 30001;
             
-            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+            if UIDevice.current.orientation.isPortrait
             {
                 picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
                 
@@ -2552,7 +2552,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
             
             picker.tag = 40001;
             
-            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+            if UIDevice.current.orientation.isPortrait
             {
                 picker.frame = CGRect(x: 0.0, y: self.view.frame.size.height - 216.0, width: self.view.frame.size.width, height: 216.0)
                 
@@ -2591,7 +2591,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
 
 
     
-    func pickerDoneButtonPressed()
+    @objc func pickerDoneButtonPressed()
     {
         removePickerToolBar()
     }
@@ -2711,7 +2711,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView{
         
-        var label = view as! UILabel!
+        var label = view as! UILabel?
         if label == nil {
             label = UILabel()
         }
@@ -3045,7 +3045,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         
         
     }
-    func tapped( gestureRecognizer:UITapGestureRecognizer)
+    @objc func tapped( gestureRecognizer:UITapGestureRecognizer)
     {
      
         

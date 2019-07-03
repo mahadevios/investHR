@@ -56,24 +56,13 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
     override func viewDidLoad()
     {
         super.viewDidLoad()
+       
         
-        //let candidateFunctionPickerView = UIPickerView(frame: CGRect(x: 15, y: 0, width: candidateFunctionTextField.frame.size.width * 0.80, height: 35))
-        //candidateFunctionPickerView.dataSource = self
-        //candidateFunctionPickerView.delegate = self
-        //candidateFunctionTextField.addSubview(candidateFunctionPickerView)
-        //candidateFunctionPickerView.tag = 1
-        
-        //        let servicePickerView = UIPickerView(frame: CGRect(x: 15, y: 0, width: serviceTextField.frame.size.width * 0.80, height: 35))
-        //        servicePickerView.dataSource = self
-        //        servicePickerView.delegate = self
-        //        serviceTextField.addSubview(servicePickerView)
-        //        servicePickerView.tag = 2
-        
-        companiesInterViewedTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
-        
-        benefitsTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
-        
-        nonCompeteTextView.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        companiesInterViewedTextView.layer.borderColor = UIColor.init(red: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+
+        benefitsTextView.layer.borderColor = UIColor.init(red: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+
+        nonCompeteTextView.layer.borderColor = UIColor.init(red: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
         companiesInterViewedTextView.delegate = self
         benefitsTextView.delegate = self
@@ -83,7 +72,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         relocationTextField.delegate = self
         getCandidateRoles()
         NotificationCenter.default.addObserver(self, selector: #selector(checkRegistrationResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_REGISTERED), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
 
         let scrollableSize = CGSize(width: self.view.frame.size.width, height: self.insideView.frame.size.height)
 
@@ -117,7 +106,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         // Do any additional setup after loading the view.
     }
 
-    func checkRegistrationResponse(dataDic:NSNotification)
+    @objc func checkRegistrationResponse(dataDic:NSNotification)
     {
 //        self.view.viewWithTag(789)?.removeFromSuperview()
 
@@ -290,16 +279,16 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
 
         
     }
-    func deviceRotated() -> Void
+    @objc func deviceRotated() -> Void
     {
-        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+        if UIDevice.current.orientation.isLandscape
         {
             let scrollableSize = CGSize(width: self.view.frame.size.width-50, height: self.insideView.frame.size.height)
             
             self.scrollView.contentSize = scrollableSize
         }
         
-        if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+        if UIDevice.current.orientation.isLandscape
         {
             let scrollableSize = CGSize(width: self.view.frame.size.width-50, height: self.insideView.frame.size.height)
             
@@ -597,27 +586,27 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
     {
         if textView == companiesInterViewedTextView
         {
-            if companiesInterViewedTextView.text!.characters.count == 0
+            if companiesInterViewedTextView.text!.count == 0
             {
-                companiesInterViewedTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
+                companiesInterViewedTextView.textColor = UIColor(red: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
                 companiesInterViewedTextView.text = "Companies interviewed in past 1 year";
             }
         }
         else
             if textView == benefitsTextView
             {
-                if benefitsTextView.text!.characters.count == 0
+                if benefitsTextView.text!.count == 0
                 {
-                    benefitsTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
+                    benefitsTextView.textColor = UIColor(red: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
                     benefitsTextView.text = "Benefits in current organization(401k/insurance coverage etc)";
                 }
             }
             else
                 if textView == nonCompeteTextView
                 {
-                    if nonCompeteTextView.text!.characters.count == 0
+                    if nonCompeteTextView.text!.count == 0
                     {
-                        nonCompeteTextView.textColor = UIColor(colorLiteralRed: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
+                        nonCompeteTextView.textColor = UIColor(red: 189/255.0, green: 189/255.0, blue: 195/255.0, alpha: 1)
                         nonCompeteTextView.text = "Any non-compete that will prevent you from managing a specific client OR Not join any specific organization";
                     }
                 }
@@ -688,7 +677,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView{
         
-        var label = view as! UILabel!
+        var label = view as! UILabel?
         if label == nil {
             label = UILabel()
         }
@@ -814,7 +803,7 @@ class AdditionalInfoViewController: UIViewController,UIPickerViewDataSource,UIPi
         }
     }
 
-    func pickerDoneButtonPressed()
+    @objc func pickerDoneButtonPressed()
     {
         removePickerToolBar()
     }

@@ -89,7 +89,7 @@ class CustomNotificationViewController: UIViewController,UITableViewDelegate,UIT
     }
 
     
-    func checkCustomMessagesList(dataDic:Notification)
+    @objc func checkCustomMessagesList(dataDic:Notification)
     {
         DispatchQueue.main.async
             {
@@ -178,7 +178,7 @@ class CustomNotificationViewController: UIViewController,UITableViewDelegate,UIT
         }
         
     }
-    func tapped(sender:UITapGestureRecognizer) -> Void
+    @objc func tapped(sender:UITapGestureRecognizer) -> Void
     {
         self.dismiss(animated: true, completion: nil)
     }

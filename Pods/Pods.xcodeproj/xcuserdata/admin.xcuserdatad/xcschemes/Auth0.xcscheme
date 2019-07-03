@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '6445D619F9CCFC28FD31F9EE714E4453'
-               BlueprintName = 'Auth0'
-               ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'Auth0.framework'>
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B603872CBF28030ED23C2AE80CDD63AF"
+               BlueprintName = "Auth0"
+               ReferencedContainer = "container:Pods.xcodeproj"
+               BuildableName = "Auth0.framework">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

@@ -6,198 +6,113 @@
 [![License](https://img.shields.io/cocoapods/l/Auth0.svg?style=flat-square)](http://cocoadocs.org/docsets/Auth0)
 [![Platform](https://img.shields.io/cocoapods/p/Auth0.svg?style=flat-square)](http://cocoadocs.org/docsets/Auth0)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat-square)](https://github.com/Carthage/Carthage)
-![Swift 3.0](https://img.shields.io/badge/Swift-3.0-orange.svg?style=flat-square)
+![Swift 5.0](https://img.shields.io/badge/Swift-5.0-orange.svg?style=flat-square)
 
-Swift toolkit for Auth0 API
+Swift toolkit that lets you communicate efficiently with many of the [Auth0 API](https://auth0.com/docs/api/info) functions and enables you to seamlessly integrate the Auth0 login.
 
 ## Requirements
 
-iOS 9+ and Xcode 8 (Swift 3.0)
-
-> For Swift 2.3 you need to use [v1@swift-2.3](https://github.com/auth0/Auth0.swift/tree/v1@swift-2.3) branch
-
-If using CocoaPods we recommend version 1.1.0 or later.
+- iOS 9+ / macOS 10.11+ / tvOS 9.0+ / watchOS 2.0+
+- Xcode 10.x
+- Swift 4.x/5.x
 
 ## Installation
 
-###CocoaPods
+#### Carthage
 
-Auth0.swift is available through [CocoaPods](http://cocoapods.org). 
-To install it, simply add the following line to your Podfile:
+If you are using Carthage, add the following lines to your `Cartfile`:
 
 ```ruby
-pod "Auth0", '~> 1.5'
+github "auth0/Auth0.swift" ~> 1.15
 ```
 
-###Carthage
+Then run `carthage bootstrap`.
 
-In your Cartfile add this line
+> For more information about Carthage usage, check [their official documentation](https://github.com/Carthage/Carthage#if-youre-building-for-ios-tvos-or-watchos).
 
+#### Cocoapods
+
+If you are using [Cocoapods](https://cocoapods.org/), add these lines to your `Podfile`:
+
+```ruby
+use_frameworks!
+pod 'Auth0', '~> 1.15'
 ```
-github "auth0/Auth0.swift" ~> 1.5
+
+Then run `pod install`.
+
+> For further reference on Cocoapods, check [their official documentation](http://guides.cocoapods.org/using/getting-started.html).
+
+> ### Upgrade Notes
+> If you are using the [clearSession](https://github.com/auth0/Auth0.swift/blob/master/Auth0/WebAuth.swift#L235) method in iOS 11+, you will need to ensure that the **Callback URL** has been added to the **Allowed Logout URLs** section of your application in the [Auth0 Dashboard](https://manage.auth0.com/#/applications/).
+
+
+
+## Getting started
+
+### Authentication with hosted login page (iOS Only)
+
+1. Import **Auth0** into your project.        
+```swift
+import Auth0
 ```
 
-## Usage
+2. Present the hosted login page.
+```swift
+Auth0
+    .webAuth()
+    .audience("https://{YOUR_AUTH0_DOMAIN}/userinfo")
+    .start { result in
+        switch result {
+        case .success(let credentials):
+            print("Obtained credentials: \(credentials)")
+        case .failure(let error):
+            print("Failed with \(error)")
+        }
+    }
+```
 
-### Auth0.plist
+> This snippet sets the `audience` to ensure OIDC compliant responses, this can also be achieved by enabling the **OIDC Conformant** switch in your Auth0 dashboard under `Application / Settings / Advanced OAuth`. For more information please check [this documentation](https://auth0.com/docs/api-auth/intro#how-to-use-the-new-flows).
 
-To avoid specifying clientId & domain you can add a `Auth0.plist` file to your main bundle. Here is an example of the file contents:
+3. Allow Auth0 to handle authentication callbacks. In your `AppDelegate.swift` add the following:
+```swift
+func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
+    return Auth0.resumeAuth(url, options: options)
+}
+```
+
+### Configuration
+
+In order to use Auth0 you need to provide your Auth0 **ClientId** and **Domain**.
+
+> Auth0 ClientId & Domain can be found in your [Auth0 Dashboard](https://manage.auth0.com)
+
+#### Adding Auth0 Credentials
+
+In your application bundle add a `plist` file named `Auth0.plist` with the following information.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-   <key>ClientId</key>
-   <string>{YOUR_CLIENT_ID}</string>
-   <key>Domain</key>
-   <string>{YOUR_DOMAIN}</string>
+  <key>ClientId</key>
+  <string>{YOUR_CLIENT_ID}</string>
+  <key>Domain</key>
+  <string>{YOUR_DOMAIN}</string>
 </dict>
 </plist>
 ```
 
-> This will load clientId & domain in authentication API & OAuth2 methods, and only domain for management API methods.
+#### Configure Callback URLs (iOS Only)
 
-### Authentication API
+Callback URLs are the URLs that Auth0 invokes after the authentication process. Auth0 routes your application back to this URL and appends additional parameters to it, including a token. Since callback URLs can be manipulated, you will need to add your application's URL to your client's **Allowed Callback URLs** for security. This will enable Auth0 to recognize these URLs as valid. If omitted, authentication will not be successful.
 
-#### Login with database connection
-
-```swift
-Auth0
-   .authentication()
-   .login(
-       usernameOrEmail: "support@auth0.com", 
-       password: "a secret password", 
-       connection: "Username-Password-Authentication"
-       )
-   .start { result in
-       switch result {
-       case .success(let credentials):
-           print("access_token: \(credentials.accessToken)")
-       case .failure(let error):
-           print(error)
-       }
-   }
-```
-
-#### Passwordless Login
-
-```swift
-Auth0
-   .authentication()
-   .startPasswordless(email: "support@auth0.com", connection: "email")
-   .start { result in
-       switch result {
-       case .success:
-           print("Sent OTP to support@auth0.com!")
-       case .failure(let error):
-           print(error)
-       }
-   }
-```
-
-
-```swift
-Auth0
-   .authentication()
-   .login(
-       usernameOrEmail: "support@auth0.com", 
-       password: "email OTP", 
-       connection: "email"
-       )
-   .start { result in
-       switch result {
-       case .success(let credentials):
-           print("access_token: \(credentials.accessToken)")
-       case .failure(let error):
-           print(error)
-       }
-   }
-```
-
-
-#### Sign Up with database connection
-
-```swift
-Auth0
-   .authentication()
-   .signUp(
-       email: "support@auth0.com", 
-       password: "a secret password", 
-       connection: "Username-Password-Authentication"
-       )
-   .start { result in
-       switch result {
-       case .success(let credentials):
-           print("access_token: \(credentials.accessToken)")
-       case .failure(let error):
-           print(error)
-       }
-   }
-```
-
-
-#### Get user information
-
-```swift
-Auth0
-   .authentication()
-   .tokenInfo(token: "user id_token")
-   .start { result in
-       switch result {
-       case .success(let profile):
-           print("profile email: \(profile.email)")
-       case .failure(let error):
-           print(error)
-       }
-   }
-```
-
-### Management API (Users)
-
-#### Update user_metadata
-
-```swift
-Auth0
-    .users(token: "user token")
-    .patch("user identifier", userMetadata: ["first_name": "John", "last_name": "Doe"])
-    .start { result in
-        switch result {
-        case .success(let userInfo):
-            print("user: \(userInfo)")
-        case .failure(let error):
-            print(error)
-        }
-    }
-```
-
-#### Link users
-
-```swift
-Auth0
-   .users(token: "user token")
-   .link(userId, withOtherUserToken: "another user token")
-   .start { result in
-      switch result {
-      case .success(let userInfo):
-         print("user: \(userInfo)")
-      case .failure(let error):
-         print(error)
-      }
-   }
-```
-
-### Web-based Auth (iOS Only)
-
-First go to [Auth0 Dashboard](https://manage.auth0.com/#/applications) and go to application's settings. Make sure you have in *Allowed Callback URLs* a URL with the following format:
-
-```
-{YOUR_BUNDLE_IDENTIFIER}://{YOUR_AUTH0_DOMAIN}/ios/{YOUR_BUNDLE_IDENTIFIER}/callback
-```
-
-In your application's `Info.plist` file register your iOS Bundle Identifier as a custom scheme like this:
+In your application's `Info.plist` file, register your iOS Bundle Identifer as a custom scheme:
 
 ```xml
+<!-- Info.plist -->
+
 <key>CFBundleURLTypes</key>
 <array>
     <dict>
@@ -207,66 +122,183 @@ In your application's `Info.plist` file register your iOS Bundle Identifier as a
         <string>auth0</string>
         <key>CFBundleURLSchemes</key>
         <array>
-            <string>{YOUR_BUNDLE_IDENTIFIER}</string>
+            <string>$(YOUR_BUNDLE_IDENTIFIER)</string>
         </array>
     </dict>
 </array>
 ```
 
-> **Auth0.swift** will only handle URLs with your Auth0 domain as host, e.g. `com.auth0.MyApp://samples.auth0.com/ios/com.auth0.MyApp/callback`
+> If your `Info.plist` is not shown in this format, you can **Right Click** on `Info.plist` in Xcode and then select **Open As / Source Code**.
 
-and add the following method in your application's `AppDelegate`
+Finally, go to your [Auth0 Dashboard](${manage_url}/#/applications/${account.clientId}/settings) and make sure that **Allowed Callback URLs** contains the following entry:
+
+```text
+{YOUR_BUNDLE_IDENTIFIER}://${YOUR_AUTH0_DOMAIN}/ios/{YOUR_BUNDLE_IDENTIFIER}/callback
+```
+
+e.g. If your bundle identifier was `com.company.myapp` and your domain was `company.auth0.com` then this value would be
+
+```text
+com.company.myapp://company.auth0.com/ios/com.company.myapp/callback
+```
+
+## Next Steps
+
+### Learning Resources
+
+Check out the [iOS Swift QuickStart Guide](https://auth0.com/docs/quickstart/native/ios-swift) to find out more about the Auth0.swift toolkit and explore our tutorials and sample projects.
+
+### Common Tasks
+
+#### Retrieve user information
 
 ```swift
-func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-    return Auth0.resumeAuth(url, options:options)
+Auth0
+   .authentication()
+   .userInfo(withAccessToken: accessToken)
+   .start { result in
+       switch result {
+       case .success(let profile):
+           print("User Profile: \(profile)")
+       case .failure(let error):
+           print("Failed with \(error)")
+       }
+   }
+```
+
+#### Renew user credentials
+
+Use a [Refresh Token](https://auth0.com/docs/tokens/refresh-token/) to renew user credentials. It's recommended that you read and understand the refresh token process before implementing.
+
+```swift
+Auth0
+    .authentication()
+    .renew(withRefreshToken: refreshToken)
+    .start { result in
+        switch(result) {
+        case .success(let credentials):
+            print("Obtained new credentials: \(credentials)")
+        case .failure(let error):
+            print("Failed with \(error)")
+        }
+    }
+```
+
+### Credentials Management Utility (iOS Only)
+
+The credentials manager utility provides a convenience to securely store and retrieve the user's credentials from the Keychain.
+
+```swift
+let credentialsManager = CredentialsManager(authentication: Auth0.authentication())
+```
+
+#### Store Credentials
+
+Store user credentials securely in the KeyChain.
+
+```swift
+credentialsManager.store(credentials: credentials)
+```
+
+#### Retrieve stored credentials 
+
+Credentials will automatically be renewed (if expired) using the refresh token. The scope `offline_access` is required to ensure the refresh token is returned.
+
+```swift
+credentialsManager.credentials { error, credentials in
+    guard error == nil, let credentials = credentials else { 
+        return print("Failed with \(error)") 
+    }
+    print("Obtained credentials: \(credentials)")
 }
 ```
 
-#### Authenticate with any Auth0 connection
+#### Biometric authentication
+
+You can enable an additional level of user authentication before retrieving credentials using the biometric authentication supported by your device e.g. Face ID or Touch ID.
+
+```swift
+credentialsManager.enableBiometrics(withTitle: "Touch to Login")
+```
+
+### Authentication API (iOS / macOS / tvOS)
+
+The Authentication API exposes AuthN/AuthZ functionality of Auth0, as well as the supported identity protocols like OpenID Connect, OAuth 2.0, and SAML.
+We recommend using our Hosted Login Page but if you wish to build your own UI you can use our API endpoints to do so. However some Auth flows (Grant types) are disabled by default so you will need to enable them via your Auth0 Dashboard as explained in [this guide](https://auth0.com/docs/clients/client-grant-types#edit-available-grant_types).
+
+These are the required Grant Types that needs to be enabled in your application:
+
+* **Password**: For login with username/password using a realm (or connection name). If you set the grants via API you should activate both `http://auth0.com/oauth/grant-type/password-realm` and `password`, otherwise Auth0 Dashboard will take care of activating both when `Password` is enabled.
+
+#### Login with database connection (via Realm)
 
 ```swift
 Auth0
-    .webAuth()
-    .connection("facebook")
+    .authentication()
+    .login(
+        usernameOrEmail: "support@auth0.com",
+        password: "secret-password",
+        realm: "Username-Password-Authentication",
+        scope: "openid")
+     .start { result in
+         switch result {
+         case .success(let credentials):
+            print("Obtained credentials: \(credentials)")
+         case .failure(let error):
+            print("Failed with \(error)")
+         }
+     }
+```
+
+> This requires `Password` Grant or `http://auth0.com/oauth/grant-type/password-realm`
+
+#### Sign Up with database connection
+
+```swift
+Auth0
+    .authentication()
+    .createUser(
+        email: "support@auth0.com",
+        password: "secret-password",
+        connection: "Username-Password-Authentication",
+        userMetadata: ["first_name": "First",
+                       "last_name": "Last"]
+    )
     .start { result in
         switch result {
-        case .success(let credentials):
-            print("credentials: \(credentials)")
+        case .success(let user):
+            print("User Signed up: \(user)")
         case .failure(let error):
-            print(error)
+            print("Failed with \(error)")
         }
     }
 ```
 
-#### Specify scope
+### Custom Domains
+
+If you are using the [Custom Domains](https://auth0.com/docs/custom-domains) feature and need to use an Auth0 endpoint
+such as `/userinfo`, please use the Auth0 domain specified for your Application in the [Auth0 Dashboard](https://auth0.com/docs/dashboard).
+
+Example:  `.audience("https://{YOUR_AUTH0_DOMAIN}/userinfo")`
+
+### Management API (Users)
+
+You can request more information about a user's profile and manage the user's metadata by accessing the Auth0 [Management API](https://auth0.com/docs/api/management/v2). For security reasons native mobile applications are restricted to a subset of User based functionality.
+
+You can find a detailed guide in this [iOS Swift QuickStart](https://auth0.com/docs/quickstart/native/ios-swift/03-user-sessions#managing-metadata)
+
+#### Link an account
 
 ```swift
 Auth0
-    .webAuth()
-    .scope("openid email")
-    .connection("google-oauth2")
+    .users(token: idToken)
+    .link("user identifier", withOtherUserToken: "another user token")
     .start { result in
         switch result {
-        case .success(let credentials):
-            print("credentials: \(credentials)")
+        case .success(let userInfo):
+            print("User: \(userInfo)")
         case .failure(let error):
-            print(error)
-        }
-    }
-```
-
-#### Authenticate with Auth0 hosted login page
-
-```swift
-Auth0
-    .webAuth()
-    .start { result in
-        switch result {
-        case .success(let credentials):
-            print("credentials: \(credentials)")
-        case .failure(let error):
-            print(error)
+            print("Failed with \(error)")
         }
     }
 ```
@@ -280,7 +312,7 @@ var auth0 = Auth0.authentication()
 auth0.logging(enabled: true)
 ```
 
-Then for a OAuth2 authentication you'll see in the console:
+Then for a OAuth2 authentication you'll see something similar to the following:
 
 ```
 Safari: https://samples.auth0.com/authorize?.....
@@ -302,7 +334,7 @@ Connection: keep-alive
 {"access_token":"...","token_type":"Bearer"}
 ```
 
-> Only set this flag for **DEBUG** only or you'll be leaking user's credentials in the device log.
+> Set this flag only when **DEBUGGING** to avoid leaking user's credentials in the device log.
 
 ## What is Auth0?
 
@@ -311,7 +343,7 @@ Auth0 helps you to:
 * Add authentication with [multiple authentication sources](https://docs.auth0.com/identityproviders), either social like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter, Box, Salesforce, amont others**, or enterprise identity systems like **Windows Azure AD, Google Apps, Active Directory, ADFS or any SAML Identity Provider**.
 * Add authentication through more traditional **[username/password databases](https://docs.auth0.com/mysql-connection-tutorial)**.
 * Add support for **[linking different user accounts](https://docs.auth0.com/link-accounts)** with the same user.
-* Support for generating signed [Json Web Tokens](https://docs.auth0.com/jwt) to call your APIs and **flow the user identity** securely.
+* Support for generating signed [JSON Web Tokens](https://docs.auth0.com/jwt) to call your APIs and **flow the user identity** securely.
 * Analytics of how, when and where users are logging in.
 * Pull data from other sources and add it to the user profile, through [JavaScript rules](https://docs.auth0.com/rules).
 

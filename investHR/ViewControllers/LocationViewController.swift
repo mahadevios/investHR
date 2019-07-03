@@ -38,7 +38,7 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
        // locationsArray = ["NYC","NJ","Boston","Raleigh","Philadelphia","Pittsburg","Detroit","Others"]
         
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
+        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItem.Style.done, target: self, action: #selector(popViewController))
         
         self.navigationItem.leftBarButtonItem = barButtonItem
         
@@ -76,17 +76,17 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
         
         deviceRotated()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
 
         
     }
-    func popViewController() -> Void
+    @objc func popViewController() -> Void
     {
         NotificationCenter.default.removeObserver(self)
         self.navigationController?.popViewController(animated: true)
     }
     
-    func deviceRotated()
+    @objc func deviceRotated()
     {
         
         //            if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
@@ -307,7 +307,7 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // create a new cell if needed or reuse an old one
-        let cell:UITableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "cell") as UITableViewCell!
+        let cell:UITableViewCell = (self.tableView.dequeueReusableCell(withIdentifier: "cell") as UITableViewCell?)!
         
         // set the text from the data model
         
@@ -365,7 +365,7 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
     }
     
     
-    func getItemList(dataDic:NSNotification)
+    @objc func getItemList(dataDic:NSNotification)
     {
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
@@ -390,7 +390,7 @@ class LocationViewController: UIViewController,UITableViewDataSource,UITableView
         
         do
         {
-            let itemListArray =  try JSONSerialization.jsonObject(with: itemListData as Data!, options: .allowFragments) as! [AnyObject]
+            let itemListArray =  try JSONSerialization.jsonObject(with: (itemListData as Data?)!, options: .allowFragments) as! [AnyObject]
             
 //            var itemIdKeyName = ""
 //

@@ -95,7 +95,7 @@ class MassNotificationViewController: UIViewController,UIWebViewDelegate
         
     }
 
-    func checkMassNotiResponse(dataDic:Notification) -> Void
+    @objc func checkMassNotiResponse(dataDic:Notification) -> Void
     {
         guard let responseDic = dataDic.object as? [String:String] else
         {

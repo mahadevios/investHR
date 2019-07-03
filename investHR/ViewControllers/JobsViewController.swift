@@ -14,7 +14,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     
     @IBOutlet weak var dataNotFoundLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
-    var jobsArray:[String] = ["abc","bcd","cde","ghj"]
+//    var jobsArray:[String] = ["abc","bcd","cde","ghj"]
     var savedJobsIdsArray = [Int]()
     var appliedJobsIdsArray = [Int]()
 
@@ -47,7 +47,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         
-        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
+        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItem.Style.done, target: self, action: #selector(popViewController))
         
         self.navigationItem.leftBarButtonItem = barButtonItem
         
@@ -66,7 +66,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
          NotificationCenter.default.addObserver(self, selector: #selector(checkLocationJobList(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LOCATION_WISE_JOB), object: nil)
         
-         NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
         
          NotificationCenter.default.addObserver(self, selector: #selector(checkApplyJob(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_APPLY_JOB), object: nil)
         
@@ -106,7 +106,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
 //    
 //    }
     
-    func deviceRotated()
+    @objc func deviceRotated()
     {
        
 //            if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
@@ -244,7 +244,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
       if totalJobs != nil
       {
         let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 25))
-        numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
+        numberOfJobsLabel.textColor = UIColor(red: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
         numberOfJobsLabel.text = totalJobs
         numberOfJobsLabel.textAlignment = NSTextAlignment.right
         let rightBarButtonItem = UIBarButtonItem(customView: numberOfJobsLabel)
@@ -253,7 +253,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
       }
     }
     
-    func getLoadMoreData(dataDic:NSNotification)
+    @objc func getLoadMoreData(dataDic:NSNotification)
     {
         
         //print("iscoming")
@@ -305,7 +305,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         do
         {
-            let loadMoreJobListArray = try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
+            let loadMoreJobListArray = try JSONSerialization.jsonObject(with: (verticalJobListData as Data?)!, options: .allowFragments) as! [AnyObject]
             
             var indexes:[IndexPath]=[]
             for item in verticalJobListArray.count ..< loadMoreJobListArray.count+verticalJobListArray.count
@@ -329,7 +329,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     
     }
     
-    func checkVerticalJobList(dataDic:NSNotification)
+    @objc func checkVerticalJobList(dataDic:NSNotification)
     {
         //AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
@@ -369,9 +369,9 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         do
         {
-            verticalJobListArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
+            verticalJobListArray =  try JSONSerialization.jsonObject(with: (verticalJobListData as Data?)!, options: .allowFragments) as! [AnyObject]
             
-            verticalJobListCopyForPredicateArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
+            verticalJobListCopyForPredicateArray =  try JSONSerialization.jsonObject(with: (verticalJobListData as Data?)!, options: .allowFragments) as! [AnyObject]
             
             self.collectionView.reloadData()
             
@@ -384,7 +384,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
     }
     
-    func checkHorizontalJobList(dataDic:NSNotification)
+    @objc func checkHorizontalJobList(dataDic:NSNotification)
     {
         //AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
@@ -424,9 +424,9 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         do
         {
-            verticalJobListArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
+            verticalJobListArray =  try JSONSerialization.jsonObject(with: (verticalJobListData as Data?)!, options: .allowFragments) as! [AnyObject]
             
-            verticalJobListCopyForPredicateArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
+            verticalJobListCopyForPredicateArray =  try JSONSerialization.jsonObject(with: (verticalJobListData as Data?)!, options: .allowFragments) as! [AnyObject]
             
             self.collectionView.reloadData()
             
@@ -439,7 +439,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
     }
 
-    func checkRolesJobList(dataDic:NSNotification)
+    @objc func checkRolesJobList(dataDic:NSNotification)
     {
 //        AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
@@ -479,9 +479,9 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         do
         {
-            verticalJobListArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
+            verticalJobListArray =  try JSONSerialization.jsonObject(with: (verticalJobListData as Data?)!, options: .allowFragments) as! [AnyObject]
             
-            verticalJobListCopyForPredicateArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
+            verticalJobListCopyForPredicateArray =  try JSONSerialization.jsonObject(with: (verticalJobListData as Data?)!, options: .allowFragments) as! [AnyObject]
             
             self.collectionView.reloadData()
             
@@ -492,7 +492,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
     }
     
-    func checkLocationJobList(dataDic:NSNotification)
+    @objc func checkLocationJobList(dataDic:NSNotification)
     {
         //AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
         
@@ -531,9 +531,9 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         do
         {
-            verticalJobListArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
+            verticalJobListArray =  try JSONSerialization.jsonObject(with: (verticalJobListData as Data?)!, options: .allowFragments) as! [AnyObject]
             
-            verticalJobListCopyForPredicateArray =  try JSONSerialization.jsonObject(with: verticalJobListData as Data!, options: .allowFragments) as! [AnyObject]
+            verticalJobListCopyForPredicateArray =  try JSONSerialization.jsonObject(with: (verticalJobListData as Data?)!, options: .allowFragments) as! [AnyObject]
             
             self.collectionView.reloadData()
             
@@ -544,7 +544,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
     }
     
-    func checkSaveJob(dataDic:NSNotification)
+    @objc  func checkSaveJob(dataDic:NSNotification)
     {
         AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
@@ -588,7 +588,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         indexePathArray.removeAll()
     }
 
-    func checkApplyJob(dataDic:NSNotification)
+    @objc func checkApplyJob(dataDic:NSNotification)
     {
         AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
@@ -628,7 +628,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
     }
 
-    func popViewController() -> Void
+    @objc func popViewController() -> Void
     {
         //self.revealViewController().revealToggle(animated: true)
         NotificationCenter.default.removeObserver(self)
@@ -753,8 +753,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         // NSLog(@"inset.top: %f", inset.top);
         // NSLog(@"inset.bottom: %f", inset.bottom);
         // NSLog(@"pos: %f of %f", y, h);
-        
-        let reload_distance = 10.0 as CGFloat
+       
+        let reload_distance = 0.0 as CGFloat
         if y > (h + reload_distance)
         {
             
@@ -857,7 +857,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
             {
                 
 
-                case UICollectionElementKindSectionFooter:
+            case UICollectionView.elementKindSectionFooter:
                     
 //                    let attributes = collectionView.layoutAttributesForItem(at: indexPath)
 //                    
@@ -871,7 +871,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
                             {
                                 footerView.viewWithTag(123)?.removeFromSuperview()
                             }
-                            activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                            activityView = UIActivityIndicatorView(style: .gray)
                             activityView!.frame = CGRect(x: self.view.center.x, y: 10, width: 30, height: 30)
                             //activityView.frame = footerView.center
                             activityView!.startAnimating()
@@ -880,18 +880,19 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
                             
                             isIndicatorAdded = true
                             
-                            footerView.bringSubview(toFront: activityView!)
+                            footerView.bringSubviewToFront(activityView!)
                             footerView.addSubview(activityView!)
                         }
                         else
                         {
 
-                            if activityView != nil
+                            if isLoading == false && activityView != nil
                             {
                                 activityView!.removeFromSuperview()
                                 
+                                isIndicatorAdded = false
                             }
-                            isIndicatorAdded = false
+                            
 
                         }
                         
@@ -905,7 +906,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
 //                        return attributes?.representedElementKind
 //                    }
                 
-            case UICollectionElementKindSectionHeader:
+            case UICollectionView.elementKindSectionHeader:
                 
                 let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "Header", for: indexPath) 
                 
@@ -955,7 +956,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         
         // get a reference to our storyboard cell
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath)
-        let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "Footer", for: indexPath)
+        let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "Footer", for: indexPath)
        
 //        if indexPath.row == verticalJobListArray.count-1
 //        {
@@ -1051,8 +1052,8 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         saveButton.indexPath = indexPath.row
         applyButton.indexPath = indexPath.row
 
-        saveButton.addTarget(self, action: #selector(saveJobButtonClicked), for: UIControlEvents.touchUpInside)
-        applyButton.addTarget(self, action: #selector(applyJobButtonClicked), for: UIControlEvents.touchUpInside)
+        saveButton.addTarget(self, action: #selector(saveJobButtonClicked), for: UIControl.Event.touchUpInside)
+        applyButton.addTarget(self, action: #selector(applyJobButtonClicked), for: UIControl.Event.touchUpInside)
 
         //applyButton.layer.borderColor = UIColor(red: 77/255.0, green: 150/255.0, blue: 241/255.0, alpha: 1).cgColor
 //        applyButton.layer.cornerRadius = 3.0
@@ -1217,7 +1218,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
     
     }
     
-    func saveJobButtonClicked(_ sender: subclassedUIButton)
+    @objc func saveJobButtonClicked(_ sender: subclassedUIButton)
     {
         AppPreferences.sharedPreferences().showHudWith(title: "Saving Job", detailText: "Please wait..")
         let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
@@ -1237,7 +1238,7 @@ class JobsViewController: UIViewController,UICollectionViewDataSource,UICollecti
         }
 
     }
-    func applyJobButtonClicked(_ sender: subclassedUIButton)
+    @objc func applyJobButtonClicked(_ sender: subclassedUIButton)
     {
         AppPreferences.sharedPreferences().showHudWith(title: "Applying for job", detailText: "Please wait..")
 

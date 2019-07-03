@@ -46,25 +46,11 @@ struct Constant
 //    communicator@123
 //    static let  BASE_URL_PATH                            = "http://184.171.162.251:8080/InvestHr/investhr/"              // local server
 //    static let  USER_PROFILE_IMAGE_PATH                  = "http://184.171.162.251:8080/InvestHr/resources/UserImages/"
-    //static let  BASE_URL_PATH                            = "https://investhr.biz/investhr/"              // local server
-    //static let  USER_PROFILE_IMAGE_PATH                  = "https://investhr.biz/resources/UserImages/"
-   //  static let  BASE_URL_PATH                            = "http://192.168.3.75:9090/coreflex/investhr/"              // local server
-    //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.75:9090/coreflex/resources/UserImages/"
-    //static let  BASE_URL_PATH                            = "http://192.168.3.66:8080/coreflex/investhr/"              // local server
-     //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.66:8080/coreflex/resources/UserImages/"
-     static let  BASE_URL_PATH                            = "http://192.168.3.74:8080/coreflex/investhr/"              // local server
-     static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.74:8080/coreflex/resources/UserImages/"
-    //static let  BASE_URL_PATH                            = "http://192.168.3.67:9090/coreflex/investhr/"              // sable sarkar
-    //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.67:9090/coreflex/resources/UserImages/"
+    static let  BASE_URL_PATH                            = "https://investhr.biz/investhr/"              // local server
+    static let  USER_PROFILE_IMAGE_PATH                  = "https://investhr.biz/resources/UserImages/"
+//     static let  BASE_URL_PATH                            = "http://192.168.3.81:8090/coreflex/investhr/"              // local server
+//    static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.81:8090/coreflex/resources/UserImages/"
 
-   
-    //static let  BASE_URL_PATH                            = "http://192.168.3.80:9090/InvestHr/investhr/"               // for testing
-    //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.80:9090/InvestHr/resources/UserImages/"
-
-    //static let  BASE_URL_PATH                            = "http://192.168.2.9:9090/coreflex/investhr/"               // for testing
-    //static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.2.9:9090/coreflex/resources/UserImages/"
-
-    //static let  BASE_URL_PATH                            = "http://192.168.3.74:9090/coreflex/investhr/"
     static let  LINKEDIN_SHARE_API                       = "https://api.linkedin.com/v1/people/~/shares?format=json"
     static let  LINKEDIN_LOGOUT_API                      = "https://api.linkedin.com/uas/oauth/invalidateToken"
     static let  LINKEDIN_ACCESS_TOKEN                    = "linkedInAccessToken"

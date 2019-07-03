@@ -44,9 +44,9 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
 
 //        print(url.pathExtension)
         
-        let alertController = UIAlertController(title: "Upload File", message: "Are you sure to upload this file?", preferredStyle: UIAlertControllerStyle.alert)
+        let alertController = UIAlertController(title: "Upload File", message: "Are you sure to upload this file?", preferredStyle: UIAlertController.Style.alert)
         
-        let okAction = UIAlertAction(title: "Upload", style: UIAlertActionStyle.default, handler: { act -> Void in
+        let okAction = UIAlertAction(title: "Upload", style: UIAlertAction.Style.default, handler: { act -> Void in
             
             AppPreferences.sharedPreferences().showHudWith(title: "Uploading Resume", detailText: "Please wait..")
 
@@ -93,7 +93,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
             //alertController.dismiss(animated: true, completion: nil)
         }
         )
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: {act -> Void in
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: {act -> Void in
             
             alertController.dismiss(animated: true, completion: nil)
             
@@ -158,7 +158,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
 
         self.navigationItem.hidesBackButton = true;
         
-        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
+        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItem.Style.done, target: self, action: #selector(popViewController))
         
         self.navigationItem.leftBarButtonItem = barButtonItem
         
@@ -178,9 +178,9 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         //editProfileView.backgroundColor = UIColor.red
         
         let attachmentButton = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
-        attachmentButton.addTarget(self, action: #selector(rightBArButtonCLicked), for: UIControlEvents.touchUpInside)
+        attachmentButton.addTarget(self, action: #selector(rightBArButtonCLicked), for: UIControl.Event.touchUpInside)
         attachmentButton.titleLabel?.textAlignment = NSTextAlignment.center
-        attachmentButton.setTitleColor(UIColor.init(colorLiteralRed: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1), for: UIControlState.normal)
+        attachmentButton.setTitleColor(UIColor.init(red: 82/255.0, green: 158/255.0, blue: 242/255.0, alpha: 1), for: UIControl.State.normal)
         //attachmentButton.backgroundColor = UIColor.blue
         
         let attachMentImageView = UIImageView(frame: CGRect(x: editProfileView.frame.size.width-16, y: 14, width: 16, height: 18))
@@ -225,7 +225,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         // Do any additional setup after loading the view.
     }
     
-    func checkDeletedResumeListResponse(dataDic:Notification)
+    @objc func checkDeletedResumeListResponse(dataDic:Notification)
     {
         guard let responseDic = dataDic.object as? [String:String] else
         {
@@ -429,11 +429,11 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
 //        print(location)
     }
 
-    func deleteButtonCLicked(sender: subclassedUIButton)
+    @objc func deleteButtonCLicked(sender: subclassedUIButton)
     {
-        let alertController = UIAlertController(title: "Remove File", message: "Are you sure to remove this file?", preferredStyle: UIAlertControllerStyle.alert)
+        let alertController = UIAlertController(title: "Remove File", message: "Are you sure to remove this file?", preferredStyle: UIAlertController.Style.alert)
         
-        let okAction = UIAlertAction(title: "Remove", style: UIAlertActionStyle.destructive, handler: { act -> Void in
+        let okAction = UIAlertAction(title: "Remove", style: UIAlertAction.Style.destructive, handler: { act -> Void in
             
         let indexpath = self.tableView.indexPath(for: sender.cell)
         
@@ -457,7 +457,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
             }
         })
     
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: {act -> Void in
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: {act -> Void in
         
             alertController.dismiss(animated: true, completion: nil)
         
@@ -490,7 +490,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         return folderpath
     }
 
-    func viewButtonCLicked(sender: subclassedUIButton)
+    @objc func viewButtonCLicked(sender: subclassedUIButton)
     {
         let indexpath = self.tableView.indexPath(for: sender.cell)
         
@@ -498,7 +498,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         
         self.uploadingOrDownloadingRow = indexpath!.row
         
-//        let path = Bundle.main.path(forResource: "sample", ofType: "doc")
+        //let savePath = Bundle.main.path(forResource: "sample", ofType: "doc")
 //        let path1 = Bundle.main.path(forResource: "MyFile4", ofType: "doc")
 //        let path2 = Bundle.main.path(forResource: "test", ofType: "doc")
 
@@ -527,7 +527,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
     func documentInteractionControllerRectForPreview(_ controller: UIDocumentInteractionController) -> CGRect {
         return self.view.frame
     }
-    func downloadButtonCLicked(sender: subclassedUIButton)
+    @objc func downloadButtonCLicked(sender: subclassedUIButton)
     {
         let indexpath = self.tableView.indexPath(for: sender.cell)
         
@@ -562,7 +562,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         
     }
     
-    func checkUploadVideoResponse(dataDic:Notification)
+    @objc func checkUploadVideoResponse(dataDic:Notification)
     {
         AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 
@@ -588,7 +588,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         
     }
 
-    func checkUploadedResumeListResponse(dataDic:Notification)
+    @objc func checkUploadedResumeListResponse(dataDic:Notification)
     {
         guard let responseDic = dataDic.object as? [String:String] else
         {
@@ -627,7 +627,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
 //        present(documentPickerController, animated: true, completion: nil)
 //    }
     
-    func popViewController() -> Void
+    @objc func popViewController() -> Void
     {
         NotificationCenter.default.removeObserver(self)
         
@@ -635,7 +635,7 @@ class UploadResumeViewController: UIViewController,UIDocumentPickerDelegate, UIT
         
         self.navigationController?.popViewController(animated: true)
     }
-    func rightBArButtonCLicked() -> Void
+    @objc func rightBArButtonCLicked() -> Void
     {
         let documentPickerController = UIDocumentPickerViewController(documentTypes: ["public.text","public.composite-content"], in: UIDocumentPickerMode.import)
         

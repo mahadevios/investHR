@@ -36,7 +36,7 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
       //  }
         
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
+        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItem.Style.done, target: self, action: #selector(popViewController))
         
         self.navigationItem.leftBarButtonItem = barButtonItem
         
@@ -55,13 +55,13 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
         
         self.tableView.reloadData()
     }
-    func popViewController() -> Void
+    @objc func popViewController() -> Void
     {
         self.revealViewController().revealToggle(animated: true)
 
         self.navigationController?.popViewController(animated: true)
     }
-    func checkDeleteAccountResponse(dataDic:Notification)
+    @objc func checkDeleteAccountResponse(dataDic:Notification)
     {
         AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
         
@@ -152,7 +152,7 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
     {
         
         // create a new cell if needed or reuse an old one
-        let cell:UITableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "cell") as UITableViewCell!
+        let cell:UITableViewCell = (self.tableView.dequeueReusableCell(withIdentifier: "cell") as UITableViewCell?)!
         
         let settingItemLabel = cell.viewWithTag(200) as! UILabel
         

@@ -82,7 +82,10 @@ public protocol Authentication: Trackable, Loggable {
 
      - returns: authentication request that will yield Auth0 User Credentials
      - seeAlso: Credentials
+     - warning: this method is deprecated in favor of `login(usernameOrEmail username:, password:, realm:, audience:, scope:)`
+     - requires: Legacy Grant `http://auth0.com/oauth/legacy/grant-type/ro`. Check [our documentation](https://auth0.com/docs/clients/client-grant-types) for more info and how to enable it.
      */
+    @available(*, deprecated, message: "see login(usernameOrEmail username:, password:, realm:, audience:, scope:)")
     // swiftlint:disable:next function_parameter_count
     func login(usernameOrEmail username: String, password: String, multifactorCode: String?, connection: String, scope: String, parameters: [String: Any]) -> Request<Credentials, AuthenticationError>
 
@@ -111,15 +114,36 @@ public protocol Authentication: Trackable, Loggable {
          scope: "openid profile")
      ```
 
-     - parameter username: username or email used of the user to authenticate
-     - parameter password: password of the user
-     - parameter realm: domain of the realm or connection name
-     - parameter audience: API Identifier that the client is requesting access to.
-     - parameter scope: scope value requested when authenticating the user.
+     - parameter username:    username or email used of the user to authenticate
+     - parameter password:    password of the user
+     - parameter realm:       domain of the realm or connection name
+     - parameter audience:    API Identifier that the client is requesting access to.
+     - parameter scope:       scope value requested when authenticating the user.
+     - parameter parameters:  additional parameters that are optionally sent with the authentication request
+
      - important: This only works if you have the OAuth 2.0 API Authorization flag on
      - returns: authentication request that will yield Auth0 User Credentials
+     - requires: Grant `http://auth0.com/oauth/grant-type/password-realm`. Check [our documentation](https://auth0.com/docs/clients/client-grant-types) for more info and how to enable it.
      */
-    func login(usernameOrEmail username: String, password: String, realm: String, audience: String?, scope: String?) -> Request<Credentials, AuthenticationError>
+    // swiftlint:disable:next function_parameter_count
+    func login(usernameOrEmail username: String, password: String, realm: String, audience: String?, scope: String?, parameters: [String: Any]?) -> Request<Credentials, AuthenticationError>
+
+    /**
+     Login using One Time Password and MFA token.
+
+     ```
+     Auth0
+        .authentication(clientId: clientId, domain: "samples.auth0.com")
+        .login(withOTP: "123456", mfaToken: "mfa token value")
+     }
+     ```
+
+     - parameter otp:       One time password supplied by MFA Authenticator
+     - parameter mfaToken:  Token returned when authentication fails due to MFA requirement
+
+     - requires: Grant `http://auth0.com/oauth/grant-type/mfa-otp`. Check [our documentation](https://auth0.com/docs/clients/client-grant-types) for more info and how to enable it.
+     */
+    func login(withOTP otp: String, mfaToken: String) -> Request<Credentials, AuthenticationError>
 
     /**
      Creates a user in a Database connection
@@ -222,7 +246,9 @@ public protocol Authentication: Trackable, Loggable {
      - parameter parameters:   additional parameters sent during authentication
 
      - returns: an authentication request that will yield Auth0 user credentials after creating the user.
+     - requires: Legacy Grant `http://auth0.com/oauth/legacy/grant-type/ro`. Check [our documentation](https://auth0.com/docs/clients/client-grant-types) for more info and how to enable it.
      */
+    @available(*, deprecated, message: "use createUser(email:, username:, password:, connection:, userMetadata:) and then login(usernameOrEmail username:, password:, realm:, audience:, scope:)")
     // swiftlint:disable:next function_parameter_count
     func signUp(email: String, username: String?, password: String, connection: String, userMetadata: [String: Any]?, scope: String, parameters: [String: Any]) -> ConcatRequest<DatabaseUser, Credentials, AuthenticationError>
 
@@ -251,6 +277,7 @@ public protocol Authentication: Trackable, Loggable {
      - parameter parameters: additional authentication parameters added for Web link. Ignored in other types
 
      - returns: a request
+     - requires: Legacy Grant `http://auth0.com/oauth/legacy/grant-type/ro`. Check [our documentation](https://auth0.com/docs/clients/client-grant-types) for more info and how to enable it.
      */
     func startPasswordless(email: String, type: PasswordlessType, connection: String, parameters: [String: Any]) -> Request<Void, AuthenticationError>
 
@@ -278,6 +305,7 @@ public protocol Authentication: Trackable, Loggable {
      - parameter connection:    name of the passwordless connection. By default is 'sms'
 
      - returns: a request
+     - requires: Legacy Grant `http://auth0.com/oauth/legacy/grant-type/ro`. Check [our documentation](https://auth0.com/docs/clients/client-grant-types) for more info and how to enable it.
      */
     func startPasswordless(phoneNumber: String, type: PasswordlessType, connection: String) -> Request<Void, AuthenticationError>
 
@@ -290,16 +318,16 @@ public protocol Authentication: Trackable, Loggable {
         .tokenInfo(token: token)
         .start { print($0) }
      ```
-
+     
      - parameter token: token obtained by authenticating the user
-
+     - warning: this method is deprecated in favor of `userInfo(withAccessToken accessToken:)`
      - returns: a request that will yield token information
      */
-    @available(*, deprecated, message: "see userInfo(token: String)")
+    @available(*, deprecated, message: "see userInfo(withAccessToken accessToken:)")
     func tokenInfo(token: String) -> Request<Profile, AuthenticationError>
 
     /**
-     Returns user information by performing a request to /userinfo endpoint
+     Returns user information by performing a request to /userinfo endpoint.
 
      ```
      Auth0
@@ -311,8 +339,27 @@ public protocol Authentication: Trackable, Loggable {
      - parameter token: token obtained by authenticating the user
 
      - returns: a request that will yield user information
+     - warning: for OIDC-conformant clients please use `userInfo(withAccessToken accessToken:)`
      */
     func userInfo(token: String) -> Request<Profile, AuthenticationError>
+
+    /**
+     Returns OIDC standard claims information by performing a request
+     to /userinfo endpoint.
+
+     ```
+     Auth0
+     .authentication(clientId, domain: "samples.auth0.com")
+     .userInfo(withAccessToken: accessToken)
+     .start { print($0) }
+     ```
+
+     - parameter accessToken: accessToken obtained by authenticating the user
+
+     - returns: a request that will yield user information
+     - important: This method should be used for OIDC Conformant clients.
+     */
+    func userInfo(withAccessToken accessToken: String) -> Request<UserInfo, AuthenticationError>
 
     /**
      Logs in a user using a social Identity Provider token. e.g. Facebook
@@ -339,6 +386,8 @@ public protocol Authentication: Trackable, Loggable {
      - parameter parameters: additional parameters sent during authentication
 
      - returns: a request that will yield Auth0 user's credentials
+     - warning: disabled for OIDC-conformant clients, an alternative will be added in a future release
+     - requires: Legacy Grant `http://auth0.com/oauth/legacy/grant-type/access_token`. Check [our documentation](https://auth0.com/docs/clients/client-grant-types) for more info and how to enable it.
      */
     func loginSocial(token: String, connection: String, scope: String, parameters: [String: Any]) -> Request<Credentials, AuthenticationError>
 
@@ -355,7 +404,7 @@ public protocol Authentication: Trackable, Loggable {
      - parameter parameters: request parameters
 
      - returns: a request that will yield Auth0 user's credentials
-     - seeAlso: Authentication#exchangeCode(codeVerifier:redirectURI:) for PKCE
+     - seeAlso: exchangeCode(codeVerifier:, redirectURI:) for PKCE
      */
     func tokenExchange(withParameters parameters: [String: Any]) -> Request<Credentials, AuthenticationError>
 
@@ -389,6 +438,21 @@ public protocol Authentication: Trackable, Loggable {
      - returns: a request that will yield Auth0 user's credentials
      */
     func renew(withRefreshToken refreshToken: String, scope: String?) -> Request<Credentials, AuthenticationError>
+
+    /**
+     Revoke a user's refresh_token with a call to `/oauth/revoke`
+     
+     ```
+     Auth0
+     .authentication(clientId: clientId, domain: "samples.auth0.com")
+     .revoke(refreshToken: refreshToken)
+     .start { print($0) }
+     ```
+
+     - parameter refreshToken: the client's refresh token obtained on auth
+     - returns: a request
+     */
+    func revoke(refreshToken: String) -> Request<Void, AuthenticationError>
 
     /**
      Calls delegation endpoint with the given parameters.
@@ -491,8 +555,9 @@ public extension Authentication {
 
      - returns: authentication request that will yield Auth0 User Credentials
      - seeAlso: Credentials
+     - requires: Legacy Grant `http://auth0.com/oauth/legacy/grant-type/ro`. Check [our documentation](https://auth0.com/docs/clients/client-grant-types) for more info and how to enable it.
      */
-    public func login(usernameOrEmail username: String, password: String, multifactorCode: String? = nil, connection: String, scope: String = "openid", parameters: [String: Any] = [:]) -> Request<Credentials, AuthenticationError> {
+    func login(usernameOrEmail username: String, password: String, multifactorCode: String? = nil, connection: String, scope: String = "openid", parameters: [String: Any] = [:]) -> Request<Credentials, AuthenticationError> {
         return self.login(usernameOrEmail: username, password: password, multifactorCode: multifactorCode, connection: connection, scope: scope, parameters: parameters)
     }
 
@@ -526,10 +591,12 @@ public extension Authentication {
      - parameter realm: domain realm or connection name
      - parameter audience: API Identifier that the client is requesting access to.
      - parameter scope: scope value requested when authenticating the user.
+     - parameter parameters: additional parameters that are optionally sent with the authentication request
      - Returns: authentication request that will yield Auth0 User Credentials
+     - requires: Grant `http://auth0.com/oauth/grant-type/password-realm`. Check [our documentation](https://auth0.com/docs/clients/client-grant-types) for more info and how to enable it.
      */
-    public func login(usernameOrEmail username: String, password: String, realm: String, audience: String? = nil, scope: String? = nil) -> Request<Credentials, AuthenticationError> {
-        return self.login(usernameOrEmail: username, password: password, realm: realm, audience: audience, scope: scope)
+    func login(usernameOrEmail username: String, password: String, realm: String, audience: String? = nil, scope: String? = nil, parameters: [String: Any]? = nil) -> Request<Credentials, AuthenticationError> {
+        return self.login(usernameOrEmail: username, password: password, realm: realm, audience: audience, scope: scope, parameters: parameters)
     }
 
     /**
@@ -568,7 +635,7 @@ public extension Authentication {
 
      - returns: request that will yield a created database user (just email, username and email verified flag)
      */
-    public func createUser(email: String, username: String? = nil, password: String, connection: String, userMetadata: [String: Any]? = nil) -> Request<DatabaseUser, AuthenticationError> {
+    func createUser(email: String, username: String? = nil, password: String, connection: String, userMetadata: [String: Any]? = nil) -> Request<DatabaseUser, AuthenticationError> {
         return self.createUser(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata)
     }
 
@@ -618,8 +685,9 @@ public extension Authentication {
      - parameter parameters:   additional parameters sent during authentication
 
      - returns: an authentication request that will yield Auth0 user credentials after creating the user.
+     - requires: Legacy Grant `http://auth0.com/oauth/legacy/grant-type/ro`. Check [our documentation](https://auth0.com/docs/clients/client-grant-types) for more info and how to enable it.
      */
-    public func signUp(email: String, username: String? = nil, password: String, connection: String, userMetadata: [String: Any]? = nil, scope: String = "openid", parameters: [String: Any] = [:]) -> ConcatRequest<DatabaseUser, Credentials, AuthenticationError> {
+    func signUp(email: String, username: String? = nil, password: String, connection: String, userMetadata: [String: Any]? = nil, scope: String = "openid", parameters: [String: Any] = [:]) -> ConcatRequest<DatabaseUser, Credentials, AuthenticationError> {
         return self.signUp(email: email, username: username, password: password, connection: connection, userMetadata: userMetadata, scope: scope, parameters: parameters)
     }
 
@@ -649,7 +717,7 @@ public extension Authentication {
 
      - returns: a request
      */
-    public func startPasswordless(email: String, type: PasswordlessType = .Code, connection: String = "email", parameters: [String: Any] = [:]) -> Request<Void, AuthenticationError> {
+    func startPasswordless(email: String, type: PasswordlessType = .Code, connection: String = "email", parameters: [String: Any] = [:]) -> Request<Void, AuthenticationError> {
         return self.startPasswordless(email: email, type: type, connection: connection, parameters: parameters)
     }
 
@@ -677,7 +745,7 @@ public extension Authentication {
 
      - returns: a request
      */
-    public func startPasswordless(phoneNumber: String, type: PasswordlessType = .Code, connection: String = "sms") -> Request<Void, AuthenticationError> {
+    func startPasswordless(phoneNumber: String, type: PasswordlessType = .Code, connection: String = "sms") -> Request<Void, AuthenticationError> {
         return self.startPasswordless(phoneNumber: phoneNumber, type: type, connection: connection)
     }
 
@@ -706,8 +774,9 @@ public extension Authentication {
      - parameter parameters: additional parameters sent during authentication
 
      - returns: a request that will yield Auth0 user's credentials
+     - requires: Legacy Grant `http://auth0.com/oauth/legacy/grant-type/access_token`. Check [our documentation](https://auth0.com/docs/clients/client-grant-types) for more info and how to enable it.
      */
-    public func loginSocial(token: String, connection: String, scope: String = "openid", parameters: [String: Any] = [:]) -> Request<Credentials, AuthenticationError> {
+    func loginSocial(token: String, connection: String, scope: String = "openid", parameters: [String: Any] = [:]) -> Request<Credentials, AuthenticationError> {
         return self.loginSocial(token: token, connection: connection, scope: scope, parameters: parameters)
     }
 
@@ -728,7 +797,7 @@ public extension Authentication {
         .start { print($0) }
      ```
 
-     If you are not using OAuth 2.0 API Authorization please use `delegation(parameters:)`
+     - precondition: if you are not using OAuth 2.0 API Authorization please use `delegation(parameters:)`
 
      - parameter refreshToken: the client's refresh token obtained on auth
      - parameter scope: scopes to request for the new tokens. By default is nil which will ask for the same ones requested during Auth.

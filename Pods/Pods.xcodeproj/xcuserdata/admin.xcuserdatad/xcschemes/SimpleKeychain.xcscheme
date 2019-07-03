@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '0E09567AF5EBC14DA4F166C4B3DFB942'
-               BlueprintName = 'SimpleKeychain'
-               ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'SimpleKeychain.framework'>
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "20291C4D0871A9AA15C56F4769B7B53C"
+               BlueprintName = "SimpleKeychain"
+               ReferencedContainer = "container:Pods.xcodeproj"
+               BuildableName = "SimpleKeychain.framework">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

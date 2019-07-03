@@ -30,7 +30,7 @@ import Auth0
 
     private let authentication = Auth0.authentication()
 
-    static func resume(_ url: URL, options: [UIApplicationOpenURLOptionsKey: Any]) -> Bool {
+    static func resume(_ url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
         return Auth0.resumeAuth(url, options: options)
     }
 

@@ -57,16 +57,16 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         // Do any additional setup after loading the view.
     }
     
-    func upadateUserData()
+    @objc func upadateUserData()
     {
        showData()
     }
     
-    func newNotiAdded()
+    @objc func newNotiAdded()
     {
         self.menuTableView.reloadData()
     }
-    func loggedOut(dataDic:Notification)
+    @objc func loggedOut(dataDic:Notification)
     {
         DispatchQueue.main.async
             {
@@ -173,7 +173,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
 
     }
     
-    func addView() -> Void
+    @objc func addView() -> Void
     {
         outSideCircleView.layer.cornerRadius = outSideCircleView.frame.size.width/2.0
         
@@ -203,7 +203,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // create a new cell if needed or reuse an old one
-        let cell:UITableViewCell = self.menuTableView.dequeueReusableCell(withIdentifier: "cell") as UITableViewCell!
+        let cell:UITableViewCell = (self.menuTableView.dequeueReusableCell(withIdentifier: "cell") as UITableViewCell?)!
         
         // set the text from the data model
         

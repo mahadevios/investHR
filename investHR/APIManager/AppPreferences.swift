@@ -80,7 +80,7 @@ class AppPreferences: NSObject,UIAlertViewDelegate
         
     }
     
-    func reachabilityChanged(_ note:Notification) -> Void
+    @objc func reachabilityChanged(_ note:Notification) -> Void
     {
         reach = note.object as? Reachability
         

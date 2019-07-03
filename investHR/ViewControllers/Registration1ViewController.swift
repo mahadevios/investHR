@@ -38,7 +38,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
     {
         
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
         
         
 
@@ -150,8 +150,8 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         //location1TextField.isUserInteractionEnabled = false
         // LISDKSessionManager.clearSession()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(checkRegistrationResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_NEW_USER_REGISTERED), object: nil)
         
         self.autoCompleteTableView.isHidden = true
@@ -226,7 +226,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
 //    }
 
     
-    func checkRegistrationResponse(dataDic:NSNotification)
+    @objc func checkRegistrationResponse(dataDic:NSNotification)
     {
         //        self.view.viewWithTag(789)?.removeFromSuperview()
         
@@ -444,7 +444,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView{
         
-        var label = view as! UILabel!
+        var label = view as! UILabel?
         if label == nil {
             label = UILabel()
         }
@@ -715,16 +715,16 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
               //  self.present(viewController, animated: true, completion: nil)
     }
 
-    func deviceRotated() -> Void
+    @objc func deviceRotated() -> Void
     {
-        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+        if UIDevice.current.orientation.isLandscape
         {
             //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
             
 //            print("Landscape")
         }
         
-        if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+        if UIDevice.current.orientation.isPortrait
         {
             //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
             
@@ -732,7 +732,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         }
     }
 
-    func keyboardWillShow()
+    @objc func keyboardWillShow()
     {
         // Animate the current view out of the way
         if self.view.frame.origin.y >= 0
@@ -751,7 +751,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         //            }
     }
     
-    func keyboardWillHide()
+    @objc func keyboardWillHide()
     {
 //        if self.view.frame.origin.y > 0
 //        {
@@ -1057,7 +1057,7 @@ class Registration1ViewController: UIViewController,UIPickerViewDataSource,UIPic
         }
     }
     
-    func pickerDoneButtonPressed()
+    @objc func pickerDoneButtonPressed()
     {
         removePickerToolBar()
     }

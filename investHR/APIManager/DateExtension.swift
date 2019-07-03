@@ -112,20 +112,25 @@ extension UIColor
     {
         // create color from string
         // ... some code
-        return UIColor(colorLiteralRed: 73/255.0, green: 167/255.0, blue: 101/255.0, alpha: 1.0)
+        return UIColor.init(red: 73/255.0, green: 167/255.0, blue: 101/255.0, alpha: 1.0)
+//        return UIColor(colorLiteralRed: 73/255.0, green: 167/255.0, blue: 101/255.0, alpha: 1.0)
     }
     class func appBlueColor() -> UIColor
     {
         // create color from string
         // ... some code
-        return UIColor(colorLiteralRed: 29/255.0, green: 123/255.0, blue:231/255.0, alpha: 1.0)
+        return UIColor.init(red: 29/255.0, green: 123/255.0, blue: 231/255.0, alpha: 1.0)
+
+//        return UIColor(colorLiteralRed: 29/255.0, green: 123/255.0, blue:231/255.0, alpha: 1.0)
     }
     
     class func appOrangeColor() -> UIColor
     {
         // create color from string
         // ... some code
-        return UIColor(colorLiteralRed: 243/255.0, green: 137/255.0, blue:86/255.0, alpha: 1.0)
+        return UIColor.init(red: 243/255.0, green: 137/255.0, blue: 86/255.0, alpha: 1.0)
+
+//        return UIColor(colorLiteralRed: 243/255.0, green: 137/255.0, blue:86/255.0, alpha: 1.0)
     }
    
 }
@@ -143,19 +148,19 @@ class subclassedUIButton: UIButton
 extension String {
     
     var length: Int {
-        return self.characters.count
+        return self.count
     }
     
     subscript (i: Int) -> String {
-        return self[Range(i ..< i + 1)]
+        return self[(i ..< i + 1)]
     }
     
     func substring(from: Int) -> String {
-        return self[Range(min(from, length) ..< length)]
+        return self[(min(from, length) ..< length)]
     }
     
     func substring(to: Int) -> String {
-        return self[Range(0 ..< max(0, to))]
+        return self[(0 ..< max(0, to))]
     }
     
     subscript (r: Range<Int>) -> String {
@@ -163,12 +168,13 @@ extension String {
                                             upper: min(length, max(0, r.upperBound))))
         let start = index(startIndex, offsetBy: range.lowerBound)
         let end = index(start, offsetBy: range.upperBound - range.lowerBound)
-        return self[Range(start ..< end)]
+        let range1: Range<Index> = start..<end
+        return String(self[range1])
     }
     
     func capitalizingFirstLetter() -> String {
-        let first = String(characters.prefix(1)).capitalized
-        let other = String(characters.dropFirst())
+        let first = String(prefix(1)).capitalized
+        let other = String(dropFirst())
         return first + other
     }
     

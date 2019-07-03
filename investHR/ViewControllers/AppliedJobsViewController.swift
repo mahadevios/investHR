@@ -22,9 +22,9 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
         
         
         
-        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
+        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItem.Style.done, target: self, action: #selector(popViewController))
         
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
         
         self.navigationItem.leftBarButtonItem = barButtonItem
         
@@ -56,7 +56,7 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
         // Do any additional setup after loading the view.
     }
     
-    func deviceRotated()
+    @objc func deviceRotated()
     {
         self.collectionView.reloadData()
     }
@@ -65,7 +65,7 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
         self.navigationItem.title = "Applied Jobs"
 
     }
-    func checkRolesJobList(dataDic:NSNotification)
+    @objc func checkRolesJobList(dataDic:NSNotification)
     {
         let appliedJobsDict = dataDic.object as! [String:AnyObject]
         
@@ -99,7 +99,7 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
             {
                 
                 let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 90, height: 25))
-                numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
+                numberOfJobsLabel.textColor = UIColor(red: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
                 numberOfJobsLabel.text = "\(appliedJobsNumber!) job"
                 numberOfJobsLabel.textAlignment = NSTextAlignment.right
                 let rightBarButtonItem = UIBarButtonItem(customView: numberOfJobsLabel)
@@ -109,7 +109,7 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
             else
                 {
                     let numberOfJobsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 90, height: 25))
-                    numberOfJobsLabel.textColor = UIColor(colorLiteralRed: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
+                    numberOfJobsLabel.textColor = UIColor(red: 241/255.0, green: 141/255.0, blue: 90/255.0, alpha: 1)
                     numberOfJobsLabel.text = "\(appliedJobsNumber!) jobs"
                     numberOfJobsLabel.textAlignment = NSTextAlignment.right
                     let rightBarButtonItem = UIBarButtonItem(customView: numberOfJobsLabel)
@@ -145,7 +145,7 @@ class AppliedJobsViewController: UIViewController,UICollectionViewDataSource,UIC
         
     }
     
-    func popViewController() -> Void
+    @objc func popViewController() -> Void
     {
         NotificationCenter.default.removeObserver(self)
 

@@ -21,11 +21,11 @@ class ChangePasswordViewController: UIViewController
     {
         super.viewDidLoad()
         
-        oldPasswordTextField.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        oldPasswordTextField.layer.borderColor = UIColor.init(red: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
-        newPasswordTextField.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        newPasswordTextField.layer.borderColor = UIColor.init(red: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
-        confirmNewPasswordTextField.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        confirmNewPasswordTextField.layer.borderColor = UIColor.init(red: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
         NotificationCenter.default.addObserver(self, selector: #selector(checkResetPasswordResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_RESET_PASSWORD), object: nil)
         // popupView.layer.borderColor = UIColor.gray.cgColor
@@ -39,7 +39,7 @@ class ChangePasswordViewController: UIViewController
         // Do any additional setup after loading the view.
     }
 
-    func checkResetPasswordResponse(dataDic:Notification)
+    @objc func checkResetPasswordResponse(dataDic:Notification)
     {
         AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
 

@@ -123,7 +123,7 @@ class APIManager: NSObject
     {
         if AppPreferences.sharedPreferences().isReachable
         {
-            AppPreferences.sharedPreferences().showHudWith(title: "Loading jobs", detailText: "Please wait..")
+            AppPreferences.sharedPreferences().showHudWith(title: "Loading Data", detailText: "Please wait..")
             
             let params = ["username=\(username)","password=\(password)","itemName=\(itemName)","linkedinId=\(linkedinId)"]
             
@@ -840,7 +840,7 @@ class APIManager: NSObject
         var request:NSURLRequest!
         do
         {
-           request  = try createRegistrationRequest(dict: dict, imageData: imageData) as NSURLRequest!
+            request  = try createRegistrationRequest(dict: dict, imageData: imageData) as NSURLRequest?
 
         } catch let error as NSError
         {
@@ -875,7 +875,7 @@ class APIManager: NSObject
         var request:NSURLRequest!
         do
         {
-            request  = try createUpdateProfileRequest(dict: dict, imageData: imageData) as NSURLRequest!
+            request  = try createUpdateProfileRequest(dict: dict, imageData: imageData) as NSURLRequest?
             
         } catch let error as NSError
         {

@@ -123,7 +123,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             }
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
         
     }
     
@@ -153,7 +153,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         NotificationCenter.default.removeObserver(self)
     }
     
-    func checkJobDescriptionResponse(dataDic:Notification) -> Void
+    @objc func checkJobDescriptionResponse(dataDic:Notification) -> Void
     {
         guard let responseDic = dataDic.object as? [String:String] else
         {
@@ -267,7 +267,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         self.collectionView.reloadData()
     }
     
-    func checkSavedOrAppliedJobDescriptionResponse(dataDic:Notification) -> Void
+    @objc func checkSavedOrAppliedJobDescriptionResponse(dataDic:Notification) -> Void
     {
         guard let responseDic = dataDic.object as? [String:String] else
         {
@@ -352,7 +352,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         self.collectionView.reloadData()
     }
 
-    func checkApplyJob(dataDic:NSNotification)
+    @objc func checkApplyJob(dataDic:NSNotification)
     {
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
@@ -375,7 +375,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         
     }
-    func saveJobButtonClicked(_ sender: subclassedUIButton)
+    @objc func saveJobButtonClicked(_ sender: subclassedUIButton)
     {
         if AppPreferences.sharedPreferences().isReachable
         {
@@ -403,7 +403,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         }
     
     }
-    func applyJobButtonClicked(_ sender: subclassedUIButton)
+    @objc func applyJobButtonClicked(_ sender: subclassedUIButton)
     {
         if AppPreferences.sharedPreferences().isReachable
         {
@@ -564,7 +564,8 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
 
         let descriptionWebView = cell.viewWithTag(109) as! UIWebView
         descriptionWebView.scrollView.isScrollEnabled = false
-        
+//        descriptionWebView.backgroundColor = UIColor.blue
+
 
         let applyButton = cell.viewWithTag(103) as! subclassedUIButton
         
@@ -630,7 +631,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             
             locationLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
             locationLabel.numberOfLines = 0
-            locationLabel.textColor = UIColor(colorLiteralRed: 142/255.0, green: 159/255.0, blue: 168/255.0, alpha: 1.0)
+            locationLabel.textColor = UIColor(red: 142/255.0, green: 159/255.0, blue: 168/255.0, alpha: 1.0)
             height = heightForView(text: jobLocationString as String, font: UIFont.systemFont(ofSize: 14), width: locationLabel.frame.size.width) as CGFloat
             
             
@@ -678,8 +679,9 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         descriptionWebView1.delegate = self
         descriptionWebView1.scrollView.delegate = self
        // descriptionWebView1.backgroundColor = UIColor.red
-        //descriptionWebView.backgroundColor = UIColor.red
-        
+        descriptionWebView.tintColor = UIColor.red
+        descriptionWebView1.tintColor = UIColor.blue
+
         if let discription = jobDetailsDic?["discription"]  as? String
         {
             if !webViewLoaded
@@ -785,14 +787,13 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         //applyButton.tag = jobId as! Int
         
-        saveButton.addTarget(self, action: #selector(saveJobButtonClicked), for: UIControlEvents.touchUpInside)
-        applyButton.addTarget(self, action: #selector(applyJobButtonClicked), for: UIControlEvents.touchUpInside)
+        saveButton.addTarget(self, action: #selector(saveJobButtonClicked), for: UIControl.Event.touchUpInside)
+        applyButton.addTarget(self, action: #selector(applyJobButtonClicked), for: UIControl.Event.touchUpInside)
         
         cell.contentView.backgroundColor = UIColor.white
         descriptionWebView1.backgroundColor = UIColor.white
         //descriptionWebView1.isUserInteractionEnabled = false
-        descriptionWebView.backgroundColor = UIColor.white
-        
+//        descriptionWebView.isHidden = true
         //applyButton.layer.borderColor = UIColor(red: 77/255.0, green: 150/255.0, blue: 241/255.0, alpha: 1).cgColor
         return cell
     }
@@ -812,7 +813,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize
     {
-        var jobLocationString:NSMutableString = ""
+        let jobLocationString:NSMutableString = ""
         
         for index in 0 ..< jobLocationArray.count
         {
@@ -883,7 +884,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         // handle tap events
 //        print("You selected cell #\(indexPath.item)!")
     }
-    func checkSaveJob(dataDic:NSNotification)
+    @objc func checkSaveJob(dataDic:NSNotification)
     {
         guard let dataDictionary = dataDic.object as? [String:AnyObject] else
         {
@@ -954,7 +955,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         referenceLabel.text = "Referral"
         
-        referenceLabel.textColor = UIColor(colorLiteralRed: 243/255.0, green: 137/255.0, blue: 84/255.0, alpha: 1.0)
+        referenceLabel.textColor = UIColor(red: 243/255.0, green: 137/255.0, blue: 84/255.0, alpha: 1.0)
         
         referenceImageView = UIImageView(frame: CGRect(x: insideView.frame.size.width/2 - 60, y: 14, width: 17, height: 23))
         
@@ -962,7 +963,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         lineView = UIView(frame: CGRect(x: 0, y: referenceLabel.frame.origin.y + referenceLabel.frame.size.height + 10, width: insideView.frame.size.width, height: 2))
         
-        lineView.backgroundColor = UIColor(colorLiteralRed: 243/255.0, green: 137/255.0, blue: 84/255.0, alpha: 1.0)
+        lineView.backgroundColor = UIColor(red: 243/255.0, green: 137/255.0, blue: 84/255.0, alpha: 1.0)
 
         
         
@@ -1023,7 +1024,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         submitButton = UIButton(frame: CGRect(x: insideView.frame.width/2 - 50, y: textField3.frame.origin.y + textField3.frame.size.height + 20, width: 100, height: 40))
         
-        submitButton.backgroundColor = UIColor(colorLiteralRed: 243/255.0, green: 137/255.0, blue: 84/255.0, alpha: 1.0)
+        submitButton.backgroundColor = UIColor(red: 243/255.0, green: 137/255.0, blue: 84/255.0, alpha: 1.0)
         
         submitButton.setTitle("Send", for: .normal)
         
@@ -1043,13 +1044,13 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         textField3.placeholder = "Linkedin Url"
         
-        textField.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        textField.layer.borderColor = UIColor.init(red: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
-        textField1.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        textField1.layer.borderColor = UIColor.init(red: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
-        textField2.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        textField2.layer.borderColor = UIColor.init(red: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
-        textField3.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        textField3.layer.borderColor = UIColor.init(red: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
         textField.layer.borderWidth = 1.0
         
@@ -1109,7 +1110,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
     
     }
     
-    func submitButtonClicked()
+    @objc func submitButtonClicked()
     {
         if textField.text == ""
         {
@@ -1166,11 +1167,11 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         self.view.viewWithTag(222)?.removeFromSuperview()
     }
     
-    func deviceRotated() -> Void
+    @objc func deviceRotated() -> Void
     {
         if self.view.viewWithTag(222) != nil
         {
-            if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+            if UIDevice.current.orientation.isLandscape
             {
                 //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
                 DispatchQueue.main.async
@@ -1210,7 +1211,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
 //                print("Landscape")
             }
             
-            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+            if UIDevice.current.orientation.isPortrait
             {
                 //self.perform(#selector(addView), with: nil, afterDelay: 0.2)
                 DispatchQueue.main.async
@@ -1303,7 +1304,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         }
         
     }
-    func tapped(sender:UITapGestureRecognizer) -> Void
+    @objc func tapped(sender:UITapGestureRecognizer) -> Void
     {
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.1, options: .transitionCurlUp, animations: {
             
@@ -1333,7 +1334,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
             return true
     }
-    func countryCodeButtonClicekd(sender:UIButton)
+    @objc func countryCodeButtonClicekd(sender:UIButton)
     {
         resignAllResponders()
         self.addPickerToolBarForCountryCodes()
@@ -1408,7 +1409,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView{
         
-        var label = view as! UILabel!
+        var label = view as! UILabel?
         if label == nil {
             label = UILabel()
         }
@@ -1442,7 +1443,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
     }
 
-    func pickerDoneButtonPressed()
+    @objc func pickerDoneButtonPressed()
     {
         removePickerToolBar()
     }
@@ -1471,7 +1472,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
     }
     
-    func checkRederFriendResponse(dataDic:Notification)
+    @objc func checkRederFriendResponse(dataDic:Notification)
     {
         AppPreferences.sharedPreferences().hideHudWithTag(tag: 789)
         

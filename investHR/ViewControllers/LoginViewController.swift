@@ -151,7 +151,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         //let coreDataManager = CoreDataManager.getSharedCoreDataManager()
         
-        emailTextField.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        emailTextField.layer.borderColor = UIColor.init(red: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
         let imageView = UIImageView(frame: CGRect(x: 15, y: 7, width: 15, height: 20))
         
@@ -163,7 +163,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         emailTextField.delegate = self
         
-        passwordTextField.layer.borderColor = UIColor.init(colorLiteralRed: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
+        passwordTextField.layer.borderColor = UIColor.init(red: 196/255.0, green: 204/255.0, blue: 210/255.0, alpha: 1.0).cgColor
         
         self.emailTextField.text = nil
         
@@ -179,9 +179,9 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
         passwordTextField.delegate = self
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.fetchUserProfile(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_LIACCESSTOKEN_FETCHED), object: nil) // after getting the accessToken from linkedin webview, ask for user info and get back to this view with hud, NOTIFICATION_LIACCESSTOKEN_FETCHED when webview fetch the user info, get this info in this controller and pass it to the server and validate the user
         
@@ -191,7 +191,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
 
         NotificationCenter.default.addObserver(self, selector: #selector(checkForgotPasswordResponse(dataDic:)), name: NSNotification.Name(Constant.NOTIFICATION_FORGOT_PASSWORD), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: UIDevice.orientationDidChangeNotification, object: nil)
 
         let lastLoggedInUserName = UserDefaults.standard.object(forKey: Constant.LAST_LOGGEDIN_USER_NAME) as? String
         
@@ -201,9 +201,9 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         }
     }
  
-    func deviceRotated() -> Void
+    @objc func deviceRotated() -> Void
     {
-        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation)
+        if UIDevice.current.orientation.isLandscape
         {
             if self.view != nil && self.linkedInLoginView != nil
             {
@@ -214,7 +214,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
             }
         }
         
-        if UIDeviceOrientationIsPortrait(UIDevice.current.orientation)
+        if UIDevice.current.orientation.isPortrait
         {
             if self.view != nil && self.linkedInLoginView != nil
             {
@@ -500,7 +500,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         
     }
     
-    func cancelLinkedInViewButtonClicked()
+    @objc func cancelLinkedInViewButtonClicked()
     {
         self.webView.delegate = nil
         self.webView.removeFromSuperview()
@@ -520,7 +520,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
     
 // MARK: notification response methods
 
-    func checkForgotPasswordResponse(dataDic:NSNotification)
+    @objc func checkForgotPasswordResponse(dataDic:NSNotification)
     {
         guard let responseDic = dataDic.object as? [String:String] else
         {
@@ -775,7 +775,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
 //
 //    }
     
-    func checkRegistrationResponse(dataDic:NSNotification)
+    @objc func checkRegistrationResponse(dataDic:NSNotification)
     {
         
         guard let responseDic = dataDic.object as? [String:AnyObject] else
@@ -958,7 +958,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
     }
     
     
-    func checkLoginResponse(dataDic:NSNotification)
+    @objc func checkLoginResponse(dataDic:NSNotification)
     {
         guard let responseDic = dataDic.object as? [String:AnyObject] else
         {
@@ -1143,7 +1143,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         NotificationCenter.default.removeObserver(self)
     }
 
-    func fetchUserProfile(dataDic:NSNotification)
+    @objc func fetchUserProfile(dataDic:NSNotification)
     {
 
         do {
@@ -1413,7 +1413,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
     
 // MARK: keyboard and textfield delegates
     
-    func keyboardWillShow()
+    @objc func keyboardWillShow()
     {
         // Animate the current view out of the way
         if self.view.frame.origin.y >= 0
@@ -1432,7 +1432,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
         //            }
     }
     
-    func keyboardWillHide()
+    @objc func keyboardWillHide()
     {
         //        if self.view.frame.origin.y > 0
         //        {
@@ -1504,7 +1504,7 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
 
 // MARK: webview delegates
     
-    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool
     {
         let url = request.url!
         print(url)
@@ -1723,7 +1723,9 @@ class LoginViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegat
                     
                                         let stateCityData = stateCityString.data(using: .utf8, allowLossyConversion: true)
                     
-                                        let stateCityArray =  try JSONSerialization.jsonObject(with: stateCityData as Data!, options: .allowFragments) as! [AnyObject]
+//                    let stateCityArray =  try JSONSerialization.jsonObject(with: (stateCityData )!, options: .allowFragments) as! [AnyObject]
+                    
+                     let stateCityArray =  try JSONSerialization.jsonObject(with: (stateCityData )!, options: .allowFragments) as! [AnyObject]
                     
                                         for index in 0 ..< stateCityArray.count
                                         {

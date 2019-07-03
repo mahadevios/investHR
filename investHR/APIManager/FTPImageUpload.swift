@@ -248,10 +248,10 @@ extension FTPImageUpload
         let path = [P_MAX]
         
         // get C-String from CFStringRef
-        let ret = CFURLGetFileSystemRepresentation(downloadUrl! as CFURL!, true, legIntPtr, P_MAX)
+        _ = CFURLGetFileSystemRepresentation(downloadUrl! as CFURL?, true, legIntPtr, P_MAX)
         
 //        print(ret)
-        if (!CFURLGetFileSystemRepresentation(downloadUrl! as CFURL!, true, legIntPtr, P_MAX))
+        if (!CFURLGetFileSystemRepresentation(downloadUrl! as CFURL?, true, legIntPtr, P_MAX))
         {
             // error
 //            print("error occured")

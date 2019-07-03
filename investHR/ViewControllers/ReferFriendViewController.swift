@@ -23,7 +23,7 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource,MFMailCom
         
         
         
-        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItemStyle.done, target: self, action: #selector(popViewController))
+        let barButtonItem = UIBarButtonItem(image:UIImage(named:"BackButton"), style: UIBarButtonItem.Style.done, target: self, action: #selector(popViewController))
         
         self.navigationItem.leftBarButtonItem = barButtonItem
         
@@ -93,7 +93,7 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource,MFMailCom
         self.dismiss(animated: false, completion: nil)
     }
     
-    func popViewController() -> Void
+    @objc func popViewController() -> Void
     {
         self.revealViewController().revealToggle(animated: true)
         
@@ -184,7 +184,7 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource,MFMailCom
     }
     
     
-    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType) -> Any?
+    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any?
     {
 
             return NSURL(string:"http://itunes.com/apps/investhr/idapp@investhr.com") ?? "investHR"
@@ -192,7 +192,7 @@ class ReferFriendViewController: UIViewController,UIActivityItemSource,MFMailCom
     }
     
     
-    func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivityType?) -> String
+    func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String
     {
 
         return "Get investHR iOS application"
