@@ -181,7 +181,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
 
         let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
         
         if AppPreferences.sharedPreferences().isReachable
         {
@@ -688,7 +688,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         }
         
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
         
        // AppPreferences.sharedPreferences().showAlertViewWith(title: "Profile Update", withMessage: "Profile updated successfully", withCancelText: "Ok")
 
@@ -1460,7 +1460,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
         }
         var username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
         var password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-        var linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        var linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
         
         var editedEmail1:String!
         var editedPassword1:String!
@@ -1855,7 +1855,7 @@ coutryCodesArray = ["+1","+93","+355","+213","+1 684","+376","+244","+1 264","+6
                     {
                         let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
                         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-                        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+                        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
                         
                         if linkedInId != nil
                         {

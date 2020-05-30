@@ -27,9 +27,9 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
     
     @IBOutlet weak var sliderButton: UIButton!
     
-    let authorizationEndPoint = "https://www.linkedin.com/uas/oauth2/authorization"
+//    let authorizationEndPoint = Constant.LINKEDIN_AUTHORIZATION_ENDPOINT_API
     
-    let accessTokenEndPoint = "https://www.linkedin.com/uas/oauth2/accessToken"
+//    let accessTokenEndPoint = "https://www.linkedin.com/uas/oauth2/accessToken"
     
     let linkedInKey = "81no6kz3uepufn"
     
@@ -60,13 +60,13 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
         
         definesPresentationContext = true
         
-
+       
 //        if AppPreferences.sharedPreferences().gotMessages == false
 //        {
 //            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
 //            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-//            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-//            
+//            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
+//
 //            if username != nil && password != nil
 //            {
 //                APIManager.getSharedAPIManager().getCustomMessages(username: username!, password: password!, linkedinId: "")
@@ -75,18 +75,18 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
 //                if linkedInId != nil
 //                {
 //                    APIManager.getSharedAPIManager().getCustomMessages(username: "", password: "", linkedinId: linkedInId!)
-//                    
+//
 //            }
 //        }
 //        let alert2 = MyAlert.showAlert(ofType: MyAlertType.invalidLogin, handler: { (UIAlertAction) in
-//            
+//
 //            print("cancel pressed")
 //        }) { (UIAlertAction) in
 //            print("ok pressed")
 //
 //        }
-        
-      
+//
+//
 
         
 
@@ -178,7 +178,7 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
 //        {
 //            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
 //            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-//            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+//            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
 //            
 //            if username != nil && password != nil
 //            {
@@ -216,7 +216,7 @@ class HomeViewController: UIViewController,UIWebViewDelegate,NSURLConnectionDele
                     
                     let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
                     let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-                    let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+                    let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
                     
                     if username != nil && password != nil
                     {

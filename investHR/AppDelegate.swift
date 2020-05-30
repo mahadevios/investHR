@@ -209,7 +209,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 
                 let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
                 let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-                let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+                let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
                 
                 if username != nil && password != nil
                 {
@@ -818,8 +818,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         else
         {
-            //let accessToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
-            let accessToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            //let accessToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_USER_ID) as? String
+            let accessToken = UserDefaults.standard.value(forKey: Constant.LINKEDIN_USER_ID) as? String
             // let accessTokenExpiresIn = UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN_EXPIRES_IN) as? String
             
             if accessToken != nil
@@ -862,11 +862,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //            
 //            print(accessToken )
 //            
-//            UserDefaults.standard.set(accessToken, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+//            UserDefaults.standard.set(accessToken, forKey: Constant.LINKEDIN_USER_ID)
 //            UserDefaults.standard.synchronize()
 //            
 //            
-//            if let accessToken = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+//            if let accessToken = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID)
 //            {
 //                // Specify the URL string that we'll get the profile info from.
 //                let targetURLString = "https://api.linkedin.com/v1/people/~:(public-profile-url,id,first-name,last-name,maiden-name,headline,email-address,picture-urls::(original))?format=json"

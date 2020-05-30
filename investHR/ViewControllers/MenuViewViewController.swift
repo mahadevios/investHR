@@ -31,7 +31,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
         
         self.perform(#selector(addView), with: nil, afterDelay: 0.2)
         
-        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
         
         if linkedInId != nil
         {
@@ -83,12 +83,12 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             cookieStorage.deleteCookie(cookie)
         }
         
-        if UserDefaults.standard.value(forKey: Constant.LINKEDIN_ACCESS_TOKEN) != nil
+        if UserDefaults.standard.value(forKey: Constant.LINKEDIN_USER_ID) != nil
         {
             UserDefaults.standard.setValue(nil, forKey: Constant.LAST_LOGGEDIN_USER_NAME)
 
         }
-        UserDefaults.standard.setValue(nil, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+        UserDefaults.standard.setValue(nil, forKey: Constant.LINKEDIN_USER_ID)
         UserDefaults.standard.setValue(nil, forKey: Constant.USERNAME)
         UserDefaults.standard.setValue(nil, forKey: Constant.PASSWORD)
         UserDefaults.standard.setValue(nil, forKey: Constant.USERID)
@@ -346,7 +346,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             //APIManager.getSharedAPIManager().
 //            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
 //            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-//            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+//            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
 //            
 //            if username != nil && password != nil
 //            {
@@ -379,7 +379,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
 //            let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
 //            let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-//            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+//            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
 //            
 //            if username != nil && password != nil
 //            {
@@ -463,13 +463,13 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             
 
         case 8:
-            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
 
             if linkedInId != nil
             {
                 let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
                 let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-                let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+                let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
                 
                 if username != nil && password != nil
                 {
@@ -511,7 +511,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
             //self.revealViewController().pushFrontViewController(vc, animated: true)
             let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
             let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
             
             if username != nil && password != nil
             {
@@ -530,7 +530,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
 //                cookieStorage.deleteCookie(cookie)
 //            }
 //            
-//            UserDefaults.standard.setValue(nil, forKey: Constant.LINKEDIN_ACCESS_TOKEN)
+//            UserDefaults.standard.setValue(nil, forKey: Constant.LINKEDIN_USER_ID)
 //            UserDefaults.standard.setValue(nil, forKey: Constant.USERNAME)
 //            UserDefaults.standard.setValue(nil, forKey: Constant.PASSWORD)
 //            AppPreferences.sharedPreferences().customMessagesArray.removeAll()
@@ -571,7 +571,7 @@ class MenuViewViewController: UIViewController,UITableViewDataSource,UITableView
     
     func showData() -> Void
     {
-        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
         
         if linkedInId != nil
         {

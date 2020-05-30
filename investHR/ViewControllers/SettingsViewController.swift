@@ -22,7 +22,7 @@ class SettingsViewController: UIViewController,UITableViewDelegate,UITableViewDa
         super.viewDidLoad()
 //        let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
 //        let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-//        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+//        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
 //        
 //        if username != nil && password != nil
 //        {

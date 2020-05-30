@@ -44,19 +44,27 @@ struct Constant
 //    ftp://ftp.investhr.biz/
 //    bizinvesthr@investhr.biz
 //    communicator@123
-//    static let  BASE_URL_PATH                            = "http://184.171.162.251:8080/InvestHr/investhr/"              // local server
-//    static let  USER_PROFILE_IMAGE_PATH                  = "http://184.171.162.251:8080/InvestHr/resources/UserImages/"
-    static let  BASE_URL_PATH                            = "https://investhr.biz/investhr/"              // local server
+
+    static let  BASE_URL_PATH                            = "https://investhr.biz/investhr/"              // live server
     static let  USER_PROFILE_IMAGE_PATH                  = "https://investhr.biz/resources/UserImages/"
-//     static let  BASE_URL_PATH                            = "http://192.168.3.81:8090/coreflex/investhr/"              // local server
-//    static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.81:8090/coreflex/resources/UserImages/"
+//     static let  BASE_URL_PATH                            = "http://192.168.3.82:8080/investHr/"              // local server
+//    static let  USER_PROFILE_IMAGE_PATH                  = "http://192.168.3.82:8080/resources/UserImages/"
 
     static let  LINKEDIN_SHARE_API                       = "https://api.linkedin.com/v1/people/~/shares?format=json"
     static let  LINKEDIN_LOGOUT_API                      = "https://api.linkedin.com/uas/oauth/invalidateToken"
-    static let  LINKEDIN_ACCESS_TOKEN                    = "linkedInAccessToken"
+//    static let  LINKEDIN_ACCESS_TOKEN                    = "linkedInAccessToken"
+    static let  LINKEDIN_USER_ID                         = "linkedInUserId"
+    static let  LINKEDIN_ACCESS_TOKEN                    = "linkedInAcessToken"
     static let  LINKEDIN_ACCESS_TOKEN_EXPIRES_IN         = "linkedInAccessTokenExpiresIn"
-    static let  LINKEDIN_ACCESS_TOKEN_ENDPOINT_API       = "https://www.linkedin.com/uas/oauth2/accessToken"
+//    static let  LINKEDIN_ACCESS_TOKEN_ENDPOINT_API       = "https://www.linkedin.com/uas/oauth2/accessToken"
+//    static let  LINKEDIN_AUTHORIZATION_ENDPOINT_API       = "https://www.linkedin.com/uas/oauth2/authorization"
+    static let  LINKEDIN_ACCESS_TOKEN_ENDPOINT_API       = "https://www.linkedin.com/oauth/v2/accessToken"
+    static let  LINKEDIN_AUTHORIZATION_ENDPOINT_API       = "https://www.linkedin.com/oauth/v2/authorization"
 
+    static let  LINKEDIN_FETCH_LITE_USER_PROFILE_API     = "https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,profilePicture(displayImage~:playableStreams))"
+    
+    static let  LINKEDIN_FETCH_EMAIL_API       = "https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))"
+    
     static let  NEW_USER_REGISTRATION_API                = "login/registration"
     static let  NEW_USER_LOGIN_API                       = "login"
     static let  VERTICAL_JOB_LIST_API                    = "login/mobileVerticalJob"

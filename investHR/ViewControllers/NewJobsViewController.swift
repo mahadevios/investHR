@@ -133,7 +133,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
         
         let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
         
-        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+        let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
         
         if username != nil && password != nil
         {
@@ -242,7 +242,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             let jobId = jobDetailsDic?["jobid"] as! Int
             let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
             let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
             
             if username != nil && password != nil
             {
@@ -384,7 +384,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
 
             let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
             let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
         
             if username != nil && password != nil
             {
@@ -411,7 +411,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             
             let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
             let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+            let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
             
             if username != nil && password != nil
             {
@@ -1125,7 +1125,7 @@ class NewJobsViewController: UIViewController,UICollectionViewDataSource,UIColle
             {
                 let username = UserDefaults.standard.object(forKey: Constant.USERNAME) as? String
                 let password = UserDefaults.standard.object(forKey: Constant.PASSWORD) as? String
-                let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_ACCESS_TOKEN) as? String
+                let linkedInId = UserDefaults.standard.object(forKey: Constant.LINKEDIN_USER_ID) as? String
                 let name = textField.text
                 
                 let email = textField1.text

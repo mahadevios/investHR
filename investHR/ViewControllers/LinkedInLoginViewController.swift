@@ -11,9 +11,9 @@ import UIKit
 class LinkedInLoginViewController: UIViewController,UIWebViewDelegate
 {
 
-    let authorizationEndPoint = "https://www.linkedin.com/uas/oauth2/authorization"
+    let authorizationEndPoint = Constant.LINKEDIN_AUTHORIZATION_ENDPOINT_API
     
-    let accessTokenEndPoint = "https://www.linkedin.com/uas/oauth2/accessToken"
+    let accessTokenEndPoint = Constant.LINKEDIN_ACCESS_TOKEN_ENDPOINT_API
     
     let linkedInKey = "81no6kz3uepufn"
     
